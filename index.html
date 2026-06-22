@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GummyChums | Health Just Got Unhinged</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;family=Fraunces:ital,opsz,wght@1,9..144,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#261236",
+                        "on-background": "#261236",
+                        "secondary-container": "#fecf34",
+                        "on-secondary-fixed-variant": "#574400",
+                        "secondary-fixed-dim": "#efc124",
+                        "background": "#fff7fd",
+                        "on-secondary-fixed": "#241a00",
+                        "inverse-primary": "#ffb0c9",
+                        "outline": "#261236",
+                        "surface-container": "#f9e8ff",
+                        "tertiary-container": "#00a957",
+                        "inverse-surface": "#3c284c",
+                        "surface-bright": "#fff7fd",
+                        "on-secondary-container": "#705900",
+                        "surface": "#fff7fd",
+                        "on-primary-fixed": "#3e001e",
+                        "inverse-on-surface": "#fbecff",
+                        "on-surface-variant": "#584047",
+                        "tertiary": "#006d36",
+                        "surface-tint": "#b80865",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#f2daff",
+                        "on-tertiary-fixed": "#00210c",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#003416",
+                        "secondary-fixed": "#ffe08a",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#fcf0ff",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#ff4f9b",
+                        "surface-variant": "#f2daff",
+                        "secondary": "#745b00",
+                        "on-primary-container": "#5d0030",
+                        "on-tertiary-fixed-variant": "#005227",
+                        "surface-dim": "#ecd0ff",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#ffd9e3",
+                        "on-primary": "#ffffff",
+                        "primary": "#b80865",
+                        "outline-variant": "#e0bec7",
+                        "primary-fixed-dim": "#ffb0c9",
+                        "on-primary-fixed-variant": "#8e004c",
+                        "surface-container-high": "#f5e1ff",
+                        "tertiary-fixed": "#6dfe9c",
+                        "tertiary-fixed-dim": "#4de082"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "20px",
+                        "base_unit": "8px",
+                        "margin_desktop": "64px",
+                        "margin_mobile": "16px",
+                        "wobble_offset": "4px"
+                    },
+                    "fontFamily": {
+                        "display-xl": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "label-caps": ["Plus Jakarta Sans"],
+                        "accent-italic": ["Fraunces"]
+                    },
+                    "fontSize": {
+                        "display-xl": ["96px", {"lineHeight": "0.9", "letterSpacing": "-0.05em", "fontWeight": "900"}],
+                        "display-lg": ["64px", {"lineHeight": "1.0", "letterSpacing": "-0.03em", "fontWeight": "800"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "body-lg": ["20px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                        "headline-md": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "800"}],
+                        "label-caps": ["14px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "800"}],
+                        "accent-italic": ["28px", {"lineHeight": "1.2", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .neo-shadow {
+            box-shadow: 8px 8px 0px 0px #261236;
+        }
+        .neo-shadow-lg {
+            box-shadow: 12px 12px 0px 0px #261236;
+        }
+        .neo-shadow-sm {
+            box-shadow: 4px 4px 0px 0px #261236;
+        }
+        
+        .sticker-bg {
+            background-image: radial-gradient(#261236 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .tilt-left { transform: rotate(-2deg); }
+        .tilt-right { transform: rotate(2deg); }
+        .tilt-none:hover { transform: rotate(0deg) scale(1.05); }
+        
+        .jelly-pop:active {
+            transform: scale(0.95) translate(4px, 4px);
+            box-shadow: 2px 2px 0px 0px #261236;
+        }
+        
+        @keyframes bounce-intense {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-30px) rotate(10deg); }
+        }
+        .bounce-intense { animation: bounce-intense 2s ease-in-out infinite; }
+        
+        @keyframes marquee-fast {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee-fast { animation: marquee-fast 10s linear infinite; }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .grid-mesh {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(38, 18, 54, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(38, 18, 54, 0.05) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden grid-mesh">
+<!-- Section 1: NAVBAR -->
+<nav class="sticky top-0 w-full z-50 bg-secondary-container border-b-4 border-on-surface px-margin_mobile md:px-margin_desktop py-4 flex justify-between items-center transition-all">
+<div class="flex items-center gap-3">
+<img alt="GummyChums Logo" class="h-12 w-auto bounce-intense" src=""/>
+<span class="font-display-lg text-4xl font-black text-on-surface uppercase tracking-tighter">GummyChums</span>
+</div>
+<div class="hidden md:flex gap-10 items-center">
+<a class="font-display-lg text-xl font-extrabold text-on-surface hover:bg-white hover:neo-shadow-sm px-4 py-1 transition-all" href="#chums">The Chums</a>
+<a class="font-display-lg text-xl font-extrabold text-on-surface hover:bg-white hover:neo-shadow-sm px-4 py-1 transition-all" href="#science">Nerd Stuff</a>
+<a class="font-display-lg text-xl font-extrabold text-on-surface hover:bg-white hover:neo-shadow-sm px-4 py-1 transition-all" href="#reviews">Vibe Check</a>
+<button class="bg-primary text-white px-8 py-3 rounded-none border-4 border-on-surface neo-shadow jelly-pop font-black text-lg uppercase">Shop Now Bro</button>
+</div>
+<button class="md:hidden material-symbols-outlined text-on-surface text-4xl">menu</button>
+</nav>
+<!-- Section 2: HERO -->
+<header class="relative min-h-[90vh] flex items-center px-margin_mobile md:px-margin_desktop pt-16 overflow-hidden bg-primary-fixed border-b-4 border-on-surface">
+<div class="absolute inset-0 sticker-bg opacity-20"></div>
+<div class="relative z-10 w-full grid grid-cols-1 md:grid-cols-2 items-center gap-16">
+<div>
+<div class="inline-block bg-white px-6 py-2 border-4 border-on-surface neo-shadow mb-8 tilt-left">
+<span class="font-label-caps text-on-surface uppercase tracking-widest font-black">Warning: High Energy Inside</span>
+</div>
+<h1 class="font-display-xl text-display-xl text-on-surface mb-8">
+                Your <span class="bg-secondary-container px-4 py-1 inline-block border-4 border-on-surface neo-shadow tilt-right">health</span> <br/>
+                is <span class="text-primary italic font-accent-italic underline decoration-8">boring</span>, yar.
+            </h1>
+<p class="font-body-lg text-2xl text-on-surface mb-10 max-w-lg leading-tight font-extrabold">
+                Stop choking on dusty pills. Chew these vibes instead. Science-backed, tasty-as-hell, and actually works, babe. 
+            </p>
+<div class="flex flex-col sm:flex-row gap-6">
+<button class="bg-primary-container text-on-primary-container px-10 py-6 border-4 border-on-surface neo-shadow-lg jelly-pop font-black text-2xl uppercase tracking-tighter">Fix My Life</button>
+<button class="bg-white text-on-surface px-10 py-6 border-4 border-on-surface neo-shadow jelly-pop font-black text-2xl uppercase tracking-tighter">See the Sauce</button>
+</div>
+</div>
+<div class="relative flex justify-center items-center">
+<div class="absolute -z-10 w-[120%] h-[120%] bg-white border-4 border-on-surface rotate-6 neo-shadow"></div>
+<img class="w-full max-w-lg bounce-intense drop-shadow-[15px_15px_0px_#261236]" data-alt="Giant purple gummy bear mascot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRpYg-O2BEP4Ovy_WPw72OM3QGMCpuE39d1Rokd4T37fPtKae5FW4A9rfsJEHy3fv5gPFWGv-nl_N1q2e4iZZMKPP_vCq1K6W7AfKJ6UCGeEztLEUxDdK-8dacHmkhFP1IXXMgBLPtZPfM0EvbcLSXZEM2XcqTt9O01YT1Yy-LBlwwadKkwUzzA2NqeMgM_MWXUajOI30-XEke5d0X63Sf3gvL1yCQWhS7d8aWbO3VaMM0G0Laulj81gJv5BpS8LhUacawbn5AT2M"/>
+</div>
+</div>
+<!-- Marquee -->
+<div class="absolute bottom-0 left-0 w-full bg-on-surface py-6 overflow-hidden transform rotate-2 translate-y-4">
+<div class="flex whitespace-nowrap animate-marquee-fast">
+<span class="text-secondary-container font-display-lg text-4xl mx-12 font-black">NO B.S. • ONLY GUMMIES • TASTES LIKE MAGIC • FEELING GOOD BRO • NO B.S. • ONLY GUMMIES • TASTES LIKE MAGIC • FEELING GOOD BRO • </span>
+<span class="text-secondary-container font-display-lg text-4xl mx-12 font-black">NO B.S. • ONLY GUMMIES • TASTES LIKE MAGIC • FEELING GOOD BRO • NO B.S. • ONLY GUMMIES • TASTES LIKE MAGIC • FEELING GOOD BRO • </span>
+</div>
+</div>
+</header>
+<!-- Section 3: PROBLEM (GRID SYSTEM) -->
+<section class="py-24 px-margin_mobile md:px-margin_desktop bg-white border-b-4 border-on-surface">
+<div class="max-w-7xl mx-auto mb-20 text-center">
+<h2 class="font-display-lg text-display-lg text-on-surface mb-6 uppercase">Why you struggling, bro?</h2>
+<p class="font-accent-italic text-3xl italic text-primary">Wellness shouldn't feel like homework.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 border-4 border-on-surface neo-shadow">
+<div class="p-12 border-b-4 md:border-b-0 md:border-r-4 border-on-surface bg-primary-fixed-dim group hover:bg-primary hover:text-white transition-colors">
+<div class="w-20 h-20 bg-white border-4 border-on-surface flex items-center justify-center mb-8 neo-shadow-sm group-hover:translate-x-1 group-hover:translate-y-1">
+<span class="material-symbols-outlined text-4xl">inventory_2</span>
+</div>
+<h3 class="font-headline-md mb-6 uppercase leading-none">The Graveyard of Supplements</h3>
+<p class="font-body-lg">You have 15 bottles in the back of your cupboard. They're expired. Just like your motivation, yar.</p>
+</div>
+<div class="p-12 border-b-4 md:border-b-0 md:border-r-4 border-on-surface bg-secondary-container group hover:bg-on-surface hover:text-white transition-colors">
+<div class="w-20 h-20 bg-white border-4 border-on-surface flex items-center justify-center mb-8 neo-shadow-sm group-hover:translate-x-1 group-hover:translate-y-1">
+<span class="material-symbols-outlined text-4xl text-on-surface">sentiment_dissatisfied</span>
+</div>
+<h3 class="font-headline-md mb-6 uppercase leading-none">Pill Swallowing Olympics</h3>
+<p class="font-body-lg">Choking on dry horse pills every morning? Who are you trying to impress? Life is too short for that drama.</p>
+</div>
+<div class="p-12 bg-tertiary-fixed group hover:bg-tertiary-container hover:text-white transition-colors">
+<div class="w-20 h-20 bg-white border-4 border-on-surface flex items-center justify-center mb-8 neo-shadow-sm group-hover:translate-x-1 group-hover:translate-y-1">
+<span class="material-symbols-outlined text-4xl text-on-surface">psychology</span>
+</div>
+<h3 class="font-headline-md mb-6 uppercase leading-none">Confused AF Vibes</h3>
+<p class="font-body-lg">What does Vitamin D even do? We've done the math. You just chew the bear and keep moving, babe.</p>
+</div>
+</div>
+</section>
+<!-- Section 4: PRODUCT (COLLECTIBLE CARDS) -->
+<section class="py-24 px-margin_mobile md:px-margin_desktop bg-surface-container-low" id="chums">
+<div class="max-w-7xl mx-auto mb-16 flex flex-col md:flex-row justify-between items-end gap-6">
+<div>
+<h2 class="font-display-lg text-display-lg text-on-surface uppercase">The Gang is All Here</h2>
+<p class="font-accent-italic text-3xl italic text-secondary">Pick your fighter, yar.</p>
+</div>
+<button class="bg-on-surface text-white px-8 py-4 border-4 border-on-surface neo-shadow-sm font-black uppercase hover:bg-primary transition-all">View All 12 Chums</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<!-- Card 1 -->
+<div class="bg-[#B8A4C9] p-4 border-4 border-on-surface neo-shadow tilt-left hover:rotate-0 transition-transform cursor-pointer group">
+<div class="bg-white border-4 border-on-surface p-8">
+<img class="w-full h-56 object-contain mb-8 group-hover:scale-110 transition-transform" data-alt="Dreamy Sleep Gummy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcW5ruNhS8-UXnKziyx7yg9eRtAhhlpOOiOjlG-8-ezIN02SZuJSdizwW1w-dR14JRAEQinFiQNdHkxW9U6VrNyiZY9zT_QfEegMpvRgfxoWyNI7mKgApbNWa2OYorY-ULuD0MJwLnVmuxF_1NFqZiGCNsxJMUsifqx2aTPKW1IvKje3XZtCbhGo1WDa-PaQN-VWOrI5vcslY-SELuZY6u9yiDhjvEKYgmqN6oxc7x0A0rm5roZoA0bU4Tm87wCSDKkRSk1dyB-pA"/>
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-display-lg text-4xl uppercase tracking-tighter">Dreamy Sleep</h3>
+<span class="bg-on-surface text-white px-2 py-1 font-black text-sm">LVL 99</span>
+</div>
+<p class="font-body-lg mb-8 h-20 overflow-hidden">Brain won't shut up about that awkward thing from 2014? Knock it out with Melatonin + Chamomile, bro.</p>
+<div class="flex justify-between items-center border-t-4 border-on-surface pt-6">
+<span class="font-black text-3xl">₹699</span>
+<button class="bg-primary text-white p-4 border-4 border-on-surface neo-shadow-sm material-symbols-outlined jelly-pop">add_shopping_cart</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-[#A4C4C9] p-4 border-4 border-on-surface neo-shadow tilt-right hover:rotate-0 transition-transform cursor-pointer group">
+<div class="bg-white border-4 border-on-surface p-8">
+<img class="w-full h-56 object-contain mb-8 group-hover:scale-110 transition-transform" data-alt="Electric Blue Eye Gummy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwA3Cp7j9BI3arkYR3dAw4yBdXCZSUNeEygXU5FpNe7KOEzWVtu-GCmf1JLeBaSzuMoIEFuFSTMAWbyVbAMoW_AQjHPCqzqerbYo3qInGpp8z6iHjaqi1yOnqbAtZuy_aCSLjFdB0IniHHZZpRx9eqzgOMqsitySfa4yPxlpfQmvAoxL080wXSrmLJ2OQdPnHvUuZfteDovWAfKF4Xnf6DcrfrM0fiN6cyGC0DhKDk2qPyLeB8mSfa9yDrZXMhHpBSX-Tq9x85J0g"/>
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-display-lg text-4xl uppercase tracking-tighter">Electric Blue</h3>
+<span class="bg-on-surface text-white px-2 py-1 font-black text-sm">FOCUS</span>
+</div>
+<p class="font-body-lg mb-8 h-20 overflow-hidden">For the 12-hour screen marathons. Your eyes are screaming, yaar. Give them some Lutein love.</p>
+<div class="flex justify-between items-center border-t-4 border-on-surface pt-6">
+<span class="font-black text-3xl">₹749</span>
+<button class="bg-primary text-white p-4 border-4 border-on-surface neo-shadow-sm material-symbols-outlined jelly-pop">add_shopping_cart</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-[#C9A4C4] p-4 border-4 border-on-surface neo-shadow tilt-left hover:rotate-0 transition-transform cursor-pointer group">
+<div class="bg-white border-4 border-on-surface p-8">
+<img class="w-full h-56 object-contain mb-8 group-hover:scale-110 transition-transform" data-alt="Neon Violet Brain Gummy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu8aZSBZFbcNR03NQYA0Oh-kZVVpvL383075mdLY2Qi6rJHcQs1evssN8knNzL4J__BeDg2btgZUkpkvVwsj0ueu38qtl9t0hhyYsxh7Ag-2p4ZGt65WTbG42s2tsgyquZ51c2wQxWoMwRSfQcdlEk11gF4YqCVur2RltlRJz2mCbuWoaWTZ7vPpKbX5a_YsD2gc-rHW-D2V44SQvdGYuydGBqZ-zymktu5dM5sR9-7-szLx_Iw3Kb_r-wSl_mPPX6jcxg1XiS7Fk"/>
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-display-lg text-4xl uppercase tracking-tighter">Neon Violet</h3>
+<span class="bg-on-surface text-white px-2 py-1 font-black text-sm">SMART</span>
+</div>
+<p class="font-body-lg mb-8 h-20 overflow-hidden">Ashwagandha + Brahmi. It's like a software update for your brain. Stop lagging and start winning.</p>
+<div class="flex justify-between items-center border-t-4 border-on-surface pt-6">
+<span class="font-black text-3xl">₹899</span>
+<button class="bg-primary text-white p-4 border-4 border-on-surface neo-shadow-sm material-symbols-outlined jelly-pop">add_shopping_cart</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: BOLD CTA / QUIZ -->
+<section class="bg-on-surface py-32 px-margin_mobile md:px-margin_desktop text-center relative overflow-hidden">
+<div class="absolute inset-0 sticker-bg opacity-10"></div>
+<div class="relative z-10 max-w-4xl mx-auto border-8 border-white p-12 bg-primary neo-shadow-lg tilt-right">
+<h2 class="font-display-xl text-white mb-8 uppercase leading-tight">Which Chum are YOU, babe?</h2>
+<p class="font-body-lg text-2xl text-white mb-12 font-extrabold">Stop guessing. Take the 1-minute vibe check and we'll tell you what's up with your body.</p>
+<button class="bg-secondary-container text-on-surface px-16 py-8 border-4 border-on-surface neo-shadow-lg jelly-pop font-black text-3xl uppercase tracking-tighter">Start Vibe Check</button>
+</div>
+</section>
+<!-- Section 6: SCIENCE (NERD STUFF) -->
+<section class="py-24 px-margin_mobile md:px-margin_desktop bg-white border-y-4 border-on-surface" id="science">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-20">
+<div class="md:w-1/2">
+<h2 class="font-display-lg text-display-lg text-on-surface mb-8 uppercase leading-none">The Nerd Sauce</h2>
+<p class="font-body-lg text-2xl mb-12 font-bold">We spent 2 years in labs so you wouldn't have to. Real ingredients, real results, zero "trust me bro" energy.</p>
+<div class="space-y-4">
+<div class="bg-secondary-container p-8 border-4 border-on-surface neo-shadow-sm flex items-center gap-6 tilt-left">
+<span class="material-symbols-outlined text-5xl">verified_user</span>
+<span class="font-display-lg text-2xl uppercase">Evidence Based (No Cap)</span>
+</div>
+<div class="bg-tertiary-fixed p-8 border-4 border-on-surface neo-shadow-sm flex items-center gap-6 tilt-right">
+<span class="material-symbols-outlined text-5xl">science</span>
+<span class="font-display-lg text-2xl uppercase">Third-Party Tested AF</span>
+</div>
+<div class="bg-primary-fixed p-8 border-4 border-on-surface neo-shadow-sm flex items-center gap-6 tilt-left">
+<span class="material-symbols-outlined text-5xl">check_circle</span>
+<span class="font-display-lg text-2xl uppercase">FSSAI Certified, Bro</span>
+</div>
+</div>
+</div>
+<div class="md:w-1/2 relative">
+<div class="absolute inset-0 bg-secondary-container border-4 border-on-surface rotate-3 neo-shadow"></div>
+<img class="relative z-10 w-full h-auto border-4 border-on-surface p-4 bg-white" data-alt="Science bear illustration" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeqHzJICw3adGvJnmGXm8PHS1EVKl8wQhvLCgxw00F5L_Wr7aXLMGq4bdkI7KAlzDgl1NtO9Sh3LsgPYzFYM8poSeii5MyJcN8NqOm5RuX_c81F2BoEV7uu8djAD-RZ8GTKrdHiSsZfV69heBjKj9LWp_kCgQZc6TW8hVgPMktNWxbyiQAGRPpIS8-w5PdT0Dw7WXRRk7zW7DGs0onzVJCvscI4A3VLQfNqH3ZkYEUGc4YLyX8Njqq9cEYqF9FfjxiVGDTz4w5HBA"/>
+</div>
+</div>
+</section>
+<!-- Section 7: REVIEWS (VIBE CHECK) -->
+<section class="py-24 px-margin_mobile md:px-margin_desktop bg-primary-fixed-dim" id="reviews">
+<h2 class="font-display-lg text-display-lg text-on-surface text-center mb-16 uppercase">What the besties say</h2>
+<div class="columns-1 md:columns-3 gap-8 space-y-8">
+<div class="break-inside-avoid bg-white p-8 border-4 border-on-surface neo-shadow tilt-left">
+<p class="font-accent-italic text-2xl mb-6 italic leading-tight">"The sleep gummies are witchcraft, bro. I was out in 15 mins. No groggy morning vibes. 10/10 would sleep again."</p>
+<p class="font-black uppercase text-primary">- Ananya K., Mumbai</p>
+</div>
+<div class="break-inside-avoid bg-secondary-container p-8 border-4 border-on-surface neo-shadow-lg tilt-right">
+<p class="font-accent-italic text-2xl mb-6 italic leading-tight">"My doctor thinks I'm disciplined. I'm just a snack addict. These taste too good to forget, yar."</p>
+<p class="font-black uppercase text-on-surface">- Rahul V., Bangalore</p>
+</div>
+<div class="break-inside-avoid bg-white p-8 border-4 border-on-surface neo-shadow tilt-left">
+<p class="font-accent-italic text-2xl mb-6 italic leading-tight">"I used to take 5 different capsules. Now I just chew these and life is better. Plus the jar looks cool on my shelf, babe."</p>
+<p class="font-black uppercase text-primary">- Sameer P., Delhi</p>
+</div>
+</div>
+</section>
+<!-- Section 8: SQUAD GOALS (BUNDLES) -->
+<section class="py-24 px-margin_mobile md:px-margin_desktop bg-tertiary-fixed border-t-4 border-on-surface">
+<div class="max-w-7xl mx-auto text-center mb-16">
+<h2 class="font-display-lg text-display-lg text-on-surface uppercase leading-none mb-4">Squad Goals</h2>
+<p class="font-accent-italic text-3xl italic">Save your cash, yar.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="bg-white border-4 border-on-surface neo-shadow flex flex-col tilt-left">
+<div class="bg-on-surface text-white py-2 text-center font-black uppercase">Most Popular</div>
+<div class="p-8 flex-grow">
+<h3 class="font-headline-md uppercase mb-4">The Full Gang</h3>
+<p class="font-body-lg mb-8">Sleep + Brain + Multi. The holy trinity of being a functional human.</p>
+<div class="flex justify-between items-center mt-auto border-t-4 border-on-surface pt-6">
+<div>
+<span class="line-through text-on-surface/40 font-black">₹2,297</span>
+<div class="text-4xl font-black">₹1,899</div>
+</div>
+<button class="bg-primary text-white px-6 py-3 border-4 border-on-surface neo-shadow-sm font-black uppercase">Grab It</button>
+</div>
+</div>
+</div>
+<!-- Center card scaled and more intense -->
+<div class="bg-secondary-container border-4 border-on-surface neo-shadow-lg flex flex-col scale-110 z-10">
+<div class="bg-primary text-white py-2 text-center font-black uppercase animate-pulse">Hot Deal Bro</div>
+<div class="p-8 flex-grow">
+<h3 class="font-headline-md uppercase mb-4">The Night Shift</h3>
+<p class="font-body-lg mb-8">Dreamy Sleep + Eye Support. For when you're grinding on Valorant at 3am, babe.</p>
+<div class="flex justify-between items-center mt-auto border-t-4 border-on-surface pt-6">
+<div>
+<span class="line-through text-on-surface/40 font-black">₹1,448</span>
+<div class="text-4xl font-black">₹1,199</div>
+</div>
+<button class="bg-on-surface text-white px-6 py-3 border-4 border-on-surface neo-shadow-sm font-black uppercase">Need This</button>
+</div>
+</div>
+</div>
+<div class="bg-white border-4 border-on-surface neo-shadow flex flex-col tilt-right">
+<div class="bg-tertiary text-white py-2 text-center font-black uppercase">Happy Gut</div>
+<div class="p-8 flex-grow">
+<h3 class="font-headline-md uppercase mb-4">The Gut Feeling</h3>
+<p class="font-body-lg mb-8">Gut Check + ACV Boost. Your stomach will thank you after that spicy biryani, yar.</p>
+<div class="flex justify-between items-center mt-auto border-t-4 border-on-surface pt-6">
+<div>
+<span class="line-through text-on-surface/40 font-black">₹1,248</span>
+<div class="text-4xl font-black">₹999</div>
+</div>
+<button class="bg-primary text-white px-6 py-3 border-4 border-on-surface neo-shadow-sm font-black uppercase">Add to Bag</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 9: FOOTER -->
+<footer class="bg-on-surface text-white pt-24 pb-12 px-margin_mobile md:px-margin_desktop border-t-8 border-primary">
+<div class="max-w-7xl mx-auto flex flex-col items-center">
+<img alt="GummyChums Logo Footer" class="h-24 w-auto mb-8 invert bounce-intense" src=""/>
+<h2 class="font-display-lg text-6xl mb-8 uppercase tracking-tighter">GummyChums</h2>
+<p class="font-body-lg text-2xl text-surface-variant mb-16 max-w-md text-center font-extrabold italic">"Health just got unhinged. Stay gummy, babe."</p>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-16 w-full text-center md:text-left mb-20">
+<div>
+<h4 class="font-black text-secondary-container text-2xl uppercase mb-6">The Vibes</h4>
+<ul class="space-y-4 font-bold text-xl">
+<li><a class="hover:text-primary-container transition-colors" href="#">Shop All</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#">Bundles</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#">Nerd Stuff</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-black text-secondary-container text-2xl uppercase mb-6">Help Me</h4>
+<ul class="space-y-4 font-bold text-xl">
+<li><a class="hover:text-primary-container transition-colors" href="#">FAQs, Yar</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#">Shipping</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#">My Orders</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-black text-secondary-container text-2xl uppercase mb-6">Hang Out</h4>
+<ul class="space-y-4 font-bold text-xl">
+<li><a class="hover:text-primary-container transition-colors" href="#">Insta</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#">Twitter (X)</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#">Discord</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-black text-secondary-container text-2xl uppercase mb-6">Stay Looped</h4>
+<div class="flex flex-col gap-4">
+<input class="bg-white border-4 border-primary p-4 text-on-surface font-bold placeholder-on-surface/50 focus:neo-shadow" placeholder="gummy@fan.com" type="email"/>
+<button class="bg-primary text-white p-4 border-4 border-white neo-shadow-sm font-black uppercase">Join the Chaos</button>
+</div>
+</div>
+</div>
+<div class="w-full border-t-4 border-white/20 pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-surface-variant font-black uppercase text-sm">
+<span>© 2024 GummyChums. No bears were harmed, only chewed.</span>
+<div class="flex gap-10">
+<a class="hover:text-white" href="#">Privacy Stuff</a>
+<a class="hover:text-white" href="#">Terms of Chaos</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+    // Simple reveal on scroll for maximalist pop
+    const observerOptions = { threshold: 0.1 };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('opacity-100', 'translate-x-0', 'translate-y-0');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('section, header > div, footer').forEach(el => {
+        el.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-12');
+        observer.observe(el);
+    });
+</script>
+</body></html>
