@@ -142,22 +142,57 @@
             background-image: linear-gradient(to right, rgba(38, 18, 54, 0.05) 1px, transparent 1px),
                               linear-gradient(to bottom, rgba(38, 18, 54, 0.05) 1px, transparent 1px);
         }
+        
+        /* Cart Modal Styles */
+        .modal-active {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        .modal-active #receipt-wrapper,
+        .modal-active > div:not(#cart-backdrop) {
+            transform: scale(1) translateY(0) !important;
+        }
+        
+        /* Custom scrollbar for receipt items list */
+        .receipt-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .receipt-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .receipt-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 2px;
+        }
+        .receipt-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.4);
+        }
     </style>
 </head>
 <body class="bg-background text-on-background font-body-md overflow-x-hidden grid-mesh">
 <!-- Section 1: NAVBAR -->
 <nav class="sticky top-0 w-full z-50 bg-secondary-container border-b-4 border-on-surface px-margin_mobile md:px-margin_desktop py-4 flex justify-between items-center transition-all">
-<div class="flex items-center gap-3">
-<img alt="GummyChums Logo" class="h-12 w-auto bounce-intense" src=""/>
+<div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+<img alt="GummyChums Logo" class="h-12 w-auto bounce-intense" src="logo.png"/>
 <span class="font-display-lg text-4xl font-black text-on-surface uppercase tracking-tighter">GummyChums</span>
 </div>
 <div class="hidden md:flex gap-10 items-center">
 <a class="font-display-lg text-xl font-extrabold text-on-surface hover:bg-white hover:neo-shadow-sm px-4 py-1 transition-all" href="#chums">The Chums</a>
 <a class="font-display-lg text-xl font-extrabold text-on-surface hover:bg-white hover:neo-shadow-sm px-4 py-1 transition-all" href="#science">Nerd Stuff</a>
 <a class="font-display-lg text-xl font-extrabold text-on-surface hover:bg-white hover:neo-shadow-sm px-4 py-1 transition-all" href="#reviews">Vibe Check</a>
-<button class="bg-primary text-white px-8 py-3 rounded-none border-4 border-on-surface neo-shadow jelly-pop font-black text-lg uppercase">Shop Now Bro</button>
+<button id="cart-btn-desktop" class="relative bg-white text-on-surface p-3 border-4 border-on-surface neo-shadow-sm jelly-pop flex items-center justify-center">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span id="cart-count-desktop" class="absolute -top-2.5 -right-2.5 bg-primary text-white text-[10px] font-black w-6 h-6 flex items-center justify-center border-2 border-on-surface rounded-full hidden">0</span>
+</button>
+<button onclick="document.getElementById('chums').scrollIntoView({ behavior: 'smooth' })" class="bg-primary text-white px-8 py-3 rounded-none border-4 border-on-surface neo-shadow jelly-pop font-black text-lg uppercase">Shop Now Bro</button>
 </div>
-<button class="md:hidden material-symbols-outlined text-on-surface text-4xl">menu</button>
+<div class="flex items-center gap-4 md:hidden">
+<button id="cart-btn-mobile" class="relative bg-white text-on-surface p-3 border-4 border-on-surface neo-shadow-sm jelly-pop flex items-center justify-center">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span id="cart-count-mobile" class="absolute -top-2.5 -right-2.5 bg-primary text-white text-[10px] font-black w-6 h-6 flex items-center justify-center border-2 border-on-surface rounded-full hidden">0</span>
+</button>
+<button class="material-symbols-outlined text-on-surface text-4xl">menu</button>
+</div>
 </nav>
 <!-- Section 2: HERO -->
 <header class="relative min-h-[90vh] flex items-center px-margin_mobile md:px-margin_desktop pt-16 overflow-hidden bg-primary-fixed border-b-4 border-on-surface">
@@ -243,7 +278,7 @@
 <p class="font-body-lg mb-8 h-20 overflow-hidden">Brain won't shut up about that awkward thing from 2014? Knock it out with Melatonin + Chamomile, bro.</p>
 <div class="flex justify-between items-center border-t-4 border-on-surface pt-6">
 <span class="font-black text-3xl">₹699</span>
-<button class="bg-primary text-white p-4 border-4 border-on-surface neo-shadow-sm material-symbols-outlined jelly-pop">add_shopping_cart</button>
+<button data-product-id="dreamy-sleep" class="add-to-cart-btn bg-primary text-white p-4 border-4 border-on-surface neo-shadow-sm material-symbols-outlined jelly-pop">add_shopping_cart</button>
 </div>
 </div>
 </div>
@@ -258,7 +293,7 @@
 <p class="font-body-lg mb-8 h-20 overflow-hidden">For the 12-hour screen marathons. Your eyes are screaming, yaar. Give them some Lutein love.</p>
 <div class="flex justify-between items-center border-t-4 border-on-surface pt-6">
 <span class="font-black text-3xl">₹749</span>
-<button class="bg-primary text-white p-4 border-4 border-on-surface neo-shadow-sm material-symbols-outlined jelly-pop">add_shopping_cart</button>
+<button data-product-id="electric-blue" class="add-to-cart-btn bg-primary text-white p-4 border-4 border-on-surface neo-shadow-sm material-symbols-outlined jelly-pop">add_shopping_cart</button>
 </div>
 </div>
 </div>
@@ -273,7 +308,7 @@
 <p class="font-body-lg mb-8 h-20 overflow-hidden">Ashwagandha + Brahmi. It's like a software update for your brain. Stop lagging and start winning.</p>
 <div class="flex justify-between items-center border-t-4 border-on-surface pt-6">
 <span class="font-black text-3xl">₹899</span>
-<button class="bg-primary text-white p-4 border-4 border-on-surface neo-shadow-sm material-symbols-outlined jelly-pop">add_shopping_cart</button>
+<button data-product-id="neon-violet" class="add-to-cart-btn bg-primary text-white p-4 border-4 border-on-surface neo-shadow-sm material-symbols-outlined jelly-pop">add_shopping_cart</button>
 </div>
 </div>
 </div>
@@ -350,7 +385,7 @@
 <span class="line-through text-on-surface/40 font-black">₹2,297</span>
 <div class="text-4xl font-black">₹1,899</div>
 </div>
-<button class="bg-primary text-white px-6 py-3 border-4 border-on-surface neo-shadow-sm font-black uppercase">Grab It</button>
+<button data-product-id="bundle-full-gang" class="add-to-cart-btn bg-primary text-white px-6 py-3 border-4 border-on-surface neo-shadow-sm font-black uppercase">Grab It</button>
 </div>
 </div>
 </div>
@@ -365,7 +400,7 @@
 <span class="line-through text-on-surface/40 font-black">₹1,448</span>
 <div class="text-4xl font-black">₹1,199</div>
 </div>
-<button class="bg-on-surface text-white px-6 py-3 border-4 border-on-surface neo-shadow-sm font-black uppercase">Need This</button>
+<button data-product-id="bundle-night-shift" class="add-to-cart-btn bg-on-surface text-white px-6 py-3 border-4 border-on-surface neo-shadow-sm font-black uppercase">Need This</button>
 </div>
 </div>
 </div>
@@ -379,7 +414,7 @@
 <span class="line-through text-on-surface/40 font-black">₹1,248</span>
 <div class="text-4xl font-black">₹999</div>
 </div>
-<button class="bg-primary text-white px-6 py-3 border-4 border-on-surface neo-shadow-sm font-black uppercase">Add to Bag</button>
+<button data-product-id="bundle-gut-feeling" class="add-to-cart-btn bg-primary text-white px-6 py-3 border-4 border-on-surface neo-shadow-sm font-black uppercase">Add to Bag</button>
 </div>
 </div>
 </div>
@@ -388,7 +423,7 @@
 <!-- Section 9: FOOTER -->
 <footer class="bg-on-surface text-white pt-24 pb-12 px-margin_mobile md:px-margin_desktop border-t-8 border-primary">
 <div class="max-w-7xl mx-auto flex flex-col items-center">
-<img alt="GummyChums Logo Footer" class="h-24 w-auto mb-8 invert bounce-intense" src=""/>
+<img alt="GummyChums Logo Footer" class="h-24 w-auto mb-8 invert bounce-intense" src="logo.png"/>
 <h2 class="font-display-lg text-6xl mb-8 uppercase tracking-tighter">GummyChums</h2>
 <p class="font-body-lg text-2xl text-surface-variant mb-16 max-w-md text-center font-extrabold italic">"Health just got unhinged. Stay gummy, babe."</p>
 <div class="grid grid-cols-1 md:grid-cols-4 gap-16 w-full text-center md:text-left mb-20">
@@ -433,6 +468,119 @@
 </div>
 </div>
 </footer>
+
+<!-- Section 10: CART DRAWER / RECEIPT MODAL -->
+<div id="cart-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+  <!-- Backdrop -->
+  <div id="cart-backdrop" class="absolute inset-0 bg-[#261236]/80 backdrop-blur-sm cursor-pointer transition-opacity duration-300"></div>
+  
+  <!-- Receipt Wrapper (for drop shadow) -->
+  <div id="receipt-wrapper" class="relative z-10 w-full max-w-[440px] transition-all duration-300 transform scale-90 translate-y-8 flex flex-col" style="filter: drop-shadow(8px 8px 0px #261236)">
+    <!-- Close Button -->
+    <button id="close-cart-btn" class="absolute -top-3 -right-3 z-30 bg-white text-on-surface p-2 border-4 border-on-surface neo-shadow-sm hover:bg-primary hover:text-white transition-all rounded-none font-bold flex items-center justify-center jelly-pop">
+      <span class="material-symbols-outlined text-2xl font-black">close</span>
+    </button>
+
+    <!-- Receipt Container -->
+    <div id="receipt-modal-content" class="bg-white text-black p-6 md:p-8 font-receipt select-none overflow-y-auto max-h-[85vh] flex flex-col border-x border-black/10">
+      <!-- Receipt Header -->
+      <div class="text-center flex flex-col items-center mt-2 flex-shrink-0">
+        <!-- Notice style Logo -->
+        <div class="flex items-center justify-center border-4 border-black px-4 py-2 font-black text-2xl uppercase tracking-widest bg-black text-white mb-2 select-none">
+          <span class="material-symbols-outlined mr-2 scale-x-[-1] font-black text-2xl">reply</span> GUMMYCHUMS
+        </div>
+        <div class="text-xs tracking-wider opacity-60">******************************************</div>
+        <div class="text-sm font-bold uppercase tracking-widest my-1">** SHOPPING BAG **</div>
+        <div id="receipt-date" class="text-xs font-semibold my-1 tracking-wider">MON 29/06/26 21:27</div>
+        <div class="text-xs tracking-wider opacity-60">******************************************</div>
+      </div>
+      
+      <!-- Receipt Items List -->
+      <div id="receipt-items" class="flex-grow my-4 space-y-6 overflow-y-auto pr-1 receipt-scrollbar max-h-[40vh] min-h-[120px]">
+        <!-- Dynamic content goes here -->
+      </div>
+      
+      <!-- Receipt Footer / Subtotal -->
+      <div class="mt-auto pt-2 border-t border-dashed border-black/30 flex-shrink-0">
+        <div class="text-xs tracking-wider opacity-60 text-center">******************************************</div>
+        <div class="flex justify-between items-end my-3">
+          <span class="text-xs font-bold tracking-widest uppercase opacity-60">SUBTOTAL</span>
+          <span id="receipt-subtotal" class="text-2xl font-black tracking-tighter">₹0</span>
+        </div>
+        <div class="text-[10px] tracking-wider opacity-50 text-center uppercase mb-4">SHIPPING CALCULATED AT CHECKOUT</div>
+        
+        <!-- Checkout Button -->
+        <button id="checkout-btn" class="w-full bg-black text-white py-4 border-4 border-black hover:bg-white hover:text-black font-black text-xl uppercase tracking-wider transition-all select-none focus:outline-none mb-4 jelly-pop">
+          CHECKOUT
+        </button>
+        
+        <div class="text-xs tracking-wider opacity-60 text-center">******************************************</div>
+        
+        <!-- Barcode -->
+        <div class="flex flex-col items-center justify-center my-3">
+          <div class="w-full px-4 mb-1">
+            <svg class="w-full h-10" viewBox="0 0 100 40" preserveAspectRatio="none">
+              <rect x="0" y="0" width="1.5" height="40" fill="black"/>
+              <rect x="3" y="0" width="1" height="40" fill="black"/>
+              <rect x="5" y="0" width="2" height="40" fill="black"/>
+              <rect x="8" y="0" width="1" height="40" fill="black"/>
+              <rect x="10" y="0" width="3" height="40" fill="black"/>
+              <rect x="15" y="0" width="1" height="40" fill="black"/>
+              <rect x="17" y="0" width="2.5" height="40" fill="black"/>
+              <rect x="21" y="0" width="1" height="40" fill="black"/>
+              <rect x="23" y="0" width="2" height="40" fill="black"/>
+              <rect x="26" y="0" width="1.5" height="40" fill="black"/>
+              <rect x="29" y="0" width="1" height="40" fill="black"/>
+              <rect x="31" y="0" width="3" height="40" fill="black"/>
+              <rect x="36" y="0" width="1" height="40" fill="black"/>
+              <rect x="38" y="0" width="2" height="40" fill="black"/>
+              <rect x="41" y="0" width="1" height="40" fill="black"/>
+              <rect x="43" y="0" width="2.5" height="40" fill="black"/>
+              <rect x="47" y="0" width="1" height="40" fill="black"/>
+              <rect x="49" y="0" width="1.5" height="40" fill="black"/>
+              <rect x="52" y="0" width="3" height="40" fill="black"/>
+              <rect x="56" y="0" width="1" height="40" fill="black"/>
+              <rect x="58" y="0" width="2" height="40" fill="black"/>
+              <rect x="61" y="0" width="1" height="40" fill="black"/>
+              <rect x="63" y="0" width="2.5" height="40" fill="black"/>
+              <rect x="67" y="0" width="1" height="40" fill="black"/>
+              <rect x="69" y="0" width="1.5" height="40" fill="black"/>
+              <rect x="72" y="0" width="3" height="40" fill="black"/>
+              <rect x="76" y="0" width="1" height="40" fill="black"/>
+              <rect x="78" y="0" width="2" height="40" fill="black"/>
+              <rect x="81" y="0" width="1" height="40" fill="black"/>
+              <rect x="83" y="0" width="2.5" height="40" fill="black"/>
+              <rect x="87" y="0" width="1" height="40" fill="black"/>
+              <rect x="89" y="0" width="1.5" height="40" fill="black"/>
+              <rect x="92" y="0" width="3" height="40" fill="black"/>
+              <rect x="96" y="0" width="1" height="40" fill="black"/>
+              <rect x="98" y="0" width="2" height="40" fill="black"/>
+            </svg>
+          </div>
+          <span id="barcode-id" class="text-[9px] tracking-[0.25em] font-bold text-black/60">GUMMY-8374-2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 11: SUCCESS MODAL -->
+<div id="success-modal" class="fixed inset-0 z-[110] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+  <div id="success-backdrop" class="absolute inset-0 bg-[#261236]/90 backdrop-blur-md cursor-pointer transition-opacity duration-300"></div>
+  <div class="relative z-10 w-full max-w-[400px] bg-secondary-container border-8 border-on-surface p-8 text-center neo-shadow-lg transform scale-90 translate-y-8 transition-all duration-300">
+    <div class="w-20 h-20 bg-white border-4 border-on-surface flex items-center justify-center mx-auto mb-6 neo-shadow-sm animate-bounce">
+      <span class="material-symbols-outlined text-5xl text-tertiary">check_circle</span>
+    </div>
+    <h3 class="font-display-lg text-3xl uppercase tracking-tighter mb-4 text-on-surface">Order Placed, Babe!</h3>
+    <p class="font-body-lg text-lg text-on-surface/80 mb-8 font-bold">
+      Your gummy order is locked in. Get ready to fix your life, yar.
+    </p>
+    <button id="close-success-btn" class="w-full bg-primary text-white py-4 border-4 border-on-surface neo-shadow jelly-pop font-black uppercase text-xl tracking-wider">
+      Let's Gooo
+    </button>
+  </div>
+</div>
+
 <script>
     // Simple reveal on scroll for maximalist pop
     const observerOptions = { threshold: 0.1 };
@@ -447,6 +595,294 @@
     document.querySelectorAll('section, header > div, footer').forEach(el => {
         el.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-12');
         observer.observe(el);
+    });
+
+    // --- CART & RECEIPT CHECKOUT DIALOG LOGIC ---
+    
+    // Product catalog definition
+    const PRODUCTS = {
+        'dreamy-sleep': {
+            name: 'Dreamy Sleep',
+            price: 699,
+            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAcW5ruNhS8-UXnKziyx7yg9eRtAhhlpOOiOjlG-8-ezIN02SZuJSdizwW1w-dR14JRAEQinFiQNdHkxW9U6VrNyiZY9zT_QfEegMpvRgfxoWyNI7mKgApbNWa2OYorY-ULuD0MJwLnVmuxF_1NFqZiGCNsxJMUsifqx2aTPKW1IvKje3XZtCbhGo1WDa-PaQN-VWOrI5vcslY-SELuZY6u9yiDhjvEKYgmqN6oxc7x0A0rm5roZoA0bU4Tm87wCSDKkRSk1dyB-pA',
+            variant: 'LVL 99'
+        },
+        'electric-blue': {
+            name: 'Electric Blue',
+            price: 749,
+            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAwA3Cp7j9BI3arkYR3dAw4yBdXCZSUNeEygXU5FpNe7KOEzWVtu-GCmf1JLeBaSzuMoIEFuFSTMAWbyVbAMoW_AQjHPCqzqerbYo3qInGpp8z6iHjaqi1yOnqbAtZuy_aCSLjFdB0IniHHZZpRx9eqzgOMqsitySfa4yPxlpfQmvAoxL080wXSrmLJ2OQdPnHvUuZfteDovWAfKF4Xnf6DcrfrM0fiN6cyGC0DhKDk2qPyLeB8mSfa9yDrZXMhHpBSX-Tq9x85J0g',
+            variant: 'FOCUS'
+        },
+        'neon-violet': {
+            name: 'Neon Violet',
+            price: 899,
+            image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAu8aZSBZFbcNR03NQYA0Oh-kZVVpvL383075mdLY2Qi6rJHcQs1evssN8knNzL4J__BeDg2btgZUkpkvVwsj0ueu38qtl9t0hhyYsxh7Ag-2p4ZGt65WTbG42s2tsgyquZ51c2wQxWoMwRSfQcdlEk11gF4YqCVur2RltlRJz2mCbuWoaWTZ7vPpKbX5a_YsD2gc-rHW-D2V44SQvdGYuydGBqZ-zymktu5dM5sR9-7-szLx_Iw3Kb_r-wSl_mPPX6jcxg1XiS7Fk',
+            variant: 'SMART'
+        },
+        'bundle-full-gang': {
+            name: 'The Full Gang',
+            price: 1899,
+            image: 'bears.png',
+            variant: 'BUNDLE'
+        },
+        'bundle-night-shift': {
+            name: 'The Night Shift',
+            price: 1199,
+            image: 'mascot.png',
+            variant: 'BUNDLE'
+        },
+        'bundle-gut-feeling': {
+            name: 'The Gut Feeling',
+            price: 999,
+            image: 'logo.png',
+            variant: 'BUNDLE'
+        }
+    };
+
+    // Cart state loaded from localStorage
+    let cart = JSON.parse(localStorage.getItem('gummy_cart')) || [];
+
+    // Elements
+    const cartModal = document.getElementById('cart-modal');
+    const successModal = document.getElementById('success-modal');
+    const cartItemsContainer = document.getElementById('receipt-items');
+    const cartSubtotalEl = document.getElementById('receipt-subtotal');
+    const cartCountDesktop = document.getElementById('cart-count-desktop');
+    const cartCountMobile = document.getElementById('cart-count-mobile');
+    const receiptDateEl = document.getElementById('receipt-date');
+    const receiptContentEl = document.getElementById('receipt-modal-content');
+    const barcodeIdEl = document.getElementById('barcode-id');
+
+    // Utility: Format Date for Receipt
+    function getReceiptDate() {
+        const now = new Date();
+        const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+        const dayName = days[now.getDay()];
+        const dd = String(now.getDate()).padStart(2, '0');
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const yy = String(now.getFullYear()).slice(-2);
+        const hh = String(now.getHours()).padStart(2, '0');
+        const min = String(now.getMinutes()).padStart(2, '0');
+        return `${dayName} ${dd}/${mm}/${yy} ${hh}:${min}`;
+    }
+
+    // Utility: Jagged Receipt Clip-Path Generator
+    function generateReceiptClipPath(element) {
+        if (!element) return;
+        const width = element.offsetWidth;
+        const height = element.offsetHeight;
+        if (!width || !height) return;
+        
+        const triangleWidth = 10; // Width of each teeth base (px)
+        const triangleHeight = 6;  // Tooth depth (px)
+        const count = Math.ceil(width / triangleWidth);
+        const points = [];
+        
+        // Top edge: left to right (zig-zag teeth)
+        for (let i = 0; i <= count; i++) {
+            const x = (i / count) * 100;
+            const y = i % 2 === 0 ? 0 : (triangleHeight / height) * 100;
+            points.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);
+        }
+        
+        // Bottom edge: right to left (zig-zag teeth)
+        for (let i = count; i >= 0; i--) {
+            const x = (i / count) * 100;
+            const y = 100 - (i % 2 === 0 ? 0 : (triangleHeight / height) * 100);
+            points.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);
+        }
+        
+        element.style.clipPath = `polygon(${points.join(', ')})`;
+    }
+
+    // Sync Cart to UI & LocalStorage
+    function syncCart() {
+        localStorage.setItem('gummy_cart', JSON.stringify(cart));
+        
+        // Calculate totals
+        let totalCount = 0;
+        let subtotal = 0;
+        cart.forEach(item => {
+            totalCount += item.quantity;
+            subtotal += item.price * item.quantity;
+        });
+
+        // Update Nav badges
+        if (totalCount > 0) {
+            cartCountDesktop.innerText = totalCount;
+            cartCountDesktop.classList.remove('hidden');
+            cartCountMobile.innerText = totalCount;
+            cartCountMobile.classList.remove('hidden');
+        } else {
+            cartCountDesktop.classList.add('hidden');
+            cartCountMobile.classList.add('hidden');
+        }
+
+        // Update Subtotal
+        cartSubtotalEl.innerText = `₹${subtotal.toLocaleString('en-IN')}`;
+
+        // Render Items inside Receipt
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-12 text-center">
+                    <span class="material-symbols-outlined text-5xl text-black/30 mb-4 animate-bounce">shopping_basket</span>
+                    <p class="font-bold text-sm uppercase tracking-wider opacity-60">Your bag is empty, yar!</p>
+                    <p class="text-xs opacity-50 mt-1">Go grab some gummies to fix your life.</p>
+                </div>
+            `;
+        } else {
+            cartItemsContainer.innerHTML = cart.map(item => `
+                <div class="flex gap-4 items-start relative pb-4 border-b border-dashed border-black/20 text-left">
+                    <img src="${item.image}" class="w-16 h-16 object-cover border-2 border-black flex-shrink-0" alt="${item.name}" />
+                    <div class="flex-grow min-w-0">
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-bold text-sm uppercase tracking-tight truncate pr-4">${item.name}</h4>
+                            <button onclick="removeFromCart('${item.id}')" class="text-black/40 hover:text-black font-bold text-lg leading-none transition-colors">&times;</button>
+                        </div>
+                        <div class="text-[10px] opacity-60 uppercase mb-1 tracking-wider">${item.variant}</div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="font-black text-sm">₹${(item.price * item.quantity).toLocaleString('en-IN')}</span>
+                            <div class="flex border border-black text-xs font-bold bg-white select-none">
+                                <button onclick="changeQuantity('${item.id}', -1)" class="px-2 py-0.5 border-r border-black hover:bg-black/10 transition-colors">-</button>
+                                <span class="px-3 py-0.5">${item.quantity}</span>
+                                <button onclick="changeQuantity('${item.id}', 1)" class="px-2 py-0.5 border-l border-black hover:bg-black/10 transition-colors">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Trigger clip-path update
+        generateReceiptClipPath(receiptContentEl);
+    }
+
+    // Cart Operations
+    window.addToCart = function(productId) {
+        const productInfo = PRODUCTS[productId];
+        if (!productInfo) return;
+
+        const existingItem = cart.find(item => item.id === productId);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                id: productId,
+                name: productInfo.name,
+                price: productInfo.price,
+                image: productInfo.image,
+                variant: productInfo.variant,
+                quantity: 1
+            });
+        }
+        syncCart();
+        openCart();
+    };
+
+    window.changeQuantity = function(productId, delta) {
+        const item = cart.find(item => item.id === productId);
+        if (!item) return;
+
+        item.quantity += delta;
+        if (item.quantity <= 0) {
+            cart = cart.filter(item => item.id !== productId);
+        }
+        syncCart();
+    };
+
+    window.removeFromCart = function(productId) {
+        cart = cart.filter(item => item.id !== productId);
+        syncCart();
+    };
+
+    // Modal Control: Open/Close Cart
+    function openCart() {
+        receiptDateEl.innerText = getReceiptDate();
+        // Generate random barcode number on each open
+        const randomNum = Math.floor(1000 + Math.random() * 9000);
+        barcodeIdEl.innerText = `GUMMY-${randomNum}-2026`;
+        
+        cartModal.classList.add('modal-active');
+        document.body.classList.add('overflow-hidden'); // Disable background scrolling
+        setTimeout(() => generateReceiptClipPath(receiptContentEl), 50);
+    }
+
+    function closeCart() {
+        cartModal.classList.remove('modal-active');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    // Modal Control: Open/Close Success
+    function openSuccess() {
+        successModal.classList.add('modal-active');
+        document.body.classList.add('overflow-hidden');
+    }
+
+    function closeSuccess() {
+        successModal.classList.remove('modal-active');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    // Event Listeners Setup
+    document.addEventListener('DOMContentLoaded', () => {
+        // Init cart badges & list on load
+        syncCart();
+
+        // Register ResizeObserver for dynamic receipt tearing path
+        if (receiptContentEl) {
+            const resizeObserver = new ResizeObserver(() => {
+                generateReceiptClipPath(receiptContentEl);
+            });
+            resizeObserver.observe(receiptContentEl);
+        }
+
+        // Attach listeners to "Add to Cart" and Bundle buttons
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const productId = btn.getAttribute('data-product-id');
+                if (productId) {
+                    addToCart(productId);
+                }
+            });
+        });
+
+        // Cart Nav trigger buttons
+        const btnDesktop = document.getElementById('cart-btn-desktop');
+        const btnMobile = document.getElementById('cart-btn-mobile');
+        if (btnDesktop) btnDesktop.addEventListener('click', openCart);
+        if (btnMobile) btnMobile.addEventListener('click', openCart);
+
+        // Close triggers
+        const closeCartBtn = document.getElementById('close-cart-btn');
+        const cartBackdrop = document.getElementById('cart-backdrop');
+        if (closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
+        if (cartBackdrop) cartBackdrop.addEventListener('click', closeCart);
+
+        // Success Close triggers
+        const closeSuccessBtn = document.getElementById('close-success-btn');
+        const successBackdrop = document.getElementById('success-backdrop');
+        if (closeSuccessBtn) closeSuccessBtn.addEventListener('click', closeSuccess);
+        if (successBackdrop) successBackdrop.addEventListener('click', closeSuccess);
+
+        // Checkout Button Action
+        const checkoutBtn = document.getElementById('checkout-btn');
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', () => {
+                if (cart.length === 0) {
+                    alert("Your shopping bag is empty, babe! Grab some gummies first!");
+                    return;
+                }
+                // Process Checkout
+                closeCart();
+                setTimeout(() => {
+                    openSuccess();
+                    cart = [];
+                    syncCart();
+                }, 300);
+            });
+        }
     });
 </script>
 </body></html>
