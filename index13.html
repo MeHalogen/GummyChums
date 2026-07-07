@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GummyChums — Horizontal Odyssey</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Clash+Display:wght@600&display=swap" rel="stylesheet"/><style>@import url("https://api.fontshare.com/v2/css?f[]=clash-display@600&display=swap");</style>
+<script>
+  /* enable reveal-hiding only when JS is live; hard failsafe reveals all if init never runs */
+  (function(){var h=document.documentElement;h.classList.add('gcjs');
+    window.addEventListener('load',function(){setTimeout(function(){
+      if(!h.classList.contains('gcready')){document.querySelectorAll('.gc-reveal').forEach(function(e){e.classList.add('in');});}
+    },700);});})();
+</script>
+<style>
+
+    /* ---- shared bill/checkout support (identical across all designs) ---- */
+    .material-symbols-outlined { font-variation-settings:'FILL' 1,'wght' 700,'GRAD' 0,'opsz' 24; }
+    .neo-shadow    { box-shadow: 8px 8px 0 0 #261236; }
+    .neo-shadow-lg { box-shadow: 12px 12px 0 0 #261236; }
+    .neo-shadow-sm { box-shadow: 4px 4px 0 0 #261236; }
+    .jelly-pop { transition: transform .1s, box-shadow .1s; }
+    .jelly-pop:active { transform: scale(.95) translate(4px,4px); box-shadow: 2px 2px 0 0 #261236; }
+    .modal-active { opacity:1 !important; pointer-events:auto !important; }
+    .modal-active #receipt-wrapper, .modal-active #success-card { transform: scale(1) translateY(0) !important; }
+    .receipt-scrollbar::-webkit-scrollbar { width:4px; }
+    .receipt-scrollbar::-webkit-scrollbar-track { background:transparent; }
+    .receipt-scrollbar::-webkit-scrollbar-thumb { background:rgba(0,0,0,.2); border-radius:2px; }
+    .font-receipt { font-family:'Courier New', ui-monospace, monospace; }
+    /* shared scroll-reveal (progressive enhancement: hidden ONLY while JS runs,
+       so a cache/JS hiccup can never leave a page blank) */
+    .gc-reveal { }
+    html.gcjs .gc-reveal { opacity:0; transform: translateY(34px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+    html.gcjs .gc-reveal.in { opacity:1; transform:none; }
+    @media (prefers-reduced-motion: reduce){ html.gcjs .gc-reveal{opacity:1 !important;transform:none !important;} *{animation-duration:.001s!important;} }
+
+
+  .ho-disp{font-family:"Clash Display",Manrope,sans-serif;font-weight:600;}
+  .ho-mask{overflow:hidden;display:block;}
+  .ho-mask>span{display:block;transform:translateY(110%);transition:transform 1s cubic-bezier(.16,1,.3,1);}
+  .ho-in .ho-mask>span{transform:none;}
+  .ho-btn{transition:transform .12s,background .3s,color .3s;}.ho-btn:active{transform:scale(.95);}
+  .ho-hwrap{height:340vh;position:relative;}
+  .ho-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;}
+  .ho-track{display:flex;gap:32px;padding:0 6vw;will-change:transform;}
+  .ho-panel{flex:0 0 78vw;max-width:900px;height:74vh;border-radius:32px;overflow:hidden;display:flex;}
+  @media(min-width:768px){.ho-panel{flex-basis:56vw;}}
+  .ho-parx{will-change:transform;}
+  .ho-line{overflow:hidden;}
+  .ho-line>span{display:inline-block;transform:translateY(105%);transition:transform .9s cubic-bezier(.16,1,.3,1);}
+  .ho-line.show>span{transform:none;}
+  .ho-big{font-size:clamp(3rem,15vw,13rem);line-height:.85;}
+
+</style>
+</head>
+<body class="bg-[#f4f1ea] text-[#141414] font-[Manrope] overflow-x-hidden">
+
+<nav class="fixed top-0 inset-x-0 z-50 mix-blend-difference text-white px-5 md:px-10 py-4 flex items-center justify-between">
+  <div class="flex items-center gap-2 cursor-pointer" onclick="scrollTo({top:0,behavior:'smooth'})"><span class="ho-disp text-2xl">GummyChums</span></div>
+  <div class="hidden md:flex gap-8 font-bold text-sm uppercase tracking-wide"><a href="#odyssey">The Chums</a><a href="#manifesto">Ethos</a></div>
+  <button class="cart-trigger ho-btn relative font-bold text-sm uppercase tracking-wide">Bag <span class="cart-count hidden ml-1 bg-white text-black text-[11px] px-1.5 rounded-full">0</span></button>
+</nav>
+
+<header class="relative min-h-screen flex flex-col justify-center px-5 md:px-10 overflow-hidden">
+  <div class="ho-parx absolute right-[6vw] top-[16vh] w-52 h-52 md:w-80 md:h-80 rounded-full" data-speed="0.25" style="background:radial-gradient(circle,#1a43ff,#0a1f8f)"></div>
+  <div class="ho-parx absolute left-[10vw] bottom-[14vh] w-32 h-32 rounded-full" data-speed="-0.4" style="background:#ff5a3c"></div>
+  <div class="ho-parx absolute right-[24vw] bottom-[20vh] w-20 h-20 rounded-full" data-speed="0.6" style="background:#ffcf33"></div>
+  <div class="relative z-10 max-w-7xl mx-auto w-full">
+    <p class="ho-mask ho-disp uppercase tracking-[0.3em] text-sm mb-6"><span>Wellness · in motion</span></p>
+    <h1 class="ho-disp ho-big font-semibold"><span class="ho-mask"><span>Chew the</span></span><span class="ho-mask"><span class="text-[#1a43ff] italic">good stuff.</span></span></h1>
+    <div class="ho-mask mt-8"><span><p class="text-xl max-w-md text-black/70">Science-backed gummies for real Indian lives. Now scroll sideways →</p></span></div>
+    <div class="ho-mask mt-9"><span><a href="#odyssey" class="ho-btn inline-block bg-[#141414] text-white ho-disp px-8 py-4 rounded-full">Meet the Chums</a></span></div>
+  </div>
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs font-bold uppercase tracking-[0.3em] text-black/40">Scroll ↓</div>
+</header>
+
+<section id="odyssey" class="ho-hwrap">
+  <div class="ho-sticky">
+    <div class="ho-track" id="ho-track">
+      <div class="ho-panel" style="background:linear-gradient(135deg,#c9b6ff,#efe6ff)">
+        <div class="p-8 md:p-12 flex flex-col justify-between w-1/2"><div><span class="ho-disp text-sm uppercase tracking-widest text-[#6b2fb3]">01 · Sleep</span><h3 class="ho-disp text-4xl md:text-6xl mt-2">Dreamy Sleep</h3><p class="mt-4 text-black/70">Melatonin + Chamomile.</p></div><div class="flex items-center gap-5"><span class="ho-disp text-3xl">₹699</span><button class="add-to-cart-btn ho-btn bg-[#141414] text-white px-6 py-3 rounded-full font-bold" data-product-id="dreamy-sleep">Add</button></div></div>
+        <div class="w-1/2 grid place-items-center bg-white/40"><img src="mascot.png" class="w-3/4" style="filter:hue-rotate(230deg)"/></div>
+      </div>
+      <div class="ho-panel" style="background:linear-gradient(135deg,#a6e3ff,#e6f7ff)">
+        <div class="p-8 md:p-12 flex flex-col justify-between w-1/2"><div><span class="ho-disp text-sm uppercase tracking-widest text-[#1a6bb3]">02 · Focus</span><h3 class="ho-disp text-4xl md:text-6xl mt-2">Electric Blue</h3><p class="mt-4 text-black/70">Lutein for screen days.</p></div><div class="flex items-center gap-5"><span class="ho-disp text-3xl">₹749</span><button class="add-to-cart-btn ho-btn bg-[#141414] text-white px-6 py-3 rounded-full font-bold" data-product-id="electric-blue">Add</button></div></div>
+        <div class="w-1/2 grid place-items-center bg-white/40"><img src="mascot.png" class="w-3/4" style="filter:hue-rotate(150deg)"/></div>
+      </div>
+      <div class="ho-panel" style="background:linear-gradient(135deg,#ffb6e6,#ffe6f5)">
+        <div class="p-8 md:p-12 flex flex-col justify-between w-1/2"><div><span class="ho-disp text-sm uppercase tracking-widest text-[#b3197a]">03 · Calm</span><h3 class="ho-disp text-4xl md:text-6xl mt-2">Neon Violet</h3><p class="mt-4 text-black/70">Ashwagandha + Brahmi.</p></div><div class="flex items-center gap-5"><span class="ho-disp text-3xl">₹899</span><button class="add-to-cart-btn ho-btn bg-[#141414] text-white px-6 py-3 rounded-full font-bold" data-product-id="neon-violet">Add</button></div></div>
+        <div class="w-1/2 grid place-items-center bg-white/40"><img src="mascot.png" class="w-3/4" style="filter:hue-rotate(300deg)"/></div>
+      </div>
+      <div class="ho-panel bg-[#141414] text-white">
+        <div class="p-8 md:p-12 flex flex-col justify-center w-full text-center"><h3 class="ho-disp text-4xl md:text-6xl">The whole gang<br/>lives together.</h3><p class="mt-4 text-white/60">Bundle all three & save.</p><div class="flex items-center gap-5 justify-center mt-6"><span class="ho-disp text-3xl">₹1899</span><button class="add-to-cart-btn ho-btn bg-[#1a43ff] text-white px-6 py-3 rounded-full font-bold" data-product-id="bundle-full-gang">Add bundle</button></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="px-5 md:px-10 py-28 bg-[#1a43ff] text-white overflow-hidden">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 text-center">
+    <div><div class="ho-disp ho-big text-[6rem]" data-count="12" data-suffix="k">0</div><p class="uppercase tracking-widest font-bold mt-2">daily chums</p></div>
+    <div><div class="ho-disp ho-big text-[6rem]" data-count="6" data-suffix="">0</div><p class="uppercase tracking-widest font-bold mt-2">flavours</p></div>
+    <div><div class="ho-disp ho-big text-[6rem]" data-count="49" data-suffix="" data-div="10" data-fixed="1">0</div><p class="uppercase tracking-widest font-bold mt-2">avg rating ★</p></div>
+  </div>
+</section>
+
+<section id="manifesto" class="px-5 md:px-10 py-32 max-w-5xl mx-auto">
+  <div class="ho-disp text-3xl md:text-6xl leading-tight space-y-2">
+    <div class="ho-line"><span>Wellness shouldn't</span></div>
+    <div class="ho-line"><span>feel like a chore.</span></div>
+    <div class="ho-line"><span class="text-[#1a43ff]">It should feel</span></div>
+    <div class="ho-line"><span class="text-[#1a43ff] italic">like a treat.</span></div>
+  </div>
+</section>
+
+<footer class="bg-[#141414] text-white py-16 px-5 md:px-10 text-center">
+  <span class="ho-disp text-4xl">GummyChums</span>
+  <p class="text-white/50 mt-4 mb-6 uppercase tracking-widest text-sm">Made in India · In motion</p>
+  <div class="flex gap-6 justify-center font-bold uppercase text-sm"><a href="#">Instagram</a><a href="#">Privacy</a></div>
+</footer>
+
+
+<!-- ===================== SHARED BILL / CHECKOUT (unchanged from index.html) ===================== -->
+<div id="cart-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+  <div id="cart-backdrop" class="absolute inset-0 bg-[#261236]/80 backdrop-blur-sm cursor-pointer transition-opacity duration-300"></div>
+  <div id="receipt-wrapper" class="relative z-10 w-full max-w-[440px] transition-all duration-300 transform scale-90 translate-y-8 flex flex-col" style="filter: drop-shadow(8px 8px 0px #261236)">
+    <button id="close-cart-btn" class="absolute -top-3 -right-3 z-30 bg-white text-[#261236] p-2 border-4 border-[#261236] neo-shadow-sm hover:bg-[#b80865] hover:text-white transition-all font-bold flex items-center justify-center jelly-pop">
+      <span class="material-symbols-outlined text-2xl">close</span>
+    </button>
+    <div id="receipt-modal-content" class="bg-white text-black p-6 md:p-8 font-receipt select-none overflow-y-auto max-h-[85vh] flex flex-col border-x border-black/10">
+      <div class="text-center flex flex-col items-center mt-2 flex-shrink-0">
+        <div class="flex items-center justify-center border-4 border-black px-4 py-2 font-black text-2xl uppercase tracking-widest bg-black text-white mb-2 select-none">
+          <span class="material-symbols-outlined mr-2 scale-x-[-1] text-2xl">reply</span> GUMMYCHUMS
+        </div>
+        <div class="text-xs tracking-wider opacity-60">******************************************</div>
+        <div class="text-sm font-bold uppercase tracking-widest my-1">** SHOPPING BAG **</div>
+        <div id="receipt-date" class="text-xs font-semibold my-1 tracking-wider">MON 29/06/26 21:27</div>
+        <div class="text-xs tracking-wider opacity-60">******************************************</div>
+      </div>
+      <div id="receipt-items" class="flex-grow my-4 space-y-6 overflow-y-auto pr-1 receipt-scrollbar max-h-[40vh] min-h-[120px]"></div>
+      <div class="mt-auto pt-2 border-t border-dashed border-black/30 flex-shrink-0">
+        <div class="text-xs tracking-wider opacity-60 text-center">******************************************</div>
+        <div class="flex justify-between items-end my-3">
+          <span class="text-xs font-bold tracking-widest uppercase opacity-60">SUBTOTAL</span>
+          <span id="receipt-subtotal" class="text-2xl font-black tracking-tighter">₹0</span>
+        </div>
+        <div class="text-[10px] tracking-wider opacity-50 text-center uppercase mb-4">SHIPPING CALCULATED AT CHECKOUT</div>
+        <button id="checkout-btn" class="w-full bg-black text-white py-4 border-4 border-black hover:bg-white hover:text-black font-black text-xl uppercase tracking-wider transition-all select-none focus:outline-none mb-4 jelly-pop">CHECKOUT</button>
+        <div class="text-xs tracking-wider opacity-60 text-center">******************************************</div>
+        <div class="flex flex-col items-center justify-center my-3">
+          <div class="w-full px-4 mb-1"><svg class="w-full h-10" viewBox="0 0 100 40" preserveAspectRatio="none">
+<rect x="0" y="0" width="1.5" height="40" fill="black"/><rect x="3" y="0" width="1" height="40" fill="black"/><rect x="5" y="0" width="2" height="40" fill="black"/><rect x="8" y="0" width="1" height="40" fill="black"/><rect x="10" y="0" width="3" height="40" fill="black"/><rect x="15" y="0" width="1" height="40" fill="black"/><rect x="17" y="0" width="2.5" height="40" fill="black"/><rect x="21" y="0" width="1" height="40" fill="black"/><rect x="23" y="0" width="2" height="40" fill="black"/><rect x="26" y="0" width="1.5" height="40" fill="black"/><rect x="29" y="0" width="1" height="40" fill="black"/><rect x="31" y="0" width="3" height="40" fill="black"/><rect x="36" y="0" width="1" height="40" fill="black"/><rect x="38" y="0" width="2" height="40" fill="black"/><rect x="41" y="0" width="1" height="40" fill="black"/><rect x="43" y="0" width="2.5" height="40" fill="black"/><rect x="47" y="0" width="1" height="40" fill="black"/><rect x="49" y="0" width="1.5" height="40" fill="black"/><rect x="52" y="0" width="3" height="40" fill="black"/><rect x="56" y="0" width="1" height="40" fill="black"/><rect x="58" y="0" width="2" height="40" fill="black"/><rect x="61" y="0" width="1" height="40" fill="black"/><rect x="63" y="0" width="2.5" height="40" fill="black"/><rect x="67" y="0" width="1" height="40" fill="black"/><rect x="69" y="0" width="1.5" height="40" fill="black"/><rect x="72" y="0" width="3" height="40" fill="black"/><rect x="76" y="0" width="1" height="40" fill="black"/><rect x="78" y="0" width="2" height="40" fill="black"/><rect x="81" y="0" width="1" height="40" fill="black"/><rect x="83" y="0" width="2.5" height="40" fill="black"/><rect x="87" y="0" width="1" height="40" fill="black"/><rect x="89" y="0" width="1.5" height="40" fill="black"/><rect x="92" y="0" width="3" height="40" fill="black"/><rect x="96" y="0" width="1" height="40" fill="black"/><rect x="98" y="0" width="2" height="40" fill="black"/></svg></div>
+          <span id="barcode-id" class="text-[9px] tracking-[0.25em] font-bold text-black/60">GUMMY-8374-2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="success-modal" class="fixed inset-0 z-[110] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+  <div id="success-backdrop" class="absolute inset-0 bg-[#261236]/90 backdrop-blur-md cursor-pointer transition-opacity duration-300"></div>
+  <div id="success-card" class="relative z-10 w-full max-w-[400px] bg-[#fecf34] border-8 border-[#261236] p-8 text-center neo-shadow-lg transform scale-90 translate-y-8 transition-all duration-300">
+    <div class="w-20 h-20 bg-white border-4 border-[#261236] flex items-center justify-center mx-auto mb-6 neo-shadow-sm animate-bounce">
+      <span class="material-symbols-outlined text-5xl text-[#006d36]">check_circle</span>
+    </div>
+    <h3 class="text-3xl uppercase tracking-tighter mb-4 text-[#261236] font-black">Order Placed!</h3>
+    <p class="text-lg text-[#261236]/80 mb-8 font-bold">Your gummy order is locked in. Get ready to feel good.</p>
+    <button id="close-success-btn" class="w-full bg-[#b80865] text-white py-4 border-4 border-[#261236] neo-shadow jelly-pop font-black uppercase text-xl tracking-wider">Let's Go</button>
+  </div>
+</div>
+
+<script>
+
+// ===================== SHARED CHECKOUT LOGIC (from index.html) =====================
+const PRODUCTS = {
+  'dreamy-sleep':      { name:'Dreamy Sleep', price:699,  image:'mascot.png', variant:'LVL 99' },
+  'electric-blue':     { name:'Electric Blue', price:749, image:'mascot.png', variant:'FOCUS' },
+  'neon-violet':       { name:'Neon Violet', price:899,   image:'mascot.png', variant:'SMART' },
+  'bundle-full-gang':  { name:'The Full Gang', price:1899, image:'bears.png',  variant:'BUNDLE' },
+  'bundle-night-shift':{ name:'The Night Shift', price:1199, image:'mascot.png', variant:'BUNDLE' },
+  'bundle-gut-feeling':{ name:'The Gut Feeling', price:999,  image:'logo.png',  variant:'BUNDLE' }
+};
+let cart = JSON.parse(localStorage.getItem('gummy_cart')) || [];
+const cartModal = document.getElementById('cart-modal');
+const successModal = document.getElementById('success-modal');
+const cartItemsContainer = document.getElementById('receipt-items');
+const cartSubtotalEl = document.getElementById('receipt-subtotal');
+const receiptDateEl = document.getElementById('receipt-date');
+const receiptContentEl = document.getElementById('receipt-modal-content');
+const barcodeIdEl = document.getElementById('barcode-id');
+function getReceiptDate(){
+  const now=new Date();const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const p=n=>String(n).padStart(2,'0');
+  return `${days[now.getDay()]} ${p(now.getDate())}/${p(now.getMonth()+1)}/${String(now.getFullYear()).slice(-2)} ${p(now.getHours())}:${p(now.getMinutes())}`;
+}
+function generateReceiptClipPath(el){
+  if(!el)return;const w=el.offsetWidth,h=el.offsetHeight;if(!w||!h)return;
+  const tw=10,th=6,count=Math.ceil(w/tw),pts=[];
+  for(let i=0;i<=count;i++){const x=(i/count)*100;const y=i%2===0?0:(th/h)*100;pts.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);}
+  for(let i=count;i>=0;i--){const x=(i/count)*100;const y=100-(i%2===0?0:(th/h)*100);pts.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);}
+  el.style.clipPath=`polygon(${pts.join(', ')})`;
+}
+function syncCart(){
+  localStorage.setItem('gummy_cart',JSON.stringify(cart));
+  let totalCount=0,subtotal=0;
+  cart.forEach(i=>{totalCount+=i.quantity;subtotal+=i.price*i.quantity;});
+  document.querySelectorAll('.cart-count').forEach(el=>{
+    if(totalCount>0){el.innerText=totalCount;el.classList.remove('hidden');}else{el.classList.add('hidden');}
+  });
+  cartSubtotalEl.innerText=`₹${subtotal.toLocaleString('en-IN')}`;
+  if(cart.length===0){
+    cartItemsContainer.innerHTML=`<div class="flex flex-col items-center justify-center py-12 text-center"><span class="material-symbols-outlined text-5xl text-black/30 mb-4 animate-bounce">shopping_basket</span><p class="font-bold text-sm uppercase tracking-wider opacity-60">Your bag is empty!</p><p class="text-xs opacity-50 mt-1">Go grab some gummies.</p></div>`;
+  }else{
+    cartItemsContainer.innerHTML=cart.map(item=>`
+      <div class="flex gap-4 items-start relative pb-4 border-b border-dashed border-black/20 text-left">
+        <img src="${item.image}" class="w-16 h-16 object-cover border-2 border-black flex-shrink-0" alt="${item.name}"/>
+        <div class="flex-grow min-w-0">
+          <div class="flex justify-between items-start">
+            <h4 class="font-bold text-sm uppercase tracking-tight truncate pr-4">${item.name}</h4>
+            <button onclick="removeFromCart('${item.id}')" class="text-black/40 hover:text-black font-bold text-lg leading-none transition-colors">&times;</button>
+          </div>
+          <div class="text-[10px] opacity-60 uppercase mb-1 tracking-wider">${item.variant}</div>
+          <div class="flex justify-between items-center mt-2">
+            <span class="font-black text-sm">₹${(item.price*item.quantity).toLocaleString('en-IN')}</span>
+            <div class="flex border border-black text-xs font-bold bg-white select-none">
+              <button onclick="changeQuantity('${item.id}',-1)" class="px-2 py-0.5 border-r border-black hover:bg-black/10 transition-colors">-</button>
+              <span class="px-3 py-0.5">${item.quantity}</span>
+              <button onclick="changeQuantity('${item.id}',1)" class="px-2 py-0.5 border-l border-black hover:bg-black/10 transition-colors">+</button>
+            </div>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+  generateReceiptClipPath(receiptContentEl);
+}
+window.addToCart=function(id){
+  const info=PRODUCTS[id];if(!info)return;
+  const ex=cart.find(i=>i.id===id);
+  if(ex){ex.quantity+=1;}else{cart.push({id,name:info.name,price:info.price,image:info.image,variant:info.variant,quantity:1});}
+  syncCart();openCart();
+};
+window.changeQuantity=function(id,d){
+  const it=cart.find(i=>i.id===id);if(!it)return;it.quantity+=d;
+  if(it.quantity<=0)cart=cart.filter(i=>i.id!==id);syncCart();
+};
+window.removeFromCart=function(id){cart=cart.filter(i=>i.id!==id);syncCart();};
+function openCart(){
+  receiptDateEl.innerText=getReceiptDate();
+  barcodeIdEl.innerText=`GUMMY-${Math.floor(1000+Math.random()*9000)}-2026`;
+  cartModal.classList.add('modal-active');document.body.classList.add('overflow-hidden');
+  setTimeout(()=>generateReceiptClipPath(receiptContentEl),50);
+}
+function closeCart(){cartModal.classList.remove('modal-active');document.body.classList.remove('overflow-hidden');}
+function openSuccess(){successModal.classList.add('modal-active');document.body.classList.add('overflow-hidden');}
+function closeSuccess(){successModal.classList.remove('modal-active');document.body.classList.remove('overflow-hidden');}
+document.addEventListener('DOMContentLoaded',()=>{
+  syncCart();
+  if(receiptContentEl){new ResizeObserver(()=>generateReceiptClipPath(receiptContentEl)).observe(receiptContentEl);}
+  document.querySelectorAll('.add-to-cart-btn').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const id=btn.getAttribute('data-product-id');if(id)addToCart(id);}));
+  document.querySelectorAll('.cart-trigger').forEach(b=>b.addEventListener('click',openCart));
+  const a=document.getElementById('close-cart-btn'),b=document.getElementById('cart-backdrop');
+  if(a)a.addEventListener('click',closeCart);if(b)b.addEventListener('click',closeCart);
+  const c=document.getElementById('close-success-btn'),d=document.getElementById('success-backdrop');
+  if(c)c.addEventListener('click',closeSuccess);if(d)d.addEventListener('click',closeSuccess);
+  const ck=document.getElementById('checkout-btn');
+  if(ck)ck.addEventListener('click',()=>{if(cart.length===0){alert('Your bag is empty!');return;}closeCart();setTimeout(()=>{openSuccess();cart=[];syncCart();},300);});
+  document.documentElement.classList.add('gcready');
+  const revealEls=document.querySelectorAll('.gc-reveal');
+  // threshold:0 so tall (taller-than-viewport) hero blocks reveal on ANY intersection
+  const io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}})},{threshold:0,rootMargin:'0px 0px -8% 0px'});
+  revealEls.forEach(el=>io.observe(el));
+  // failsafe: anything at/above the fold reveals immediately; nothing can stay blank
+  const revealInView=()=>revealEls.forEach(el=>{if(el.getBoundingClientRect().top < innerHeight*1.05) el.classList.add('in');});
+  revealInView();
+  requestAnimationFrame(revealInView);
+  window.addEventListener('load',revealInView);
+});
+
+
+(function(){
+  const track=document.getElementById('ho-track');
+  const wrap=document.querySelector('.ho-hwrap');
+  const parx=document.querySelectorAll('.ho-parx');
+  const counters=document.querySelectorAll('[data-count]');
+  let counted=false;
+  function frame(){
+    const y=scrollY;
+    parx.forEach(el=>{el.style.transform='translateY('+(y*(+el.dataset.speed))+'px)';});
+    if(wrap&&track){const r=wrap.getBoundingClientRect();const total=wrap.offsetHeight-innerHeight;const p=Math.min(Math.max(-r.top/total,0),1);const dist=track.scrollWidth-innerWidth;track.style.transform='translateX('+(-p*dist)+'px)';}
+    if(!counted&&counters.length){const r=counters[0].getBoundingClientRect();if(r.top<innerHeight*0.85){counted=true;counters.forEach(el=>{const to=+el.dataset.count,suf=el.dataset.suffix||'',dv=+(el.dataset.div||1),fx=+(el.dataset.fixed||0);const t0=performance.now();(function tick(n){const p=Math.min((n-t0)/1200,1);const v=to*p/dv;el.textContent=(fx?v.toFixed(1):Math.round(v))+(p===1?suf:'');if(p<1)requestAnimationFrame(tick);})(t0);});}}
+  }
+  let t=false;addEventListener('scroll',()=>{if(!t){requestAnimationFrame(()=>{frame();t=false});t=true}},{passive:true});addEventListener('resize',frame);frame();
+  // hero masks in
+  requestAnimationFrame(()=>document.querySelector('header').classList.add('ho-in'));
+  // line reveals
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}}),{threshold:.3});
+  document.querySelectorAll('.ho-line').forEach((el,i)=>{el.querySelector('span').style.transitionDelay=(i*0.08)+'s';io.observe(el);});
+})();
+
+</script>
+</body>
+</html>

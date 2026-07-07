@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GummyChums — Liquid Morph</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet"/>
+<script>
+  /* enable reveal-hiding only when JS is live; hard failsafe reveals all if init never runs */
+  (function(){var h=document.documentElement;h.classList.add('gcjs');
+    window.addEventListener('load',function(){setTimeout(function(){
+      if(!h.classList.contains('gcready')){document.querySelectorAll('.gc-reveal').forEach(function(e){e.classList.add('in');});}
+    },700);});})();
+</script>
+<style>
+
+    /* ---- shared bill/checkout support (identical across all designs) ---- */
+    .material-symbols-outlined { font-variation-settings:'FILL' 1,'wght' 700,'GRAD' 0,'opsz' 24; }
+    .neo-shadow    { box-shadow: 8px 8px 0 0 #261236; }
+    .neo-shadow-lg { box-shadow: 12px 12px 0 0 #261236; }
+    .neo-shadow-sm { box-shadow: 4px 4px 0 0 #261236; }
+    .jelly-pop { transition: transform .1s, box-shadow .1s; }
+    .jelly-pop:active { transform: scale(.95) translate(4px,4px); box-shadow: 2px 2px 0 0 #261236; }
+    .modal-active { opacity:1 !important; pointer-events:auto !important; }
+    .modal-active #receipt-wrapper, .modal-active #success-card { transform: scale(1) translateY(0) !important; }
+    .receipt-scrollbar::-webkit-scrollbar { width:4px; }
+    .receipt-scrollbar::-webkit-scrollbar-track { background:transparent; }
+    .receipt-scrollbar::-webkit-scrollbar-thumb { background:rgba(0,0,0,.2); border-radius:2px; }
+    .font-receipt { font-family:'Courier New', ui-monospace, monospace; }
+    /* shared scroll-reveal (progressive enhancement: hidden ONLY while JS runs,
+       so a cache/JS hiccup can never leave a page blank) */
+    .gc-reveal { }
+    html.gcjs .gc-reveal { opacity:0; transform: translateY(34px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+    html.gcjs .gc-reveal.in { opacity:1; transform:none; }
+    @media (prefers-reduced-motion: reduce){ html.gcjs .gc-reveal{opacity:1 !important;transform:none !important;} *{animation-duration:.001s!important;} }
+
+
+  .lm-head{font-family:'Syne',sans-serif;}
+  #lm-prog{position:fixed;left:0;top:0;height:5px;width:100%;transform-origin:left;transform:scaleX(0);z-index:60;background:linear-gradient(90deg,#ff2d87,#ff7a1a,#b6ff3d,#6b2fb3);}
+  .lm-grad{background:linear-gradient(115deg,#6b2fb3,#ff2d87,#ff7a1a,#6b2fb3);background-size:300% 300%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:lm-flow 8s ease infinite;}
+  @keyframes lm-flow{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+  @keyframes lm-morph{0%,100%{border-radius:42% 58% 63% 37%/45% 40% 60% 55%;transform:rotate(0deg)}33%{border-radius:66% 34% 40% 60%/58% 62% 38% 42%;transform:rotate(120deg)}66%{border-radius:38% 62% 55% 45%/40% 55% 45% 60%;transform:rotate(240deg)}}
+  .lm-blob{animation:lm-morph 14s ease-in-out infinite;}
+  @keyframes lm-float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-26px) rotate(2deg)}}
+  .lm-float{animation:lm-float 6s ease-in-out infinite;}
+  .lm-goo{filter:url(#goo);}
+  .lm-gooblob{position:absolute;border-radius:50%;animation:lm-drift 9s ease-in-out infinite;}
+  @keyframes lm-drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-20px) scale(1.25)}}
+  .lm-btn{position:relative;transition:transform .12s;will-change:transform;}
+  .lm-btn:active{transform:scale(.94)!important;}
+  .lm-reveal{clip-path:circle(0% at 50% 60%);will-change:clip-path;}
+  .lm-stack{position:sticky;}
+  #lm-cursor{position:fixed;width:34px;height:34px;left:0;top:0;pointer-events:none;z-index:70;background:#ff2d87;mix-blend-mode:multiply;border-radius:42% 58% 63% 37%/45% 40% 60% 55%;transform:translate(-50%,-50%);transition:width .25s,height .25s,background .25s;animation:lm-morph 6s ease-in-out infinite;opacity:0;}
+  @media (hover:hover) and (pointer:fine){#lm-cursor.on{opacity:.85;}}
+  .lm-word{display:inline-block;}
+
+</style>
+</head>
+<body class="bg-[#fdf6ee] text-[#1a1030] font-[Space_Grotesk] overflow-x-hidden">
+
+<div id="lm-prog"></div>
+<div id="lm-cursor"></div>
+<svg width="0" height="0" style="position:absolute"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b"/><feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9" result="g"/><feBlend in="SourceGraphic" in2="g"/></filter></defs></svg>
+
+<nav class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-[#fdf6ee]/70 px-5 md:px-10 py-3 flex items-center justify-between border-b border-black/5">
+  <div class="flex items-center gap-2 cursor-pointer" onclick="scrollTo({top:0,behavior:'smooth'})"><img src="logo.png" class="h-9 lm-float"/><span class="lm-head text-xl">GummyChums</span></div>
+  <div class="hidden md:flex gap-7 font-medium text-sm"><a href="#shop" class="hover:text-[#ff2d87] transition-colors">Shop</a><a href="#lab" class="hover:text-[#ff2d87] transition-colors">The Lab</a></div>
+  <div class="flex items-center gap-3">
+    <button class="cart-trigger lm-btn relative bg-white shadow-md rounded-full p-2.5"><span class="material-symbols-outlined align-middle text-[#6b2fb3]">shopping_bag</span><span class="cart-count hidden absolute -top-1 -right-1 bg-[#ff2d87] text-white text-xs font-bold w-5 h-5 grid place-items-center rounded-full">0</span></button>
+    <a href="#shop" class="hidden sm:block lm-btn bg-[#1a1030] text-[#fdf6ee] font-bold px-5 py-2.5 rounded-full">Shop</a>
+  </div>
+</nav>
+
+<header class="relative min-h-[100vh] flex items-center overflow-hidden px-5 md:px-10">
+  <div class="absolute lm-blob w-[70vw] h-[70vw] max-w-[820px] max-h-[820px] -right-[15vw] top-1/2 -translate-y-1/2 opacity-90" style="background:radial-gradient(circle at 30% 30%,#ff2d87,#6b2fb3 70%)"></div>
+  <div class="absolute lm-blob w-[40vw] h-[40vw] max-w-[420px] max-h-[420px] -left-[8vw] -bottom-[10vw] opacity-70" style="background:radial-gradient(circle at 40% 40%,#b6ff3d,#ff7a1a);animation-duration:11s"></div>
+  <div class="relative z-10 max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-8 items-center pt-24">
+    <div>
+      <p data-hero class="lm-head uppercase tracking-[0.3em] text-sm text-[#6b2fb3] mb-5">India's wellness, reimagined</p>
+      <h1 class="lm-head text-[19vw] md:text-[10rem] leading-[.82] font-extrabold"><span data-hero class="block lm-grad">GUMMY</span><span data-hero class="block text-[#1a1030]">CHUMS</span></h1>
+      <p data-hero class="text-xl mt-7 max-w-md text-[#1a1030]/70">Supplements that behave like candy and perform like science. Scroll — it gets good.</p>
+      <div data-hero class="flex gap-4 mt-9"><a href="#shop" class="lm-btn bg-[#ff2d87] text-white lm-head px-8 py-4 rounded-full shadow-xl">Taste the drop</a><a href="#lab" class="lm-btn border-2 border-[#1a1030] lm-head px-8 py-4 rounded-full">The science</a></div>
+    </div>
+    <div class="relative flex justify-center"><img id="lm-mascot" src="mascot.png" class="w-[70%] max-w-sm lm-float rounded-[3rem] shadow-2xl"/></div>
+  </div>
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-sm font-bold tracking-widest uppercase text-[#1a1030]/50 animate-bounce">Scroll ↓</div>
+</header>
+
+<section class="lm-reveal relative bg-[#1a1030] text-[#fdf6ee] py-32 md:py-48 px-5 md:px-10 overflow-hidden">
+  <div class="max-w-5xl mx-auto text-center">
+    <p class="lm-head uppercase tracking-[0.3em] text-[#b6ff3d] mb-6">The whole point</p>
+    <h2 class="lm-head text-4xl md:text-7xl font-extrabold leading-[1.05]">Wellness should feel like the <span class="lm-grad">best part</span> of your day — never a task.</h2>
+  </div>
+</section>
+
+<section id="shop" class="relative px-5 md:px-10 py-24">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="lm-head text-5xl md:text-7xl font-extrabold mb-4">The line-up</h2>
+    <p class="text-lg text-[#1a1030]/60 mb-4">Cards stack as you scroll. Tap add — the receipt prints.</p>
+  </div>
+  <div class="max-w-4xl mx-auto mt-10 space-y-8">
+    <article class="lm-stack top-24 rounded-[2.5rem] p-8 md:p-12 shadow-2xl grid md:grid-cols-2 gap-8 items-center" style="background:linear-gradient(135deg,#c9b6ff,#efe6ff)">
+      <div class="bg-white/60 rounded-3xl p-8"><img src="mascot.png" class="w-full h-56 object-contain lm-float" style="filter:hue-rotate(230deg)"/></div>
+      <div><span class="lm-head text-sm uppercase tracking-widest text-[#6b2fb3]">Sleep</span><h3 class="lm-head text-4xl font-extrabold mt-1">Dreamy Sleep</h3><p class="my-4 text-[#1a1030]/70">Melatonin + Chamomile. Melt into the night.</p><div class="flex items-center gap-5"><span class="lm-head text-3xl">₹699</span><button class="add-to-cart-btn lm-btn bg-[#1a1030] text-white px-6 py-3 rounded-full lm-head" data-product-id="dreamy-sleep">Add to bag</button></div></div>
+    </article>
+    <article class="lm-stack top-28 rounded-[2.5rem] p-8 md:p-12 shadow-2xl grid md:grid-cols-2 gap-8 items-center" style="background:linear-gradient(135deg,#a6e3ff,#e6f7ff)">
+      <div class="bg-white/60 rounded-3xl p-8"><img src="mascot.png" class="w-full h-56 object-contain lm-float" style="filter:hue-rotate(150deg)"/></div>
+      <div><span class="lm-head text-sm uppercase tracking-widest text-[#1a6bb3]">Focus</span><h3 class="lm-head text-4xl font-extrabold mt-1">Electric Blue</h3><p class="my-4 text-[#1a1030]/70">Lutein for eyes glued to screens.</p><div class="flex items-center gap-5"><span class="lm-head text-3xl">₹749</span><button class="add-to-cart-btn lm-btn bg-[#1a1030] text-white px-6 py-3 rounded-full lm-head" data-product-id="electric-blue">Add to bag</button></div></div>
+    </article>
+    <article class="lm-stack top-32 rounded-[2.5rem] p-8 md:p-12 shadow-2xl grid md:grid-cols-2 gap-8 items-center" style="background:linear-gradient(135deg,#ffb6e6,#ffe6f5)">
+      <div class="bg-white/60 rounded-3xl p-8"><img src="mascot.png" class="w-full h-56 object-contain lm-float" style="filter:hue-rotate(300deg)"/></div>
+      <div><span class="lm-head text-sm uppercase tracking-widest text-[#b3197a]">Calm</span><h3 class="lm-head text-4xl font-extrabold mt-1">Neon Violet</h3><p class="my-4 text-[#1a1030]/70">Ashwagandha + Brahmi. Quiet the noise.</p><div class="flex items-center gap-5"><span class="lm-head text-3xl">₹899</span><button class="add-to-cart-btn lm-btn bg-[#1a1030] text-white px-6 py-3 rounded-full lm-head" data-product-id="neon-violet">Add to bag</button></div></div>
+    </article>
+  </div>
+</section>
+
+<section id="lab" class="relative px-5 md:px-10 py-28 overflow-hidden bg-[#fdf6ee]">
+  <div class="lm-goo absolute inset-0 pointer-events-none opacity-70">
+    <span class="lm-gooblob w-40 h-40" style="background:#ff2d87;left:12%;top:20%"></span>
+    <span class="lm-gooblob w-52 h-52" style="background:#6b2fb3;left:22%;top:30%;animation-delay:1s"></span>
+    <span class="lm-gooblob w-32 h-32" style="background:#ff7a1a;right:16%;top:24%;animation-delay:2s"></span>
+    <span class="lm-gooblob w-44 h-44" style="background:#b6ff3d;right:26%;top:34%;animation-delay:.5s"></span>
+  </div>
+  <div class="relative z-10 max-w-5xl mx-auto text-center">
+    <h2 class="lm-head text-5xl md:text-7xl font-extrabold mb-14">Fun outside.<br/>Rigorous inside.</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white/80 backdrop-blur rounded-3xl p-8 shadow-xl"><div class="lm-head text-6xl lm-grad" data-count="12" data-suffix="k">0</div><p class="mt-2 font-bold">daily chums</p></div>
+      <div class="bg-white/80 backdrop-blur rounded-3xl p-8 shadow-xl"><div class="lm-head text-6xl lm-grad" data-count="100" data-suffix="%">0</div><p class="mt-2 font-bold">vegetarian</p></div>
+      <div class="bg-white/80 backdrop-blur rounded-3xl p-8 shadow-xl"><div class="lm-head text-6xl lm-grad" data-count="0" data-suffix="">0</div><p class="mt-2 font-bold">artificial colours</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-[#1a1030] text-[#fdf6ee] py-16 px-5 md:px-10 text-center">
+  <img src="logo.png" class="h-14 mx-auto mb-5 invert lm-float"/>
+  <h2 class="lm-head text-4xl font-extrabold lm-grad mb-3">Stay liquid, stay well</h2>
+  <p class="text-[#fdf6ee]/50 mb-6">Made in India · FSSAI certified</p>
+  <div class="flex gap-6 justify-center font-bold"><a href="#" class="hover:text-[#ff2d87]">Instagram</a><a href="#" class="hover:text-[#ff2d87]">Privacy</a></div>
+</footer>
+
+
+<!-- ===================== SHARED BILL / CHECKOUT (unchanged from index.html) ===================== -->
+<div id="cart-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+  <div id="cart-backdrop" class="absolute inset-0 bg-[#261236]/80 backdrop-blur-sm cursor-pointer transition-opacity duration-300"></div>
+  <div id="receipt-wrapper" class="relative z-10 w-full max-w-[440px] transition-all duration-300 transform scale-90 translate-y-8 flex flex-col" style="filter: drop-shadow(8px 8px 0px #261236)">
+    <button id="close-cart-btn" class="absolute -top-3 -right-3 z-30 bg-white text-[#261236] p-2 border-4 border-[#261236] neo-shadow-sm hover:bg-[#b80865] hover:text-white transition-all font-bold flex items-center justify-center jelly-pop">
+      <span class="material-symbols-outlined text-2xl">close</span>
+    </button>
+    <div id="receipt-modal-content" class="bg-white text-black p-6 md:p-8 font-receipt select-none overflow-y-auto max-h-[85vh] flex flex-col border-x border-black/10">
+      <div class="text-center flex flex-col items-center mt-2 flex-shrink-0">
+        <div class="flex items-center justify-center border-4 border-black px-4 py-2 font-black text-2xl uppercase tracking-widest bg-black text-white mb-2 select-none">
+          <span class="material-symbols-outlined mr-2 scale-x-[-1] text-2xl">reply</span> GUMMYCHUMS
+        </div>
+        <div class="text-xs tracking-wider opacity-60">******************************************</div>
+        <div class="text-sm font-bold uppercase tracking-widest my-1">** SHOPPING BAG **</div>
+        <div id="receipt-date" class="text-xs font-semibold my-1 tracking-wider">MON 29/06/26 21:27</div>
+        <div class="text-xs tracking-wider opacity-60">******************************************</div>
+      </div>
+      <div id="receipt-items" class="flex-grow my-4 space-y-6 overflow-y-auto pr-1 receipt-scrollbar max-h-[40vh] min-h-[120px]"></div>
+      <div class="mt-auto pt-2 border-t border-dashed border-black/30 flex-shrink-0">
+        <div class="text-xs tracking-wider opacity-60 text-center">******************************************</div>
+        <div class="flex justify-between items-end my-3">
+          <span class="text-xs font-bold tracking-widest uppercase opacity-60">SUBTOTAL</span>
+          <span id="receipt-subtotal" class="text-2xl font-black tracking-tighter">₹0</span>
+        </div>
+        <div class="text-[10px] tracking-wider opacity-50 text-center uppercase mb-4">SHIPPING CALCULATED AT CHECKOUT</div>
+        <button id="checkout-btn" class="w-full bg-black text-white py-4 border-4 border-black hover:bg-white hover:text-black font-black text-xl uppercase tracking-wider transition-all select-none focus:outline-none mb-4 jelly-pop">CHECKOUT</button>
+        <div class="text-xs tracking-wider opacity-60 text-center">******************************************</div>
+        <div class="flex flex-col items-center justify-center my-3">
+          <div class="w-full px-4 mb-1"><svg class="w-full h-10" viewBox="0 0 100 40" preserveAspectRatio="none">
+<rect x="0" y="0" width="1.5" height="40" fill="black"/><rect x="3" y="0" width="1" height="40" fill="black"/><rect x="5" y="0" width="2" height="40" fill="black"/><rect x="8" y="0" width="1" height="40" fill="black"/><rect x="10" y="0" width="3" height="40" fill="black"/><rect x="15" y="0" width="1" height="40" fill="black"/><rect x="17" y="0" width="2.5" height="40" fill="black"/><rect x="21" y="0" width="1" height="40" fill="black"/><rect x="23" y="0" width="2" height="40" fill="black"/><rect x="26" y="0" width="1.5" height="40" fill="black"/><rect x="29" y="0" width="1" height="40" fill="black"/><rect x="31" y="0" width="3" height="40" fill="black"/><rect x="36" y="0" width="1" height="40" fill="black"/><rect x="38" y="0" width="2" height="40" fill="black"/><rect x="41" y="0" width="1" height="40" fill="black"/><rect x="43" y="0" width="2.5" height="40" fill="black"/><rect x="47" y="0" width="1" height="40" fill="black"/><rect x="49" y="0" width="1.5" height="40" fill="black"/><rect x="52" y="0" width="3" height="40" fill="black"/><rect x="56" y="0" width="1" height="40" fill="black"/><rect x="58" y="0" width="2" height="40" fill="black"/><rect x="61" y="0" width="1" height="40" fill="black"/><rect x="63" y="0" width="2.5" height="40" fill="black"/><rect x="67" y="0" width="1" height="40" fill="black"/><rect x="69" y="0" width="1.5" height="40" fill="black"/><rect x="72" y="0" width="3" height="40" fill="black"/><rect x="76" y="0" width="1" height="40" fill="black"/><rect x="78" y="0" width="2" height="40" fill="black"/><rect x="81" y="0" width="1" height="40" fill="black"/><rect x="83" y="0" width="2.5" height="40" fill="black"/><rect x="87" y="0" width="1" height="40" fill="black"/><rect x="89" y="0" width="1.5" height="40" fill="black"/><rect x="92" y="0" width="3" height="40" fill="black"/><rect x="96" y="0" width="1" height="40" fill="black"/><rect x="98" y="0" width="2" height="40" fill="black"/></svg></div>
+          <span id="barcode-id" class="text-[9px] tracking-[0.25em] font-bold text-black/60">GUMMY-8374-2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="success-modal" class="fixed inset-0 z-[110] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+  <div id="success-backdrop" class="absolute inset-0 bg-[#261236]/90 backdrop-blur-md cursor-pointer transition-opacity duration-300"></div>
+  <div id="success-card" class="relative z-10 w-full max-w-[400px] bg-[#fecf34] border-8 border-[#261236] p-8 text-center neo-shadow-lg transform scale-90 translate-y-8 transition-all duration-300">
+    <div class="w-20 h-20 bg-white border-4 border-[#261236] flex items-center justify-center mx-auto mb-6 neo-shadow-sm animate-bounce">
+      <span class="material-symbols-outlined text-5xl text-[#006d36]">check_circle</span>
+    </div>
+    <h3 class="text-3xl uppercase tracking-tighter mb-4 text-[#261236] font-black">Order Placed!</h3>
+    <p class="text-lg text-[#261236]/80 mb-8 font-bold">Your gummy order is locked in. Get ready to feel good.</p>
+    <button id="close-success-btn" class="w-full bg-[#b80865] text-white py-4 border-4 border-[#261236] neo-shadow jelly-pop font-black uppercase text-xl tracking-wider">Let's Go</button>
+  </div>
+</div>
+
+<script>
+
+// ===================== SHARED CHECKOUT LOGIC (from index.html) =====================
+const PRODUCTS = {
+  'dreamy-sleep':      { name:'Dreamy Sleep', price:699,  image:'mascot.png', variant:'LVL 99' },
+  'electric-blue':     { name:'Electric Blue', price:749, image:'mascot.png', variant:'FOCUS' },
+  'neon-violet':       { name:'Neon Violet', price:899,   image:'mascot.png', variant:'SMART' },
+  'bundle-full-gang':  { name:'The Full Gang', price:1899, image:'bears.png',  variant:'BUNDLE' },
+  'bundle-night-shift':{ name:'The Night Shift', price:1199, image:'mascot.png', variant:'BUNDLE' },
+  'bundle-gut-feeling':{ name:'The Gut Feeling', price:999,  image:'logo.png',  variant:'BUNDLE' }
+};
+let cart = JSON.parse(localStorage.getItem('gummy_cart')) || [];
+const cartModal = document.getElementById('cart-modal');
+const successModal = document.getElementById('success-modal');
+const cartItemsContainer = document.getElementById('receipt-items');
+const cartSubtotalEl = document.getElementById('receipt-subtotal');
+const receiptDateEl = document.getElementById('receipt-date');
+const receiptContentEl = document.getElementById('receipt-modal-content');
+const barcodeIdEl = document.getElementById('barcode-id');
+function getReceiptDate(){
+  const now=new Date();const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const p=n=>String(n).padStart(2,'0');
+  return `${days[now.getDay()]} ${p(now.getDate())}/${p(now.getMonth()+1)}/${String(now.getFullYear()).slice(-2)} ${p(now.getHours())}:${p(now.getMinutes())}`;
+}
+function generateReceiptClipPath(el){
+  if(!el)return;const w=el.offsetWidth,h=el.offsetHeight;if(!w||!h)return;
+  const tw=10,th=6,count=Math.ceil(w/tw),pts=[];
+  for(let i=0;i<=count;i++){const x=(i/count)*100;const y=i%2===0?0:(th/h)*100;pts.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);}
+  for(let i=count;i>=0;i--){const x=(i/count)*100;const y=100-(i%2===0?0:(th/h)*100);pts.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);}
+  el.style.clipPath=`polygon(${pts.join(', ')})`;
+}
+function syncCart(){
+  localStorage.setItem('gummy_cart',JSON.stringify(cart));
+  let totalCount=0,subtotal=0;
+  cart.forEach(i=>{totalCount+=i.quantity;subtotal+=i.price*i.quantity;});
+  document.querySelectorAll('.cart-count').forEach(el=>{
+    if(totalCount>0){el.innerText=totalCount;el.classList.remove('hidden');}else{el.classList.add('hidden');}
+  });
+  cartSubtotalEl.innerText=`₹${subtotal.toLocaleString('en-IN')}`;
+  if(cart.length===0){
+    cartItemsContainer.innerHTML=`<div class="flex flex-col items-center justify-center py-12 text-center"><span class="material-symbols-outlined text-5xl text-black/30 mb-4 animate-bounce">shopping_basket</span><p class="font-bold text-sm uppercase tracking-wider opacity-60">Your bag is empty!</p><p class="text-xs opacity-50 mt-1">Go grab some gummies.</p></div>`;
+  }else{
+    cartItemsContainer.innerHTML=cart.map(item=>`
+      <div class="flex gap-4 items-start relative pb-4 border-b border-dashed border-black/20 text-left">
+        <img src="${item.image}" class="w-16 h-16 object-cover border-2 border-black flex-shrink-0" alt="${item.name}"/>
+        <div class="flex-grow min-w-0">
+          <div class="flex justify-between items-start">
+            <h4 class="font-bold text-sm uppercase tracking-tight truncate pr-4">${item.name}</h4>
+            <button onclick="removeFromCart('${item.id}')" class="text-black/40 hover:text-black font-bold text-lg leading-none transition-colors">&times;</button>
+          </div>
+          <div class="text-[10px] opacity-60 uppercase mb-1 tracking-wider">${item.variant}</div>
+          <div class="flex justify-between items-center mt-2">
+            <span class="font-black text-sm">₹${(item.price*item.quantity).toLocaleString('en-IN')}</span>
+            <div class="flex border border-black text-xs font-bold bg-white select-none">
+              <button onclick="changeQuantity('${item.id}',-1)" class="px-2 py-0.5 border-r border-black hover:bg-black/10 transition-colors">-</button>
+              <span class="px-3 py-0.5">${item.quantity}</span>
+              <button onclick="changeQuantity('${item.id}',1)" class="px-2 py-0.5 border-l border-black hover:bg-black/10 transition-colors">+</button>
+            </div>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+  generateReceiptClipPath(receiptContentEl);
+}
+window.addToCart=function(id){
+  const info=PRODUCTS[id];if(!info)return;
+  const ex=cart.find(i=>i.id===id);
+  if(ex){ex.quantity+=1;}else{cart.push({id,name:info.name,price:info.price,image:info.image,variant:info.variant,quantity:1});}
+  syncCart();openCart();
+};
+window.changeQuantity=function(id,d){
+  const it=cart.find(i=>i.id===id);if(!it)return;it.quantity+=d;
+  if(it.quantity<=0)cart=cart.filter(i=>i.id!==id);syncCart();
+};
+window.removeFromCart=function(id){cart=cart.filter(i=>i.id!==id);syncCart();};
+function openCart(){
+  receiptDateEl.innerText=getReceiptDate();
+  barcodeIdEl.innerText=`GUMMY-${Math.floor(1000+Math.random()*9000)}-2026`;
+  cartModal.classList.add('modal-active');document.body.classList.add('overflow-hidden');
+  setTimeout(()=>generateReceiptClipPath(receiptContentEl),50);
+}
+function closeCart(){cartModal.classList.remove('modal-active');document.body.classList.remove('overflow-hidden');}
+function openSuccess(){successModal.classList.add('modal-active');document.body.classList.add('overflow-hidden');}
+function closeSuccess(){successModal.classList.remove('modal-active');document.body.classList.remove('overflow-hidden');}
+document.addEventListener('DOMContentLoaded',()=>{
+  syncCart();
+  if(receiptContentEl){new ResizeObserver(()=>generateReceiptClipPath(receiptContentEl)).observe(receiptContentEl);}
+  document.querySelectorAll('.add-to-cart-btn').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const id=btn.getAttribute('data-product-id');if(id)addToCart(id);}));
+  document.querySelectorAll('.cart-trigger').forEach(b=>b.addEventListener('click',openCart));
+  const a=document.getElementById('close-cart-btn'),b=document.getElementById('cart-backdrop');
+  if(a)a.addEventListener('click',closeCart);if(b)b.addEventListener('click',closeCart);
+  const c=document.getElementById('close-success-btn'),d=document.getElementById('success-backdrop');
+  if(c)c.addEventListener('click',closeSuccess);if(d)d.addEventListener('click',closeSuccess);
+  const ck=document.getElementById('checkout-btn');
+  if(ck)ck.addEventListener('click',()=>{if(cart.length===0){alert('Your bag is empty!');return;}closeCart();setTimeout(()=>{openSuccess();cart=[];syncCart();},300);});
+  document.documentElement.classList.add('gcready');
+  const revealEls=document.querySelectorAll('.gc-reveal');
+  // threshold:0 so tall (taller-than-viewport) hero blocks reveal on ANY intersection
+  const io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}})},{threshold:0,rootMargin:'0px 0px -8% 0px'});
+  revealEls.forEach(el=>io.observe(el));
+  // failsafe: anything at/above the fold reveals immediately; nothing can stay blank
+  const revealInView=()=>revealEls.forEach(el=>{if(el.getBoundingClientRect().top < innerHeight*1.05) el.classList.add('in');});
+  revealInView();
+  requestAnimationFrame(revealInView);
+  window.addEventListener('load',revealInView);
+});
+
+
+(function(){
+  const prog=document.getElementById('lm-prog');
+  const mascot=document.getElementById('lm-mascot');
+  const reveal=document.querySelector('.lm-reveal');
+  const counters=document.querySelectorAll('[data-count]');
+  let counted=false;
+  function frame(){
+    const st=scrollY, dh=document.documentElement.scrollHeight-innerHeight;
+    prog.style.transform='scaleX('+(dh>0?st/dh:0)+')';
+    if(mascot) mascot.style.transform='translateY('+(st*0.18)+'px) rotate('+(st*0.02)+'deg)';
+    if(reveal){const r=reveal.getBoundingClientRect();const p=Math.min(Math.max((innerHeight-r.top)/(innerHeight*0.9),0),1);reveal.style.clipPath='circle('+(p*85+5).toFixed(1)+'% at 50% 55%)';}
+    if(!counted && counters.length){const r=counters[0].getBoundingClientRect();if(r.top<innerHeight*0.85){counted=true;counters.forEach(el=>{const to=+el.dataset.count,suf=el.dataset.suffix||'';const t0=performance.now();(function tick(n){const p=Math.min((n-t0)/1100,1);el.textContent=Math.round(to*p)+(p===1?suf:'');if(p<1)requestAnimationFrame(tick);})(t0);});}}
+  }
+  let tick=false;addEventListener('scroll',()=>{if(!tick){requestAnimationFrame(()=>{frame();tick=false});tick=true}},{passive:true});addEventListener('resize',frame);frame();
+  // hero intro
+  document.querySelectorAll('[data-hero]').forEach((el,i)=>{el.style.opacity=0;el.style.transform='translateY(40px)';el.style.transition='opacity .8s '+(i*0.12)+'s cubic-bezier(.2,.7,.2,1),transform .8s '+(i*0.12)+'s cubic-bezier(.2,.7,.2,1)';});
+  requestAnimationFrame(()=>document.querySelectorAll('[data-hero]').forEach(el=>{el.style.opacity=1;el.style.transform='none';}));
+  // magnetic + blob cursor
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+    const cur=document.getElementById('lm-cursor');let cx=0,cy=0,tx=0,ty=0;
+    addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;cur.classList.add('on');});
+    (function loop(){cx+=(tx-cx)*0.2;cy+=(ty-cy)*0.2;cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(loop);})();
+    document.addEventListener('mouseover',e=>{const hot=e.target.closest('a,button');cur.style.width=hot?'56px':'34px';cur.style.height=hot?'56px':'34px';cur.style.background=hot?'#b6ff3d':'#ff2d87';});
+    document.querySelectorAll('.lm-btn').forEach(b=>{b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*0.25)+'px,'+((e.clientY-r.top-r.height/2)*0.4)+'px)';});b.addEventListener('mouseleave',()=>b.style.transform='');});
+  }
+})();
+
+</script>
+</body>
+</html>

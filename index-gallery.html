@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GummyChums — 10 Design Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Fraunces:opsz,wght@9..144,400..600&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff7fd;color:#261236;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1240px;margin:0 auto;padding:64px 24px 96px;}
+  header{text-align:center;margin-bottom:56px;}
+  .kicker{font-weight:800;letter-spacing:.18em;text-transform:uppercase;font-size:13px;color:#b80865;margin-bottom:16px;}
+  h1{font-family:'Fraunces',serif;font-size:clamp(38px,6vw,72px);line-height:1.02;font-weight:600;letter-spacing:-.02em;}
+  .sub{max-width:620px;margin:20px auto 0;font-size:18px;color:#584047;line-height:1.6;}
+  .pill{display:inline-flex;gap:8px;align-items:center;margin-top:22px;background:#261236;color:#fff7fd;padding:10px 18px;border-radius:999px;font-weight:700;font-size:14px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:26px;}
+  .card{display:block;text-decoration:none;color:inherit;border:2px solid #261236;border-radius:20px;overflow:hidden;background:#fff;box-shadow:6px 6px 0 rgba(38,18,54,.12);transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;}
+  .card:hover{transform:translateY(-6px);box-shadow:12px 14px 0 rgba(38,18,54,.18);}
+  .thumb{position:relative;height:250px;overflow:hidden;border-bottom:2px solid #261236;background:#f3f0ff;}
+  .thumb iframe{position:absolute;top:0;left:0;width:1400px;height:1000px;border:0;transform:scale(.30);transform-origin:top left;pointer-events:none;}
+  .veil{position:absolute;inset:0;}
+  .meta{padding:18px 20px 22px;}
+  .row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .dot{width:14px;height:14px;border-radius:999px;border:2px solid #261236;}
+  .idx{font-weight:800;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:#584047;}
+  .open{margin-left:auto;font-weight:800;font-size:13px;color:#b80865;opacity:0;transform:translateX(-4px);transition:.25s;}
+  .card:hover .open{opacity:1;transform:none;}
+  h3{font-family:'Fraunces',serif;font-size:26px;font-weight:600;margin-bottom:4px;}
+  .meta p{color:#584047;font-size:15px;line-height:1.45;}
+  .foot{text-align:center;margin-top:56px;color:#584047;font-size:14px;}
+  .foot a{color:#b80865;font-weight:700;text-decoration:none;}
+  @media (max-width:600px){.thumb{height:200px;}.thumb iframe{transform:scale(.22);}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="kicker">GummyChums · Design Exploration</div>
+      <h1>One brand,<br/><span style="font-style:italic;color:#b80865">thirteen directions.</span></h1>
+      <p class="sub">A visual exploration for GummyChums — the current site, plus 10 aesthetic directions and 3 motion-led flagship concepts. Tap any card to open the full, animated page. Everything is clickable: add products to the bag and hit checkout to see the shared receipt flow.</p>
+      <div class="pill">🧾 Every version shares the exact same receipt/bill checkout</div>
+    </header>
+    <div class="grid">
+      <a href="index.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index.html" loading="lazy" scrolling="no" tabindex="-1" title="Original build"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#fecf34"></span><span class="idx">Current site</span><span class="open">Open ↗</span></div>
+          <h3>Original build</h3>
+          <p>The founder's current site — and the source of the shared receipt/bill checkout.</p>
+        </div>
+      </a>
+      <a href="index12.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index12.html" loading="lazy" scrolling="no" tabindex="-1" title="Liquid Morph ✦"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#ff2d87"></span><span class="idx">index12</span><span class="open">Open ↗</span></div>
+          <h3>Liquid Morph ✦</h3>
+          <p>Blob morphs, sticky-stack, goo, scrub</p>
+        </div>
+      </a>
+      <a href="index13.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index13.html" loading="lazy" scrolling="no" tabindex="-1" title="Horizontal Odyssey ✦"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#1a43ff"></span><span class="idx">index13</span><span class="open">Open ↗</span></div>
+          <h3>Horizontal Odyssey ✦</h3>
+          <p>Pinned sideways scroll, parallax, masks</p>
+        </div>
+      </a>
+      <a href="index14.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index14.html" loading="lazy" scrolling="no" tabindex="-1" title="Kinetic ✦"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#e4177e"></span><span class="idx">index14</span><span class="open">Open ↗</span></div>
+          <h3>Kinetic ✦</h3>
+          <p>Color-morph bg, kinetic type, rotating word</p>
+        </div>
+      </a>
+      <a href="index2.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index2.html" loading="lazy" scrolling="no" tabindex="-1" title="Neo-Brutalist Pop"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#c6f542"></span><span class="idx">index2</span><span class="open">Open ↗</span></div>
+          <h3>Neo-Brutalist Pop</h3>
+          <p>Loud stickers, hard shadows, high-energy</p>
+        </div>
+      </a>
+      <a href="index3.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index3.html" loading="lazy" scrolling="no" tabindex="-1" title="Pastel Dream"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#ffd6ec"></span><span class="idx">index3</span><span class="open">Open ↗</span></div>
+          <h3>Pastel Dream</h3>
+          <p>Soft kawaii calm, gradients, twinkles</p>
+        </div>
+      </a>
+      <a href="index4.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index4.html" loading="lazy" scrolling="no" tabindex="-1" title="Clinical Clarity"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#0ea5e9"></span><span class="idx">index4</span><span class="open">Open ↗</span></div>
+          <h3>Clinical Clarity</h3>
+          <p>Doctor-y, precise, trustworthy</p>
+        </div>
+      </a>
+      <a href="index5.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index5.html" loading="lazy" scrolling="no" tabindex="-1" title="Indian Bazaar"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#e84620"></span><span class="idx">index5</span><span class="open">Open ↗</span></div>
+          <h3>Indian Bazaar</h3>
+          <p>Festive, truck-art, proudly Indian</p>
+        </div>
+      </a>
+      <a href="index6.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index6.html" loading="lazy" scrolling="no" tabindex="-1" title="Editorial Luxe"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#e8e0d2"></span><span class="idx">index6</span><span class="open">Open ↗</span></div>
+          <h3>Editorial Luxe</h3>
+          <p>Quiet premium, magazine serif</p>
+        </div>
+      </a>
+      <a href="index7.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index7.html" loading="lazy" scrolling="no" tabindex="-1" title="Y2K Retro Pop"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#ff4ec7"></span><span class="idx">index7</span><span class="open">Open ↗</span></div>
+          <h3>Y2K Retro Pop</h3>
+          <p>Chrome, stars, nostalgic gradients</p>
+        </div>
+      </a>
+      <a href="index8.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index8.html" loading="lazy" scrolling="no" tabindex="-1" title="Neon Nightlife"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#ec48ff"></span><span class="idx">index8</span><span class="open">Open ↗</span></div>
+          <h3>Neon Nightlife</h3>
+          <p>Dark glassmorphism with glow</p>
+        </div>
+      </a>
+      <a href="index9.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index9.html" loading="lazy" scrolling="no" tabindex="-1" title="Botanical Organic"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#5c6b4a"></span><span class="idx">index9</span><span class="open">Open ↗</span></div>
+          <h3>Botanical Organic</h3>
+          <p>Earthy, natural, plant-based</p>
+        </div>
+      </a>
+      <a href="index10.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index10.html" loading="lazy" scrolling="no" tabindex="-1" title="Memphis Geometric"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#ffd23f"></span><span class="idx">index10</span><span class="open">Open ↗</span></div>
+          <h3>Memphis Geometric</h3>
+          <p>90s shapes, primary colours</p>
+        </div>
+      </a>
+      <a href="index11.html" target="_blank" class="card group">
+        <div class="thumb"><iframe src="index11.html" loading="lazy" scrolling="no" tabindex="-1" title="Claymorphic Soft"></iframe><span class="veil"></span></div>
+        <div class="meta">
+          <div class="row"><span class="dot" style="background:#a78bff"></span><span class="idx">index11</span><span class="open">Open ↗</span></div>
+          <h3>Claymorphic Soft</h3>
+          <p>Puffy, tactile, squishy 3D</p>
+        </div>
+      </a>
+    </div>
+    <p class="foot">Prototype checkout — add products → open the bag → <b>Checkout</b> → “Order Placed”. No payment is taken. &nbsp;·&nbsp; Built as plain HTML/CSS/JS, Shopify-ready.</p>
+  </div>
+</body>
+</html>
