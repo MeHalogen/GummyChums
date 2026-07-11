@@ -60,6 +60,59 @@ PDP_DATA = [
             ('Vikram P. · Chennai','Was sceptical about ashwagandha in gummy form. Three weeks in, I get it.'),
             ('Mahi D. · Indore','Jamun grape is such an Indian flavour choice and I love it.')]),
 ]
+for _d,_s in zip(PDP_DATA,['Sleep','Focus','Calm']): _d['short']=_s
+
+# 3 more Chums to complete the 6-moon GummyChums Universe (index18)
+PDP_DATA_EXT = [
+ dict(id='minty-fresh', name='Minty Fresh Gummies', color='#39c98e', soft='#e2f7ee', short='Gut',
+   tag='Gut &amp; Balance · 30 gummies · Cool Mint', price='₹749', mrp='₹949', off='21% off',
+   rating='4.7', ratings='842', line='For a gut that has opinions about street food.',
+   ing=[('Probiotic blend','2 Bn CFU','Friendly cultures for everyday gut balance'),
+        ('Prebiotic fibre','800 mg','Feeds the good guys so they stick around'),
+        ('Peppermint extract','40 mg','The fresh finish that settles things down')],
+   moments=['after heavy meals','on travel days','when the office chai-samosa hits','building a daily gut ritual'],
+   faq=[('When should I take it?','One gummy after your biggest meal of the day.'),
+        ('Does it need refrigeration?','No — the cultures are shelf-stable. Keep the jar cool and dry.'),
+        ('Is it vegetarian?','Yes — 100% vegetarian, pectin-based, no gelatin.')],
+   reviews=[('Rohit S. · Lucknow','Street food and I are friends again. Enough said.'),
+            ('Priya N. · Kochi','Genuinely minty, not toothpaste-y. Took two weeks to feel the difference.'),
+            ('Farhan A. · Bhopal','Travel bag essential now. My stomach used to hate trips.')]),
+ dict(id='burnt-orange', name='Burnt Orange Gummies', color='#ffb02e', soft='#fff1d9', short='Immunity',
+   tag='Immunity · 30 gummies · Santra Masala', price='₹699', mrp='₹899', off='22% off',
+   rating='4.8', ratings='1,067', line='For seasons that can&rsquo;t make up their mind.',
+   ing=[('Vitamin C','80 mg','The classic daily immunity backbone'),
+        ('Zinc','10 mg','Backs up your defences when weather flips'),
+        ('Apple cider vinegar','250 mg','The wellness-shelf staple, minus the wince')],
+   moments=['season-change weeks','crowded commutes','when the whole office is sneezing','daily immunity upkeep'],
+   faq=[('When should I take it?','One gummy a day, any time — consistency beats timing.'),
+        ('Does it taste like vinegar?','No. Santra masala up front, and the ACV hides politely behind it.'),
+        ('Is it vegetarian?','Yes — 100% vegetarian and FSSAI-certified made.')],
+   reviews=[('Deepika R. · Nagpur','Santra masala is a genius flavour. Tastes like winter oranges.'),
+            ('Arjun M. · Noida','Metro + office AC used to knock me out every season change. Holding strong.'),
+            ('Kavya T. · Surat','ACV without the horrible shot. Finally.')]),
+ dict(id='coral-sunrise', name='Coral Sunrise Gummies', color='#ff5c8a', soft='#ffe4ec', short='Glow',
+   tag='Skin &amp; Glow · 30 gummies · Guava Chilli', price='₹799', mrp='₹999', off='20% off',
+   rating='4.9', ratings='1,318', line='For glow that doesn&rsquo;t need a filter.',
+   ing=[('Biotin','2500 mcg','Hair, skin and nails&rsquo; favourite vitamin'),
+        ('Iron','9 mg','Fights the dull, tired-skin look from within'),
+        ('Vitamin E','10 mg','The antioxidant that keeps glow honest')],
+   moments=['wedding-season prep','before big photo days','recovering from sun-heavy weekends','a daily glow ritual'],
+   faq=[('When should I take it?','One gummy with breakfast. Glow compounds like interest.'),
+        ('How soon will I see it?','Hair and skin cycles are slow — most chums notice around week 4–6.'),
+        ('Is it vegetarian?','Yes — 100% vegetarian, no gelatin, no artificial colours.')],
+   reviews=[('Simran K. · Amritsar','Guava chilli?! Bold. Delicious. My nails have never grown like this.'),
+            ('Meera J. · Mumbai','Booked for my sister&rsquo;s wedding — whole bridesmaid group is on these now.'),
+            ('Tanvi P. · Ahmedabad','The one gummy I refuse to share.')]),
+]
+
+# extend-checkout snippet so the 3 new ids work with the shared bill everywhere
+EXT_JS = r"""
+try{var _g6=function(c){return 'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="'+c+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>');};
+PRODUCTS['minty-fresh']={name:'Minty Fresh',price:749,image:_g6('#39c98e'),variant:'GUT'};
+PRODUCTS['burnt-orange']={name:'Burnt Orange',price:699,image:_g6('#ffb02e'),variant:'IMMUNITY'};
+PRODUCTS['coral-sunrise']={name:'Coral Sunrise',price:799,image:_g6('#ff5c8a'),variant:'GLOW'};}catch(e){}
+"""
+
 IDS = [d['id'] for d in PDP_DATA]
 
 def GUMMY(color, cls='', style=''):
@@ -272,7 +325,8 @@ THUMBJS=r'''
 })();
 '''
 
-def pdp_body(d, num, skin):
+def pdp_body(d, num, skin, prods=None):
+    prods=prods or PDP_DATA
     acc=d['color']
     pref='p%d-'%num
     shots=[('Jar',_shot_jar(d)),('Inside',_shot_macro(d)),('Studio',_shot_podium(d)),('Daily',_shot_daily(d))]
@@ -282,7 +336,8 @@ def pdp_body(d, num, skin):
     chips=''.join('<span class="pd-panel px-4 py-2 text-sm font-semibold" style="border-radius:9999px">'+m+'</span>' for m in d['moments'])
     faqs=''.join('<details class="pd-panel p-5 group"><summary class="font-extrabold cursor-pointer list-none flex justify-between items-center">'+q+'<span class="transition-transform group-open:rotate-45 text-xl" style="color:'+acc+'">+</span></summary><p class="pd-sub text-sm mt-3 leading-relaxed">'+a+'</p></details>' for q,a in d['faq'])
     revs=''.join('<figure class="pd-panel p-6"><div class="text-sm mb-2" style="color:'+acc+'">★★★★★</div><blockquote class="pd-sub text-sm leading-relaxed">&ldquo;'+t+'&rdquo;</blockquote><figcaption class="pd-sub text-xs font-bold mt-3">'+n+'</figcaption></figure>' for n,t in d['reviews'])
-    rel=''.join('<a href="'+pref+o['id']+'.html" class="pd-panel rel-card p-6 text-center block" data-hot><div class="grid place-items-center py-3">'+GUMMY(o['color'],'pk-gummy pk-float','width:96px')+'</div><div class="font-extrabold pd-head">'+o['name'].replace(' Gummies','')+'</div><p class="pd-sub text-xs mt-1">'+o['tag'].split(' · ')[0]+'</p><div class="font-extrabold mt-2" style="color:'+o['color']+'">'+o['price']+'</div></a>' for o in PDP_DATA if o['id']!=d['id'])
+    rel=''.join('<a href="'+pref+o['id']+'.html" class="pd-panel rel-card p-6 text-center block" data-hot><div class="grid place-items-center py-3">'+GUMMY(o['color'],'pk-gummy pk-float','width:96px')+'</div><div class="font-extrabold pd-head">'+o['name'].replace(' Gummies','')+'</div><p class="pd-sub text-xs mt-1">'+o['tag'].split(' · ')[0]+'</p><div class="font-extrabold mt-2" style="color:'+o['color']+'">'+o['price']+'</div></a>' for o in prods if o['id']!=d['id'])
+    navlinks=''.join('<a href="'+pref+p_['id']+'.html" data-hot>'+p_['short']+'</a>' for p_ in prods)
     L=skin['lights']; light=lambda i,pos,delay: '<span class="pk-light w-[42vw] h-[42vw] '+pos+'" style="background:'+L[i].replace('ACC',acc)+(';animation-delay:'+delay if delay else '')+'"></span>'
     return ('''
 <div id="pkc" '''+('class="blend-screen" ' if skin['dark'] else '')+'''style="background:'''+acc+'''"></div>
@@ -292,7 +347,7 @@ def pdp_body(d, num, skin):
 <nav class="pd-nav sticky top-0 z-50 px-5 md:px-10 py-4 flex items-center justify-between">
   <a href="'''+skin['home']+'''" class="pd-head text-xl pd-acc" data-hot>GummyChums</a>
   <div class="hidden md:flex gap-7 text-sm font-semibold pd-sub">
-    <a href="'''+pref+'''dreamy-sleep.html" data-hot>Sleep</a><a href="'''+pref+'''electric-blue.html" data-hot>Focus</a><a href="'''+pref+'''neon-violet.html" data-hot>Calm</a>
+    '''+navlinks+'''
   </div>
   <button class="cart-trigger pk-btn pk-mag pd-btn2 relative px-4 py-2 text-sm font-bold" data-hot>Bag <span class="cart-count hidden ml-1 text-[11px] px-1.5 rounded-full" style="background:'''+acc+''';color:#fff">0</span></button>
 </nav>
@@ -347,7 +402,7 @@ def pdp_body(d, num, skin):
   </section>
   <section class="py-10" style="border-top:1px solid rgba(128,128,128,.18)">
     <h2 class="pd-head text-2xl md:text-3xl mb-6">Meet the <span class="pd-acc">other Chums</span></h2>
-    <div class="grid sm:grid-cols-2 gap-5 max-w-xl">'''+rel+'''</div>
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-5 max-w-3xl">'''+rel+'''</div>
   </section>
 </div>
 <footer class="py-10 text-center text-sm pd-sub" style="border-top:1px solid rgba(128,128,128,.18)">GummyChums · wellness that feels like a treat, not a task · Made in India</footer>
@@ -367,7 +422,8 @@ PDP_EXTRA_CSS='''
 def build_all():
     fail,kit_css,checkout_html,core_js,prem_js=extract_shared()
     for num,skin in SKINS.items():
-        for d in PDP_DATA:
+        prods = PDP_DATA + (PDP_DATA_EXT if num==18 else [])
+        for d in prods:
             acc=d['color']
             css=kit_css+'\nbody{font-family:'+STACKS[num]+'}\n'+PDP_EXTRA_CSS.replace('ACC',acc)+'\n'+skin['css'].replace('ACC',acc)
             html=('<!DOCTYPE html>\n<html lang="en" class="scroll-smooth">\n<head>\n'
@@ -377,7 +433,7 @@ def build_all():
               '<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet"/>\n'
               +skin['fonts']+'\n'+fail+'\n<style>\n'+css+'\n</style>\n</head>\n'
               '<body class="'+skin['body']+'">\n'
-              +pdp_body(d,num,skin)+'\n'+checkout_html+'<script>\n'+core_js+prem_js+THUMBJS+'\n</script>\n</body>\n</html>')
+              +pdp_body(d,num,skin,prods)+'\n'+checkout_html+'<script>\n'+core_js+EXT_JS+prem_js+THUMBJS+'\n</script>\n</body>\n</html>')
             fn='p%d-%s.html'%(num,d['id'])
             open(os.path.join(ROOT,fn),'w',encoding='utf-8').write(html)
             print('wrote',fn)
@@ -406,6 +462,59 @@ def patch_premium_pages():
         open(fp,'w',encoding='utf-8').write(s2)
         print('patched','index%d.html'%num,'(cardjs x%d)'%cnt)
 
+RING_MAP={'#8b5cf6':('dreamy-sleep','Dreamy Sleep'),'#38bdf8':('electric-blue','Electric Blue'),
+          '#e44bd3':('neon-violet','Neon Violet'),'#39c98e':('minty-fresh','Minty Fresh'),
+          '#ffb02e':('burnt-orange','Burnt Orange'),'#ff5c8a':('coral-sunrise','Coral Sunrise')}
+
+def patch_universe():
+    """index18 -> GummyChums Universe: 6 clickable orbit moons, 6-product shop grid."""
+    fp=os.path.join(ROOT,'index18.html')
+    s=open(fp,encoding='utf-8').read()
+
+    # 1) new products available in the shared bill (JS occurrence of the
+    #    marker only -- it also appears in the CSS block!)
+    mkjs='/* ===== premium motion kit ===== */\n(function(){'
+    if "PRODUCTS['minty-fresh']" not in s.split('<script>')[-1]:
+        assert mkjs in s, 'js kit marker missing'
+        s=s.replace(mkjs, EXT_JS+'\n'+mkjs, 1)
+
+    # 2) orbit moons -> links to their PDPs
+    if '<a href="p18-' not in s.split('ob-ring')[1][:4000]:
+        def moon(m):
+            attrs,svg=m.group(1),m.group(2)
+            col=re.search(r'fill="(#[0-9a-fA-F]{6})"',svg).group(1)
+            pid,nm=RING_MAP[col]
+            return ('<a href="p18-'+pid+'.html" '+attrs.replace(' data-hot','')
+                    +' data-hot title="Open '+nm+'">'+svg+'</a>')
+        s=re.sub(r'<span (class="ob-item absolute"[^>]*)>(<svg.*?</svg>)</span>', moon, s, flags=re.S)
+
+    # 3) universe copy
+    s=s.replace('>Your daily orbit<','>The GummyChums universe<')
+    s=s.replace('Six little moons for sleep, focus, calm &amp; glow. Scroll to spin the system.',
+                'Six little moons — sleep, focus, calm, gut, immunity, glow. Scroll to spin the system; click a moon to visit its world.')
+    s=s.replace('Six little moons for sleep, focus, calm & glow. Scroll to spin the system.',
+                'Six little moons — sleep, focus, calm, gut, immunity, glow. Scroll to spin the system; click a moon to visit its world.')
+
+    # 4) three more cards in the shop grid
+    if 'data-product-id="minty-fresh"' not in s:
+        card=lambda d: ('<div class="ob-card p-7 text-center">'
+          '<div class="grid place-items-center py-5" data-hot>'+GUMMY(d['color'],'pk-gummy pk-float','width:72%')+'</div>'
+          '<h3 class="text-2xl font-bold">'+d['name'].replace(' Gummies','')+'</h3>'
+          '<p class="text-sm text-white/55 my-3">'+d['tag'].split(' · ')[0].replace('&amp;','&')+' · '+d['tag'].split(' · ')[2]+'</p>'
+          '<div class="flex items-center justify-between mt-3"><span class="text-2xl font-bold ob-grad">'+d['price']+'</span>'
+          '<button class="add-to-cart-btn pk-btn pk-mag bg-white/10 border border-white/20 px-5 py-2.5 rounded-full font-bold" data-product-id="'+d['id']+'">Add +</button></div></div>')
+        anchor='</div>\n  <div class="text-center mt-12">'
+        assert anchor in s, 'shop grid anchor missing'
+        s=s.replace(anchor, ''.join(card(d) for d in PDP_DATA_EXT)+anchor, 1)
+
+    # 5) whole-card click map covers all 6
+    s=s.replace("var MAP={'dreamy-sleep':'p18-dreamy-sleep.html','electric-blue':'p18-electric-blue.html','neon-violet':'p18-neon-violet.html'};",
+      "var MAP={'dreamy-sleep':'p18-dreamy-sleep.html','electric-blue':'p18-electric-blue.html','neon-violet':'p18-neon-violet.html','minty-fresh':'p18-minty-fresh.html','burnt-orange':'p18-burnt-orange.html','coral-sunrise':'p18-coral-sunrise.html'};")
+
+    open(fp,'w',encoding='utf-8').write(s)
+    print('patched index18.html -> GummyChums Universe')
+
 if __name__=='__main__':
     build_all()
     patch_premium_pages()
+    patch_universe()
