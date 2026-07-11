@@ -76,6 +76,8 @@
   @keyframes jb-rain{0%{transform:translateY(-12vh) rotate(0)}100%{transform:translateY(112vh) rotate(340deg)}}
   .jb-drop{position:absolute;top:0;animation:jb-rain linear infinite;opacity:.85;}
 
+
+  body{font-family:'Baloo 2',cursive}
 </style>
 </head>
 <body class="bg-[#ffe8f2] text-[#33104a] font-[Baloo_2] overflow-x-hidden">
@@ -368,7 +370,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 (function(){ // gummy rain + tilt-to-cursor cards
   var rain=document.getElementById('jb-rain');
-  if(rain){var pdps=['product-dreamy-sleep.html','product-electric-blue.html','product-neon-violet.html'];var cols=['#8b5cf6','#38bdf8','#e44bd3'];
+  if(rain){var pdps=['p21-dreamy-sleep.html','p21-electric-blue.html','p21-neon-violet.html'];var cols=['#8b5cf6','#38bdf8','#e44bd3'];
     for(var i=0;i<14;i++){var s=document.createElement('a');s.className='jb-drop';s.href=pdps[i%3];s.title='Open this gummy\'s page';s.style.pointerEvents='auto';s.setAttribute('data-hot','');s.style.left=(Math.random()*96)+'%';s.style.width=(18+Math.random()*26)+'px';s.style.animationDuration=(6+Math.random()*8)+'s';s.style.animationDelay=(-Math.random()*10)+'s';
       s.innerHTML='<svg style="width:100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="'+cols[i%3]+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/></svg>';rain.appendChild(s);}}
   if(matchMedia('(hover:hover) and (pointer:fine)').matches){
@@ -380,14 +382,14 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
 })();
 
-(function(){ // "view product page" links under premium product cards
-  var MAP={'dreamy-sleep':'product-dreamy-sleep.html','electric-blue':'product-electric-blue.html','neon-violet':'product-neon-violet.html'};
-  document.querySelectorAll('.add-to-cart-btn').forEach(function(b){
-    var id=b.getAttribute('data-product-id');if(!MAP[id])return;
-    var row=b.parentElement;if(!row)return;
-    row.insertAdjacentHTML('afterend','<a href="'+MAP[id]+'" class="block mt-3 text-xs font-bold underline underline-offset-4 opacity-60 hover:opacity-100" data-hot>View product page →</a>');
-  });
-})();
+(function(){var MAP={'dreamy-sleep':'p21-dreamy-sleep.html','electric-blue':'p21-electric-blue.html','neon-violet':'p21-neon-violet.html'};
+ var SEL='.al-card,.sq-card,.ob-card,.sn-rim,.jb-card,.zv-card,.ve-card,.cf-slide,.ms-panel,.ch-page .grid';
+ document.querySelectorAll('.add-to-cart-btn').forEach(function(b){
+   var id=b.getAttribute('data-product-id');if(!MAP[id])return;
+   var card=b.closest(SEL)||b.parentElement.parentElement;if(!card||card.__pdp)return;card.__pdp=1;
+   card.style.cursor='pointer';card.setAttribute('data-hot','');card.setAttribute('title','Open product page');
+   card.addEventListener('click',function(e){if(e.target.closest('.add-to-cart-btn,a,button'))return;window.location.href=MAP[id];});
+ });})();
 
 </script>
 </body>

@@ -76,6 +76,8 @@
   .ms-btn{transition:letter-spacing .3s,background .3s;}
   .ms-btn:hover{letter-spacing:.08em;}
 
+
+  body{font-family:'Albert Sans',sans-serif}
 </style>
 </head>
 <body class="text-[#231133] font-[Albert_Sans] overflow-x-hidden">
@@ -349,14 +351,14 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
 })();
 
-(function(){ // "view product page" links under premium product cards
-  var MAP={'dreamy-sleep':'product-dreamy-sleep.html','electric-blue':'product-electric-blue.html','neon-violet':'product-neon-violet.html'};
-  document.querySelectorAll('.add-to-cart-btn').forEach(function(b){
-    var id=b.getAttribute('data-product-id');if(!MAP[id])return;
-    var row=b.parentElement;if(!row)return;
-    row.insertAdjacentHTML('afterend','<a href="'+MAP[id]+'" class="block mt-3 text-xs font-bold underline underline-offset-4 opacity-60 hover:opacity-100" data-hot>View product page →</a>');
-  });
-})();
+(function(){var MAP={'dreamy-sleep':'p17-dreamy-sleep.html','electric-blue':'p17-electric-blue.html','neon-violet':'p17-neon-violet.html'};
+ var SEL='.al-card,.sq-card,.ob-card,.sn-rim,.jb-card,.zv-card,.ve-card,.cf-slide,.ms-panel,.ch-page .grid';
+ document.querySelectorAll('.add-to-cart-btn').forEach(function(b){
+   var id=b.getAttribute('data-product-id');if(!MAP[id])return;
+   var card=b.closest(SEL)||b.parentElement.parentElement;if(!card||card.__pdp)return;card.__pdp=1;
+   card.style.cursor='pointer';card.setAttribute('data-hot','');card.setAttribute('title','Open product page');
+   card.addEventListener('click',function(e){if(e.target.closest('.add-to-cart-btn,a,button'))return;window.location.href=MAP[id];});
+ });})();
 
 </script>
 </body>

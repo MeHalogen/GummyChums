@@ -75,6 +75,8 @@
   .sq-hero-gummy{transform:scale(calc(.8 + var(--p) * .5)) rotate(calc(var(--p) * 14deg));will-change:transform;}
   .sq-tilt{transform:rotate(calc(-4deg + var(--p) * 8deg));}
 
+
+  body{font-family:'Nunito',sans-serif}
 </style>
 </head>
 <body class="bg-[#fff6ea] text-[#2a1637] font-[Nunito] overflow-x-hidden">
@@ -367,14 +369,14 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
 })();
 
-(function(){ // "view product page" links under premium product cards
-  var MAP={'dreamy-sleep':'product-dreamy-sleep.html','electric-blue':'product-electric-blue.html','neon-violet':'product-neon-violet.html'};
-  document.querySelectorAll('.add-to-cart-btn').forEach(function(b){
-    var id=b.getAttribute('data-product-id');if(!MAP[id])return;
-    var row=b.parentElement;if(!row)return;
-    row.insertAdjacentHTML('afterend','<a href="'+MAP[id]+'" class="block mt-3 text-xs font-bold underline underline-offset-4 opacity-60 hover:opacity-100" data-hot>View product page →</a>');
-  });
-})();
+(function(){var MAP={'dreamy-sleep':'p16-dreamy-sleep.html','electric-blue':'p16-electric-blue.html','neon-violet':'p16-neon-violet.html'};
+ var SEL='.al-card,.sq-card,.ob-card,.sn-rim,.jb-card,.zv-card,.ve-card,.cf-slide,.ms-panel,.ch-page .grid';
+ document.querySelectorAll('.add-to-cart-btn').forEach(function(b){
+   var id=b.getAttribute('data-product-id');if(!MAP[id])return;
+   var card=b.closest(SEL)||b.parentElement.parentElement;if(!card||card.__pdp)return;card.__pdp=1;
+   card.style.cursor='pointer';card.setAttribute('data-hot','');card.setAttribute('title','Open product page');
+   card.addEventListener('click',function(e){if(e.target.closest('.add-to-cart-btn,a,button'))return;window.location.href=MAP[id];});
+ });})();
 
 </script>
 </body>

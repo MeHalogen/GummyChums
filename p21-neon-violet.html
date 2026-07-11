@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GummyChums — Neon Violet Gummies</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet"/>
+<script>
+  /* enable reveal-hiding only when JS is live; hard failsafe reveals all if init never runs */
+  (function(){var h=document.documentElement;h.classList.add('gcjs');
+    window.addEventListener('load',function(){setTimeout(function(){
+      if(!h.classList.contains('gcready')){document.querySelectorAll('.gc-reveal').forEach(function(e){e.classList.add('in');});}
+    },700);});})();
+</script>
+<style>
+
+
+    /* ---- shared bill/checkout support (identical across all designs) ---- */
+    .material-symbols-outlined { font-variation-settings:'FILL' 1,'wght' 700,'GRAD' 0,'opsz' 24; }
+    .neo-shadow    { box-shadow: 8px 8px 0 0 #261236; }
+    .neo-shadow-lg { box-shadow: 12px 12px 0 0 #261236; }
+    .neo-shadow-sm { box-shadow: 4px 4px 0 0 #261236; }
+    .jelly-pop { transition: transform .1s, box-shadow .1s; }
+    .jelly-pop:active { transform: scale(.95) translate(4px,4px); box-shadow: 2px 2px 0 0 #261236; }
+    .modal-active { opacity:1 !important; pointer-events:auto !important; }
+    .modal-active #receipt-wrapper, .modal-active #success-card { transform: scale(1) translateY(0) !important; }
+    .receipt-scrollbar::-webkit-scrollbar { width:4px; }
+    .receipt-scrollbar::-webkit-scrollbar-track { background:transparent; }
+    .receipt-scrollbar::-webkit-scrollbar-thumb { background:rgba(0,0,0,.2); border-radius:2px; }
+    .font-receipt { font-family:'Courier New', ui-monospace, monospace; }
+    /* shared scroll-reveal (progressive enhancement: hidden ONLY while JS runs,
+       so a cache/JS hiccup can never leave a page blank) */
+    .gc-reveal { }
+    html.gcjs .gc-reveal { opacity:0; transform: translateY(34px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+    html.gcjs .gc-reveal.in { opacity:1; transform:none; }
+    @media (prefers-reduced-motion: reduce){ html.gcjs .gc-reveal{opacity:1 !important;transform:none !important;} *{animation-duration:.001s!important;} }
+
+
+  /* ===== premium motion kit ===== */
+  @media (hover:hover) and (pointer:fine){ .pk body, .pk a, .pk button, .pk [data-hot]{cursor:none} }
+  #pkc{position:fixed;left:0;top:0;width:30px;height:30px;z-index:400;pointer-events:none;transform:translate(-50%,-50%);
+       border-radius:46% 54% 52% 48%/48% 46% 54% 52%;transition:width .22s,height .22s,opacity .3s;opacity:0;
+       mix-blend-mode:multiply;animation:pk-wob 5s ease-in-out infinite;
+       box-shadow:inset -4px -5px 8px rgba(0,0,0,.18), inset 4px 5px 8px rgba(255,255,255,.5);}
+  #pkc.on{opacity:.92}  #pkc.blend-screen{mix-blend-mode:screen}
+  body.overflow-hidden #pkc{mix-blend-mode:multiply}  /* stay visible on the white bill */
+  @media (hover:none){#pkc{display:none}}
+  @keyframes pk-wob{0%,100%{border-radius:46% 54% 52% 48%/48% 46% 54% 52%}33%{border-radius:58% 42% 45% 55%/52% 58% 42% 48%}66%{border-radius:42% 58% 60% 40%/45% 42% 58% 55%}}
+  .pk-wobble{animation:pk-wob 7s ease-in-out infinite}
+  @keyframes pk-float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-20px) rotate(3deg)}}
+  .pk-float{animation:pk-float 6s ease-in-out infinite}
+  @keyframes pk-aurora{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  .pk-aurora{background-size:280% 280%;animation:pk-aurora 13s ease infinite}
+  @keyframes pk-breathe{0%,100%{opacity:.45}50%{opacity:.9}}
+  .pk-light{position:absolute;border-radius:50%;filter:blur(72px);pointer-events:none;animation:pk-breathe 7s ease-in-out infinite;will-change:transform,opacity;transform:translateZ(0)}
+  .pk-mag{transition:transform .16s cubic-bezier(.34,1.56,.64,1)}
+  .pk-btn{transition:transform .12s}.pk-btn:active{transform:scale(.93)}
+  [data-scrub]{--p:0}
+  .pk-chars span span{display:inline-block;opacity:0;transform:translateY(65%) rotate(7deg);transition:opacity .45s,transform .6s cubic-bezier(.2,.8,.2,1)}
+  .pk-chars.go span span{opacity:1;transform:none}
+  @keyframes pk-spin{to{transform:rotate(1turn)}}
+  .pk-spin{animation:pk-spin 24s linear infinite}
+  @keyframes pk-squash{0%{transform:scale(1)}35%{transform:scale(1.22,.78)}65%{transform:scale(.86,1.14)}100%{transform:scale(1)}}
+  .pk-squash{animation:pk-squash .5s cubic-bezier(.34,1.56,.64,1)}
+  .pk-marq{display:flex;white-space:nowrap;will-change:transform;animation:pk-mv 18s linear infinite}
+  @keyframes pk-mv{to{transform:translateX(-50%)}}
+
+  
+body{font-family:'Baloo 2',cursive}
+
+  .pdp-shot{display:none}.pdp-shot.on{display:block}
+  .pdp-shot svg,.pdp-thumb svg{width:100%;height:auto;display:block}
+  .pdp-thumb{border-radius:1rem;overflow:hidden;border:2px solid rgba(128,128,128,.25);transition:border-color .2s,transform .2s}
+  .pdp-thumb.on{border-color:#e44bd3;box-shadow:0 0 18px -6px #e44bd3}
+  .pdp-thumb:hover{transform:translateY(-3px)}
+  .rel-card{transition:transform .25s,box-shadow .25s}
+  .rel-card:hover{transform:translateY(-6px)}
+  details summary::-webkit-details-marker{display:none}
+
+.pd-head{font-weight:800}
+  .pd-acc{color:#e44bd3}
+  .pd-panel{background:#fff;border:3px solid #33104a;border-radius:2.25rem;box-shadow:0 8px 0 #33104a}
+  .pd-sub{color:rgba(51,16,74,.55)}
+  .pd-btn1{background:#ffd23f;color:#33104a;border:3px solid #33104a;border-radius:9999px;box-shadow:0 6px 0 #33104a}
+  .pd-btn1:active{transform:translateY(5px);box-shadow:0 1px 0 #33104a}
+  .pd-btn2{background:#e44bd3;color:#fff;border:3px solid #33104a;border-radius:9999px;box-shadow:0 6px 0 #33104a}
+  .pd-btn2:active{transform:translateY(5px);box-shadow:0 1px 0 #33104a}
+  .pd-nav{background:rgba(255,232,242,.85);backdrop-filter:blur(10px);border-bottom:3px solid #33104a}
+</style>
+</head>
+<body class="bg-[#ffe8f2] text-[#33104a] font-[Baloo_2] overflow-x-hidden">
+
+<div id="pkc" style="background:#e44bd3"></div>
+<div class="fixed inset-0 -z-10 overflow-hidden"><span class="pk-light w-[42vw] h-[42vw] -top-[10vw] -left-[8vw]" style="background:#e44bd333"></span><span class="pk-light w-[42vw] h-[42vw] top-[36vh] right-[-6vw]" style="background:#ffd23f4d;animation-delay:2.5s"></span><span class="pk-light w-[42vw] h-[42vw] bottom-[-10vw] left-[24vw]" style="background:#8b5cf62e;animation-delay:5s"></span>
+</div>
+<nav class="pd-nav sticky top-0 z-50 px-5 md:px-10 py-4 flex items-center justify-between">
+  <a href="index21.html" class="pd-head text-xl pd-acc" data-hot>GummyChums</a>
+  <div class="hidden md:flex gap-7 text-sm font-semibold pd-sub">
+    <a href="p21-dreamy-sleep.html" data-hot>Sleep</a><a href="p21-electric-blue.html" data-hot>Focus</a><a href="p21-neon-violet.html" data-hot>Calm</a>
+  </div>
+  <button class="cart-trigger pk-btn pk-mag pd-btn2 relative px-4 py-2 text-sm font-bold" data-hot>Bag <span class="cart-count hidden ml-1 text-[11px] px-1.5 rounded-full" style="background:#e44bd3;color:#fff">0</span></button>
+</nav>
+<div class="max-w-6xl mx-auto px-5 md:px-10">
+  <p class="pd-sub text-xs font-semibold pt-6"><a href="index21.html" data-hot class="underline underline-offset-4">← Back to shop</a> &nbsp;/&nbsp; <span style="color:#e44bd3">Neon Violet Gummies</span></p>
+  <div class="grid md:grid-cols-2 gap-10 py-8">
+    <div data-scrub>
+      <div class="pd-panel overflow-hidden" style="transform:translateY(calc((1 - var(--p)) * 24px))"><div class="pdp-shot on" data-i="0"><svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="#ffe3f8"/><ellipse cx="200" cy="345" rx="120" ry="16" fill="#000" opacity=".08"/><rect x="120" y="120" width="160" height="220" rx="26" fill="#fff" stroke="#e44bd3" stroke-width="3"/><rect x="112" y="92" width="176" height="40" rx="14" fill="#e44bd3"/><rect x="138" y="196" width="124" height="88" rx="12" fill="#ffe3f8"/><text x="200" y="230" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="17" fill="#241233">GummyChums</text><text x="200" y="254" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="13" fill="#e44bd3">Neon Violet</text><g transform="translate(140,296) scale(.34)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(186,304) scale(.34)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(232,296) scale(.34)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><text x="200" y="368" text-anchor="middle" font-family="Arial" font-size="12" fill="#241233" opacity=".55">30 gummies · 100% vegetarian</text></svg></div><div class="pdp-shot" data-i="1"><svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="mgneon-violet" cx="35%" cy="30%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#ffe3f8"/></radialGradient></defs><rect width="400" height="400" fill="url(#mgneon-violet)"/><g transform="translate(70,70) scale(2.6)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g font-family="Arial" font-size="13" fill="#241233"><line x1="96" y1="150" x2="30" y2="120" stroke="#241233" stroke-width="1.4" opacity=".5"/><text x="26" y="112" font-weight="bold" text-anchor="start">Ashwagandha (KSM-66)</text><text x="26" y="128" opacity=".6" text-anchor="start">300 mg</text><line x1="320" y1="180" x2="376" y2="140" stroke="#241233" stroke-width="1.4" opacity=".5"/><text x="378" y="132" font-weight="bold" text-anchor="end">Brahmi extract</text><text x="378" y="148" opacity=".6" text-anchor="end">150 mg</text><line x1="210" y1="330" x2="300" y2="368" stroke="#241233" stroke-width="1.4" opacity=".5"/><text x="304" y="362" font-weight="bold" text-anchor="start">Vitamin D3</text><text x="304" y="378" opacity=".6" text-anchor="start">400 IU</text></g><text x="20" y="34" font-family="Arial" font-weight="bold" font-size="16" fill="#e44bd3">WHAT&rsquo;S INSIDE</text></svg></div><div class="pdp-shot" data-i="2"><svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="pdneon-violet" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e44bd3"/><stop offset="55%" stop-color="#241233"/><stop offset="100%" stop-color="#0d0714"/></linearGradient></defs><rect width="400" height="400" fill="url(#pdneon-violet)"/><circle cx="200" cy="170" r="120" fill="#e44bd3" opacity=".25"/><circle cx="200" cy="170" r="80" fill="#e44bd3" opacity=".2"/><ellipse cx="200" cy="298" rx="92" ry="14" fill="#000" opacity=".4"/><rect x="130" y="240" width="140" height="56" rx="10" fill="#1a1024" stroke="#e44bd3" stroke-opacity=".5"/><g transform="translate(128,96) scale(1.44)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><text x="200" y="352" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="15" fill="#fff">Neon Violet</text><text x="200" y="374" text-anchor="middle" font-family="Arial" font-size="12" fill="#fff" opacity=".55">Calm & Clarity</text></svg></div><div class="pdp-shot" data-i="3"><svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="#fffdf6"/><text x="200" y="52" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="18" fill="#241233">ONE A DAY. THAT&rsquo;S IT.</text><g transform="translate(30,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(82,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(134,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(186,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(238,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(290,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ddd3e6"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(342,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ddd3e6"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><text x="200" y="182" text-anchor="middle" font-family="Arial" font-size="13" fill="#241233" opacity=".6">Mon — Sun · with or without food</text><rect x="52" y="216" width="296" height="130" rx="18" fill="#ffe3f8"/><text x="200" y="252" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="14" fill="#241233">100% VEGETARIAN · FSSAI CERTIFIED</text><text x="200" y="278" text-anchor="middle" font-family="Arial" font-size="13" fill="#241233" opacity=".65">Third-party lab tested</text><text x="200" y="300" text-anchor="middle" font-family="Arial" font-size="13" fill="#241233" opacity=".65">No artificial colours · no gelatin</text><text x="200" y="322" text-anchor="middle" font-family="Arial" font-size="13" fill="#e44bd3" font-weight="bold">Made with joy in India</text></svg></div></div>
+      <div class="grid grid-cols-4 gap-3 mt-3"><button class="pdp-thumb on" data-i="0" aria-label="Jar"><svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="#ffe3f8"/><ellipse cx="200" cy="345" rx="120" ry="16" fill="#000" opacity=".08"/><rect x="120" y="120" width="160" height="220" rx="26" fill="#fff" stroke="#e44bd3" stroke-width="3"/><rect x="112" y="92" width="176" height="40" rx="14" fill="#e44bd3"/><rect x="138" y="196" width="124" height="88" rx="12" fill="#ffe3f8"/><text x="200" y="230" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="17" fill="#241233">GummyChums</text><text x="200" y="254" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="13" fill="#e44bd3">Neon Violet</text><g transform="translate(140,296) scale(.34)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(186,304) scale(.34)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(232,296) scale(.34)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><text x="200" y="368" text-anchor="middle" font-family="Arial" font-size="12" fill="#241233" opacity=".55">30 gummies · 100% vegetarian</text></svg></button><button class="pdp-thumb" data-i="1" aria-label="Inside"><svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="mgneon-violet" cx="35%" cy="30%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#ffe3f8"/></radialGradient></defs><rect width="400" height="400" fill="url(#mgneon-violet)"/><g transform="translate(70,70) scale(2.6)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g font-family="Arial" font-size="13" fill="#241233"><line x1="96" y1="150" x2="30" y2="120" stroke="#241233" stroke-width="1.4" opacity=".5"/><text x="26" y="112" font-weight="bold" text-anchor="start">Ashwagandha (KSM-66)</text><text x="26" y="128" opacity=".6" text-anchor="start">300 mg</text><line x1="320" y1="180" x2="376" y2="140" stroke="#241233" stroke-width="1.4" opacity=".5"/><text x="378" y="132" font-weight="bold" text-anchor="end">Brahmi extract</text><text x="378" y="148" opacity=".6" text-anchor="end">150 mg</text><line x1="210" y1="330" x2="300" y2="368" stroke="#241233" stroke-width="1.4" opacity=".5"/><text x="304" y="362" font-weight="bold" text-anchor="start">Vitamin D3</text><text x="304" y="378" opacity=".6" text-anchor="start">400 IU</text></g><text x="20" y="34" font-family="Arial" font-weight="bold" font-size="16" fill="#e44bd3">WHAT&rsquo;S INSIDE</text></svg></button><button class="pdp-thumb" data-i="2" aria-label="Studio"><svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="pdneon-violet" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e44bd3"/><stop offset="55%" stop-color="#241233"/><stop offset="100%" stop-color="#0d0714"/></linearGradient></defs><rect width="400" height="400" fill="url(#pdneon-violet)"/><circle cx="200" cy="170" r="120" fill="#e44bd3" opacity=".25"/><circle cx="200" cy="170" r="80" fill="#e44bd3" opacity=".2"/><ellipse cx="200" cy="298" rx="92" ry="14" fill="#000" opacity=".4"/><rect x="130" y="240" width="140" height="56" rx="10" fill="#1a1024" stroke="#e44bd3" stroke-opacity=".5"/><g transform="translate(128,96) scale(1.44)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><text x="200" y="352" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="15" fill="#fff">Neon Violet</text><text x="200" y="374" text-anchor="middle" font-family="Arial" font-size="12" fill="#fff" opacity=".55">Calm & Clarity</text></svg></button><button class="pdp-thumb" data-i="3" aria-label="Daily"><svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="#fffdf6"/><text x="200" y="52" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="18" fill="#241233">ONE A DAY. THAT&rsquo;S IT.</text><g transform="translate(30,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(82,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(134,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(186,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(238,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(290,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ddd3e6"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><g transform="translate(342,96) scale(.4)"><svg class="" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ddd3e6"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></g><text x="200" y="182" text-anchor="middle" font-family="Arial" font-size="13" fill="#241233" opacity=".6">Mon — Sun · with or without food</text><rect x="52" y="216" width="296" height="130" rx="18" fill="#ffe3f8"/><text x="200" y="252" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="14" fill="#241233">100% VEGETARIAN · FSSAI CERTIFIED</text><text x="200" y="278" text-anchor="middle" font-family="Arial" font-size="13" fill="#241233" opacity=".65">Third-party lab tested</text><text x="200" y="300" text-anchor="middle" font-family="Arial" font-size="13" fill="#241233" opacity=".65">No artificial colours · no gelatin</text><text x="200" y="322" text-anchor="middle" font-family="Arial" font-size="13" fill="#e44bd3" font-weight="bold">Made with joy in India</text></svg></button></div>
+    </div>
+    <div>
+      <h1 class="pd-head text-3xl md:text-5xl leading-tight">Neon Violet Gummies</h1>
+      <p class="mt-2 text-lg font-semibold pd-sub">For a quieter mind in a louder day.</p>
+      <p class="text-sm font-semibold pd-sub mt-1">Calm &amp; Clarity · 30 gummies · Jamun Grape</p>
+      <div class="flex items-center gap-3 mt-4">
+        <span class="bg-[#1f7a4d] text-white text-sm font-bold rounded-lg px-2.5 py-1">4.9 ★</span>
+        <span class="pd-sub text-sm font-semibold">1,502 ratings · 96% would repurchase</span>
+      </div>
+      <div class="flex items-end gap-3 mt-6">
+        <span class="pd-head text-4xl pd-acc">₹899</span>
+        <span class="text-lg line-through pd-sub mb-1">₹1,099</span>
+        <span class="text-lg font-extrabold mb-1" style="color:#e44bd3">18% off</span>
+      </div>
+      <p class="pd-sub text-xs mt-1">Inclusive of all taxes · Free shipping over ₹999</p>
+      <div class="flex gap-3 mt-7">
+        <button class="add-to-cart-btn pk-btn pk-mag pd-btn1 flex-1 font-extrabold py-4 text-lg" data-product-id="neon-violet" data-hot>Add to bag</button>
+        <button class="add-to-cart-btn pk-btn pk-mag pd-btn2 flex-1 font-extrabold py-4 text-lg" data-product-id="neon-violet" data-hot>Buy now</button>
+      </div>
+      <div class="grid grid-cols-3 gap-3 mt-7 text-center text-xs font-bold">
+        <div class="pd-panel p-3">🌱<br/>100% vegetarian</div><div class="pd-panel p-3">🧪<br/>Third-party tested</div><div class="pd-panel p-3">🇮🇳<br/>FSSAI certified</div>
+      </div>
+      <div class="mt-8 space-y-3"><div class="pd-panel flex items-start gap-4 p-5"><div class="w-2.5 h-2.5 rounded-full mt-2" style="background:#e44bd3;box-shadow:0 0 12px #e44bd3"></div><div><div class="font-extrabold">Ashwagandha (KSM-66) <span class="pd-sub font-semibold text-sm">· 300 mg</span></div><p class="pd-sub text-sm mt-0.5">The studied adaptogen for everyday stress</p></div></div><div class="pd-panel flex items-start gap-4 p-5"><div class="w-2.5 h-2.5 rounded-full mt-2" style="background:#e44bd3;box-shadow:0 0 12px #e44bd3"></div><div><div class="font-extrabold">Brahmi extract <span class="pd-sub font-semibold text-sm">· 150 mg</span></div><p class="pd-sub text-sm mt-0.5">Traditional clarity herb, modern format</p></div></div><div class="pd-panel flex items-start gap-4 p-5"><div class="w-2.5 h-2.5 rounded-full mt-2" style="background:#e44bd3;box-shadow:0 0 12px #e44bd3"></div><div><div class="font-extrabold">Vitamin D3 <span class="pd-sub font-semibold text-sm">· 400 IU</span></div><p class="pd-sub text-sm mt-0.5">Mood-supporting sunshine, chewable</p></div></div></div>
+    </div>
+  </div>
+  <section class="py-10" style="border-top:1px solid rgba(128,128,128,.18)" data-scrub>
+    <div style="opacity:calc(.25 + var(--p) * .75);transform:translateY(calc((1 - var(--p)) * 30px))">
+    <h2 class="pd-head text-2xl md:text-3xl mb-3">Why you&rsquo;ll actually <span class="pd-acc">stay consistent</span></h2>
+    <div class="grid md:grid-cols-2 gap-8 text-sm md:text-base leading-relaxed pd-sub">
+      <p>The biggest problem in wellness isn&rsquo;t ingredients — it&rsquo;s consistency. People start supplements with the best intentions, then forget, lose motivation, or simply stop enjoying the experience. Pills feel clinical. Powders are inconvenient. Wellness starts feeling like work.</p>
+      <p>Neon Violet is designed to break that cycle: a precise, science-backed formula inside a genuinely delicious gummy, so the healthy habit is also the highlight. It&rsquo;s not another task on your to-do list. It&rsquo;s the treat you look forward to.</p>
+    </div>
+    <h3 class="pd-head text-lg mt-8 mb-3">Reach for it&hellip;</h3>
+    <div class="flex flex-wrap gap-3"><span class="pd-panel px-4 py-2 text-sm font-semibold" style="border-radius:9999px">before a big presentation</span><span class="pd-panel px-4 py-2 text-sm font-semibold" style="border-radius:9999px">deadline weeks</span><span class="pd-panel px-4 py-2 text-sm font-semibold" style="border-radius:9999px">daily anxiety-prone commutes</span><span class="pd-panel px-4 py-2 text-sm font-semibold" style="border-radius:9999px">building a calm evening routine</span></div></div>
+  </section>
+  <section class="py-10" style="border-top:1px solid rgba(128,128,128,.18)">
+    <h2 class="pd-head text-2xl md:text-3xl mb-6">Questions, <span class="pd-acc">answered honestly</span></h2>
+    <div class="space-y-3 max-w-3xl"><details class="pd-panel p-5 group"><summary class="font-extrabold cursor-pointer list-none flex justify-between items-center">When should I take it?<span class="transition-transform group-open:rotate-45 text-xl" style="color:#e44bd3">+</span></summary><p class="pd-sub text-sm mt-3 leading-relaxed">One gummy daily, any time. Consistency matters more than timing.</p></details><details class="pd-panel p-5 group"><summary class="font-extrabold cursor-pointer list-none flex justify-between items-center">How soon will I feel it?<span class="transition-transform group-open:rotate-45 text-xl" style="color:#e44bd3">+</span></summary><p class="pd-sub text-sm mt-3 leading-relaxed">Adaptogens build gently — most chums report a calmer baseline in 2–3 weeks.</p></details><details class="pd-panel p-5 group"><summary class="font-extrabold cursor-pointer list-none flex justify-between items-center">Is it vegetarian?<span class="transition-transform group-open:rotate-45 text-xl" style="color:#e44bd3">+</span></summary><p class="pd-sub text-sm mt-3 leading-relaxed">Yes — 100% vegetarian, no gelatin, no artificial colours.</p></details></div>
+  </section>
+  <section class="py-10" style="border-top:1px solid rgba(128,128,128,.18)">
+    <h2 class="pd-head text-2xl md:text-3xl mb-6">What <span class="pd-acc">chums say</span></h2>
+    <div class="grid md:grid-cols-3 gap-5"><figure class="pd-panel p-6"><div class="text-sm mb-2" style="color:#e44bd3">★★★★★</div><blockquote class="pd-sub text-sm leading-relaxed">&ldquo;My whole team calls it the meeting gummy. Calmer without feeling slow.&rdquo;</blockquote><figcaption class="pd-sub text-xs font-bold mt-3">Neha S. · Jaipur</figcaption></figure><figure class="pd-panel p-6"><div class="text-sm mb-2" style="color:#e44bd3">★★★★★</div><blockquote class="pd-sub text-sm leading-relaxed">&ldquo;Was sceptical about ashwagandha in gummy form. Three weeks in, I get it.&rdquo;</blockquote><figcaption class="pd-sub text-xs font-bold mt-3">Vikram P. · Chennai</figcaption></figure><figure class="pd-panel p-6"><div class="text-sm mb-2" style="color:#e44bd3">★★★★★</div><blockquote class="pd-sub text-sm leading-relaxed">&ldquo;Jamun grape is such an Indian flavour choice and I love it.&rdquo;</blockquote><figcaption class="pd-sub text-xs font-bold mt-3">Mahi D. · Indore</figcaption></figure></div>
+  </section>
+  <section class="py-10" style="border-top:1px solid rgba(128,128,128,.18)">
+    <h2 class="pd-head text-2xl md:text-3xl mb-6">Meet the <span class="pd-acc">other Chums</span></h2>
+    <div class="grid sm:grid-cols-2 gap-5 max-w-xl"><a href="p21-dreamy-sleep.html" class="pd-panel rel-card p-6 text-center block" data-hot><div class="grid place-items-center py-3"><svg class="pk-gummy pk-float" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:96px"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#8b5cf6"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></div><div class="font-extrabold pd-head">Dreamy Sleep</div><p class="pd-sub text-xs mt-1">Sleep &amp; Calm</p><div class="font-extrabold mt-2" style="color:#8b5cf6">₹699</div></a><a href="p21-electric-blue.html" class="pd-panel rel-card p-6 text-center block" data-hot><div class="grid place-items-center py-3"><svg class="pk-gummy pk-float" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:96px"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#38bdf8"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></div><div class="font-extrabold pd-head">Electric Blue</div><p class="pd-sub text-xs mt-1">Eyes &amp; Focus</p><div class="font-extrabold mt-2" style="color:#38bdf8">₹749</div></a></div>
+  </section>
+</div>
+<footer class="py-10 text-center text-sm pd-sub" style="border-top:1px solid rgba(128,128,128,.18)">GummyChums · wellness that feels like a treat, not a task · Made in India</footer>
+
+<!-- ===================== SHARED BILL / CHECKOUT (unchanged from index.html) ===================== -->
+<div id="cart-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+  <div id="cart-backdrop" class="absolute inset-0 bg-[#261236]/80 backdrop-blur-sm cursor-pointer transition-opacity duration-300"></div>
+  <div id="receipt-wrapper" class="relative z-10 w-full max-w-[440px] transition-all duration-300 transform scale-90 translate-y-8 flex flex-col" style="filter: drop-shadow(8px 8px 0px #261236)">
+    <button id="close-cart-btn" class="absolute -top-3 -right-3 z-30 bg-white text-[#261236] p-2 border-4 border-[#261236] neo-shadow-sm hover:bg-[#b80865] hover:text-white transition-all font-bold flex items-center justify-center jelly-pop">
+      <span class="material-symbols-outlined text-2xl">close</span>
+    </button>
+    <div id="receipt-modal-content" class="bg-white text-black p-6 md:p-8 font-receipt select-none overflow-y-auto max-h-[85vh] flex flex-col border-x border-black/10">
+      <div class="text-center flex flex-col items-center mt-2 flex-shrink-0">
+        <div class="flex items-center justify-center border-4 border-black px-4 py-2 font-black text-2xl uppercase tracking-widest bg-black text-white mb-2 select-none">
+          <span class="material-symbols-outlined mr-2 scale-x-[-1] text-2xl">reply</span> GUMMYCHUMS
+        </div>
+        <div class="text-xs tracking-wider opacity-60">******************************************</div>
+        <div class="text-sm font-bold uppercase tracking-widest my-1">** SHOPPING BAG **</div>
+        <div id="receipt-date" class="text-xs font-semibold my-1 tracking-wider">MON 29/06/26 21:27</div>
+        <div class="text-xs tracking-wider opacity-60">******************************************</div>
+      </div>
+      <div id="receipt-items" class="flex-grow my-4 space-y-6 overflow-y-auto pr-1 receipt-scrollbar max-h-[40vh] min-h-[120px]"></div>
+      <div class="mt-auto pt-2 border-t border-dashed border-black/30 flex-shrink-0">
+        <div class="text-xs tracking-wider opacity-60 text-center">******************************************</div>
+        <div class="flex justify-between items-end my-3">
+          <span class="text-xs font-bold tracking-widest uppercase opacity-60">SUBTOTAL</span>
+          <span id="receipt-subtotal" class="text-2xl font-black tracking-tighter">₹0</span>
+        </div>
+        <div class="text-[10px] tracking-wider opacity-50 text-center uppercase mb-4">SHIPPING CALCULATED AT CHECKOUT</div>
+        <button id="checkout-btn" class="w-full bg-black text-white py-4 border-4 border-black hover:bg-white hover:text-black font-black text-xl uppercase tracking-wider transition-all select-none focus:outline-none mb-4 jelly-pop">CHECKOUT</button>
+        <div class="text-xs tracking-wider opacity-60 text-center">******************************************</div>
+        <div class="flex flex-col items-center justify-center my-3">
+          <div class="w-full px-4 mb-1"><svg class="w-full h-10" viewBox="0 0 100 40" preserveAspectRatio="none">
+<rect x="0" y="0" width="1.5" height="40" fill="black"/><rect x="3" y="0" width="1" height="40" fill="black"/><rect x="5" y="0" width="2" height="40" fill="black"/><rect x="8" y="0" width="1" height="40" fill="black"/><rect x="10" y="0" width="3" height="40" fill="black"/><rect x="15" y="0" width="1" height="40" fill="black"/><rect x="17" y="0" width="2.5" height="40" fill="black"/><rect x="21" y="0" width="1" height="40" fill="black"/><rect x="23" y="0" width="2" height="40" fill="black"/><rect x="26" y="0" width="1.5" height="40" fill="black"/><rect x="29" y="0" width="1" height="40" fill="black"/><rect x="31" y="0" width="3" height="40" fill="black"/><rect x="36" y="0" width="1" height="40" fill="black"/><rect x="38" y="0" width="2" height="40" fill="black"/><rect x="41" y="0" width="1" height="40" fill="black"/><rect x="43" y="0" width="2.5" height="40" fill="black"/><rect x="47" y="0" width="1" height="40" fill="black"/><rect x="49" y="0" width="1.5" height="40" fill="black"/><rect x="52" y="0" width="3" height="40" fill="black"/><rect x="56" y="0" width="1" height="40" fill="black"/><rect x="58" y="0" width="2" height="40" fill="black"/><rect x="61" y="0" width="1" height="40" fill="black"/><rect x="63" y="0" width="2.5" height="40" fill="black"/><rect x="67" y="0" width="1" height="40" fill="black"/><rect x="69" y="0" width="1.5" height="40" fill="black"/><rect x="72" y="0" width="3" height="40" fill="black"/><rect x="76" y="0" width="1" height="40" fill="black"/><rect x="78" y="0" width="2" height="40" fill="black"/><rect x="81" y="0" width="1" height="40" fill="black"/><rect x="83" y="0" width="2.5" height="40" fill="black"/><rect x="87" y="0" width="1" height="40" fill="black"/><rect x="89" y="0" width="1.5" height="40" fill="black"/><rect x="92" y="0" width="3" height="40" fill="black"/><rect x="96" y="0" width="1" height="40" fill="black"/><rect x="98" y="0" width="2" height="40" fill="black"/></svg></div>
+          <span id="barcode-id" class="text-[9px] tracking-[0.25em] font-bold text-black/60">GUMMY-8374-2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="success-modal" class="fixed inset-0 z-[110] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+  <div id="success-backdrop" class="absolute inset-0 bg-[#261236]/90 backdrop-blur-md cursor-pointer transition-opacity duration-300"></div>
+  <div id="success-card" class="relative z-10 w-full max-w-[400px] bg-[#fecf34] border-8 border-[#261236] p-8 text-center neo-shadow-lg transform scale-90 translate-y-8 transition-all duration-300">
+    <div class="w-20 h-20 bg-white border-4 border-[#261236] flex items-center justify-center mx-auto mb-6 neo-shadow-sm animate-bounce">
+      <span class="material-symbols-outlined text-5xl text-[#006d36]">check_circle</span>
+    </div>
+    <h3 class="text-3xl uppercase tracking-tighter mb-4 text-[#261236] font-black">Order Placed!</h3>
+    <p class="text-lg text-[#261236]/80 mb-8 font-bold">Your gummy order is locked in. Get ready to feel good.</p>
+    <button id="close-success-btn" class="w-full bg-[#b80865] text-white py-4 border-4 border-[#261236] neo-shadow jelly-pop font-black uppercase text-xl tracking-wider">Let's Go</button>
+  </div>
+</div>
+
+<script>
+
+
+// ===================== SHARED CHECKOUT LOGIC (from index.html) =====================
+const PRODUCTS = {
+  'dreamy-sleep':      { name:'Dreamy Sleep', price:699,  image:'mascot.png', variant:'LVL 99' },
+  'electric-blue':     { name:'Electric Blue', price:749, image:'mascot.png', variant:'FOCUS' },
+  'neon-violet':       { name:'Neon Violet', price:899,   image:'mascot.png', variant:'SMART' },
+  'bundle-full-gang':  { name:'The Full Gang', price:1899, image:'bears.png',  variant:'BUNDLE' },
+  'bundle-night-shift':{ name:'The Night Shift', price:1199, image:'mascot.png', variant:'BUNDLE' },
+  'bundle-gut-feeling':{ name:'The Gut Feeling', price:999,  image:'logo.png',  variant:'BUNDLE' }
+};
+let cart = JSON.parse(localStorage.getItem('gummy_cart')) || [];
+const cartModal = document.getElementById('cart-modal');
+const successModal = document.getElementById('success-modal');
+const cartItemsContainer = document.getElementById('receipt-items');
+const cartSubtotalEl = document.getElementById('receipt-subtotal');
+const receiptDateEl = document.getElementById('receipt-date');
+const receiptContentEl = document.getElementById('receipt-modal-content');
+const barcodeIdEl = document.getElementById('barcode-id');
+function getReceiptDate(){
+  const now=new Date();const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const p=n=>String(n).padStart(2,'0');
+  return `${days[now.getDay()]} ${p(now.getDate())}/${p(now.getMonth()+1)}/${String(now.getFullYear()).slice(-2)} ${p(now.getHours())}:${p(now.getMinutes())}`;
+}
+function generateReceiptClipPath(el){
+  if(!el)return;const w=el.offsetWidth,h=el.offsetHeight;if(!w||!h)return;
+  const tw=10,th=6,count=Math.ceil(w/tw),pts=[];
+  for(let i=0;i<=count;i++){const x=(i/count)*100;const y=i%2===0?0:(th/h)*100;pts.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);}
+  for(let i=count;i>=0;i--){const x=(i/count)*100;const y=100-(i%2===0?0:(th/h)*100);pts.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);}
+  el.style.clipPath=`polygon(${pts.join(', ')})`;
+}
+function syncCart(){
+  localStorage.setItem('gummy_cart',JSON.stringify(cart));
+  let totalCount=0,subtotal=0;
+  cart.forEach(i=>{totalCount+=i.quantity;subtotal+=i.price*i.quantity;});
+  document.querySelectorAll('.cart-count').forEach(el=>{
+    if(totalCount>0){el.innerText=totalCount;el.classList.remove('hidden');}else{el.classList.add('hidden');}
+  });
+  cartSubtotalEl.innerText=`₹${subtotal.toLocaleString('en-IN')}`;
+  if(cart.length===0){
+    cartItemsContainer.innerHTML=`<div class="flex flex-col items-center justify-center py-12 text-center"><span class="material-symbols-outlined text-5xl text-black/30 mb-4 animate-bounce">shopping_basket</span><p class="font-bold text-sm uppercase tracking-wider opacity-60">Your bag is empty!</p><p class="text-xs opacity-50 mt-1">Go grab some gummies.</p></div>`;
+  }else{
+    cartItemsContainer.innerHTML=cart.map(item=>`
+      <div class="flex gap-4 items-start relative pb-4 border-b border-dashed border-black/20 text-left">
+        <img src="${item.image}" class="w-16 h-16 object-cover border-2 border-black flex-shrink-0" alt="${item.name}"/>
+        <div class="flex-grow min-w-0">
+          <div class="flex justify-between items-start">
+            <h4 class="font-bold text-sm uppercase tracking-tight truncate pr-4">${item.name}</h4>
+            <button onclick="removeFromCart('${item.id}')" class="text-black/40 hover:text-black font-bold text-lg leading-none transition-colors">&times;</button>
+          </div>
+          <div class="text-[10px] opacity-60 uppercase mb-1 tracking-wider">${item.variant}</div>
+          <div class="flex justify-between items-center mt-2">
+            <span class="font-black text-sm">₹${(item.price*item.quantity).toLocaleString('en-IN')}</span>
+            <div class="flex border border-black text-xs font-bold bg-white select-none">
+              <button onclick="changeQuantity('${item.id}',-1)" class="px-2 py-0.5 border-r border-black hover:bg-black/10 transition-colors">-</button>
+              <span class="px-3 py-0.5">${item.quantity}</span>
+              <button onclick="changeQuantity('${item.id}',1)" class="px-2 py-0.5 border-l border-black hover:bg-black/10 transition-colors">+</button>
+            </div>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+  generateReceiptClipPath(receiptContentEl);
+}
+window.addToCart=function(id){
+  const info=PRODUCTS[id];if(!info)return;
+  const ex=cart.find(i=>i.id===id);
+  if(ex){ex.quantity+=1;}else{cart.push({id,name:info.name,price:info.price,image:info.image,variant:info.variant,quantity:1});}
+  syncCart();openCart();
+};
+window.changeQuantity=function(id,d){
+  const it=cart.find(i=>i.id===id);if(!it)return;it.quantity+=d;
+  if(it.quantity<=0)cart=cart.filter(i=>i.id!==id);syncCart();
+};
+window.removeFromCart=function(id){cart=cart.filter(i=>i.id!==id);syncCart();};
+function openCart(){
+  receiptDateEl.innerText=getReceiptDate();
+  barcodeIdEl.innerText=`GUMMY-${Math.floor(1000+Math.random()*9000)}-2026`;
+  cartModal.classList.add('modal-active');document.body.classList.add('overflow-hidden');
+  setTimeout(()=>generateReceiptClipPath(receiptContentEl),50);
+}
+function closeCart(){cartModal.classList.remove('modal-active');document.body.classList.remove('overflow-hidden');}
+function openSuccess(){successModal.classList.add('modal-active');document.body.classList.add('overflow-hidden');}
+function closeSuccess(){successModal.classList.remove('modal-active');document.body.classList.remove('overflow-hidden');}
+document.addEventListener('DOMContentLoaded',()=>{
+  syncCart();
+  if(receiptContentEl){new ResizeObserver(()=>generateReceiptClipPath(receiptContentEl)).observe(receiptContentEl);}
+  // delegated so buttons added later / overlaid elements can never break the bag
+  document.addEventListener('click',e=>{
+    const add=e.target.closest('.add-to-cart-btn');
+    if(add){e.preventDefault();const id=add.getAttribute('data-product-id');if(id)addToCart(id);return;}
+    if(e.target.closest('.cart-trigger')){e.preventDefault();openCart();}
+  });
+  const a=document.getElementById('close-cart-btn'),b=document.getElementById('cart-backdrop');
+  if(a)a.addEventListener('click',closeCart);if(b)b.addEventListener('click',closeCart);
+  const c=document.getElementById('close-success-btn'),d=document.getElementById('success-backdrop');
+  if(c)c.addEventListener('click',closeSuccess);if(d)d.addEventListener('click',closeSuccess);
+  const ck=document.getElementById('checkout-btn');
+  if(ck)ck.addEventListener('click',()=>{if(cart.length===0){alert('Your bag is empty!');return;}closeCart();setTimeout(()=>{openSuccess();cart=[];syncCart();},300);});
+  document.documentElement.classList.add('gcready');
+  const revealEls=document.querySelectorAll('.gc-reveal');
+  // threshold:0 so tall (taller-than-viewport) hero blocks reveal on ANY intersection
+  const io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}})},{threshold:0,rootMargin:'0px 0px -8% 0px'});
+  revealEls.forEach(el=>io.observe(el));
+  // failsafe: anything at/above the fold reveals immediately; nothing can stay blank
+  const revealInView=()=>revealEls.forEach(el=>{if(el.getBoundingClientRect().top < innerHeight*1.05) el.classList.add('in');});
+  revealInView();
+  requestAnimationFrame(revealInView);
+  window.addEventListener('load',revealInView);
+});
+
+// ===== inertial smooth scroll (mini-Lenis): wheel is eased through a lerp,
+// so every scroll-driven effect (scrubs, pins, parallax) glides. Native
+// behaviour is kept on touch, reduced-motion, scroll-snap pages, open modals
+// and inner scrollables (receipt list, rails).
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  if((getComputedStyle(document.documentElement).scrollSnapType||'none')!=='none')return;
+  var target=window.scrollY,cur=target,raf=null;
+  window.__gcSmooth=true;
+  function max(){return document.documentElement.scrollHeight-innerHeight;}
+  function loop(){
+    cur+=(target-cur)*0.16;
+    if(Math.abs(target-cur)<0.5){cur=target;window.scrollTo({top:cur,behavior:'instant'});raf=null;return;}
+    window.scrollTo({top:cur,behavior:'instant'});
+    raf=requestAnimationFrame(loop);
+  }
+  addEventListener('wheel',function(e){
+    if(e.ctrlKey)return; // pinch zoom
+    if(document.body.classList.contains('overflow-hidden'))return; // modal open
+    if(e.target.closest&&e.target.closest('#receipt-items,.cf-rail,[data-native-scroll],textarea,select'))return;
+    e.preventDefault();
+    var d=e.deltaY*(e.deltaMode===1?16:(e.deltaMode===2?innerHeight:1));
+    if(raf===null){cur=window.scrollY;target=cur;}
+    target=Math.max(0,Math.min(max(),target+d));
+    if(!raf)raf=requestAnimationFrame(loop);
+  },{passive:false});
+  addEventListener('scroll',function(){if(raf===null){target=cur=window.scrollY;}},{passive:true});
+})();
+
+
+/* ===== premium motion kit ===== */
+(function(){
+  // 1) round-gummy art inside the shared bill (data only; checkout UI untouched)
+  function gum(c){return 'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="'+c+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>');}
+  var GMAP={'dreamy-sleep':'#8b5cf6','electric-blue':'#38bdf8','neon-violet':'#e44bd3','bundle-full-gang':'#ff5c8a','bundle-night-shift':'#7c6cf6','bundle-gut-feeling':'#39c98e'};
+  try{ for(var k in GMAP){ if(PRODUCTS[k]) PRODUCTS[k].image=gum(GMAP[k]); } }catch(e){}
+
+  var fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+  // 2) gummy blob cursor
+  var cur=document.getElementById('pkc');
+  if(fine&&cur){
+    document.documentElement.classList.add('pk');
+    var x=0,y=0,tx=innerWidth/2,ty=innerHeight/2;
+    addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY;cur.classList.add('on')});
+    (function loop(){x+=(tx-x)*.55;y+=(ty-y)*.55;cur.style.left=x+'px';cur.style.top=y+'px';requestAnimationFrame(loop)})();
+    document.addEventListener('mouseover',function(e){var h=e.target.closest('a,button,[data-hot]');cur.style.width=h?'54px':'30px';cur.style.height=h?'54px':'30px'});
+    addEventListener('mousedown',function(){cur.style.width='20px';cur.style.height='20px'});
+    addEventListener('mouseup',function(){cur.style.width='30px';cur.style.height='30px'});
+    document.querySelectorAll('.pk-mag').forEach(function(b){
+      b.addEventListener('mousemove',function(e){var r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.22)+'px,'+((e.clientY-r.top-r.height/2)*.35)+'px)'});
+      b.addEventListener('mouseleave',function(){b.style.transform=''});
+    });
+  }
+  // 3) scroll-scrub engine: sets --p (0→1 progress through viewport) on [data-scrub]
+  var scr=document.querySelectorAll('[data-scrub]');
+  function up(){var vh=innerHeight;scr.forEach(function(el){var r=el.getBoundingClientRect();var p=Math.min(Math.max((vh-r.top)/(vh+r.height),0),1);el.style.setProperty('--p',p.toFixed(4));});}
+  var tk=false;addEventListener('scroll',function(){if(!tk){requestAnimationFrame(function(){up();tk=false});tk=true}},{passive:true});
+  addEventListener('resize',up);up();
+  // 4) char-split reveals (keeps <br>; words stay unbreakable)
+  document.querySelectorAll('.pk-chars').forEach(function(el){
+    var nodes=Array.prototype.slice.call(el.childNodes);el.textContent='';var i=0;
+    nodes.forEach(function(n){
+      if(n.nodeType===1&&n.tagName==='BR'){el.appendChild(document.createElement('br'));return;}
+      var txt=n.textContent||'';
+      txt.split(' ').forEach(function(word,wi,arr){
+        if(word){var w=document.createElement('span');w.style.whiteSpace='nowrap';w.style.display='inline-block';
+          Array.prototype.forEach.call(word,function(c){var sp=document.createElement('span');sp.textContent=c;sp.style.transitionDelay=(i++*32)+'ms';w.appendChild(sp)});
+          el.appendChild(w);}
+        if(wi<arr.length-1){el.appendChild(document.createTextNode(' '));i++;}
+      });
+    });
+    new IntersectionObserver(function(es,o){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('go');o.unobserve(en.target)}})},{threshold:.35}).observe(el);
+  });
+  // 5) squash on click for any gummy art
+  document.addEventListener('click',function(e){
+    var g=e.target.closest('.pk-gummy');if(!g)return;
+    g.classList.remove('pk-squash');void g.offsetWidth;g.classList.add('pk-squash');
+  });
+})();
+
+
+(function(){ var shots=document.querySelectorAll('.pdp-shot'),thumbs=document.querySelectorAll('.pdp-thumb');
+  thumbs.forEach(function(t){t.addEventListener('click',function(){var i=t.getAttribute('data-i');
+    shots.forEach(function(s){s.classList.toggle('on',s.getAttribute('data-i')===i)});
+    thumbs.forEach(function(x){x.classList.toggle('on',x===t)});});});
+})();
+
+</script>
+</body>
+</html>
