@@ -122,6 +122,7 @@
     <p class="font-bold text-[#fff6ea]/60 mt-6 max-w-md mx-auto">Lab-tested, vegetarian, FSSAI-made. The squish is scientific.</p>
   </div>
 </section>
+<section class="px-5 md:px-10 py-24" style="border-top:1px solid rgba(0,0,0,.12)"><div class="max-w-5xl mx-auto"><p class="uppercase tracking-[0.3em] text-xs mb-4" style="color:#ff5c8a">The story behind GummyChums</p><h2 class="text-3xl md:text-5xl font-extrabold leading-tight mb-8">Why does taking care of your health<br class="hidden md:block"/> have to feel like taking medicine?</h2><div class="grid md:grid-cols-2 gap-8 text-base leading-relaxed" style="opacity:.65"><p>GummyChums was born from that one simple thought. Like many people, our founder was juggling multiple supplements a day — some for nutrition, some for energy, some for overall wellness. Remembering which pill to take, carrying different bottles everywhere, swallowing capsules every morning&hellip; it never felt enjoyable. It felt like another task on the to-do list.</p><p>So we asked: <b style="opacity:1">what if wellness could be as enjoyable as your favourite candy?</b> &ldquo;Chums&rdquo; means friends — and that is exactly what these gummies are meant to be: the little friend you happily reach for every day. Not because you have to. Because you want to. Delicious, beautifully designed, science-backed — and made for real Indian lives.</p></div><div class="rounded-3xl p-8 md:p-10 my-12 text-center" style="background:rgba(0,0,0,.04)"><p class="text-2xl md:text-4xl font-extrabold leading-snug">Our mission is simple:<br/><span style="color:#ff5c8a">make wellness feel like a treat, not a task.</span></p></div><h3 class="text-xl font-extrabold mb-4">You&rsquo;ll reach for a Chum&hellip;</h3><div class="flex flex-wrap gap-3 mb-14"><span class="rounded-full px-4 py-2 text-sm font-semibold" style="background:rgba(0,0,0,.04)">before an important exam</span><span class="rounded-full px-4 py-2 text-sm font-semibold" style="background:rgba(0,0,0,.04)">a long meeting</span><span class="rounded-full px-4 py-2 text-sm font-semibold" style="background:rgba(0,0,0,.04)">an intense workout</span><span class="rounded-full px-4 py-2 text-sm font-semibold" style="background:rgba(0,0,0,.04)">a road trip</span><span class="rounded-full px-4 py-2 text-sm font-semibold" style="background:rgba(0,0,0,.04)">a busy workday</span><span class="rounded-full px-4 py-2 text-sm font-semibold" style="background:rgba(0,0,0,.04)">winding down at night</span></div><h3 class="text-xl font-extrabold mb-6">How every Chum should make you feel</h3><div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-14"><div class="rounded-2xl p-5" style="background:rgba(0,0,0,.04)"><div class="font-extrabold" style="color:#ff5c8a">Happy</div><p class="text-sm mt-1" style="opacity:.65">because taking care of yourself should be enjoyable</p></div><div class="rounded-2xl p-5" style="background:rgba(0,0,0,.04)"><div class="font-extrabold" style="color:#ff5c8a">Confident</div><p class="text-sm mt-1" style="opacity:.65">you know exactly what you are taking, and why</p></div><div class="rounded-2xl p-5" style="background:rgba(0,0,0,.04)"><div class="font-extrabold" style="color:#ff5c8a">Energized</div><p class="text-sm mt-1" style="opacity:.65">ready for real-life moments, not just routines</p></div><div class="rounded-2xl p-5" style="background:rgba(0,0,0,.04)"><div class="font-extrabold" style="color:#ff5c8a">Comforted</div><p class="text-sm mt-1" style="opacity:.65">a brand that is approachable, never intimidating</p></div><div class="rounded-2xl p-5" style="background:rgba(0,0,0,.04)"><div class="font-extrabold" style="color:#ff5c8a">Curious</div><p class="text-sm mt-1" style="opacity:.65">new flavours and formats worth looking forward to</p></div><div class="rounded-2xl p-5" style="background:rgba(0,0,0,.04)"><div class="font-extrabold" style="color:#ff5c8a">Proud</div><p class="text-sm mt-1" style="opacity:.65">something you will happily recommend to friends</p></div></div><h3 class="text-xl font-extrabold mb-6">Three things we will never compromise</h3><div class="grid md:grid-cols-3 gap-4 mb-12"><div class="rounded-2xl p-6" style="background:rgba(0,0,0,.04)"><div class="text-2xl font-extrabold mb-2" style="color:#ff5c8a">Accessibility</div><p class="text-sm leading-relaxed" style="opacity:.65">Premium wellness at a price that stays within reach. Taking care of your health should never be a luxury.</p></div><div class="rounded-2xl p-6" style="background:rgba(0,0,0,.04)"><div class="text-2xl font-extrabold mb-2" style="color:#ff5c8a">Joy</div><p class="text-sm leading-relaxed" style="opacity:.65">From flavour to packaging to this very website — every interaction should make you smile.</p></div><div class="rounded-2xl p-6" style="background:rgba(0,0,0,.04)"><div class="text-2xl font-extrabold mb-2" style="color:#ff5c8a">Trust</div><p class="text-sm leading-relaxed" style="opacity:.65">Transparent labels, rigorous quality checks, FSSAI-certified manufacturing. You should never have to wonder.</p></div></div><p class="text-sm text-center" style="opacity:.65">And a promise on what we&rsquo;ll never be: never clinical &middot; never childish &middot; never preachy &middot; never complicated. We&rsquo;re not another supplement company, not a candy brand — we&rsquo;re a modern lifestyle brand that happens to make wellness products India genuinely loves.</p></div></section>
 <footer class="py-14 text-center"><span class="sq-big text-2xl">GummyChums</span><p class="font-bold text-[#2a1637]/50 mt-2 text-sm">Made with squish in India</p></footer>
 
 
@@ -260,8 +261,12 @@ function closeSuccess(){successModal.classList.remove('modal-active');document.b
 document.addEventListener('DOMContentLoaded',()=>{
   syncCart();
   if(receiptContentEl){new ResizeObserver(()=>generateReceiptClipPath(receiptContentEl)).observe(receiptContentEl);}
-  document.querySelectorAll('.add-to-cart-btn').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const id=btn.getAttribute('data-product-id');if(id)addToCart(id);}));
-  document.querySelectorAll('.cart-trigger').forEach(b=>b.addEventListener('click',openCart));
+  // delegated so buttons added later / overlaid elements can never break the bag
+  document.addEventListener('click',e=>{
+    const add=e.target.closest('.add-to-cart-btn');
+    if(add){e.preventDefault();const id=add.getAttribute('data-product-id');if(id)addToCart(id);return;}
+    if(e.target.closest('.cart-trigger')){e.preventDefault();openCart();}
+  });
   const a=document.getElementById('close-cart-btn'),b=document.getElementById('cart-backdrop');
   if(a)a.addEventListener('click',closeCart);if(b)b.addEventListener('click',closeCart);
   const c=document.getElementById('close-success-btn'),d=document.getElementById('success-backdrop');
@@ -328,6 +333,15 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.addEventListener('click',function(e){
     var g=e.target.closest('.pk-gummy');if(!g)return;
     g.classList.remove('pk-squash');void g.offsetWidth;g.classList.add('pk-squash');
+  });
+})();
+
+(function(){ // "view product page" links under premium product cards
+  var MAP={'dreamy-sleep':'product-dreamy-sleep.html','electric-blue':'product-electric-blue.html','neon-violet':'product-neon-violet.html'};
+  document.querySelectorAll('.add-to-cart-btn').forEach(function(b){
+    var id=b.getAttribute('data-product-id');if(!MAP[id])return;
+    var row=b.parentElement;if(!row)return;
+    row.insertAdjacentHTML('afterend','<a href="'+MAP[id]+'" class="block mt-3 text-xs font-bold underline underline-offset-4 opacity-60 hover:opacity-100" data-hot>View product page →</a>');
   });
 })();
 

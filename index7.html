@@ -251,8 +251,12 @@ function closeSuccess(){successModal.classList.remove('modal-active');document.b
 document.addEventListener('DOMContentLoaded',()=>{
   syncCart();
   if(receiptContentEl){new ResizeObserver(()=>generateReceiptClipPath(receiptContentEl)).observe(receiptContentEl);}
-  document.querySelectorAll('.add-to-cart-btn').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const id=btn.getAttribute('data-product-id');if(id)addToCart(id);}));
-  document.querySelectorAll('.cart-trigger').forEach(b=>b.addEventListener('click',openCart));
+  // delegated so buttons added later / overlaid elements can never break the bag
+  document.addEventListener('click',e=>{
+    const add=e.target.closest('.add-to-cart-btn');
+    if(add){e.preventDefault();const id=add.getAttribute('data-product-id');if(id)addToCart(id);return;}
+    if(e.target.closest('.cart-trigger')){e.preventDefault();openCart();}
+  });
   const a=document.getElementById('close-cart-btn'),b=document.getElementById('cart-backdrop');
   if(a)a.addEventListener('click',closeCart);if(b)b.addEventListener('click',closeCart);
   const c=document.getElementById('close-success-btn'),d=document.getElementById('success-backdrop');
