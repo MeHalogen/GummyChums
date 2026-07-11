@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>GummyChums — Indian Bazaar</title>
+<title>GummyChums — Zoom Voyage</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Yatra+One&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet"/>
 <script>
   /* enable reveal-hiding only when JS is live; hard failsafe reveals all if init never runs */
   (function(){var h=document.documentElement;h.classList.add('gcjs');
@@ -37,90 +37,90 @@
     @media (prefers-reduced-motion: reduce){ html.gcjs .gc-reveal{opacity:1 !important;transform:none !important;} *{animation-duration:.001s!important;} }
 
 
-  .bz-head{font-family:'Yatra One',system-ui;}
-  body{background-image:radial-gradient(#e8462022 2px,transparent 2px),radial-gradient(#1f7a4d18 2px,transparent 2px);background-size:34px 34px;background-position:0 0,17px 17px;}
-  .bz-card{border-radius:1.25rem;border:3px solid #2b1a0a;box-shadow:6px 6px 0 #e84620;transition:transform .2s,box-shadow .2s;}
-  .bz-card:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 #e84620;}
-  .bz-btn{transition:transform .12s,filter .2s;}.bz-btn:hover{filter:brightness(1.08);}.bz-btn:active{transform:scale(.94);}
-  @keyframes bz-marq{to{transform:translateX(-50%);}}
-  .bz-marq{animation:bz-marq 18s linear infinite;}
-  @keyframes bz-spin{to{transform:rotate(360deg);}}.bz-spin{animation:bz-spin 30s linear infinite;}
-  @keyframes bz-sway{0%,100%{transform:rotate(-4deg);}50%{transform:rotate(4deg);}}.bz-sway{animation:bz-sway 4s ease-in-out infinite;transform-origin:top center;}
-  .bz-fringe{background:repeating-linear-gradient(90deg,#e84620 0 18px,#f4a300 18px 36px,#1f7a4d 36px 54px,#c81e5a 54px 72px);}
-  .bz-link{position:relative;}.bz-link::after{content:"";position:absolute;left:0;bottom:-3px;width:0;height:3px;background:#e84620;transition:width .25s;}.bz-link:hover::after{width:100%;}
+  /* ===== premium motion kit ===== */
+  @media (hover:hover) and (pointer:fine){ .pk body, .pk a, .pk button, .pk [data-hot]{cursor:none} }
+  #pkc{position:fixed;left:0;top:0;width:30px;height:30px;z-index:99;pointer-events:none;transform:translate(-50%,-50%);
+       border-radius:46% 54% 52% 48%/48% 46% 54% 52%;transition:width .22s,height .22s,opacity .3s;opacity:0;
+       mix-blend-mode:multiply;animation:pk-wob 5s ease-in-out infinite;
+       box-shadow:inset -4px -5px 8px rgba(0,0,0,.18), inset 4px 5px 8px rgba(255,255,255,.5);}
+  #pkc.on{opacity:.92}  #pkc.blend-screen{mix-blend-mode:screen}
+  @media (hover:none){#pkc{display:none}}
+  @keyframes pk-wob{0%,100%{border-radius:46% 54% 52% 48%/48% 46% 54% 52%}33%{border-radius:58% 42% 45% 55%/52% 58% 42% 48%}66%{border-radius:42% 58% 60% 40%/45% 42% 58% 55%}}
+  .pk-wobble{animation:pk-wob 7s ease-in-out infinite}
+  @keyframes pk-float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-20px) rotate(3deg)}}
+  .pk-float{animation:pk-float 6s ease-in-out infinite}
+  @keyframes pk-aurora{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  .pk-aurora{background-size:280% 280%;animation:pk-aurora 13s ease infinite}
+  @keyframes pk-breathe{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:.95;transform:scale(1.18)}}
+  .pk-light{position:absolute;border-radius:50%;filter:blur(72px);pointer-events:none;animation:pk-breathe 7s ease-in-out infinite}
+  .pk-mag{transition:transform .16s cubic-bezier(.34,1.56,.64,1)}
+  .pk-btn{transition:transform .12s}.pk-btn:active{transform:scale(.93)}
+  [data-scrub]{--p:0}
+  .pk-chars span span{display:inline-block;opacity:0;transform:translateY(65%) rotate(7deg);transition:opacity .45s,transform .6s cubic-bezier(.2,.8,.2,1)}
+  .pk-chars.go span span{opacity:1;transform:none}
+  @keyframes pk-spin{to{transform:rotate(1turn)}}
+  .pk-spin{animation:pk-spin 24s linear infinite}
+  @keyframes pk-squash{0%{transform:scale(1)}35%{transform:scale(1.22,.78)}65%{transform:scale(.86,1.14)}100%{transform:scale(1)}}
+  .pk-squash{animation:pk-squash .5s cubic-bezier(.34,1.56,.64,1)}
+  .pk-marq{display:flex;white-space:nowrap;will-change:transform;animation:pk-mv 18s linear infinite}
+  @keyframes pk-mv{to{transform:translateX(-50%)}}
+
+  .zv-stage{height:320vh;}
+  .zv-gummy{transform:scale(calc(1 + var(--p) * var(--p) * 26));will-change:transform;}
+  .zv-title{opacity:calc(1 - var(--p) * 2.6);transform:translateY(calc(var(--p) * -80px));}
+  .zv-inside{opacity:calc((var(--p) - .55) * 3.2);}
+  .zv-card{background:#fff;border-radius:1.75rem;box-shadow:0 18px 40px -18px rgba(44,18,48,.35);transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+  .zv-card:hover{transform:translateY(-8px) scale(1.02);}
 
 </style>
 </head>
-<body class="bg-[#fff4d6] text-[#2b1a0a] font-[Poppins] overflow-x-hidden">
+<body class="bg-[#fdf3e7] text-[#2c1230] font-[Bricolage_Grotesque] overflow-x-hidden">
 
-<div class="bz-fringe h-3"></div>
-<nav class="sticky top-0 z-50 bg-[#e84620] text-[#fff4d6] px-5 md:px-10 py-3 flex items-center justify-between border-b-4 border-[#2b1a0a]">
-  <div class="flex items-center gap-2 cursor-pointer" onclick="scrollTo({top:0,behavior:'smooth'})"><img src="logo.png" class="h-10 bg-[#fff4d6] rounded-full p-1"/><span class="bz-head text-2xl">GummyChums</span></div>
-  <div class="hidden md:flex gap-8 font-semibold"><a href="#shop" class="bz-link">Dukaan</a><a href="#why" class="bz-link">Kyun</a><a href="#combo" class="bz-link">Combos</a></div>
-  <div class="flex items-center gap-3">
-    <button class="cart-trigger relative bg-[#f4a300] text-[#2b1a0a] p-2.5 rounded-full border-2 border-[#2b1a0a] bz-btn"><span class="material-symbols-outlined align-middle">shopping_bag</span><span class="cart-count hidden absolute -top-1 -right-1 bg-[#c81e5a] text-white text-xs font-bold w-5 h-5 grid place-items-center rounded-full border border-[#2b1a0a]">0</span></button>
-    <a href="#shop" class="hidden sm:block bg-[#1f7a4d] text-white font-bold px-5 py-2.5 rounded-full border-2 border-[#2b1a0a] bz-btn">Chalo Shop</a>
-  </div>
+<div id="pkc" style="background:#e44bd3"></div>
+<nav class="fixed top-0 inset-x-0 z-50 px-5 md:px-10 py-4 flex items-center justify-between mix-blend-multiply">
+  <span class="font-extrabold text-xl">GummyChums</span>
+  <button class="cart-trigger pk-btn relative bg-[#2c1230] text-white rounded-full px-5 py-2.5 text-sm font-bold">Bag <span class="cart-count hidden ml-1 bg-[#e44bd3] text-white text-[11px] px-1.5 rounded-full">0</span></button>
 </nav>
-
-<header class="relative px-5 md:px-10 py-16 overflow-hidden">
-  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
-    <div class="gc-reveal">
-      <div class="inline-block bg-[#1f7a4d] text-white px-4 py-1 rounded-full font-semibold mb-6 border-2 border-[#2b1a0a] bz-sway">✦ Proudly Indian ✦</div>
-      <h1 class="bz-head text-5xl md:text-7xl leading-tight">Sehat ka<br/><span class="text-[#e84620]">tyohaar.</span></h1>
-      <p class="text-lg mt-6 max-w-md font-medium">Wellness with the colour of a festival and the science of a lab. Chew, smile, repeat.</p>
-      <div class="flex gap-4 mt-8 flex-wrap">
-        <a href="#shop" class="bz-btn bg-[#e84620] text-white bz-head text-lg px-8 py-4 rounded-full border-4 border-[#2b1a0a]" style="box-shadow:5px 5px 0 #2b1a0a">Shop now</a>
-        <a href="#why" class="bz-btn bg-[#f4a300] text-[#2b1a0a] bz-head text-lg px-8 py-4 rounded-full border-4 border-[#2b1a0a]" style="box-shadow:5px 5px 0 #2b1a0a">Jaano</a>
-      </div>
+<header data-scrub class="zv-stage relative">
+  <div class="sticky top-0 h-screen overflow-hidden grid place-items-center">
+    <div class="zv-gummy absolute" style="width:min(30vw,220px)" data-hot><svg class="pk-gummy" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></div>
+    <div class="zv-title relative z-10 text-center px-5">
+      <p class="uppercase tracking-[0.35em] text-xs opacity-50 mb-5">A trip inside the gummy</p>
+      <h1 class="pk-chars text-6xl md:text-9xl font-extrabold leading-[.88]">Fall in.</h1>
+      <p class="font-semibold opacity-60 mt-5 max-w-sm mx-auto">Keep scrolling. We&rsquo;re going inside.</p>
     </div>
-    <div class="relative flex justify-center gc-reveal">
-      <div class="absolute w-80 h-80 rounded-full border-8 border-dashed border-[#e84620] bz-spin"></div>
-      <div class="absolute w-64 h-64 rounded-full border-8 border-dotted border-[#1f7a4d] bz-spin" style="animation-direction:reverse"></div>
-      <img src="mascot.png" class="relative w-3/4 max-w-xs rounded-3xl border-4 border-[#2b1a0a]" style="box-shadow:8px 8px 0 #c81e5a"/>
+    <div class="zv-inside absolute inset-0 grid place-items-center text-center px-5" style="background:radial-gradient(circle at 50% 45%,#f265dd,#b1249f 70%);opacity:0">
+      <div>
+        <h2 class="pk-chars text-4xl md:text-7xl font-extrabold text-white leading-tight">Inside: pure,<br/>tested goodness.</h2>
+        <p class="text-white/75 font-semibold mt-5 max-w-md mx-auto">Ashwagandha. Melatonin. Lutein. Zero artificial colours. That&rsquo;s the whole secret.</p>
+        <a href="#shop" data-hot class="pk-btn pk-mag inline-block bg-white text-[#b1249f] font-extrabold px-9 py-4 rounded-full mt-8">Surface with the goods ↓</a>
+      </div>
     </div>
   </div>
 </header>
-
-<div class="overflow-hidden my-6"><div class="bg-[#2b1a0a] py-3 overflow-hidden -rotate-1 scale-105">
-  <div class="flex whitespace-nowrap bz-marq bz-head text-[#f4a300] text-2xl"><span class="mx-6">स्वादिष्ट ✦ Tasty ✦ Made in India ✦ No artificial colours ✦ FSSAI ✦</span><span class="mx-6">स्वादिष्ट ✦ Tasty ✦ Made in India ✦ No artificial colours ✦ FSSAI ✦</span></div>
-</div></div>
-
-<section id="shop" class="py-16 px-5 md:px-10 max-w-6xl mx-auto">
-  <h2 class="bz-head text-5xl text-center mb-3 gc-reveal">Hamari Dukaan</h2>
-  <p class="text-center mb-12 gc-reveal font-medium">Pick your Chum — bill prints on checkout.</p>
+<section id="shop" class="px-5 md:px-10 py-24 max-w-6xl mx-auto">
+  <h2 class="pk-chars text-4xl md:text-6xl font-extrabold text-center mb-14">Souvenirs from inside</h2>
   <div class="grid md:grid-cols-3 gap-8">
-    <div class="bz-card bg-[#fff9e8] p-6 gc-reveal"><div class="bg-white rounded-xl p-5 mb-4 border-2 border-[#2b1a0a]"><img src="mascot.png" class="w-full h-40 object-contain bz-sway" style="filter:hue-rotate(230deg)"/></div><h3 class="bz-head text-2xl">Dreamy Sleep</h3><p class="text-sm my-3">Melatonin + Chamomile ki neend.</p><div class="flex justify-between items-center border-t-2 border-dashed border-[#2b1a0a] pt-3"><span class="bz-head text-2xl text-[#e84620]">₹699</span><button class="add-to-cart-btn bz-btn bg-[#e84620] text-white px-5 py-2 rounded-full font-bold border-2 border-[#2b1a0a]" data-product-id="dreamy-sleep">Add</button></div></div>
-    <div class="bz-card bg-[#fff9e8] p-6 gc-reveal"><div class="bg-white rounded-xl p-5 mb-4 border-2 border-[#2b1a0a]"><img src="mascot.png" class="w-full h-40 object-contain bz-sway" style="filter:hue-rotate(150deg);animation-delay:.3s"/></div><h3 class="bz-head text-2xl">Electric Blue</h3><p class="text-sm my-3">Lutein for thaki aankhein.</p><div class="flex justify-between items-center border-t-2 border-dashed border-[#2b1a0a] pt-3"><span class="bz-head text-2xl text-[#1f7a4d]">₹749</span><button class="add-to-cart-btn bz-btn bg-[#1f7a4d] text-white px-5 py-2 rounded-full font-bold border-2 border-[#2b1a0a]" data-product-id="electric-blue">Add</button></div></div>
-    <div class="bz-card bg-[#fff9e8] p-6 gc-reveal"><div class="bg-white rounded-xl p-5 mb-4 border-2 border-[#2b1a0a]"><img src="mascot.png" class="w-full h-40 object-contain bz-sway" style="filter:hue-rotate(280deg);animation-delay:.6s"/></div><h3 class="bz-head text-2xl">Neon Violet</h3><p class="text-sm my-3">Ashwagandha + Brahmi shaanti.</p><div class="flex justify-between items-center border-t-2 border-dashed border-[#2b1a0a] pt-3"><span class="bz-head text-2xl text-[#c81e5a]">₹899</span><button class="add-to-cart-btn bz-btn bg-[#c81e5a] text-white px-5 py-2 rounded-full font-bold border-2 border-[#2b1a0a]" data-product-id="neon-violet">Add</button></div></div>
-  </div>
+    <div class="zv-card p-7 text-center">
+      <div class="grid place-items-center py-5 rounded-2xl mb-4" style="background:#8b5cf615" data-hot><svg class="pk-gummy pk-float" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:72%"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#8b5cf6"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></div>
+      <h3 class="font-extrabold text-2xl">Dreamy Sleep</h3><p class="opacity-55 font-semibold my-3 text-sm">Melatonin + Chamomile · drift off easy</p>
+      <div class="flex items-center justify-between"><span class="font-extrabold text-2xl" style="color:#8b5cf6">₹699</span>
+      <button class="add-to-cart-btn pk-btn pk-mag bg-[#2c1230] text-white px-6 py-3 rounded-full font-bold" data-product-id="dreamy-sleep">Add</button></div>
+    </div>
+    <div class="zv-card p-7 text-center">
+      <div class="grid place-items-center py-5 rounded-2xl mb-4" style="background:#38bdf815" data-hot><svg class="pk-gummy pk-float" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:72%"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#38bdf8"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></div>
+      <h3 class="font-extrabold text-2xl">Electric Blue</h3><p class="opacity-55 font-semibold my-3 text-sm">Lutein + B12 · for screen-lit days</p>
+      <div class="flex items-center justify-between"><span class="font-extrabold text-2xl" style="color:#38bdf8">₹749</span>
+      <button class="add-to-cart-btn pk-btn pk-mag bg-[#2c1230] text-white px-6 py-3 rounded-full font-bold" data-product-id="electric-blue">Add</button></div>
+    </div>
+    <div class="zv-card p-7 text-center">
+      <div class="grid place-items-center py-5 rounded-2xl mb-4" style="background:#e44bd315" data-hot><svg class="pk-gummy pk-float" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:72%"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></div>
+      <h3 class="font-extrabold text-2xl">Neon Violet</h3><p class="opacity-55 font-semibold my-3 text-sm">Ashwagandha + Brahmi · calm focus</p>
+      <div class="flex items-center justify-between"><span class="font-extrabold text-2xl" style="color:#e44bd3">₹899</span>
+      <button class="add-to-cart-btn pk-btn pk-mag bg-[#2c1230] text-white px-6 py-3 rounded-full font-bold" data-product-id="neon-violet">Add</button></div>
+    </div></div>
 </section>
-
-<section id="why" class="py-16 px-5 md:px-10 bg-[#1f7a4d] text-[#fff4d6]">
-  <h2 class="bz-head text-5xl text-center mb-12 gc-reveal">Kyun GummyChums?</h2>
-  <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-    <div class="bg-[#fff4d6] text-[#2b1a0a] bz-card p-7 text-center gc-reveal" style="box-shadow:6px 6px 0 #2b1a0a"><span class="material-symbols-outlined text-5xl text-[#e84620]">science</span><h3 class="bz-head text-xl mt-3">Science-backed</h3><p class="text-sm mt-1">Lab-tested, no guesswork.</p></div>
-    <div class="bg-[#fff4d6] text-[#2b1a0a] bz-card p-7 text-center gc-reveal" style="box-shadow:6px 6px 0 #2b1a0a"><span class="material-symbols-outlined text-5xl text-[#f4a300]">celebration</span><h3 class="bz-head text-xl mt-3">Festival of taste</h3><p class="text-sm mt-1">Flavours you'll crave.</p></div>
-    <div class="bg-[#fff4d6] text-[#2b1a0a] bz-card p-7 text-center gc-reveal" style="box-shadow:6px 6px 0 #2b1a0a"><span class="material-symbols-outlined text-5xl text-[#c81e5a]">favorite</span><h3 class="bz-head text-xl mt-3">Made for India</h3><p class="text-sm mt-1">Our lives, our routines.</p></div>
-  </div>
-</section>
-
-<section id="combo" class="py-16 px-5 md:px-10 max-w-6xl mx-auto">
-  <h2 class="bz-head text-5xl text-center mb-12 gc-reveal">Combo Deals</h2>
-  <div class="grid md:grid-cols-3 gap-8">
-    <div class="bz-card bg-[#f4a300] p-6 gc-reveal"><h3 class="bz-head text-2xl">Poora Parivaar</h3><p class="text-sm my-3">Teeno saath.</p><div class="flex justify-between items-center"><span class="bz-head text-xl">₹1899</span><button class="add-to-cart-btn bz-btn bg-[#2b1a0a] text-[#f4a300] px-5 py-2 rounded-full font-bold" data-product-id="bundle-full-gang">Add</button></div></div>
-    <div class="bz-card bg-[#e84620] text-white p-6 gc-reveal"><h3 class="bz-head text-2xl">Night Shift</h3><p class="text-sm my-3">Neend + aankhein.</p><div class="flex justify-between items-center"><span class="bz-head text-xl">₹1199</span><button class="add-to-cart-btn bz-btn bg-white text-[#e84620] px-5 py-2 rounded-full font-bold" data-product-id="bundle-night-shift">Add</button></div></div>
-    <div class="bz-card bg-[#c81e5a] text-white p-6 gc-reveal"><h3 class="bz-head text-2xl">Gut Feeling</h3><p class="text-sm my-3">Pet ki suno.</p><div class="flex justify-between items-center"><span class="bz-head text-xl">₹999</span><button class="add-to-cart-btn bz-btn bg-white text-[#c81e5a] px-5 py-2 rounded-full font-bold" data-product-id="bundle-gut-feeling">Add</button></div></div>
-  </div>
-</section>
-
-<footer class="bg-[#2b1a0a] text-[#fff4d6] py-14 px-5 md:px-10 text-center">
-  <img src="logo.png" class="h-14 mx-auto mb-4 bg-[#fff4d6] rounded-full p-1"/>
-  <h2 class="bz-head text-3xl text-[#f4a300] mb-3">Sehatmand raho, khush raho</h2>
-  <p class="text-[#fff4d6]/60 mb-6">Made with pyaar in India 🇮🇳</p>
-  <div class="flex gap-6 justify-center font-semibold"><a href="#" class="bz-link">Instagram</a><a href="#" class="bz-link">Privacy</a><a href="#" class="bz-link">Terms</a></div>
-</footer>
-<div class="bz-fringe h-3"></div>
+<footer class="py-12 text-center opacity-50 text-sm font-semibold">GummyChums · the inside story · Made in India</footer>
 
 
 <!-- ===================== SHARED BILL / CHECKOUT (unchanged from index.html) ===================== -->
@@ -278,6 +278,56 @@ document.addEventListener('DOMContentLoaded',()=>{
   window.addEventListener('load',revealInView);
 });
 
+
+/* ===== premium motion kit ===== */
+(function(){
+  // 1) round-gummy art inside the shared bill (data only; checkout UI untouched)
+  function gum(c){return 'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="'+c+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>');}
+  var GMAP={'dreamy-sleep':'#8b5cf6','electric-blue':'#38bdf8','neon-violet':'#e44bd3','bundle-full-gang':'#ff5c8a','bundle-night-shift':'#7c6cf6','bundle-gut-feeling':'#39c98e'};
+  try{ for(var k in GMAP){ if(PRODUCTS[k]) PRODUCTS[k].image=gum(GMAP[k]); } }catch(e){}
+
+  var fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+  // 2) gummy blob cursor
+  var cur=document.getElementById('pkc');
+  if(fine&&cur){
+    document.documentElement.classList.add('pk');
+    var x=0,y=0,tx=innerWidth/2,ty=innerHeight/2;
+    addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY;cur.classList.add('on')});
+    (function loop(){x+=(tx-x)*.22;y+=(ty-y)*.22;cur.style.left=x+'px';cur.style.top=y+'px';requestAnimationFrame(loop)})();
+    document.addEventListener('mouseover',function(e){var h=e.target.closest('a,button,[data-hot]');cur.style.width=h?'54px':'30px';cur.style.height=h?'54px':'30px'});
+    addEventListener('mousedown',function(){cur.style.width='20px';cur.style.height='20px'});
+    addEventListener('mouseup',function(){cur.style.width='30px';cur.style.height='30px'});
+    document.querySelectorAll('.pk-mag').forEach(function(b){
+      b.addEventListener('mousemove',function(e){var r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.22)+'px,'+((e.clientY-r.top-r.height/2)*.35)+'px)'});
+      b.addEventListener('mouseleave',function(){b.style.transform=''});
+    });
+  }
+  // 3) scroll-scrub engine: sets --p (0→1 progress through viewport) on [data-scrub]
+  var scr=document.querySelectorAll('[data-scrub]');
+  function up(){var vh=innerHeight;scr.forEach(function(el){var r=el.getBoundingClientRect();var p=Math.min(Math.max((vh-r.top)/(vh+r.height),0),1);el.style.setProperty('--p',p.toFixed(4));});}
+  var tk=false;addEventListener('scroll',function(){if(!tk){requestAnimationFrame(function(){up();tk=false});tk=true}},{passive:true});
+  addEventListener('resize',up);up();
+  // 4) char-split reveals (keeps <br>; words stay unbreakable)
+  document.querySelectorAll('.pk-chars').forEach(function(el){
+    var nodes=Array.prototype.slice.call(el.childNodes);el.textContent='';var i=0;
+    nodes.forEach(function(n){
+      if(n.nodeType===1&&n.tagName==='BR'){el.appendChild(document.createElement('br'));return;}
+      var txt=n.textContent||'';
+      txt.split(' ').forEach(function(word,wi,arr){
+        if(word){var w=document.createElement('span');w.style.whiteSpace='nowrap';w.style.display='inline-block';
+          Array.prototype.forEach.call(word,function(c){var sp=document.createElement('span');sp.textContent=c;sp.style.transitionDelay=(i++*32)+'ms';w.appendChild(sp)});
+          el.appendChild(w);}
+        if(wi<arr.length-1){el.appendChild(document.createTextNode(' '));i++;}
+      });
+    });
+    new IntersectionObserver(function(es,o){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('go');o.unobserve(en.target)}})},{threshold:.35}).observe(el);
+  });
+  // 5) squash on click for any gummy art
+  document.addEventListener('click',function(e){
+    var g=e.target.closest('.pk-gummy');if(!g)return;
+    g.classList.remove('pk-squash');void g.offsetWidth;g.classList.add('pk-squash');
+  });
+})();
 
 </script>
 </body>

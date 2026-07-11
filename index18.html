@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GummyChums — Orbit</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
+<script>
+  /* enable reveal-hiding only when JS is live; hard failsafe reveals all if init never runs */
+  (function(){var h=document.documentElement;h.classList.add('gcjs');
+    window.addEventListener('load',function(){setTimeout(function(){
+      if(!h.classList.contains('gcready')){document.querySelectorAll('.gc-reveal').forEach(function(e){e.classList.add('in');});}
+    },700);});})();
+</script>
+<style>
+
+    /* ---- shared bill/checkout support (identical across all designs) ---- */
+    .material-symbols-outlined { font-variation-settings:'FILL' 1,'wght' 700,'GRAD' 0,'opsz' 24; }
+    .neo-shadow    { box-shadow: 8px 8px 0 0 #261236; }
+    .neo-shadow-lg { box-shadow: 12px 12px 0 0 #261236; }
+    .neo-shadow-sm { box-shadow: 4px 4px 0 0 #261236; }
+    .jelly-pop { transition: transform .1s, box-shadow .1s; }
+    .jelly-pop:active { transform: scale(.95) translate(4px,4px); box-shadow: 2px 2px 0 0 #261236; }
+    .modal-active { opacity:1 !important; pointer-events:auto !important; }
+    .modal-active #receipt-wrapper, .modal-active #success-card { transform: scale(1) translateY(0) !important; }
+    .receipt-scrollbar::-webkit-scrollbar { width:4px; }
+    .receipt-scrollbar::-webkit-scrollbar-track { background:transparent; }
+    .receipt-scrollbar::-webkit-scrollbar-thumb { background:rgba(0,0,0,.2); border-radius:2px; }
+    .font-receipt { font-family:'Courier New', ui-monospace, monospace; }
+    /* shared scroll-reveal (progressive enhancement: hidden ONLY while JS runs,
+       so a cache/JS hiccup can never leave a page blank) */
+    .gc-reveal { }
+    html.gcjs .gc-reveal { opacity:0; transform: translateY(34px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+    html.gcjs .gc-reveal.in { opacity:1; transform:none; }
+    @media (prefers-reduced-motion: reduce){ html.gcjs .gc-reveal{opacity:1 !important;transform:none !important;} *{animation-duration:.001s!important;} }
+
+
+  /* ===== premium motion kit ===== */
+  @media (hover:hover) and (pointer:fine){ .pk body, .pk a, .pk button, .pk [data-hot]{cursor:none} }
+  #pkc{position:fixed;left:0;top:0;width:30px;height:30px;z-index:99;pointer-events:none;transform:translate(-50%,-50%);
+       border-radius:46% 54% 52% 48%/48% 46% 54% 52%;transition:width .22s,height .22s,opacity .3s;opacity:0;
+       mix-blend-mode:multiply;animation:pk-wob 5s ease-in-out infinite;
+       box-shadow:inset -4px -5px 8px rgba(0,0,0,.18), inset 4px 5px 8px rgba(255,255,255,.5);}
+  #pkc.on{opacity:.92}  #pkc.blend-screen{mix-blend-mode:screen}
+  @media (hover:none){#pkc{display:none}}
+  @keyframes pk-wob{0%,100%{border-radius:46% 54% 52% 48%/48% 46% 54% 52%}33%{border-radius:58% 42% 45% 55%/52% 58% 42% 48%}66%{border-radius:42% 58% 60% 40%/45% 42% 58% 55%}}
+  .pk-wobble{animation:pk-wob 7s ease-in-out infinite}
+  @keyframes pk-float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-20px) rotate(3deg)}}
+  .pk-float{animation:pk-float 6s ease-in-out infinite}
+  @keyframes pk-aurora{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  .pk-aurora{background-size:280% 280%;animation:pk-aurora 13s ease infinite}
+  @keyframes pk-breathe{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:.95;transform:scale(1.18)}}
+  .pk-light{position:absolute;border-radius:50%;filter:blur(72px);pointer-events:none;animation:pk-breathe 7s ease-in-out infinite}
+  .pk-mag{transition:transform .16s cubic-bezier(.34,1.56,.64,1)}
+  .pk-btn{transition:transform .12s}.pk-btn:active{transform:scale(.93)}
+  [data-scrub]{--p:0}
+  .pk-chars span span{display:inline-block;opacity:0;transform:translateY(65%) rotate(7deg);transition:opacity .45s,transform .6s cubic-bezier(.2,.8,.2,1)}
+  .pk-chars.go span span{opacity:1;transform:none}
+  @keyframes pk-spin{to{transform:rotate(1turn)}}
+  .pk-spin{animation:pk-spin 24s linear infinite}
+  @keyframes pk-squash{0%{transform:scale(1)}35%{transform:scale(1.22,.78)}65%{transform:scale(.86,1.14)}100%{transform:scale(1)}}
+  .pk-squash{animation:pk-squash .5s cubic-bezier(.34,1.56,.64,1)}
+  .pk-marq{display:flex;white-space:nowrap;will-change:transform;animation:pk-mv 18s linear infinite}
+  @keyframes pk-mv{to{transform:translateX(-50%)}}
+
+  .ob-ring{transform:rotate(calc(var(--p) * 360deg));will-change:transform;}
+  .ob-item{transform:rotate(calc(var(--p) * -360deg));will-change:transform;}
+  .ob-grad{background:linear-gradient(90deg,#7c6cf6,#38bdf8,#39c98e);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .ob-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:1.5rem;transition:transform .3s,border-color .3s;}
+  .ob-card:hover{transform:translateY(-8px);border-color:#7c6cf6;}
+
+</style>
+</head>
+<body class="bg-[#060b2e] text-[#eef1ff] font-[Space_Grotesk] overflow-x-hidden">
+
+<div id="pkc" class="blend-screen" style="background:#7c6cf6"></div>
+<div class="fixed inset-0 -z-10"><span class="pk-light w-[50vw] h-[50vw] bg-[#1b2a8f]/60 top-[-12vw] right-[-10vw]"></span><span class="pk-light w-[40vw] h-[40vw] bg-[#7c6cf6]/30 bottom-[-8vw] left-[-6vw]" style="animation-delay:3s"></span></div>
+<nav class="fixed top-0 inset-x-0 z-50 px-5 md:px-10 py-4 flex items-center justify-between backdrop-blur bg-[#060b2e]/50 border-b border-white/5">
+  <span class="font-bold text-xl ob-grad">GummyChums</span>
+  <button class="cart-trigger pk-btn relative border border-white/20 rounded-full px-4 py-2 text-sm font-bold">Bag <span class="cart-count hidden ml-1 bg-[#7c6cf6] text-white text-[11px] px-1.5 rounded-full">0</span></button>
+</nav>
+<header data-scrub class="relative" style="height:260vh">
+  <div class="sticky top-0 h-screen grid place-items-center overflow-hidden">
+    <div class="relative w-[86vmin] h-[86vmin] grid place-items-center">
+      <div class="ob-ring absolute inset-0 rounded-full border border-white/10">
+<span class="ob-item absolute" style="left:44%;top:-6%;width:12%;transform-origin:center" data-hot><svg class="pk-gummy" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#8b5cf6"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="ob-item absolute" style="left:86%;top:24%;width:12%;transform-origin:center" data-hot><svg class="pk-gummy" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#38bdf8"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="ob-item absolute" style="left:86%;top:66%;width:12%;transform-origin:center" data-hot><svg class="pk-gummy" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="ob-item absolute" style="left:44%;top:92%;width:12%;transform-origin:center" data-hot><svg class="pk-gummy" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#39c98e"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="ob-item absolute" style="left:2%;top:66%;width:12%;transform-origin:center" data-hot><svg class="pk-gummy" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ffb02e"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="ob-item absolute" style="left:2%;top:24%;width:12%;transform-origin:center" data-hot><svg class="pk-gummy" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ff5c8a"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span>
+      </div>
+      <div class="text-center relative z-10 px-6">
+        <p class="uppercase tracking-[0.35em] text-xs text-white/50 mb-4">Your daily orbit</p>
+        <h1 class="pk-chars text-5xl md:text-8xl font-bold leading-[.9]">Wellness in<br/><span class="ob-grad">rotation.</span></h1>
+        <p class="text-white/60 max-w-sm mx-auto mt-5">Six little moons for sleep, focus, calm & glow. Scroll to spin the system.</p>
+        <a href="#shop" data-hot class="pk-btn pk-mag inline-block bg-gradient-to-r from-[#7c6cf6] to-[#38bdf8] text-[#060b2e] font-bold px-8 py-4 rounded-full mt-8">Enter the orbit</a>
+      </div>
+    </div>
+  </div>
+</header>
+<section id="shop" class="px-5 md:px-10 py-24 max-w-6xl mx-auto">
+  <h2 class="pk-chars text-4xl md:text-6xl font-bold text-center mb-14">Choose your <span class="ob-grad">moon</span></h2>
+  <div class="grid md:grid-cols-3 gap-7">
+    <div class="ob-card p-7 text-center">
+      <div class="grid place-items-center py-5" data-hot><svg class="pk-gummy pk-float" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:72%"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#8b5cf6"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></div>
+      <h3 class="text-2xl font-bold">Dreamy Sleep</h3><p class="text-sm text-white/55 my-3">Melatonin + Chamomile · drift off easy</p>
+      <div class="flex items-center justify-between mt-3"><span class="text-2xl font-bold ob-grad">₹699</span>
+      <button class="add-to-cart-btn pk-btn pk-mag bg-white/10 border border-white/20 px-5 py-2.5 rounded-full font-bold" data-product-id="dreamy-sleep">Add +</button></div>
+    </div>
+    <div class="ob-card p-7 text-center">
+      <div class="grid place-items-center py-5" data-hot><svg class="pk-gummy pk-float" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:72%"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#38bdf8"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></div>
+      <h3 class="text-2xl font-bold">Electric Blue</h3><p class="text-sm text-white/55 my-3">Lutein + B12 · for screen-lit days</p>
+      <div class="flex items-center justify-between mt-3"><span class="text-2xl font-bold ob-grad">₹749</span>
+      <button class="add-to-cart-btn pk-btn pk-mag bg-white/10 border border-white/20 px-5 py-2.5 rounded-full font-bold" data-product-id="electric-blue">Add +</button></div>
+    </div>
+    <div class="ob-card p-7 text-center">
+      <div class="grid place-items-center py-5" data-hot><svg class="pk-gummy pk-float" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:72%"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></div>
+      <h3 class="text-2xl font-bold">Neon Violet</h3><p class="text-sm text-white/55 my-3">Ashwagandha + Brahmi · calm focus</p>
+      <div class="flex items-center justify-between mt-3"><span class="text-2xl font-bold ob-grad">₹899</span>
+      <button class="add-to-cart-btn pk-btn pk-mag bg-white/10 border border-white/20 px-5 py-2.5 rounded-full font-bold" data-product-id="neon-violet">Add +</button></div>
+    </div></div>
+  <div class="text-center mt-12"><button class="add-to-cart-btn pk-btn pk-mag bg-gradient-to-r from-[#7c6cf6] to-[#38bdf8] text-[#060b2e] font-bold px-8 py-4 rounded-full" data-product-id="bundle-full-gang">Take the whole system · ₹1899</button></div>
+</section>
+<footer class="border-t border-white/10 py-12 text-center text-white/40 text-sm">GummyChums · in orbit since 2026 · Made in India</footer>
+
+
+<!-- ===================== SHARED BILL / CHECKOUT (unchanged from index.html) ===================== -->
+<div id="cart-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+  <div id="cart-backdrop" class="absolute inset-0 bg-[#261236]/80 backdrop-blur-sm cursor-pointer transition-opacity duration-300"></div>
+  <div id="receipt-wrapper" class="relative z-10 w-full max-w-[440px] transition-all duration-300 transform scale-90 translate-y-8 flex flex-col" style="filter: drop-shadow(8px 8px 0px #261236)">
+    <button id="close-cart-btn" class="absolute -top-3 -right-3 z-30 bg-white text-[#261236] p-2 border-4 border-[#261236] neo-shadow-sm hover:bg-[#b80865] hover:text-white transition-all font-bold flex items-center justify-center jelly-pop">
+      <span class="material-symbols-outlined text-2xl">close</span>
+    </button>
+    <div id="receipt-modal-content" class="bg-white text-black p-6 md:p-8 font-receipt select-none overflow-y-auto max-h-[85vh] flex flex-col border-x border-black/10">
+      <div class="text-center flex flex-col items-center mt-2 flex-shrink-0">
+        <div class="flex items-center justify-center border-4 border-black px-4 py-2 font-black text-2xl uppercase tracking-widest bg-black text-white mb-2 select-none">
+          <span class="material-symbols-outlined mr-2 scale-x-[-1] text-2xl">reply</span> GUMMYCHUMS
+        </div>
+        <div class="text-xs tracking-wider opacity-60">******************************************</div>
+        <div class="text-sm font-bold uppercase tracking-widest my-1">** SHOPPING BAG **</div>
+        <div id="receipt-date" class="text-xs font-semibold my-1 tracking-wider">MON 29/06/26 21:27</div>
+        <div class="text-xs tracking-wider opacity-60">******************************************</div>
+      </div>
+      <div id="receipt-items" class="flex-grow my-4 space-y-6 overflow-y-auto pr-1 receipt-scrollbar max-h-[40vh] min-h-[120px]"></div>
+      <div class="mt-auto pt-2 border-t border-dashed border-black/30 flex-shrink-0">
+        <div class="text-xs tracking-wider opacity-60 text-center">******************************************</div>
+        <div class="flex justify-between items-end my-3">
+          <span class="text-xs font-bold tracking-widest uppercase opacity-60">SUBTOTAL</span>
+          <span id="receipt-subtotal" class="text-2xl font-black tracking-tighter">₹0</span>
+        </div>
+        <div class="text-[10px] tracking-wider opacity-50 text-center uppercase mb-4">SHIPPING CALCULATED AT CHECKOUT</div>
+        <button id="checkout-btn" class="w-full bg-black text-white py-4 border-4 border-black hover:bg-white hover:text-black font-black text-xl uppercase tracking-wider transition-all select-none focus:outline-none mb-4 jelly-pop">CHECKOUT</button>
+        <div class="text-xs tracking-wider opacity-60 text-center">******************************************</div>
+        <div class="flex flex-col items-center justify-center my-3">
+          <div class="w-full px-4 mb-1"><svg class="w-full h-10" viewBox="0 0 100 40" preserveAspectRatio="none">
+<rect x="0" y="0" width="1.5" height="40" fill="black"/><rect x="3" y="0" width="1" height="40" fill="black"/><rect x="5" y="0" width="2" height="40" fill="black"/><rect x="8" y="0" width="1" height="40" fill="black"/><rect x="10" y="0" width="3" height="40" fill="black"/><rect x="15" y="0" width="1" height="40" fill="black"/><rect x="17" y="0" width="2.5" height="40" fill="black"/><rect x="21" y="0" width="1" height="40" fill="black"/><rect x="23" y="0" width="2" height="40" fill="black"/><rect x="26" y="0" width="1.5" height="40" fill="black"/><rect x="29" y="0" width="1" height="40" fill="black"/><rect x="31" y="0" width="3" height="40" fill="black"/><rect x="36" y="0" width="1" height="40" fill="black"/><rect x="38" y="0" width="2" height="40" fill="black"/><rect x="41" y="0" width="1" height="40" fill="black"/><rect x="43" y="0" width="2.5" height="40" fill="black"/><rect x="47" y="0" width="1" height="40" fill="black"/><rect x="49" y="0" width="1.5" height="40" fill="black"/><rect x="52" y="0" width="3" height="40" fill="black"/><rect x="56" y="0" width="1" height="40" fill="black"/><rect x="58" y="0" width="2" height="40" fill="black"/><rect x="61" y="0" width="1" height="40" fill="black"/><rect x="63" y="0" width="2.5" height="40" fill="black"/><rect x="67" y="0" width="1" height="40" fill="black"/><rect x="69" y="0" width="1.5" height="40" fill="black"/><rect x="72" y="0" width="3" height="40" fill="black"/><rect x="76" y="0" width="1" height="40" fill="black"/><rect x="78" y="0" width="2" height="40" fill="black"/><rect x="81" y="0" width="1" height="40" fill="black"/><rect x="83" y="0" width="2.5" height="40" fill="black"/><rect x="87" y="0" width="1" height="40" fill="black"/><rect x="89" y="0" width="1.5" height="40" fill="black"/><rect x="92" y="0" width="3" height="40" fill="black"/><rect x="96" y="0" width="1" height="40" fill="black"/><rect x="98" y="0" width="2" height="40" fill="black"/></svg></div>
+          <span id="barcode-id" class="text-[9px] tracking-[0.25em] font-bold text-black/60">GUMMY-8374-2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="success-modal" class="fixed inset-0 z-[110] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+  <div id="success-backdrop" class="absolute inset-0 bg-[#261236]/90 backdrop-blur-md cursor-pointer transition-opacity duration-300"></div>
+  <div id="success-card" class="relative z-10 w-full max-w-[400px] bg-[#fecf34] border-8 border-[#261236] p-8 text-center neo-shadow-lg transform scale-90 translate-y-8 transition-all duration-300">
+    <div class="w-20 h-20 bg-white border-4 border-[#261236] flex items-center justify-center mx-auto mb-6 neo-shadow-sm animate-bounce">
+      <span class="material-symbols-outlined text-5xl text-[#006d36]">check_circle</span>
+    </div>
+    <h3 class="text-3xl uppercase tracking-tighter mb-4 text-[#261236] font-black">Order Placed!</h3>
+    <p class="text-lg text-[#261236]/80 mb-8 font-bold">Your gummy order is locked in. Get ready to feel good.</p>
+    <button id="close-success-btn" class="w-full bg-[#b80865] text-white py-4 border-4 border-[#261236] neo-shadow jelly-pop font-black uppercase text-xl tracking-wider">Let's Go</button>
+  </div>
+</div>
+
+<script>
+
+// ===================== SHARED CHECKOUT LOGIC (from index.html) =====================
+const PRODUCTS = {
+  'dreamy-sleep':      { name:'Dreamy Sleep', price:699,  image:'mascot.png', variant:'LVL 99' },
+  'electric-blue':     { name:'Electric Blue', price:749, image:'mascot.png', variant:'FOCUS' },
+  'neon-violet':       { name:'Neon Violet', price:899,   image:'mascot.png', variant:'SMART' },
+  'bundle-full-gang':  { name:'The Full Gang', price:1899, image:'bears.png',  variant:'BUNDLE' },
+  'bundle-night-shift':{ name:'The Night Shift', price:1199, image:'mascot.png', variant:'BUNDLE' },
+  'bundle-gut-feeling':{ name:'The Gut Feeling', price:999,  image:'logo.png',  variant:'BUNDLE' }
+};
+let cart = JSON.parse(localStorage.getItem('gummy_cart')) || [];
+const cartModal = document.getElementById('cart-modal');
+const successModal = document.getElementById('success-modal');
+const cartItemsContainer = document.getElementById('receipt-items');
+const cartSubtotalEl = document.getElementById('receipt-subtotal');
+const receiptDateEl = document.getElementById('receipt-date');
+const receiptContentEl = document.getElementById('receipt-modal-content');
+const barcodeIdEl = document.getElementById('barcode-id');
+function getReceiptDate(){
+  const now=new Date();const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const p=n=>String(n).padStart(2,'0');
+  return `${days[now.getDay()]} ${p(now.getDate())}/${p(now.getMonth()+1)}/${String(now.getFullYear()).slice(-2)} ${p(now.getHours())}:${p(now.getMinutes())}`;
+}
+function generateReceiptClipPath(el){
+  if(!el)return;const w=el.offsetWidth,h=el.offsetHeight;if(!w||!h)return;
+  const tw=10,th=6,count=Math.ceil(w/tw),pts=[];
+  for(let i=0;i<=count;i++){const x=(i/count)*100;const y=i%2===0?0:(th/h)*100;pts.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);}
+  for(let i=count;i>=0;i--){const x=(i/count)*100;const y=100-(i%2===0?0:(th/h)*100);pts.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);}
+  el.style.clipPath=`polygon(${pts.join(', ')})`;
+}
+function syncCart(){
+  localStorage.setItem('gummy_cart',JSON.stringify(cart));
+  let totalCount=0,subtotal=0;
+  cart.forEach(i=>{totalCount+=i.quantity;subtotal+=i.price*i.quantity;});
+  document.querySelectorAll('.cart-count').forEach(el=>{
+    if(totalCount>0){el.innerText=totalCount;el.classList.remove('hidden');}else{el.classList.add('hidden');}
+  });
+  cartSubtotalEl.innerText=`₹${subtotal.toLocaleString('en-IN')}`;
+  if(cart.length===0){
+    cartItemsContainer.innerHTML=`<div class="flex flex-col items-center justify-center py-12 text-center"><span class="material-symbols-outlined text-5xl text-black/30 mb-4 animate-bounce">shopping_basket</span><p class="font-bold text-sm uppercase tracking-wider opacity-60">Your bag is empty!</p><p class="text-xs opacity-50 mt-1">Go grab some gummies.</p></div>`;
+  }else{
+    cartItemsContainer.innerHTML=cart.map(item=>`
+      <div class="flex gap-4 items-start relative pb-4 border-b border-dashed border-black/20 text-left">
+        <img src="${item.image}" class="w-16 h-16 object-cover border-2 border-black flex-shrink-0" alt="${item.name}"/>
+        <div class="flex-grow min-w-0">
+          <div class="flex justify-between items-start">
+            <h4 class="font-bold text-sm uppercase tracking-tight truncate pr-4">${item.name}</h4>
+            <button onclick="removeFromCart('${item.id}')" class="text-black/40 hover:text-black font-bold text-lg leading-none transition-colors">&times;</button>
+          </div>
+          <div class="text-[10px] opacity-60 uppercase mb-1 tracking-wider">${item.variant}</div>
+          <div class="flex justify-between items-center mt-2">
+            <span class="font-black text-sm">₹${(item.price*item.quantity).toLocaleString('en-IN')}</span>
+            <div class="flex border border-black text-xs font-bold bg-white select-none">
+              <button onclick="changeQuantity('${item.id}',-1)" class="px-2 py-0.5 border-r border-black hover:bg-black/10 transition-colors">-</button>
+              <span class="px-3 py-0.5">${item.quantity}</span>
+              <button onclick="changeQuantity('${item.id}',1)" class="px-2 py-0.5 border-l border-black hover:bg-black/10 transition-colors">+</button>
+            </div>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+  generateReceiptClipPath(receiptContentEl);
+}
+window.addToCart=function(id){
+  const info=PRODUCTS[id];if(!info)return;
+  const ex=cart.find(i=>i.id===id);
+  if(ex){ex.quantity+=1;}else{cart.push({id,name:info.name,price:info.price,image:info.image,variant:info.variant,quantity:1});}
+  syncCart();openCart();
+};
+window.changeQuantity=function(id,d){
+  const it=cart.find(i=>i.id===id);if(!it)return;it.quantity+=d;
+  if(it.quantity<=0)cart=cart.filter(i=>i.id!==id);syncCart();
+};
+window.removeFromCart=function(id){cart=cart.filter(i=>i.id!==id);syncCart();};
+function openCart(){
+  receiptDateEl.innerText=getReceiptDate();
+  barcodeIdEl.innerText=`GUMMY-${Math.floor(1000+Math.random()*9000)}-2026`;
+  cartModal.classList.add('modal-active');document.body.classList.add('overflow-hidden');
+  setTimeout(()=>generateReceiptClipPath(receiptContentEl),50);
+}
+function closeCart(){cartModal.classList.remove('modal-active');document.body.classList.remove('overflow-hidden');}
+function openSuccess(){successModal.classList.add('modal-active');document.body.classList.add('overflow-hidden');}
+function closeSuccess(){successModal.classList.remove('modal-active');document.body.classList.remove('overflow-hidden');}
+document.addEventListener('DOMContentLoaded',()=>{
+  syncCart();
+  if(receiptContentEl){new ResizeObserver(()=>generateReceiptClipPath(receiptContentEl)).observe(receiptContentEl);}
+  document.querySelectorAll('.add-to-cart-btn').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const id=btn.getAttribute('data-product-id');if(id)addToCart(id);}));
+  document.querySelectorAll('.cart-trigger').forEach(b=>b.addEventListener('click',openCart));
+  const a=document.getElementById('close-cart-btn'),b=document.getElementById('cart-backdrop');
+  if(a)a.addEventListener('click',closeCart);if(b)b.addEventListener('click',closeCart);
+  const c=document.getElementById('close-success-btn'),d=document.getElementById('success-backdrop');
+  if(c)c.addEventListener('click',closeSuccess);if(d)d.addEventListener('click',closeSuccess);
+  const ck=document.getElementById('checkout-btn');
+  if(ck)ck.addEventListener('click',()=>{if(cart.length===0){alert('Your bag is empty!');return;}closeCart();setTimeout(()=>{openSuccess();cart=[];syncCart();},300);});
+  document.documentElement.classList.add('gcready');
+  const revealEls=document.querySelectorAll('.gc-reveal');
+  // threshold:0 so tall (taller-than-viewport) hero blocks reveal on ANY intersection
+  const io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}})},{threshold:0,rootMargin:'0px 0px -8% 0px'});
+  revealEls.forEach(el=>io.observe(el));
+  // failsafe: anything at/above the fold reveals immediately; nothing can stay blank
+  const revealInView=()=>revealEls.forEach(el=>{if(el.getBoundingClientRect().top < innerHeight*1.05) el.classList.add('in');});
+  revealInView();
+  requestAnimationFrame(revealInView);
+  window.addEventListener('load',revealInView);
+});
+
+
+/* ===== premium motion kit ===== */
+(function(){
+  // 1) round-gummy art inside the shared bill (data only; checkout UI untouched)
+  function gum(c){return 'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="'+c+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>');}
+  var GMAP={'dreamy-sleep':'#8b5cf6','electric-blue':'#38bdf8','neon-violet':'#e44bd3','bundle-full-gang':'#ff5c8a','bundle-night-shift':'#7c6cf6','bundle-gut-feeling':'#39c98e'};
+  try{ for(var k in GMAP){ if(PRODUCTS[k]) PRODUCTS[k].image=gum(GMAP[k]); } }catch(e){}
+
+  var fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+  // 2) gummy blob cursor
+  var cur=document.getElementById('pkc');
+  if(fine&&cur){
+    document.documentElement.classList.add('pk');
+    var x=0,y=0,tx=innerWidth/2,ty=innerHeight/2;
+    addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY;cur.classList.add('on')});
+    (function loop(){x+=(tx-x)*.22;y+=(ty-y)*.22;cur.style.left=x+'px';cur.style.top=y+'px';requestAnimationFrame(loop)})();
+    document.addEventListener('mouseover',function(e){var h=e.target.closest('a,button,[data-hot]');cur.style.width=h?'54px':'30px';cur.style.height=h?'54px':'30px'});
+    addEventListener('mousedown',function(){cur.style.width='20px';cur.style.height='20px'});
+    addEventListener('mouseup',function(){cur.style.width='30px';cur.style.height='30px'});
+    document.querySelectorAll('.pk-mag').forEach(function(b){
+      b.addEventListener('mousemove',function(e){var r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.22)+'px,'+((e.clientY-r.top-r.height/2)*.35)+'px)'});
+      b.addEventListener('mouseleave',function(){b.style.transform=''});
+    });
+  }
+  // 3) scroll-scrub engine: sets --p (0→1 progress through viewport) on [data-scrub]
+  var scr=document.querySelectorAll('[data-scrub]');
+  function up(){var vh=innerHeight;scr.forEach(function(el){var r=el.getBoundingClientRect();var p=Math.min(Math.max((vh-r.top)/(vh+r.height),0),1);el.style.setProperty('--p',p.toFixed(4));});}
+  var tk=false;addEventListener('scroll',function(){if(!tk){requestAnimationFrame(function(){up();tk=false});tk=true}},{passive:true});
+  addEventListener('resize',up);up();
+  // 4) char-split reveals (keeps <br>; words stay unbreakable)
+  document.querySelectorAll('.pk-chars').forEach(function(el){
+    var nodes=Array.prototype.slice.call(el.childNodes);el.textContent='';var i=0;
+    nodes.forEach(function(n){
+      if(n.nodeType===1&&n.tagName==='BR'){el.appendChild(document.createElement('br'));return;}
+      var txt=n.textContent||'';
+      txt.split(' ').forEach(function(word,wi,arr){
+        if(word){var w=document.createElement('span');w.style.whiteSpace='nowrap';w.style.display='inline-block';
+          Array.prototype.forEach.call(word,function(c){var sp=document.createElement('span');sp.textContent=c;sp.style.transitionDelay=(i++*32)+'ms';w.appendChild(sp)});
+          el.appendChild(w);}
+        if(wi<arr.length-1){el.appendChild(document.createTextNode(' '));i++;}
+      });
+    });
+    new IntersectionObserver(function(es,o){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('go');o.unobserve(en.target)}})},{threshold:.35}).observe(el);
+  });
+  // 5) squash on click for any gummy art
+  document.addEventListener('click',function(e){
+    var g=e.target.closest('.pk-gummy');if(!g)return;
+    g.classList.remove('pk-squash');void g.offsetWidth;g.classList.add('pk-squash');
+  });
+})();
+
+</script>
+</body>
+</html>
