@@ -52,7 +52,7 @@
   .pk-float{animation:pk-float 6s ease-in-out infinite}
   @keyframes pk-aurora{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
   .pk-aurora{background-size:280% 280%;animation:pk-aurora 13s ease infinite}
-  @keyframes pk-breathe{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:.95;transform:scale(1.18)}}
+  @keyframes pk-breathe{0%,100%{opacity:.45}50%{opacity:.9}}
   .pk-light{position:absolute;border-radius:50%;filter:blur(72px);pointer-events:none;animation:pk-breathe 7s ease-in-out infinite;will-change:transform,opacity;transform:translateZ(0)}
   .pk-mag{transition:transform .16s cubic-bezier(.34,1.56,.64,1)}
   .pk-btn{transition:transform .12s}.pk-btn:active{transform:scale(.93)}
@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   window.__gcSmooth=true;
   function max(){return document.documentElement.scrollHeight-innerHeight;}
   function loop(){
-    cur+=(target-cur)*0.11;
+    cur+=(target-cur)*0.16;
     if(Math.abs(target-cur)<0.5){cur=target;window.scrollTo({top:cur,behavior:'instant'});raf=null;return;}
     window.scrollTo({top:cur,behavior:'instant'});
     raf=requestAnimationFrame(loop);
@@ -328,7 +328,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.documentElement.classList.add('pk');
     var x=0,y=0,tx=innerWidth/2,ty=innerHeight/2;
     addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY;cur.classList.add('on')});
-    (function loop(){x+=(tx-x)*.22;y+=(ty-y)*.22;cur.style.left=x+'px';cur.style.top=y+'px';requestAnimationFrame(loop)})();
+    (function loop(){x+=(tx-x)*.55;y+=(ty-y)*.55;cur.style.left=x+'px';cur.style.top=y+'px';requestAnimationFrame(loop)})();
     document.addEventListener('mouseover',function(e){var h=e.target.closest('a,button,[data-hot]');cur.style.width=h?'54px':'30px';cur.style.height=h?'54px':'30px'});
     addEventListener('mousedown',function(){cur.style.width='20px';cur.style.height='20px'});
     addEventListener('mouseup',function(){cur.style.width='30px';cur.style.height='30px'});
