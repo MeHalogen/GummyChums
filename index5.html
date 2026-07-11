@@ -282,6 +282,36 @@ document.addEventListener('DOMContentLoaded',()=>{
   window.addEventListener('load',revealInView);
 });
 
+// ===== inertial smooth scroll (mini-Lenis): wheel is eased through a lerp,
+// so every scroll-driven effect (scrubs, pins, parallax) glides. Native
+// behaviour is kept on touch, reduced-motion, scroll-snap pages, open modals
+// and inner scrollables (receipt list, rails).
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  if((getComputedStyle(document.documentElement).scrollSnapType||'none')!=='none')return;
+  var target=window.scrollY,cur=target,raf=null;
+  window.__gcSmooth=true;
+  function max(){return document.documentElement.scrollHeight-innerHeight;}
+  function loop(){
+    cur+=(target-cur)*0.11;
+    if(Math.abs(target-cur)<0.5){cur=target;window.scrollTo({top:cur,behavior:'instant'});raf=null;return;}
+    window.scrollTo({top:cur,behavior:'instant'});
+    raf=requestAnimationFrame(loop);
+  }
+  addEventListener('wheel',function(e){
+    if(e.ctrlKey)return; // pinch zoom
+    if(document.body.classList.contains('overflow-hidden'))return; // modal open
+    if(e.target.closest&&e.target.closest('#receipt-items,.cf-rail,[data-native-scroll],textarea,select'))return;
+    e.preventDefault();
+    var d=e.deltaY*(e.deltaMode===1?16:(e.deltaMode===2?innerHeight:1));
+    if(raf===null){cur=window.scrollY;target=cur;}
+    target=Math.max(0,Math.min(max(),target+d));
+    if(!raf)raf=requestAnimationFrame(loop);
+  },{passive:false});
+  addEventListener('scroll',function(){if(raf===null){target=cur=window.scrollY;}},{passive:true});
+})();
+
 
 </script>
 </body>

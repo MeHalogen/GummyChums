@@ -39,11 +39,12 @@
 
   /* ===== premium motion kit ===== */
   @media (hover:hover) and (pointer:fine){ .pk body, .pk a, .pk button, .pk [data-hot]{cursor:none} }
-  #pkc{position:fixed;left:0;top:0;width:30px;height:30px;z-index:99;pointer-events:none;transform:translate(-50%,-50%);
+  #pkc{position:fixed;left:0;top:0;width:30px;height:30px;z-index:400;pointer-events:none;transform:translate(-50%,-50%);
        border-radius:46% 54% 52% 48%/48% 46% 54% 52%;transition:width .22s,height .22s,opacity .3s;opacity:0;
        mix-blend-mode:multiply;animation:pk-wob 5s ease-in-out infinite;
        box-shadow:inset -4px -5px 8px rgba(0,0,0,.18), inset 4px 5px 8px rgba(255,255,255,.5);}
   #pkc.on{opacity:.92}  #pkc.blend-screen{mix-blend-mode:screen}
+  body.overflow-hidden #pkc{mix-blend-mode:multiply}  /* stay visible on the white bill */
   @media (hover:none){#pkc{display:none}}
   @keyframes pk-wob{0%,100%{border-radius:46% 54% 52% 48%/48% 46% 54% 52%}33%{border-radius:58% 42% 45% 55%/52% 58% 42% 48%}66%{border-radius:42% 58% 60% 40%/45% 42% 58% 55%}}
   .pk-wobble{animation:pk-wob 7s ease-in-out infinite}
@@ -52,7 +53,7 @@
   @keyframes pk-aurora{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
   .pk-aurora{background-size:280% 280%;animation:pk-aurora 13s ease infinite}
   @keyframes pk-breathe{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:.95;transform:scale(1.18)}}
-  .pk-light{position:absolute;border-radius:50%;filter:blur(72px);pointer-events:none;animation:pk-breathe 7s ease-in-out infinite}
+  .pk-light{position:absolute;border-radius:50%;filter:blur(72px);pointer-events:none;animation:pk-breathe 7s ease-in-out infinite;will-change:transform,opacity;transform:translateZ(0)}
   .pk-mag{transition:transform .16s cubic-bezier(.34,1.56,.64,1)}
   .pk-btn{transition:transform .12s}.pk-btn:active{transform:scale(.93)}
   [data-scrub]{--p:0}
@@ -302,6 +303,36 @@ document.addEventListener('DOMContentLoaded',()=>{
   requestAnimationFrame(revealInView);
   window.addEventListener('load',revealInView);
 });
+
+// ===== inertial smooth scroll (mini-Lenis): wheel is eased through a lerp,
+// so every scroll-driven effect (scrubs, pins, parallax) glides. Native
+// behaviour is kept on touch, reduced-motion, scroll-snap pages, open modals
+// and inner scrollables (receipt list, rails).
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  if((getComputedStyle(document.documentElement).scrollSnapType||'none')!=='none')return;
+  var target=window.scrollY,cur=target,raf=null;
+  window.__gcSmooth=true;
+  function max(){return document.documentElement.scrollHeight-innerHeight;}
+  function loop(){
+    cur+=(target-cur)*0.11;
+    if(Math.abs(target-cur)<0.5){cur=target;window.scrollTo({top:cur,behavior:'instant'});raf=null;return;}
+    window.scrollTo({top:cur,behavior:'instant'});
+    raf=requestAnimationFrame(loop);
+  }
+  addEventListener('wheel',function(e){
+    if(e.ctrlKey)return; // pinch zoom
+    if(document.body.classList.contains('overflow-hidden'))return; // modal open
+    if(e.target.closest&&e.target.closest('#receipt-items,.cf-rail,[data-native-scroll],textarea,select'))return;
+    e.preventDefault();
+    var d=e.deltaY*(e.deltaMode===1?16:(e.deltaMode===2?innerHeight:1));
+    if(raf===null){cur=window.scrollY;target=cur;}
+    target=Math.max(0,Math.min(max(),target+d));
+    if(!raf)raf=requestAnimationFrame(loop);
+  },{passive:false});
+  addEventListener('scroll',function(){if(raf===null){target=cur=window.scrollY;}},{passive:true});
+})();
 
 
 /* ===== premium motion kit ===== */
