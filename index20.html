@@ -127,10 +127,12 @@
   .bb-lid{height:16px;border-radius:10px 10px 0 0;background:var(--bb-acc);opacity:.9;margin:-1rem -1rem 12px;border-bottom:3px solid var(--bb-line)}
   .bb-label{display:flex;justify-content:space-between;align-items:baseline;font-weight:800;margin-bottom:10px}
   .bb-label small{color:var(--bb-soft);font-weight:600}
-  .bb-drop{min-height:172px;border:2px dashed var(--bb-line);border-radius:14px;display:flex;flex-wrap:wrap;
-    align-content:flex-end;justify-content:center;gap:6px;padding:12px;transition:border-color .3s}
+  .bb-drop{position:relative;height:250px;border:2px dashed var(--bb-line);border-radius:14px;overflow:hidden;transition:border-color .3s}
+  .bb-drop canvas{display:block;width:100%;height:100%}
   .bb-drop.bb-has{border-style:solid;border-color:var(--bb-acc)}
-  .bb-drop-empty{width:100%;text-align:center;color:var(--bb-soft);font-weight:600;font-size:.92rem;align-self:center;margin:auto 0}
+  .bb-drop-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
+    color:var(--bb-soft);font-weight:600;font-size:.92rem;pointer-events:none;transition:opacity .3s}
+  .bb-drop.bb-has .bb-drop-empty{opacity:0}
   .bb-inbox{position:relative;animation:bb-settle .45s cubic-bezier(.34,1.56,.64,1)}
   .bb-inbox small{position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);background:var(--bb-acc);color:#fff;
     font-size:9px;font-weight:800;border-radius:99px;padding:1px 6px;white-space:nowrap}
@@ -166,7 +168,12 @@
   .bb-add{border:0;border-radius:999px;width:2.4rem;height:2.4rem;font-size:1.2rem;font-weight:800;cursor:pointer;
     background:var(--bb-acc);color:#fff;flex:0 0 auto;transition:transform .12s;line-height:1}
   .bb-add:active{transform:scale(.9)}
-  .bb-row.bb-on .bb-add{background:transparent;border:2px solid var(--bb-acc);color:var(--bb-acc)}
+  .bb-qtywrap{display:flex;align-items:center;gap:.35rem;flex:0 0 auto}
+  .bb-sub{border:2px solid var(--bb-acc);background:transparent;color:var(--bb-acc);border-radius:999px;width:2.4rem;height:2.4rem;
+    font-size:1.2rem;font-weight:800;cursor:pointer;transition:transform .12s;line-height:1}
+  .bb-sub:active{transform:scale(.9)}
+  .bb-qty{font-weight:800;min-width:1.1rem;text-align:center}
+  .bb-row:not(.bb-on) .bb-sub,.bb-row:not(.bb-on) .bb-qty{display:none}
   .bb-price{font-weight:800;min-width:3.6rem;text-align:right}
   .bb-fly{position:fixed;z-index:250;pointer-events:none;left:0;top:0;will-change:transform}
   @media(max-width:560px){
@@ -226,102 +233,225 @@
 <section class="kc" id="kc-manifesto" style="border-top:1px solid rgba(128,128,128,.18)"><div class="max-w-5xl mx-auto px-5 md:px-10 py-24 md:py-28"><p class="kc-kick">The why · straight from the founder</p><h2 class="kc-big">Pills feel like <span class="kc-strike">homework.</span><br/>Powders feel like <span class="kc-strike">chemistry class.</span><br/><span class="kc-mark">We chose the night shift.</span></h2><p style="opacity:.65;max-width:34rem;margin-top:26px;font-size:1.05rem;line-height:1.7">Born in India, on a shelf crowded with bottles nobody finished. One question changed everything: <b style="opacity:1">why can&rsquo;t the healthiest thing you do all day be the tastiest?</b> &ldquo;Chums&rdquo; means friends. That&rsquo;s the whole plan.</p><div class="kc-mission">wellness = <span class="kc-treat">a treat<svg class="kc-squig" viewBox="0 0 100 14" preserveAspectRatio="none"><path d="M2 8 Q 10 2, 20 8 T 40 8 T 60 8 T 80 8 T 98 8"/></svg></span> <span style="opacity:.45">not a task.</span></div><h3 class="kc-h3">Grab a Chum before&hellip;</h3><div><span class="kc-chip" style="transition-delay:150ms">that 9am exam</span><span class="kc-chip" style="transition-delay:240ms">the 3-hour meeting</span><span class="kc-chip" style="transition-delay:330ms">leg day</span><span class="kc-chip" style="transition-delay:420ms">a road trip</span><span class="kc-chip" style="transition-delay:510ms">another Monday</span><span class="kc-chip" style="transition-delay:600ms">lights out</span></div><h3 class="kc-h3">One chew should make you feel</h3><div><span class="kc-word" style="transition-delay:120ms">Happy.</span><span class="kc-word" style="transition-delay:230ms">Confident.</span><span class="kc-word" style="transition-delay:340ms">Energized.</span><span class="kc-word" style="transition-delay:450ms">Comforted.</span><span class="kc-word" style="transition-delay:560ms">Curious.</span><span class="kc-word" style="transition-delay:670ms">Proud.</span></div><p class="kc-never">And the fine print, in big letters: we will never be <span class="kc-nv" style="transition-delay:200ms">clinical</span> <span class="kc-nv" style="transition-delay:420ms">preachy</span> <span class="kc-nv" style="transition-delay:640ms">childish</span> <span class="kc-nv" style="transition-delay:860ms">complicated</span> — pinky promise, in writing. Not a supplement company. Not a candy brand. A lifestyle brand India actually loves.</p><div class="grid sm:grid-cols-3 gap-4 mt-12"><div class="kc-val"><b>Within reach</b><span style="opacity:.65">premium should never mean pricey.</span></div><div class="kc-val"><b>Joy, non-negotiable</b><span style="opacity:.65">if it doesn&rsquo;t make you smile, it doesn&rsquo;t ship.</span></div><div class="kc-val"><b>Trust you can read</b><span style="opacity:.65">the label says everything. Every time.</span></div></div></div><script>(function(){var k=document.getElementById("kc-manifesto");function go(){k.classList.add("go");}new IntersectionObserver(function(es,o){es.forEach(function(en){if(en.isIntersecting){go();o.disconnect();}})},{threshold:0,rootMargin:"0px 0px -12% 0px"}).observe(k);addEventListener("scroll",function f(){if(k.getBoundingClientRect().top<innerHeight*.85){go();removeEventListener("scroll",f);}},{passive:true});if(k.getBoundingClientRect().top<innerHeight)go();})();</script></section>
 
 
+
+
 <!-- BB:START -->
-<section id="bb-builder"><div class="bb-wrap"><p class="bb-kick">Build your own · mix any of the six</p><h2 class="bb-title">Pack your Chum Box.</h2><p class="bb-sub">Pick your gummies, pick your size — watch them drop into the box. One box, your rules: 15 tabs ₹349 · 30 tabs ₹549 · 45 tabs ₹749 per chum.</p><div class="bb-grid"><div class="bb-boxcol"><div class="bb-box" id="bb-box"><div class="bb-lid"></div><div class="bb-label"><span>GummyChums · MY CHUM BOX</span><small id="bb-count">empty</small></div><div class="bb-drop" id="bb-drop"><span class="bb-drop-empty">Your box is waiting — add a chum →</span></div><div class="bb-tabs" id="bb-tabs">0 tabs packed</div></div><div class="bb-sum"><div id="bb-lines"><div class="bb-sumline"><span>Nothing packed yet</span><span>—</span></div></div><div class="bb-total"><span>Box total</span><span id="bb-total">₹0</span></div><button class="bb-cta" id="bb-cta" disabled data-hot>Pack my box → add to bag</button></div></div><div><div class="bb-row" data-bb-id="dreamy-sleep" data-bb-name="Dreamy Sleep" data-bb-color="#8b5cf6" data-bb-short="Sleep"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#8b5cf6"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Dreamy Sleep</b><small>Sleep</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><button class="bb-add" aria-label="Add Dreamy Sleep to box" data-hot>+</button></div><div class="bb-row" data-bb-id="electric-blue" data-bb-name="Electric Blue" data-bb-color="#38bdf8" data-bb-short="Focus"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#38bdf8"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Electric Blue</b><small>Focus</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><button class="bb-add" aria-label="Add Electric Blue to box" data-hot>+</button></div><div class="bb-row" data-bb-id="neon-violet" data-bb-name="Neon Violet" data-bb-color="#e44bd3" data-bb-short="Calm"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Neon Violet</b><small>Calm</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><button class="bb-add" aria-label="Add Neon Violet to box" data-hot>+</button></div><div class="bb-row" data-bb-id="minty-fresh" data-bb-name="Minty Fresh" data-bb-color="#39c98e" data-bb-short="Gut"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#39c98e"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Minty Fresh</b><small>Gut</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><button class="bb-add" aria-label="Add Minty Fresh to box" data-hot>+</button></div><div class="bb-row" data-bb-id="burnt-orange" data-bb-name="Burnt Orange" data-bb-color="#ffb02e" data-bb-short="Immunity"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ffb02e"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Burnt Orange</b><small>Immunity</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><button class="bb-add" aria-label="Add Burnt Orange to box" data-hot>+</button></div><div class="bb-row" data-bb-id="coral-sunrise" data-bb-name="Coral Sunrise" data-bb-color="#ff5c8a" data-bb-short="Glow"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ff5c8a"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Coral Sunrise</b><small>Glow</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><button class="bb-add" aria-label="Add Coral Sunrise to box" data-hot>+</button></div></div></div></div></section>
+<section id="bb-builder"><div class="bb-wrap"><p class="bb-kick">Build your own · mix any of the six</p><h2 class="bb-title">Pack your Chum Box.</h2><p class="bb-sub">Pick your gummies, pick your size — watch every single tab tumble in, one by one. One box, your rules: 15 tabs ₹349 · 30 tabs ₹549 · 45 tabs ₹749 per jar. Love one? Stack it twice. Or five times — your box.</p><div class="bb-grid"><div class="bb-boxcol"><div class="bb-box" id="bb-box"><div class="bb-lid"></div><div class="bb-label"><span>GummyChums · MY CHUM BOX</span><small id="bb-count">empty</small></div><div class="bb-drop" id="bb-drop"><canvas id="bb-canvas"></canvas><span class="bb-drop-empty" id="bb-empty">Your box is waiting — add a chum →</span></div><div class="bb-tabs" id="bb-tabs">0 tabs packed</div></div><div class="bb-sum"><div id="bb-lines"><div class="bb-sumline"><span>Nothing packed yet</span><span>—</span></div></div><div class="bb-total"><span>Box total</span><span id="bb-total">₹0</span></div><button class="bb-cta" id="bb-cta" disabled data-hot>Pack my box → add to bag</button></div></div><div><div class="bb-row" data-bb-id="dreamy-sleep" data-bb-name="Dreamy Sleep" data-bb-color="#8b5cf6" data-bb-short="Sleep"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#8b5cf6"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Dreamy Sleep</b><small>Sleep</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-sub" aria-label="Remove one Dreamy Sleep" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Dreamy Sleep to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="electric-blue" data-bb-name="Electric Blue" data-bb-color="#38bdf8" data-bb-short="Focus"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#38bdf8"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Electric Blue</b><small>Focus</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-sub" aria-label="Remove one Electric Blue" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Electric Blue to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="neon-violet" data-bb-name="Neon Violet" data-bb-color="#e44bd3" data-bb-short="Calm"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Neon Violet</b><small>Calm</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-sub" aria-label="Remove one Neon Violet" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Neon Violet to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="minty-fresh" data-bb-name="Minty Fresh" data-bb-color="#39c98e" data-bb-short="Gut"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#39c98e"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Minty Fresh</b><small>Gut</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-sub" aria-label="Remove one Minty Fresh" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Minty Fresh to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="burnt-orange" data-bb-name="Burnt Orange" data-bb-color="#ffb02e" data-bb-short="Immunity"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ffb02e"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Burnt Orange</b><small>Immunity</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-sub" aria-label="Remove one Burnt Orange" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Burnt Orange to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="coral-sunrise" data-bb-name="Coral Sunrise" data-bb-color="#ff5c8a" data-bb-short="Glow"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ff5c8a"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Coral Sunrise</b><small>Glow</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-sub" aria-label="Remove one Coral Sunrise" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Coral Sunrise to box" data-hot>+</button></span></div></div></div></div></section>
 <!-- BB:END -->
 
 <script>
-/* ===== Chum Box builder (self-contained, lag-proof: transform-only WAAPI) ===== */
+/* ===== Chum Box builder v3: canvas physics pour (1 gummy per tab), per-jar cart lines ===== */
 (function(){
-  var box={}, drop=document.getElementById('bb-drop'), boxEl=document.getElementById('bb-box');
-  var builder=document.getElementById('bb-builder');
-  if(!builder||!drop)return;
-  var GSVG=function(c,s){return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:'+s+'px;height:'+s+'px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="'+c+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>';};
+  var builder=document.getElementById('bb-builder'); if(!builder)return;
+  var drop=document.getElementById('bb-drop'), boxEl=document.getElementById('bb-box');
+  var cv=document.getElementById('bb-canvas'), cx=cv.getContext('2d');
+  var box=[];                                    // packed jars: {gid,name,color,short,tabs,price}
   function inr(n){return '₹'+n.toLocaleString('en-IN');}
 
-  function render(){
-    var ids=Object.keys(box), lines='', total=0, tabs=0;
-    // box contents
-    drop.innerHTML='';
-    if(!ids.length){drop.innerHTML='<span class="bb-drop-empty">Your box is waiting — add a chum →</span>';drop.classList.remove('bb-has');}
-    else drop.classList.add('bb-has');
-    ids.forEach(function(id,i){var it=box[id];
-      var g=document.createElement('span');g.className='bb-inbox';
-      g.style.transform='rotate('+((i%2?1:-1)*(4+i*2))+'deg)';
-      g.innerHTML=GSVG(it.color,46)+'<small>'+it.tabs+'</small>';
-      drop.appendChild(g);
-      lines+='<div class="bb-sumline"><span><b>'+it.name+'</b> · '+it.tabs+' tabs</span><span>'+inr(it.price)+'</span></div>';
-      total+=it.price;tabs+=it.tabs;
-    });
-    document.getElementById('bb-lines').innerHTML=lines||'<div class="bb-sumline"><span>Nothing packed yet</span><span>—</span></div>';
-    document.getElementById('bb-total').textContent=inr(total);
-    document.getElementById('bb-tabs').textContent=tabs+' tabs packed';
-    document.getElementById('bb-count').textContent=ids.length?ids.length+' of 6 chums':'empty';
-    var cta=document.getElementById('bb-cta');
-    cta.disabled=!ids.length;
-    cta.textContent=ids.length?('Pack my box · '+ids.length+' chums · '+inr(total)):'Pack my box → add to bag';
-    // row states
-    builder.querySelectorAll('.bb-row').forEach(function(r){
-      var id=r.getAttribute('data-bb-id'), on=!!box[id];
-      r.classList.toggle('bb-on',on);
-      r.querySelector('.bb-add').textContent=on?'–':'+';
-    });
+  /* ---------- physics sim (2D circles, grid broadphase, sleeping) ---------- */
+  var R=7, MAXB=300, GRAV=.38, REST=.22, W=360, H=250, DPR=Math.min(2,window.devicePixelRatio||1);
+  var bodies=[], queue=[], raf=null, visible=true;
+  var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function sizeCanvas(){
+    var w=cv.clientWidth||360, h=cv.clientHeight||250; W=w; H=h;
+    cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
+    cx.setTransform(DPR,0,0,DPR,0,0);
+    bodies.forEach(function(b){ b.x=Math.max(R+3,Math.min(W-R-3,b.x)); });
+    draw();
   }
+  if(window.ResizeObserver) new ResizeObserver(sizeCanvas).observe(cv);
+  sizeCanvas();
+  if(window.IntersectionObserver) new IntersectionObserver(function(es){
+    es.forEach(function(en){ visible=en.isIntersecting; if(visible)wake(); });
+  },{threshold:0}).observe(cv);
 
-  function fly(fromEl,color,cb){
+  function spawn(c,g){
+    if(bodies.length>=MAXB)return;
+    bodies.push({x:R+6+Math.random()*(W-2*R-12), y:-12-Math.random()*24,
+      vx:(Math.random()-.5)*1.4, vy:.5+Math.random(), c:c, g:g,
+      rot:Math.random()*6.28, sq:.92+Math.random()*.16, rest:0});
+  }
+  function settleInstant(c,g){ // reduced-motion / no-anim path: place directly in the pile
+    if(bodies.length>=MAXB)return;
+    var i=bodies.length, per=Math.max(4,Math.floor((W-16)/(2*R+2)));
+    var row=Math.floor(i/per), col=i%per;
+    bodies.push({x:8+R+col*(2*R+2)+(row%2?R:0), y:H-R-4-row*(2*R-2),
+      vx:0,vy:0,c:c,g:g,rot:Math.random()*6.28,sq:.92+Math.random()*.16,rest:999});
+  }
+  function pourJar(gid,color,n){
+    if(reduced){ for(var i=0;i<n;i++)settleInstant(color,gid); draw(); return; }
+    var at=performance.now()+380;
+    for(var i=0;i<n;i++) queue.push({c:color,g:gid,at:at+i*26});
+    wake();
+  }
+  function removeJar(gid,n){
+    for(var i=queue.length-1;i>=0&&n>0;i--){ if(queue[i].g===gid){queue.splice(i,1);n--;} }
+    for(var j=bodies.length-1;j>=0&&n>0;j--){ if(bodies[j].g===gid){bodies.splice(j,1);n--;} }
+    bodies.forEach(function(b){b.rest=0;});
+    draw(); wake();
+  }
+  function clearSim(){ bodies.length=0; queue.length=0; draw(); }
+
+  function sim(){
+    var now=performance.now(), awake=0;
+    while(queue.length&&queue[0].at<=now){ var q=queue.shift(); spawn(q.c,q.g); }
+    var i,b;
+    for(i=0;i<bodies.length;i++){
+      b=bodies[i];
+      if(b.rest>50) continue;
+      awake++;
+      b.vy+=GRAV; b.x+=b.vx; b.y+=b.vy; b.vx*=.995;
+      if(b.x<R+3){b.x=R+3;b.vx*=-.35;} else if(b.x>W-R-3){b.x=W-R-3;b.vx*=-.35;}
+      if(b.y>H-R-3){b.y=H-R-3;b.vy*=-.30;b.vx*=.9; if(Math.abs(b.vy)<.5)b.vy=0;}
+    }
+    // grid broadphase
+    var cell=2*R+2, cols=Math.max(1,Math.ceil(W/cell)), rows=Math.max(1,Math.ceil(H/cell)), grid={};
+    for(i=0;i<bodies.length;i++){ b=bodies[i];
+      var k=Math.max(0,Math.min(cols-1,(b.x/cell)|0))+','+Math.max(0,Math.min(rows-1,(b.y/cell)|0));
+      (grid[k]||(grid[k]=[])).push(i);
+    }
+    function pair(a,c2){
+      var A=bodies[a],B=bodies[c2];
+      if(A.rest>50&&B.rest>50)return;
+      var dx=B.x-A.x,dy=B.y-A.y,d2=dx*dx+dy*dy,min=2*R;
+      if(d2>=min*min||d2===0)return;
+      var d=Math.sqrt(d2),nx=dx/d,ny=dy/d,ov=(min-d)/2;
+      if(A.rest<=50){A.x-=nx*ov;A.y-=ny*ov;} else {B.x+=nx*ov;B.y+=ny*ov;}
+      if(B.rest<=50){B.x+=nx*ov;B.y+=ny*ov;} else {A.x-=nx*ov;A.y-=ny*ov;}
+      var rvx=B.vx-A.vx,rvy=B.vy-A.vy,vn=rvx*nx+rvy*ny;
+      if(vn<0){var jimp=-(1+REST)*vn/2;
+        if(A.rest<=50){A.vx-=jimp*nx;A.vy-=jimp*ny;}
+        if(B.rest<=50){B.vx+=jimp*nx;B.vy+=jimp*ny;}
+        if(ov>R*.45){A.rest=0;B.rest=0;}
+      }
+    }
+    for(var key in grid){
+      var listA=grid[key], parts=key.split(','), gx=+parts[0], gy=+parts[1];
+      for(i=0;i<listA.length;i++){
+        for(var j2=i+1;j2<listA.length;j2++)pair(listA[i],listA[j2]);
+        var neigh=[(gx+1)+','+gy, gx+','+(gy+1), (gx+1)+','+(gy+1), (gx-1)+','+(gy+1)];
+        for(var nn=0;nn<4;nn++){var lb=grid[neigh[nn]];if(!lb)continue;
+          for(var m=0;m<lb.length;m++)pair(listA[i],lb[m]);}
+      }
+    }
+    for(i=0;i<bodies.length;i++){ b=bodies[i];
+      if(b.rest>50)continue;
+      if(Math.abs(b.vx)+Math.abs(b.vy)<.3&&b.y>H-R*6){b.rest++;}else b.rest=0;
+      b.rot+=b.vx*.03;
+    }
+    return awake+queue.length;
+  }
+  function draw(){
+    cx.clearRect(0,0,W,H);
+    for(var i=0;i<bodies.length;i++){var b=bodies[i];
+      cx.save();cx.translate(b.x,b.y);cx.rotate(b.rot);cx.scale(b.sq,1/b.sq);
+      cx.beginPath();cx.arc(0,0,R,0,6.2832);cx.fillStyle=b.c;cx.fill();
+      cx.globalAlpha=.5;cx.beginPath();cx.arc(-R*.32,-R*.36,R*.42,0,6.2832);cx.fillStyle='#fff';cx.fill();
+      cx.globalAlpha=.09;cx.beginPath();cx.arc(R*.14,R*.2,R*.8,0,6.2832);cx.fillStyle='#000';cx.fill();
+      cx.restore();
+    }
+  }
+  function step(){
+    raf=null;
+    var active=sim(); draw();
+    if(visible&&active>0) raf=requestAnimationFrame(step);
+  }
+  function wake(){ if(raf===null&&!reduced&&visible) raf=requestAnimationFrame(step); }
+  window.__bbFlush=function(){ // test hook: drain queue instantly, settle everything
+    while(queue.length){var q=queue.shift();settleInstant(q.c,q.g);} draw();
+  };
+
+  /* ---------- decorative arc from button to box ---------- */
+  var GSVG=function(c,sz){return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:'+sz+'px;height:'+sz+'px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="'+c+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>';};
+  function fly(fromEl,color){
     try{
       var f=fromEl.getBoundingClientRect(), t=drop.getBoundingClientRect();
       var el=document.createElement('div');el.className='bb-fly';el.innerHTML=GSVG(color,40);
       document.body.appendChild(el);
       var sx=f.left+f.width/2-20, sy=f.top+f.height/2-20;
-      var ex=t.left+t.width/2-20,  ey=t.top+t.height/2-20;
+      var ex=t.left+t.width/2-20, ey=t.top+20;
       el.animate([
         {transform:'translate('+sx+'px,'+sy+'px) scale(1)'},
         {transform:'translate('+((sx+ex)/2)+'px,'+(Math.min(sy,ey)-110)+'px) scale(1.2) rotate(120deg)',offset:.55},
-        {transform:'translate('+ex+'px,'+ey+'px) scale(.6) rotate(300deg)',opacity:.9}
-      ],{duration:620,easing:'cubic-bezier(.45,-.15,.35,1)'}).onfinish=function(){
+        {transform:'translate('+ex+'px,'+ey+'px) scale(.6) rotate(300deg)',opacity:.85}
+      ],{duration:560,easing:'cubic-bezier(.45,-.15,.35,1)'}).onfinish=function(){
         el.remove();
         boxEl.classList.remove('bb-land');void boxEl.offsetWidth;boxEl.classList.add('bb-land');
       };
-      setTimeout(function(){if(el.parentNode)el.remove();},1500); /* hidden-tab safety */
-      cb();
-    }catch(e){cb();}
+      setTimeout(function(){if(el.parentNode)el.remove();},1400);
+    }catch(e){}
+  }
+
+  /* ---------- state / summary / cart ---------- */
+  function groups(){
+    var order=[],map={};
+    box.forEach(function(it){var k=it.gid+'|'+it.tabs;
+      if(!map[k]){map[k]={it:it,n:0};order.push(k);} map[k].n++;});
+    return order.map(function(k){return map[k];});
+  }
+  function render(){
+    var gs=groups(), total=0, tabs=0, lines='';
+    gs.forEach(function(g){
+      lines+='<div class="bb-sumline"><span><b>'+g.it.name+'</b> · '+g.it.tabs+' tabs'+(g.n>1?' ×'+g.n:'')+'</span><span>'+inr(g.it.price*g.n)+'</span></div>';
+      total+=g.it.price*g.n; tabs+=g.it.tabs*g.n;
+    });
+    drop.classList.toggle('bb-has',box.length>0);
+    document.getElementById('bb-lines').innerHTML=lines||'<div class="bb-sumline"><span>Nothing packed yet</span><span>—</span></div>';
+    document.getElementById('bb-total').textContent=inr(total);
+    document.getElementById('bb-tabs').textContent=tabs+' tabs packed'+(tabs?' · every dot in the box is one tab':'');
+    document.getElementById('bb-count').textContent=box.length?(box.length+(box.length>1?' jars':' jar')):'empty';
+    var cta=document.getElementById('bb-cta');
+    cta.disabled=!box.length;
+    cta.textContent=box.length?('Pack my box · '+box.length+(box.length>1?' jars':' jar')+' · '+inr(total)):'Pack my box → add to bag';
+    builder.querySelectorAll('.bb-row').forEach(function(r){
+      var id=r.getAttribute('data-bb-id');
+      var q=box.filter(function(it){return it.gid===id;}).length;
+      r.classList.toggle('bb-on',q>0);
+      r.querySelector('.bb-qty').textContent=q;
+    });
   }
 
   builder.addEventListener('click',function(e){
     var sz=e.target.closest('.bb-size');
     if(sz){
-      var row=sz.closest('.bb-row'), id=row.getAttribute('data-bb-id');
+      var row=sz.closest('.bb-row');
       row.querySelectorAll('.bb-size').forEach(function(b){b.classList.toggle('bb-sel',b===sz);});
       row.querySelector('.bb-price').textContent=inr(+sz.getAttribute('data-bb-price'));
-      if(box[id]){box[id].tabs=+sz.getAttribute('data-bb-size');box[id].price=+sz.getAttribute('data-bb-price');render();}
       return;
+    }
+    var sub=e.target.closest('.bb-sub');
+    if(sub){
+      var rid=sub.closest('.bb-row').getAttribute('data-bb-id');
+      for(var i=box.length-1;i>=0;i--){ if(box[i].gid===rid){ removeJar(rid,box[i].tabs); box.splice(i,1); break; } }
+      render(); return;
     }
     var add=e.target.closest('.bb-add');
     if(add){
-      var row=add.closest('.bb-row'), id=row.getAttribute('data-bb-id');
-      if(box[id]){delete box[id];render();return;}
-      var sel=row.querySelector('.bb-size.bb-sel');
-      var item={name:row.getAttribute('data-bb-name'),color:row.getAttribute('data-bb-color'),
-                short:row.getAttribute('data-bb-short'),tabs:+sel.getAttribute('data-bb-size'),price:+sel.getAttribute('data-bb-price')};
-      box[id]=item;render();          /* state first — animation is decoration only */
-      fly(add,item.color,function(){});
+      var row2=add.closest('.bb-row'), sel=row2.querySelector('.bb-size.bb-sel');
+      var it={gid:row2.getAttribute('data-bb-id'),name:row2.getAttribute('data-bb-name'),
+        color:row2.getAttribute('data-bb-color'),short:row2.getAttribute('data-bb-short'),
+        tabs:+sel.getAttribute('data-bb-size'),price:+sel.getAttribute('data-bb-price')};
+      box.push(it); render();                       /* state first */
+      fly(add,it.color); pourJar(it.gid,it.color,it.tabs);   /* N gummies = N tabs */
       return;
     }
     if(e.target.closest('#bb-cta')){
-      var ids=Object.keys(box);if(!ids.length)return;
-      var total=0,tabs=0,parts=[];
-      ids.forEach(function(id){var it=box[id];total+=it.price;tabs+=it.tabs;parts.push(it.short.toUpperCase()+' '+it.tabs);});
-      var img='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="10" y="26" width="80" height="64" rx="10" fill="#fff" stroke="#241233" stroke-width="4"/><rect x="6" y="14" width="88" height="16" rx="6" fill="'+box[ids[0]].color+'"/><circle cx="34" cy="62" r="13" fill="'+box[ids[0]].color+'"/><circle cx="60" cy="66" r="11" fill="'+(box[ids[1]]?box[ids[1]].color:'#e44bd3')+'"/><circle cx="48" cy="50" r="10" fill="'+(box[ids[2]]?box[ids[2]].color:'#ffb02e')+'"/></svg>');
+      if(!box.length)return;
+      var gs=groups();
       try{
-        cart.push({id:'chum-box-'+Date.now(),name:'My Chum Box ('+ids.length+' chums · '+tabs+' tabs)',
-                   price:total,image:img,variant:parts.join(' · '),quantity:1});
+        gs.forEach(function(g){                     /* one cart line per flavour+size, qty-merged */
+          var id='jar-'+g.it.gid+'-'+g.it.tabs, ex=null;
+          for(var i=0;i<cart.length;i++){ if(cart[i].id===id){ex=cart[i];break;} }
+          if(ex){ ex.quantity+=g.n; }
+          else cart.push({id:id,name:g.it.name+' — '+g.it.tabs+' tabs',price:g.it.price,
+            image:'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="'+g.it.color+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>'),
+            variant:g.it.short.toUpperCase()+' · '+g.it.tabs+' TABS',quantity:g.n});
+        });
         syncCart();openCart();
-        box={};render();
-      }catch(err){alert('Box packed: '+parts.join(', ')+' — total '+inr(total));}
+        box=[];clearSim();render();
+      }catch(err){alert('Packed! Total '+inr(gs.reduce(function(a,g){return a+g.it.price*g.n;},0)));}
     }
   });
-
   render();
 })();
 </script>
