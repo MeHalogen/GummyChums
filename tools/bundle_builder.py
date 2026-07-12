@@ -66,8 +66,16 @@ def bb_css(dark, acc):
   .bb-lid{height:16px;border-radius:10px 10px 0 0;background:var(--bb-acc);opacity:.9;margin:-1rem -1rem 12px;border-bottom:3px solid var(--bb-line)}
   .bb-label{display:flex;justify-content:space-between;align-items:baseline;font-weight:800;margin-bottom:10px}
   .bb-label small{color:var(--bb-soft);font-weight:600}
-  .bb-drop{position:relative;height:250px;border:2px dashed var(--bb-line);border-radius:14px;overflow:hidden;transition:border-color .3s}
-  .bb-drop canvas{display:block;width:100%;height:100%}
+  .bb-drop{position:relative;height:340px;border:2px dashed var(--bb-line);border-radius:14px;overflow:hidden;transition:border-color .3s}
+  @media(max-width:560px){.bb-drop{height:260px}}
+  .bb-drop canvas{display:block;width:100%;height:100%;touch-action:none}
+  .bb-drop.bb-has canvas{cursor:grab}
+  .bb-swirl{position:absolute;right:10px;bottom:8px;font-size:.72rem;font-weight:700;color:var(--bb-soft);opacity:0;
+    pointer-events:none;transition:opacity .4s;letter-spacing:.06em;text-transform:uppercase}
+  .bb-drop.bb-has .bb-swirl{opacity:.6}
+  .bb-reset{border:0;background:transparent;color:var(--bb-soft);font-size:1.15rem;font-weight:800;cursor:pointer;
+    line-height:1;padding:.1rem .3rem;transition:color .2s,transform .3s}
+  .bb-reset:hover{color:var(--bb-acc);transform:rotate(-180deg)}
   .bb-drop.bb-has{border-style:solid;border-color:var(--bb-acc)}
   .bb-drop-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
     color:var(--bb-soft);font-weight:600;font-size:.92rem;pointer-events:none;transition:opacity .3s}
@@ -108,11 +116,11 @@ def bb_css(dark, acc):
     background:var(--bb-acc);color:#fff;flex:0 0 auto;transition:transform .12s;line-height:1}
   .bb-add:active{transform:scale(.9)}
   .bb-qtywrap{display:flex;align-items:center;gap:.35rem;flex:0 0 auto}
-  .bb-sub{border:2px solid var(--bb-acc);background:transparent;color:var(--bb-acc);border-radius:999px;width:2.4rem;height:2.4rem;
+  .bb-minus{border:2px solid var(--bb-acc);background:transparent;color:var(--bb-acc);border-radius:999px;width:2.4rem;height:2.4rem;
     font-size:1.2rem;font-weight:800;cursor:pointer;transition:transform .12s;line-height:1}
-  .bb-sub:active{transform:scale(.9)}
+  .bb-minus:active{transform:scale(.9)}
   .bb-qty{font-weight:800;min-width:1.1rem;text-align:center}
-  .bb-row:not(.bb-on) .bb-sub,.bb-row:not(.bb-on) .bb-qty{display:none}
+  .bb-row:not(.bb-on) .bb-minus,.bb-row:not(.bb-on) .bb-qty{display:none}
   .bb-price{font-weight:800;min-width:3.6rem;text-align:right}
   .bb-fly{position:fixed;z-index:250;pointer-events:none;left:0;top:0;will-change:transform}
   @media(max-width:560px){
@@ -135,7 +143,7 @@ def bb_html():
           '<span class="bb-sizes">'+sizes+'</span>'
           '<span class="bb-price">₹549</span>'
           '<span class="bb-qtywrap">'
-          '<button class="bb-sub" aria-label="Remove one '+name+'" data-hot>–</button>'
+          '<button class="bb-minus" aria-label="Remove one '+name+'" data-hot>–</button>'
           '<span class="bb-qty">0</span>'
           '<button class="bb-add" aria-label="Add '+name+' to box" data-hot>+</button>'
           '</span>'
@@ -150,8 +158,8 @@ def bb_html():
       '<div class="bb-boxcol">'
         '<div class="bb-box" id="bb-box">'
           '<div class="bb-lid"></div>'
-          '<div class="bb-label"><span>GummyChums · MY CHUM BOX</span><small id="bb-count">empty</small></div>'
-          '<div class="bb-drop" id="bb-drop"><canvas id="bb-canvas"></canvas><span class="bb-drop-empty" id="bb-empty">Your box is waiting — add a chum →</span></div>'
+          '<div class="bb-label"><span>GummyChums · MY CHUM BOX</span><span style="display:flex;gap:.55rem;align-items:center"><small id="bb-count">empty</small><button class="bb-reset" id="bb-reset" title="Empty the box" aria-label="Empty the box" data-hot>&#8634;</button></span></div>'
+          '<div class="bb-drop" id="bb-drop"><canvas id="bb-canvas"></canvas><span class="bb-drop-empty" id="bb-empty">Your box is waiting — add a chum →</span><span class="bb-swirl">drag inside to swirl</span></div>'
           '<div class="bb-tabs" id="bb-tabs">0 tabs packed</div>'
         '</div>'
         '<div class="bb-sum">'
@@ -166,24 +174,29 @@ def bb_html():
 
 BB_JS = r"""
 <script>
-/* ===== Chum Box builder v3: canvas physics pour (1 gummy per tab), per-jar cart lines ===== */
+/* ===== Chum Box v4: adaptive-size physics jar, swirl, reset, per-jar cart ===== */
 (function(){
   var builder=document.getElementById('bb-builder'); if(!builder)return;
   var drop=document.getElementById('bb-drop'), boxEl=document.getElementById('bb-box');
   var cv=document.getElementById('bb-canvas'), cx=cv.getContext('2d');
-  var box=[];                                    // packed jars: {gid,name,color,short,tabs,price}
+  var box=[];
   function inr(n){return '₹'+n.toLocaleString('en-IN');}
 
-  /* ---------- physics sim (2D circles, grid broadphase, sleeping) ---------- */
-  var R=7, MAXB=300, GRAV=.38, REST=.22, W=360, H=250, DPR=Math.min(2,window.devicePixelRatio||1);
+  /* ---------- physics (adaptive radius: few tabs = big juicy gummies) ---------- */
+  var R=16, targetR=16, MAXB=300, GRAV=.42, REST=.34, W=520, H=340, DPR=Math.min(2,window.devicePixelRatio||1);
   var bodies=[], queue=[], raf=null, visible=true;
   var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function calcR(){
+    var tabs=0; box.forEach(function(it){tabs+=it.tabs;});
+    targetR=Math.max(8,Math.min(17,Math.sqrt((W*H*.44)/(Math.max(tabs,14)*Math.PI))));
+  }
   function sizeCanvas(){
-    var w=cv.clientWidth||360, h=cv.clientHeight||250; W=w; H=h;
+    W=cv.clientWidth||520; H=cv.clientHeight||340;
     cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
     cx.setTransform(DPR,0,0,DPR,0,0);
-    bodies.forEach(function(b){ b.x=Math.max(R+3,Math.min(W-R-3,b.x)); });
-    draw();
+    calcR();
+    bodies.forEach(function(b){ b.x=Math.max(R+3,Math.min(W-R-3,b.x)); b.rest=0; });
+    draw(); wake();
   }
   if(window.ResizeObserver) new ResizeObserver(sizeCanvas).observe(cv);
   sizeCanvas();
@@ -193,44 +206,46 @@ BB_JS = r"""
 
   function spawn(c,g){
     if(bodies.length>=MAXB)return;
-    bodies.push({x:R+6+Math.random()*(W-2*R-12), y:-12-Math.random()*24,
-      vx:(Math.random()-.5)*1.4, vy:.5+Math.random(), c:c, g:g,
+    bodies.push({x:R+6+Math.random()*(W-2*R-12), y:-R-4-Math.random()*30,
+      vx:(Math.random()-.5)*2, vy:1+Math.random()*1.5, c:c, g:g,
       rot:Math.random()*6.28, sq:.92+Math.random()*.16, rest:0});
   }
-  function settleInstant(c,g){ // reduced-motion / no-anim path: place directly in the pile
+  function settleInstant(c,g){
     if(bodies.length>=MAXB)return;
-    var i=bodies.length, per=Math.max(4,Math.floor((W-16)/(2*R+2)));
+    var i=bodies.length, per=Math.max(3,Math.floor((W-14)/(2*R+2)));
     var row=Math.floor(i/per), col=i%per;
-    bodies.push({x:8+R+col*(2*R+2)+(row%2?R:0), y:H-R-4-row*(2*R-2),
+    bodies.push({x:7+R+col*(2*R+2)+(row%2?R:0), y:H-R-4-row*(2*R-3),
       vx:0,vy:0,c:c,g:g,rot:Math.random()*6.28,sq:.92+Math.random()*.16,rest:999});
   }
   function pourJar(gid,color,n){
+    calcR();
     if(reduced){ for(var i=0;i<n;i++)settleInstant(color,gid); draw(); return; }
-    var at=performance.now()+380;
-    for(var i=0;i<n;i++) queue.push({c:color,g:gid,at:at+i*26});
+    var at=performance.now()+360;
+    for(var i=0;i<n;i++) queue.push({c:color,g:gid,at:at+i*24});
+    bodies.forEach(function(b){b.rest=0;});
     wake();
   }
   function removeJar(gid,n){
     for(var i=queue.length-1;i>=0&&n>0;i--){ if(queue[i].g===gid){queue.splice(i,1);n--;} }
     for(var j=bodies.length-1;j>=0&&n>0;j--){ if(bodies[j].g===gid){bodies.splice(j,1);n--;} }
-    bodies.forEach(function(b){b.rest=0;});
+    calcR(); bodies.forEach(function(b){b.rest=0;});
     draw(); wake();
   }
-  function clearSim(){ bodies.length=0; queue.length=0; draw(); }
+  function clearSim(){ bodies.length=0; queue.length=0; calcR(); draw(); }
 
   function sim(){
-    var now=performance.now(), awake=0;
+    var now=performance.now(), awake=0, i, b;
     while(queue.length&&queue[0].at<=now){ var q=queue.shift(); spawn(q.c,q.g); }
-    var i,b;
+    if(Math.abs(targetR-R)>.12){ R+=(targetR-R)*.08; awake++; bodies.forEach(function(bb){bb.rest=0;}); }
     for(i=0;i<bodies.length;i++){
       b=bodies[i];
-      if(b.rest>50) continue;
+      if(b.rest>55) continue;
       awake++;
-      b.vy+=GRAV; b.x+=b.vx; b.y+=b.vy; b.vx*=.995;
-      if(b.x<R+3){b.x=R+3;b.vx*=-.35;} else if(b.x>W-R-3){b.x=W-R-3;b.vx*=-.35;}
-      if(b.y>H-R-3){b.y=H-R-3;b.vy*=-.30;b.vx*=.9; if(Math.abs(b.vy)<.5)b.vy=0;}
+      b.vy+=GRAV; b.x+=b.vx; b.y+=b.vy; b.vx*=.994;
+      if(b.x<R+3){b.x=R+3;b.vx*=-.42;} else if(b.x>W-R-3){b.x=W-R-3;b.vx*=-.42;}
+      if(b.y>H-R-3){b.y=H-R-3;b.vy*=-REST;b.vx*=.9; if(Math.abs(b.vy)<.6)b.vy=0;}
+      if(b.y<-200){b.y=-R;b.vy=1;}
     }
-    // grid broadphase
     var cell=2*R+2, cols=Math.max(1,Math.ceil(W/cell)), rows=Math.max(1,Math.ceil(H/cell)), grid={};
     for(i=0;i<bodies.length;i++){ b=bodies[i];
       var k=Math.max(0,Math.min(cols-1,(b.x/cell)|0))+','+Math.max(0,Math.min(rows-1,(b.y/cell)|0));
@@ -238,16 +253,16 @@ BB_JS = r"""
     }
     function pair(a,c2){
       var A=bodies[a],B=bodies[c2];
-      if(A.rest>50&&B.rest>50)return;
+      if(A.rest>55&&B.rest>55)return;
       var dx=B.x-A.x,dy=B.y-A.y,d2=dx*dx+dy*dy,min=2*R;
       if(d2>=min*min||d2===0)return;
       var d=Math.sqrt(d2),nx=dx/d,ny=dy/d,ov=(min-d)/2;
-      if(A.rest<=50){A.x-=nx*ov;A.y-=ny*ov;} else {B.x+=nx*ov;B.y+=ny*ov;}
-      if(B.rest<=50){B.x+=nx*ov;B.y+=ny*ov;} else {A.x-=nx*ov;A.y-=ny*ov;}
+      if(A.rest<=55){A.x-=nx*ov;A.y-=ny*ov;} else {B.x+=nx*ov;B.y+=ny*ov;}
+      if(B.rest<=55){B.x+=nx*ov;B.y+=ny*ov;} else {A.x-=nx*ov;A.y-=ny*ov;}
       var rvx=B.vx-A.vx,rvy=B.vy-A.vy,vn=rvx*nx+rvy*ny;
-      if(vn<0){var jimp=-(1+REST)*vn/2;
-        if(A.rest<=50){A.vx-=jimp*nx;A.vy-=jimp*ny;}
-        if(B.rest<=50){B.vx+=jimp*nx;B.vy+=jimp*ny;}
+      if(vn<0){var jimp=-(1+REST*.8)*vn/2;
+        if(A.rest<=55){A.vx-=jimp*nx;A.vy-=jimp*ny;}
+        if(B.rest<=55){B.vx+=jimp*nx;B.vy+=jimp*ny;}
         if(ov>R*.45){A.rest=0;B.rest=0;}
       }
     }
@@ -261,33 +276,58 @@ BB_JS = r"""
       }
     }
     for(i=0;i<bodies.length;i++){ b=bodies[i];
-      if(b.rest>50)continue;
-      if(Math.abs(b.vx)+Math.abs(b.vy)<.3&&b.y>H-R*6){b.rest++;}else b.rest=0;
-      b.rot+=b.vx*.03;
+      if(b.rest>55)continue;
+      if(Math.abs(b.vx)+Math.abs(b.vy)<.35&&b.y>H*.35){b.rest++;}else b.rest=0;
+      b.rot+=b.vx*.02;
     }
     return awake+queue.length;
   }
   function draw(){
     cx.clearRect(0,0,W,H);
+    // glass-jar dressing: floor shadow + diagonal shine streaks
+    var fg=cx.createLinearGradient(0,H-30,0,H);
+    fg.addColorStop(0,'rgba(0,0,0,0)');fg.addColorStop(1,'rgba(0,0,0,.08)');
+    cx.fillStyle=fg;cx.fillRect(0,H-30,W,30);
+    cx.save();cx.globalAlpha=.05;cx.fillStyle='#fff';
+    cx.beginPath();cx.moveTo(W*.14,0);cx.lineTo(W*.24,0);cx.lineTo(W*.06,H);cx.lineTo(W*-.04,H);cx.closePath();cx.fill();
+    cx.beginPath();cx.moveTo(W*.30,0);cx.lineTo(W*.34,0);cx.lineTo(W*.16,H);cx.lineTo(W*.12,H);cx.closePath();cx.fill();
+    cx.restore();
     for(var i=0;i<bodies.length;i++){var b=bodies[i];
       cx.save();cx.translate(b.x,b.y);cx.rotate(b.rot);cx.scale(b.sq,1/b.sq);
       cx.beginPath();cx.arc(0,0,R,0,6.2832);cx.fillStyle=b.c;cx.fill();
       cx.globalAlpha=.5;cx.beginPath();cx.arc(-R*.32,-R*.36,R*.42,0,6.2832);cx.fillStyle='#fff';cx.fill();
+      cx.globalAlpha=.18;cx.beginPath();cx.arc(R*.3,R*.42,R*.28,0,6.2832);cx.fillStyle='#fff';cx.fill();
       cx.globalAlpha=.09;cx.beginPath();cx.arc(R*.14,R*.2,R*.8,0,6.2832);cx.fillStyle='#000';cx.fill();
       cx.restore();
     }
   }
-  function step(){
-    raf=null;
-    var active=sim(); draw();
-    if(visible&&active>0) raf=requestAnimationFrame(step);
-  }
+  function step(){ raf=null; var active=sim(); draw(); if(visible&&active>0) raf=requestAnimationFrame(step); }
   function wake(){ if(raf===null&&!reduced&&visible) raf=requestAnimationFrame(step); }
-  window.__bbFlush=function(){ // test hook: drain queue instantly, settle everything
-    while(queue.length){var q=queue.shift();settleInstant(q.c,q.g);} draw();
-  };
+  window.__bbFlush=function(){ while(queue.length){var q=queue.shift();settleInstant(q.c,q.g);} draw(); };
 
-  /* ---------- decorative arc from button to box ---------- */
+  // swirl: dragging (or moving) across the jar pushes gummies around
+  var lastP=null;
+  function swirl(e){
+    var r=cv.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top;
+    if(lastP){
+      var dx=x-lastP.x, dy=y-lastP.y, reach=R*3.2;
+      if(Math.abs(dx)+Math.abs(dy)>1){
+        for(var i=0;i<bodies.length;i++){var b=bodies[i];
+          var ddx=b.x-x, ddy=b.y-y;
+          if(ddx*ddx+ddy*ddy<reach*reach){
+            b.vx+=Math.max(-6,Math.min(6,dx*.28)); b.vy+=Math.max(-6,Math.min(6,dy*.28))-.6;
+            b.rest=0;
+          }
+        }
+        wake();
+      }
+    }
+    lastP={x:x,y:y};
+  }
+  cv.addEventListener('pointermove',swirl,{passive:true});
+  cv.addEventListener('pointerleave',function(){lastP=null;},{passive:true});
+
+  /* ---------- decorative arc ---------- */
   var GSVG=function(c,sz){return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:'+sz+'px;height:'+sz+'px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="'+c+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>';};
   function fly(fromEl,color){
     try{
@@ -300,7 +340,7 @@ BB_JS = r"""
         {transform:'translate('+sx+'px,'+sy+'px) scale(1)'},
         {transform:'translate('+((sx+ex)/2)+'px,'+(Math.min(sy,ey)-110)+'px) scale(1.2) rotate(120deg)',offset:.55},
         {transform:'translate('+ex+'px,'+ey+'px) scale(.6) rotate(300deg)',opacity:.85}
-      ],{duration:560,easing:'cubic-bezier(.45,-.15,.35,1)'}).onfinish=function(){
+      ],{duration:540,easing:'cubic-bezier(.45,-.15,.35,1)'}).onfinish=function(){
         el.remove();
         boxEl.classList.remove('bb-land');void boxEl.offsetWidth;boxEl.classList.add('bb-land');
       };
@@ -308,7 +348,7 @@ BB_JS = r"""
     }catch(e){}
   }
 
-  /* ---------- state / summary / cart ---------- */
+  /* ---------- state / summary / per-jar cart ---------- */
   function groups(){
     var order=[],map={};
     box.forEach(function(it){var k=it.gid+'|'+it.tabs;
@@ -324,7 +364,7 @@ BB_JS = r"""
     drop.classList.toggle('bb-has',box.length>0);
     document.getElementById('bb-lines').innerHTML=lines||'<div class="bb-sumline"><span>Nothing packed yet</span><span>—</span></div>';
     document.getElementById('bb-total').textContent=inr(total);
-    document.getElementById('bb-tabs').textContent=tabs+' tabs packed'+(tabs?' · every dot in the box is one tab':'');
+    document.getElementById('bb-tabs').textContent=tabs+' tabs packed'+(tabs?' · every gummy in the jar is one tab':'');
     document.getElementById('bb-count').textContent=box.length?(box.length+(box.length>1?' jars':' jar')):'empty';
     var cta=document.getElementById('bb-cta');
     cta.disabled=!box.length;
@@ -345,9 +385,10 @@ BB_JS = r"""
       row.querySelector('.bb-price').textContent=inr(+sz.getAttribute('data-bb-price'));
       return;
     }
-    var sub=e.target.closest('.bb-sub');
-    if(sub){
-      var rid=sub.closest('.bb-row').getAttribute('data-bb-id');
+    if(e.target.closest('#bb-reset')){ box=[]; clearSim(); render(); return; }
+    var minus=e.target.closest('.bb-minus');
+    if(minus){
+      var rid=minus.closest('.bb-row').getAttribute('data-bb-id');
       for(var i=box.length-1;i>=0;i--){ if(box[i].gid===rid){ removeJar(rid,box[i].tabs); box.splice(i,1); break; } }
       render(); return;
     }
@@ -357,15 +398,15 @@ BB_JS = r"""
       var it={gid:row2.getAttribute('data-bb-id'),name:row2.getAttribute('data-bb-name'),
         color:row2.getAttribute('data-bb-color'),short:row2.getAttribute('data-bb-short'),
         tabs:+sel.getAttribute('data-bb-size'),price:+sel.getAttribute('data-bb-price')};
-      box.push(it); render();                       /* state first */
-      fly(add,it.color); pourJar(it.gid,it.color,it.tabs);   /* N gummies = N tabs */
+      box.push(it); render();
+      fly(add,it.color); pourJar(it.gid,it.color,it.tabs);
       return;
     }
     if(e.target.closest('#bb-cta')){
       if(!box.length)return;
       var gs=groups();
       try{
-        gs.forEach(function(g){                     /* one cart line per flavour+size, qty-merged */
+        gs.forEach(function(g){
           var id='jar-'+g.it.gid+'-'+g.it.tabs, ex=null;
           for(var i=0;i<cart.length;i++){ if(cart[i].id===id){ex=cart[i];break;} }
           if(ex){ ex.quantity+=g.n; }
