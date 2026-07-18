@@ -22,6 +22,11 @@ SKIN = {
  22:(0,'#e44bd3','We chose the deep dive.'),
  23:(0,'#8a6d3b','We chose taste.'),
  24:(1,'#ffd23f','We chose every colour.'),
+ 25:(0,'#d81b60','We chose first-class delivery.'),
+ 26:(0,'#b3261e','We chose the spark.'),
+ 27:(0,'#e8641b','We chose the corner shop.'),
+ 28:(1,'#e91e8c','We chose full masala.'),
+ 29:(1,'#e8b64c','We chose the family tin.'),
 }
 
 def rgba(hexc, a):
@@ -117,7 +122,10 @@ def upgrade(num):
         end=s.index('</section>',i)+len('</section>')
         s=s[:start]+section_html(acc,punch)+s[end:]
     else:
-        print('!! no story section in index%d'%num); return
+        blk=section_html(acc,punch)
+        idx=s.rfind('<footer')
+        if idx==-1: idx=s.find('<!-- ===================== SHARED BILL / CHECKOUT')
+        s=s[:idx]+blk+'\n'+s[idx:]
     if '.kc-kick{' not in s:
         s=s.replace('</style>', kinetic_css(acc,dark)+'\n</style>',1)
     else:

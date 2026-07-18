@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GummyChums — Maachis</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bevan&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script>
+  /* enable reveal-hiding only when JS is live; hard failsafe reveals all if init never runs */
+  (function(){var h=document.documentElement;h.classList.add('gcjs');
+    window.addEventListener('load',function(){setTimeout(function(){
+      if(!h.classList.contains('gcready')){document.querySelectorAll('.gc-reveal').forEach(function(e){e.classList.add('in');});}
+    },700);});})();
+</script>
+<style>
+
+
+    /* ---- shared bill/checkout support (identical across all designs) ---- */
+    .material-symbols-outlined { font-variation-settings:'FILL' 1,'wght' 700,'GRAD' 0,'opsz' 24; }
+    .neo-shadow    { box-shadow: 8px 8px 0 0 #261236; }
+    .neo-shadow-lg { box-shadow: 12px 12px 0 0 #261236; }
+    .neo-shadow-sm { box-shadow: 4px 4px 0 0 #261236; }
+    .jelly-pop { transition: transform .1s, box-shadow .1s; }
+    .jelly-pop:active { transform: scale(.95) translate(4px,4px); box-shadow: 2px 2px 0 0 #261236; }
+    .modal-active { opacity:1 !important; pointer-events:auto !important; }
+    .modal-active #receipt-wrapper, .modal-active #success-card { transform: scale(1) translateY(0) !important; }
+    .receipt-scrollbar::-webkit-scrollbar { width:4px; }
+    .receipt-scrollbar::-webkit-scrollbar-track { background:transparent; }
+    .receipt-scrollbar::-webkit-scrollbar-thumb { background:rgba(0,0,0,.2); border-radius:2px; }
+    .font-receipt { font-family:'Courier New', ui-monospace, monospace; }
+    /* shared scroll-reveal (progressive enhancement: hidden ONLY while JS runs,
+       so a cache/JS hiccup can never leave a page blank) */
+    .gc-reveal { }
+    html.gcjs .gc-reveal { opacity:0; transform: translateY(34px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+    html.gcjs .gc-reveal.in { opacity:1; transform:none; }
+    @media (prefers-reduced-motion: reduce){ html.gcjs .gc-reveal{opacity:1 !important;transform:none !important;} *{animation-duration:.001s!important;} }
+
+
+  /* ===== premium motion kit ===== */
+  @media (hover:hover) and (pointer:fine){ .pk body, .pk a, .pk button, .pk [data-hot]{cursor:none} }
+  #pkc{position:fixed;left:0;top:0;width:30px;height:30px;z-index:400;pointer-events:none;transform:translate(-50%,-50%);
+       border-radius:46% 54% 52% 48%/48% 46% 54% 52%;transition:width .22s,height .22s,opacity .3s;opacity:0;
+       mix-blend-mode:multiply;animation:pk-wob 5s ease-in-out infinite;
+       box-shadow:inset -4px -5px 8px rgba(0,0,0,.18), inset 4px 5px 8px rgba(255,255,255,.5);}
+  #pkc.on{opacity:.92}  #pkc.blend-screen{mix-blend-mode:screen}
+  body.overflow-hidden #pkc{mix-blend-mode:multiply}  /* stay visible on the white bill */
+  @media (hover:none){#pkc{display:none}}
+  @keyframes pk-wob{0%,100%{border-radius:46% 54% 52% 48%/48% 46% 54% 52%}33%{border-radius:58% 42% 45% 55%/52% 58% 42% 48%}66%{border-radius:42% 58% 60% 40%/45% 42% 58% 55%}}
+  .pk-wobble{animation:pk-wob 7s ease-in-out infinite}
+  @keyframes pk-float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-20px) rotate(3deg)}}
+  .pk-float{animation:pk-float 6s ease-in-out infinite}
+  @keyframes pk-aurora{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  .pk-aurora{background-size:280% 280%;animation:pk-aurora 13s ease infinite}
+  @keyframes pk-breathe{0%,100%{opacity:.45}50%{opacity:.9}}
+  .pk-light{position:absolute;border-radius:50%;filter:blur(72px);pointer-events:none;animation:pk-breathe 7s ease-in-out infinite;will-change:transform,opacity;transform:translateZ(0)}
+  .pk-mag{transition:transform .16s cubic-bezier(.34,1.56,.64,1)}
+  .pk-btn{transition:transform .12s}.pk-btn:active{transform:scale(.93)}
+  [data-scrub]{--p:0}
+  .pk-chars span span{display:inline-block;opacity:0;transform:translateY(65%) rotate(7deg);transition:opacity .45s,transform .6s cubic-bezier(.2,.8,.2,1)}
+  .pk-chars.go span span{opacity:1;transform:none}
+  @keyframes pk-spin{to{transform:rotate(1turn)}}
+  .pk-spin{animation:pk-spin 24s linear infinite}
+  @keyframes pk-squash{0%{transform:scale(1)}35%{transform:scale(1.22,.78)}65%{transform:scale(.86,1.14)}100%{transform:scale(1)}}
+  .pk-squash{animation:pk-squash .5s cubic-bezier(.34,1.56,.64,1)}
+  .pk-marq{display:flex;white-space:nowrap;will-change:transform;animation:pk-mv 18s linear infinite}
+  @keyframes pk-mv{to{transform:translateX(-50%)}}
+
+  
+
+  body.mb-mx{background:#f3e6c9;color:#2b1608;font-family:Poppins,sans-serif;overflow-x:hidden;
+    background-image:repeating-linear-gradient(45deg,rgba(43,22,8,.03) 0 2px,transparent 2px 14px)}
+  .mx-disp{font-family:Bevan,serif}
+  .mx-nav{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+    padding:.9rem 1.4rem;background:#b3261e;color:#f3e6c9;box-shadow:0 4px 14px -6px rgba(43,22,8,.5)}
+  .mx-bag{border:2px solid #f3e6c9;background:transparent;color:#f3e6c9;border-radius:6px;padding:.5rem 1.1rem;font-weight:700;cursor:pointer}
+  .mx-hero{max-width:70rem;margin:0 auto;padding:5rem 1.25rem 4rem;text-align:center}
+  .mx-big{font-size:clamp(2.4rem,7vw,5.4rem);line-height:1.05;color:#b3261e;text-shadow:2px 2px 0 rgba(212,160,23,.55)}
+  .mx-sub{max-width:30rem;margin:1.2rem auto 0;opacity:.78;line-height:1.7}
+  .mx-grid{max-width:74rem;margin:0 auto;padding:4rem 1.25rem 5rem;display:grid;gap:2.4rem;grid-template-columns:repeat(auto-fit,minmax(268px,1fr))}
+  .mx-box{position:relative;perspective:900px}
+  .mx-tray{position:relative;background:#fdf3da;border:3px solid #2b1608;box-shadow:6px 8px 0 #2b1608,0 18px 30px -14px rgba(43,22,8,.5);
+    padding:1.1rem;z-index:2;transition:transform .5s cubic-bezier(.22,.8,.26,1)}
+  .mx-label{border:2px solid var(--c);outline:2px dashed rgba(43,22,8,.35);outline-offset:-9px;padding:1.3rem 1rem;text-align:center;
+    background:radial-gradient(circle at 50% 24%,#fff8e6,#f7e9c6)}
+  .mx-strike{position:absolute;left:10px;right:10px;bottom:-12px;height:14px;z-index:1;border:2px solid #2b1608;
+    background:repeating-linear-gradient(90deg,#5c4030 0 6px,#3e2a1c 6px 12px)}
+  .mx-drawer{position:absolute;inset:12px;background:#e9d7a8;border:2px solid #2b1608;z-index:1;display:flex;align-items:center;
+    justify-content:center;gap:8px;transform:translateX(0);transition:transform .55s cubic-bezier(.22,.8,.26,1)}
+  .mx-box:hover .mx-drawer{transform:translateX(34%)}
+  .mx-box:hover .mx-tray{transform:translateX(-6%) rotate(-1.2deg)}
+  .mx-flare{position:absolute;right:-6px;top:34%;width:22px;height:22px;border-radius:999px;background:radial-gradient(circle,#ffd23f,#e8641b 70%,transparent 72%);
+    opacity:0;transform:scale(.3);transition:opacity .3s,transform .45s cubic-bezier(.34,1.56,.64,1)}
+  .mx-box:hover .mx-flare{opacity:1;transform:scale(1.25)}
+  .mx-role{font-size:.7rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--c)}
+  .mx-name{font-family:Bevan,serif;font-size:1.45rem;margin:.3rem 0 .5rem;color:#2b1608}
+  .mx-ing{font-size:.78rem;line-height:1.55;opacity:.72;min-height:3.4em}
+  .mx-fl{display:inline-block;border:2px solid var(--c);color:var(--c);border-radius:4px;padding:.2rem .7rem;font-size:.72rem;
+    font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin:.5rem 0}
+  .mx-buy{display:flex;justify-content:space-between;align-items:center;margin-top:.5rem}
+  .mx-price{font-family:Bevan,serif;font-size:1.35rem;color:#b3261e}
+  .mx-add{border:2px solid #2b1608;background:#d4a017;color:#2b1608;border-radius:6px;padding:.55rem 1.1rem;font-weight:800;
+    cursor:pointer;box-shadow:3px 3px 0 #2b1608;transition:transform .15s,box-shadow .15s}
+  .mx-add:active{transform:translate(3px,3px);box-shadow:0 0 0 #2b1608}
+  .mx-band{overflow:hidden;background:#2b1608;color:#d4a017;padding:.8rem 0}
+  .mx-band>div{display:flex;white-space:nowrap;font-family:Bevan,serif;font-size:1rem;letter-spacing:.14em;animation:mx-mv 24s linear infinite}
+  @keyframes mx-mv{to{transform:translateX(-50%)}}
+  .mx-foot{text-align:center;padding:3.2rem 1rem;opacity:.65;font-size:.9rem}
+ 
+
+  /* ===== kinetic manifesto ===== */
+  .kc-kick{letter-spacing:.35em;font-size:12px;text-transform:uppercase;opacity:.6;color:#b3261e;margin-bottom:20px;font-weight:700}
+  .kc-big{font-size:clamp(2rem,6vw,4.4rem);line-height:1.08;font-weight:800;letter-spacing:-.01em}
+  .kc-strike{position:relative;white-space:nowrap;opacity:.5}
+  .kc-strike::after{content:"";position:absolute;left:-2%;right:-2%;top:52%;height:.09em;border-radius:99px;background:#b3261e;transform:scaleX(0);transform-origin:left center;transition:transform .7s cubic-bezier(.77,0,.18,1)}
+  .kc.go .kc-strike:nth-of-type(1)::after{transform:scaleX(1);transition-delay:.15s}
+  .kc.go .kc-strike:nth-of-type(2)::after{transform:scaleX(1);transition-delay:.5s}
+  .kc-mark{background-image:linear-gradient(rgba(179,38,30,.30),rgba(179,38,30,.30));background-repeat:no-repeat;background-size:0% 82%;background-position:0 62%;transition:background-size .8s .85s cubic-bezier(.77,0,.18,1);padding:0 .1em}
+  .kc.go .kc-mark{background-size:100% 82%}
+  .kc-mission{font-size:clamp(1.7rem,4.6vw,3.2rem);font-weight:800;text-align:center;margin:70px 0 64px}
+  .kc-treat{color:#b3261e;position:relative;display:inline-block;padding-bottom:.12em}
+  .kc-squig{position:absolute;left:0;right:0;bottom:-.08em;width:100%;height:.32em}
+  .kc-squig path{stroke:#b3261e;stroke-width:8;fill:none;stroke-linecap:round;stroke-dasharray:320;stroke-dashoffset:320;transition:stroke-dashoffset 1.1s 1.05s cubic-bezier(.5,0,.2,1)}
+  .kc.go .kc-squig path{stroke-dashoffset:0}
+  .kc-h3{font-weight:800;font-size:1.05rem;letter-spacing:.16em;text-transform:uppercase;opacity:.55;margin:56px 0 18px}
+  .kc-chip{display:inline-block;background:rgba(0,0,0,.05);border-radius:999px;padding:.55rem 1.1rem;font-weight:700;font-size:.92rem;margin:0 .5rem .6rem 0;opacity:0;transform:translateY(16px) scale(.9);transition:opacity .5s,transform .55s cubic-bezier(.34,1.56,.64,1)}
+  .kc.go .kc-chip{opacity:1;transform:none}
+  .kc-chip:hover{animation:kc-jig .4s ease}
+  @keyframes kc-jig{25%{transform:rotate(-2.5deg) scale(1.05)}75%{transform:rotate(2.5deg) scale(1.05)}}
+  .kc-word{display:inline-block;font-size:clamp(1.7rem,4.6vw,3.1rem);font-weight:800;margin:0 .55em .2em 0;opacity:0;transform:translateY(34px) rotate(3deg);transition:opacity .55s,transform .6s cubic-bezier(.2,.8,.2,1);cursor:default}
+  .kc.go .kc-word{opacity:1;transform:none}
+  .kc-word:nth-child(even){color:#b3261e}
+  .kc-word:hover{animation:kc-squi .45s ease}
+  @keyframes kc-squi{35%{transform:scale(1.15,.85)}70%{transform:scale(.92,1.08)}}
+  .kc-never{font-size:1.05rem;font-weight:600;opacity:.85;margin-top:60px;line-height:2.1}
+  .kc-nv{position:relative;white-space:nowrap;margin:0 .18em;opacity:.55}
+  .kc-nv::after{content:"";position:absolute;left:-3%;right:-3%;top:52%;height:.11em;border-radius:99px;background:#b3261e;transform:scaleX(0);transform-origin:left center;transition:transform .5s cubic-bezier(.77,0,.18,1)}
+  .kc.go .kc-nv::after{transform:scaleX(1)}
+  .kc-val{background:rgba(0,0,0,.05);border-radius:1.4rem;padding:1.4rem 1.5rem}
+  .kc-val b{color:#b3261e;font-size:1.15rem;display:block;margin-bottom:.3rem}
+
+
+  /* ===== chum box builder (soft-depth, borderless) ===== */
+  #bb-builder{--bb-acc:#b3261e;--bb-panel:rgba(0,0,0,.045);--bb-line:rgba(0,0,0,.10);--bb-soft:rgba(0,0,0,.55);
+    padding:6rem 1.25rem;}
+  #bb-builder *{box-sizing:border-box}
+  .bb-wrap{max-width:72rem;margin:0 auto}
+  .bb-kick{letter-spacing:.35em;font-size:12px;text-transform:uppercase;color:var(--bb-acc);font-weight:700;margin:0 0 14px}
+  .bb-title{font-size:clamp(2rem,5.5vw,3.8rem);font-weight:800;line-height:1.05;margin:0 0 10px}
+  .bb-sub{color:var(--bb-soft);font-size:1.02rem;margin:0 0 42px;max-width:36rem}
+  .bb-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:2.2rem}
+  .bb-grid>*{min-width:0}
+  @media(min-width:880px){.bb-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:start}}
+  /* --- the jar card --- */
+  .bb-boxcol{position:sticky;top:90px}
+  @media(max-width:879px){.bb-boxcol{position:static}}
+  .bb-box{position:relative;background:linear-gradient(180deg,#ffffff,#fcfafa);border-radius:26px;
+    padding:1rem 1rem 1.2rem;box-shadow:0 24px 50px -24px rgba(40,20,50,.28), 0 4px 14px -8px rgba(40,20,50,.14)}
+  .bb-lid{height:14px;border-radius:13px 13px 0 0;margin:-1rem -1rem 14px;
+    background:linear-gradient(180deg,rgba(179,38,30,.95),rgba(179,38,30,.75));
+    box-shadow:0 3px 8px -3px rgba(179,38,30,.32)}
+  .bb-label{display:flex;justify-content:space-between;align-items:baseline;font-weight:800;margin-bottom:10px}
+  .bb-label small{color:var(--bb-soft);font-weight:600}
+  .bb-drop{position:relative;height:340px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#fdfdfd,#f4f2f3);
+    box-shadow:inset 0 3px 12px rgba(0,0,0,.07), inset 0 -10px 22px rgba(0,0,0,.05);
+    transition:box-shadow .45s cubic-bezier(.22,.8,.26,1)}
+  @media(max-width:560px){.bb-drop{height:260px}}
+  .bb-drop canvas{display:block;width:100%;height:100%;touch-action:none}
+  .bb-drop.bb-has canvas{cursor:grab}
+  .bb-drop.bb-has{box-shadow:inset 0 3px 12px rgba(0,0,0,.07), inset 0 -10px 22px rgba(0,0,0,.05),
+    inset 0 0 0 1.5px rgba(179,38,30,.22), 0 0 26px -8px rgba(179,38,30,.32)}
+  .bb-swirl{position:absolute;right:12px;bottom:9px;font-size:.72rem;font-weight:700;color:var(--bb-soft);opacity:0;
+    pointer-events:none;transition:opacity .4s;letter-spacing:.06em;text-transform:uppercase}
+  .bb-drop.bb-has .bb-swirl{opacity:.55}
+  .bb-reset{border:0;background:transparent;color:var(--bb-soft);font-size:1.15rem;font-weight:800;cursor:pointer;
+    line-height:1;padding:.1rem .3rem;transition:color .25s,transform .45s cubic-bezier(.22,.8,.26,1)}
+  .bb-reset:hover{color:var(--bb-acc);transform:rotate(-180deg)}
+  .bb-drop-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
+    color:var(--bb-soft);font-weight:600;font-size:.92rem;pointer-events:none;transition:opacity .3s}
+  .bb-drop.bb-has .bb-drop-empty{opacity:0}
+  .bb-box.bb-land{animation:bb-squash .45s cubic-bezier(.22,.8,.26,1)}
+  @keyframes bb-squash{35%{transform:scale(1.022,.975)}70%{transform:scale(.99,1.01)}100%{transform:scale(1)}}
+  .bb-tabs{margin-top:12px;font-weight:700;font-size:.92rem;color:var(--bb-soft);text-align:center}
+  /* --- summary + cta --- */
+  .bb-sum{margin-top:1.1rem;background:var(--bb-panel);border-radius:20px;padding:1.05rem 1.2rem}
+  .bb-sumline{display:flex;justify-content:space-between;font-weight:600;font-size:.95rem;padding:.28rem 0;color:var(--bb-soft)}
+  .bb-sumline b{color:inherit}
+  .bb-total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--bb-line);
+    margin-top:.6rem;padding-top:.7rem;font-weight:800}
+  .bb-total span:last-child{font-size:1.7rem}
+  .bb-cta{width:100%;margin-top:.9rem;border:0;border-radius:999px;padding:1.05rem;font-weight:800;font-size:1.05rem;
+    background:linear-gradient(180deg,rgba(179,38,30,1),rgba(179,38,30,.85));color:#fff;cursor:pointer;
+    box-shadow:0 10px 24px -10px rgba(179,38,30,.32), inset 0 1px 0 rgba(255,255,255,.25);
+    transition:transform .3s cubic-bezier(.22,.8,.26,1),box-shadow .3s cubic-bezier(.22,.8,.26,1),opacity .2s}
+  .bb-cta:hover{transform:translateY(-2px);box-shadow:0 16px 32px -10px rgba(179,38,30,.32), inset 0 1px 0 rgba(255,255,255,.25)}
+  .bb-cta:active{transform:scale(.97)}
+  .bb-cta[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none;transform:none}
+  /* --- pickers --- */
+  .bb-row{display:flex;align-items:center;gap:.9rem;background:var(--bb-panel);
+    border-radius:20px;padding:.9rem 1.05rem;margin-bottom:.7rem;
+    transition:background .35s cubic-bezier(.22,.8,.26,1),box-shadow .35s cubic-bezier(.22,.8,.26,1),transform .35s cubic-bezier(.22,.8,.26,1)}
+  .bb-row:hover{transform:translateY(-2px);box-shadow:0 12px 26px -16px rgba(0,0,0,.35)}
+  .bb-row.bb-on{background:rgba(179,38,30,.13);box-shadow:inset 0 0 0 1.5px rgba(179,38,30,.4), 0 10px 24px -16px rgba(179,38,30,.32)}
+  .bb-dot{flex:0 0 44px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.18))}
+  .bb-meta{flex:1 1 auto;min-width:0}
+  .bb-meta b{display:block;font-size:1.02rem}
+  .bb-meta small{color:var(--bb-soft);font-weight:600}
+  .bb-sizes{display:flex;gap:.35rem;margin:0 .2rem}
+  .bb-size{border:0;background:rgba(0,0,0,.07);color:inherit;border-radius:999px;
+    padding:.38rem .66rem;font-weight:700;font-size:.8rem;cursor:pointer;white-space:nowrap;
+    transition:background .3s cubic-bezier(.22,.8,.26,1),color .3s,box-shadow .3s cubic-bezier(.22,.8,.26,1),transform .2s cubic-bezier(.22,.8,.26,1)}
+  .bb-size:hover{transform:translateY(-1px)}
+  .bb-size.bb-sel{background:var(--bb-acc);color:#fff;box-shadow:0 6px 14px -6px rgba(179,38,30,.32)}
+  .bb-add{border:0;border-radius:999px;width:2.4rem;height:2.4rem;font-size:1.2rem;font-weight:800;cursor:pointer;
+    background:var(--bb-acc);color:#fff;flex:0 0 auto;line-height:1;
+    box-shadow:0 6px 14px -6px rgba(179,38,30,.32);transition:transform .25s cubic-bezier(.22,.8,.26,1),box-shadow .25s cubic-bezier(.22,.8,.26,1)}
+  .bb-add:hover{transform:translateY(-2px)}
+  .bb-add:active{transform:scale(.9)}
+  .bb-qtywrap{display:flex;align-items:center;gap:.35rem;flex:0 0 auto}
+  .bb-minus{border:0;background:rgba(179,38,30,.13);color:var(--bb-acc);border-radius:999px;width:2.4rem;height:2.4rem;
+    font-size:1.2rem;font-weight:800;cursor:pointer;line-height:1;transition:transform .25s cubic-bezier(.22,.8,.26,1),background .3s}
+  .bb-minus:hover{background:rgba(179,38,30,.22)}
+  .bb-minus:active{transform:scale(.9)}
+  .bb-qty{font-weight:800;min-width:1.1rem;text-align:center}
+  .bb-row:not(.bb-on) .bb-minus,.bb-row:not(.bb-on) .bb-qty{display:none}
+  .bb-price{font-weight:800;min-width:3.6rem;text-align:right}
+  .bb-fly{position:fixed;z-index:250;pointer-events:none;left:0;top:0;will-change:transform;
+    filter:drop-shadow(0 8px 10px rgba(0,0,0,.25))}
+  @media(max-width:560px){
+    .bb-row{flex-wrap:wrap}
+    .bb-meta{flex:1 1 8rem}
+    .bb-sizes{width:100%;order:5;margin:.5rem 0 0;justify-content:flex-start}
+    .bb-size{padding:.3rem .55rem}
+    .bb-price{margin-left:auto}
+  }
+
+</style>
+</head>
+<body class="mb-mx">
+
+<div id="pkc" style="background:#b3261e"></div>
+<nav class="mx-nav"><b class="mx-disp" style="font-size:1.2rem">GUMMYCHUMS MAACHIS CO.</b>
+  <button class="cart-trigger mx-bag" data-hot>BAG <span class="cart-count" style="display:none;background:#d4a017;color:#2b1608;border-radius:99px;padding:0 .45rem;margin-left:.2rem">0</span></button></nav>
+<header class="mx-hero">
+  <p style="letter-spacing:.3em;font-weight:700;font-size:.8rem;opacity:.6">SINCE 2026 · AVERAGE CONTENTS 15/30/45</p>
+  <h1 class="mx-disp mx-big pk-chars">STRIKE UP YOUR HEALTH</h1>
+  <p class="mx-sub">Vintage matchbox spirit, modern lab science. Slide a box open — brain, sleep or eyes — and light up your daily routine. <b>No added sugar.</b></p>
+  <a href="#boxes" data-hot style="display:inline-block;margin-top:1.5rem;background:#b3261e;color:#f3e6c9;font-weight:800;border:3px solid #2b1608;box-shadow:4px 4px 0 #2b1608;padding:.95rem 2rem">OPEN A BOX ↓</a>
+</header>
+<div class="mx-band"><div><span style="padding:0 1.6rem">SAFETY WELLNESS ✦ MADE IN INDIA ✦ STRIKES EVERY TIME ✦ 100% VEG ✦</span><span style="padding:0 1.6rem">SAFETY WELLNESS ✦ MADE IN INDIA ✦ STRIKES EVERY TIME ✦ 100% VEG ✦</span><span style="padding:0 1.6rem">SAFETY WELLNESS ✦ MADE IN INDIA ✦ STRIKES EVERY TIME ✦ 100% VEG ✦</span></div></div>
+<section id="boxes" class="mx-grid">
+  <article class="mx-box" data-pdp="product-neon-violet.html" style="--c:#e44bd3">
+    <div class="mx-drawer"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:34px"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:34px"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:34px"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></div>
+    <div class="mx-tray"><div class="mx-label">
+      <div class="mx-role">Brain Booster</div>
+      <div class="mx-name">Neon Violet</div>
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:74%;margin:auto"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>
+      <span class="mx-fl">Mango</span>
+      <p class="mx-ing">Bacopa monnieri (Brahmi) 60 mg</p>
+      <div class="mx-buy"><span class="mx-price">₹899</span>
+      <button class="add-to-cart-btn mx-add" data-product-id="neon-violet">STRIKE</button></div>
+    </div></div>
+    <div class="mx-strike"></div><div class="mx-flare"></div>
+  </article>
+  <article class="mx-box" data-pdp="product-dreamy-sleep.html" style="--c:#8b5cf6">
+    <div class="mx-drawer"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:34px"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#8b5cf6"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:34px"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#8b5cf6"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:34px"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#8b5cf6"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></div>
+    <div class="mx-tray"><div class="mx-label">
+      <div class="mx-role">Melatonin Sleep</div>
+      <div class="mx-name">Dreamy Sleep</div>
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:74%;margin:auto"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#8b5cf6"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>
+      <span class="mx-fl">Cherry</span>
+      <p class="mx-ing">Melatonin 5 mg + Ashwagandha + Chamomile + Valerian + Passion flower + Magnesium</p>
+      <div class="mx-buy"><span class="mx-price">₹699</span>
+      <button class="add-to-cart-btn mx-add" data-product-id="dreamy-sleep">STRIKE</button></div>
+    </div></div>
+    <div class="mx-strike"></div><div class="mx-flare"></div>
+  </article>
+  <article class="mx-box" data-pdp="product-electric-blue.html" style="--c:#38bdf8">
+    <div class="mx-drawer"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:34px"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#38bdf8"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:34px"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#38bdf8"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:34px"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#38bdf8"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></div>
+    <div class="mx-tray"><div class="mx-label">
+      <div class="mx-role">Eye Care</div>
+      <div class="mx-name">Electric Blue</div>
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:74%;margin:auto"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#38bdf8"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>
+      <span class="mx-fl">Orange</span>
+      <p class="mx-ing">Lutein 5 mg + Zeaxanthin + Bilberry 100 mg + Grape seed + Vit A·C·E·B1·B2·B6 + Lycopene</p>
+      <div class="mx-buy"><span class="mx-price">₹749</span>
+      <button class="add-to-cart-btn mx-add" data-product-id="electric-blue">STRIKE</button></div>
+    </div></div>
+    <div class="mx-strike"></div><div class="mx-flare"></div>
+  </article></section>
+<section class="kc" id="kc-manifesto" style="border-top:1px solid rgba(128,128,128,.18)"><div class="max-w-5xl mx-auto px-5 md:px-10 py-24 md:py-28"><p class="kc-kick">The why · straight from the founder</p><h2 class="kc-big">Pills feel like <span class="kc-strike">homework.</span><br/>Powders feel like <span class="kc-strike">chemistry class.</span><br/><span class="kc-mark">We chose the spark.</span></h2><p style="opacity:.65;max-width:34rem;margin-top:26px;font-size:1.05rem;line-height:1.7">Born in India, on a shelf crowded with bottles nobody finished. One question changed everything: <b style="opacity:1">why can&rsquo;t the healthiest thing you do all day be the tastiest?</b> &ldquo;Chums&rdquo; means friends. That&rsquo;s the whole plan.</p><div class="kc-mission">wellness = <span class="kc-treat">a treat<svg class="kc-squig" viewBox="0 0 100 14" preserveAspectRatio="none"><path d="M2 8 Q 10 2, 20 8 T 40 8 T 60 8 T 80 8 T 98 8"/></svg></span> <span style="opacity:.45">not a task.</span></div><h3 class="kc-h3">Grab a Chum before&hellip;</h3><div><span class="kc-chip" style="transition-delay:150ms">that 9am exam</span><span class="kc-chip" style="transition-delay:240ms">the 3-hour meeting</span><span class="kc-chip" style="transition-delay:330ms">leg day</span><span class="kc-chip" style="transition-delay:420ms">a road trip</span><span class="kc-chip" style="transition-delay:510ms">another Monday</span><span class="kc-chip" style="transition-delay:600ms">lights out</span></div><h3 class="kc-h3">One chew should make you feel</h3><div><span class="kc-word" style="transition-delay:120ms">Happy.</span><span class="kc-word" style="transition-delay:230ms">Confident.</span><span class="kc-word" style="transition-delay:340ms">Energized.</span><span class="kc-word" style="transition-delay:450ms">Comforted.</span><span class="kc-word" style="transition-delay:560ms">Curious.</span><span class="kc-word" style="transition-delay:670ms">Proud.</span></div><p class="kc-never">And the fine print, in big letters: we will never be <span class="kc-nv" style="transition-delay:200ms">clinical</span> <span class="kc-nv" style="transition-delay:420ms">preachy</span> <span class="kc-nv" style="transition-delay:640ms">childish</span> <span class="kc-nv" style="transition-delay:860ms">complicated</span> — pinky promise, in writing. Not a supplement company. Not a candy brand. A lifestyle brand India actually loves.</p><div class="grid sm:grid-cols-3 gap-4 mt-12"><div class="kc-val"><b>Within reach</b><span style="opacity:.65">premium should never mean pricey.</span></div><div class="kc-val"><b>Joy, non-negotiable</b><span style="opacity:.65">if it doesn&rsquo;t make you smile, it doesn&rsquo;t ship.</span></div><div class="kc-val"><b>Trust you can read</b><span style="opacity:.65">the label says everything. Every time.</span></div></div></div><script>(function(){var k=document.getElementById("kc-manifesto");function go(){k.classList.add("go");}new IntersectionObserver(function(es,o){es.forEach(function(en){if(en.isIntersecting){go();o.disconnect();}})},{threshold:0,rootMargin:"0px 0px -12% 0px"}).observe(k);addEventListener("scroll",function f(){if(k.getBoundingClientRect().top<innerHeight*.85){go();removeEventListener("scroll",f);}},{passive:true});if(k.getBoundingClientRect().top<innerHeight)go();})();</script></section>
+<!-- BB:START -->
+<section id="bb-builder"><div class="bb-wrap"><p class="bb-kick">Build your own · mix any of the six</p><h2 class="bb-title">Pack your Chum Box.</h2><p class="bb-sub">Pick your gummies, pick your size — watch every single tab tumble in, one by one. One box, your rules: 15 tabs ₹349 · 30 tabs ₹549 · 45 tabs ₹749 per jar. Love one? Stack it twice. Or five times — your box.</p><div class="bb-grid"><div class="bb-boxcol"><div class="bb-box" id="bb-box"><div class="bb-lid"></div><div class="bb-label"><span>GummyChums · MY CHUM BOX</span><span style="display:flex;gap:.55rem;align-items:center"><small id="bb-count">empty</small><button class="bb-reset" id="bb-reset" title="Empty the box" aria-label="Empty the box" data-hot>&#8634;</button></span></div><div class="bb-drop" id="bb-drop"><canvas id="bb-canvas"></canvas><span class="bb-drop-empty" id="bb-empty">Your box is waiting — add a chum →</span><span class="bb-swirl">drag inside to swirl</span></div><div class="bb-tabs" id="bb-tabs">0 tabs packed</div></div><div class="bb-sum"><div id="bb-lines"><div class="bb-sumline"><span>Nothing packed yet</span><span>—</span></div></div><div class="bb-total"><span>Box total</span><span id="bb-total">₹0</span></div><button class="bb-cta" id="bb-cta" disabled data-hot>Pack my box → add to bag</button></div></div><div><div class="bb-row" data-bb-id="dreamy-sleep" data-bb-name="Dreamy Sleep" data-bb-color="#8b5cf6" data-bb-short="Sleep"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#8b5cf6"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Dreamy Sleep</b><small>Sleep</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Dreamy Sleep" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Dreamy Sleep to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="electric-blue" data-bb-name="Electric Blue" data-bb-color="#38bdf8" data-bb-short="Focus"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#38bdf8"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Electric Blue</b><small>Focus</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Electric Blue" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Electric Blue to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="neon-violet" data-bb-name="Neon Violet" data-bb-color="#e44bd3" data-bb-short="Calm"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Neon Violet</b><small>Calm</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Neon Violet" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Neon Violet to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="minty-fresh" data-bb-name="Minty Fresh" data-bb-color="#39c98e" data-bb-short="Gut"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#39c98e"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Minty Fresh</b><small>Gut</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Minty Fresh" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Minty Fresh to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="burnt-orange" data-bb-name="Burnt Orange" data-bb-color="#ffb02e" data-bb-short="Immunity"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ffb02e"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Burnt Orange</b><small>Immunity</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Burnt Orange" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Burnt Orange to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="coral-sunrise" data-bb-name="Coral Sunrise" data-bb-color="#ff5c8a" data-bb-short="Glow"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ff5c8a"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Coral Sunrise</b><small>Glow</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Coral Sunrise" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Coral Sunrise to box" data-hot>+</button></span></div></div></div></div></section>
+<!-- BB:END -->
+
+<script>
+/* ===== Chum Box v4: adaptive-size physics jar, swirl, reset, per-jar cart ===== */
+(function(){
+  var builder=document.getElementById('bb-builder'); if(!builder)return;
+  var drop=document.getElementById('bb-drop'), boxEl=document.getElementById('bb-box');
+  var cv=document.getElementById('bb-canvas'), cx=cv.getContext('2d');
+  var box=[];
+  function inr(n){return '₹'+n.toLocaleString('en-IN');}
+
+  /* ---------- physics (adaptive radius: few tabs = big juicy gummies) ---------- */
+  var R=16, targetR=16, MAXB=300, GRAV=.42, REST=.34, W=520, H=340, DPR=Math.min(2,window.devicePixelRatio||1);
+  var bodies=[], queue=[], raf=null, visible=true;
+  var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function calcR(){
+    var tabs=0; box.forEach(function(it){tabs+=it.tabs;});
+    targetR=Math.max(8,Math.min(17,Math.sqrt((W*H*.44)/(Math.max(tabs,14)*Math.PI))));
+  }
+  function sizeCanvas(){
+    W=cv.clientWidth||520; H=cv.clientHeight||340;
+    cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
+    cx.setTransform(DPR,0,0,DPR,0,0);
+    calcR();
+    bodies.forEach(function(b){ b.x=Math.max(R+3,Math.min(W-R-3,b.x)); b.rest=0; });
+    draw(); wake();
+  }
+  if(window.ResizeObserver) new ResizeObserver(sizeCanvas).observe(cv);
+  sizeCanvas();
+  if(window.IntersectionObserver) new IntersectionObserver(function(es){
+    es.forEach(function(en){ visible=en.isIntersecting; if(visible)wake(); });
+  },{threshold:0}).observe(cv);
+
+  function spawn(c,g){
+    if(bodies.length>=MAXB)return;
+    bodies.push({x:R+6+Math.random()*(W-2*R-12), y:-R-4-Math.random()*30,
+      vx:(Math.random()-.5)*2, vy:1+Math.random()*1.5, c:c, g:g,
+      rot:Math.random()*6.28, sq:.92+Math.random()*.16, rest:0});
+  }
+  function settleInstant(c,g){
+    if(bodies.length>=MAXB)return;
+    var i=bodies.length, per=Math.max(3,Math.floor((W-14)/(2*R+2)));
+    var row=Math.floor(i/per), col=i%per;
+    bodies.push({x:7+R+col*(2*R+2)+(row%2?R:0), y:H-R-4-row*(2*R-3),
+      vx:0,vy:0,c:c,g:g,rot:Math.random()*6.28,sq:.92+Math.random()*.16,rest:999});
+  }
+  function pourJar(gid,color,n){
+    calcR();
+    if(reduced){ for(var i=0;i<n;i++)settleInstant(color,gid); draw(); return; }
+    var at=performance.now()+360;
+    for(var i=0;i<n;i++) queue.push({c:color,g:gid,at:at+i*24});
+    bodies.forEach(function(b){b.rest=0;});
+    wake();
+  }
+  function removeJar(gid,n){
+    for(var i=queue.length-1;i>=0&&n>0;i--){ if(queue[i].g===gid){queue.splice(i,1);n--;} }
+    for(var j=bodies.length-1;j>=0&&n>0;j--){ if(bodies[j].g===gid){bodies.splice(j,1);n--;} }
+    calcR(); bodies.forEach(function(b){b.rest=0;});
+    draw(); wake();
+  }
+  function clearSim(){ bodies.length=0; queue.length=0; calcR(); draw(); }
+
+  function sim(){
+    var now=performance.now(), awake=0, i, b;
+    while(queue.length&&queue[0].at<=now){ var q=queue.shift(); spawn(q.c,q.g); }
+    if(Math.abs(targetR-R)>.12){ R+=(targetR-R)*.08; awake++; bodies.forEach(function(bb){bb.rest=0;}); }
+    for(i=0;i<bodies.length;i++){
+      b=bodies[i];
+      if(b.rest>55) continue;
+      awake++;
+      b.vy+=GRAV; b.x+=b.vx; b.y+=b.vy; b.vx*=.994;
+      if(b.x<R+3){b.x=R+3;b.vx*=-.42;} else if(b.x>W-R-3){b.x=W-R-3;b.vx*=-.42;}
+      if(b.y>H-R-3){b.y=H-R-3;b.vy*=-REST;b.vx*=.9; if(Math.abs(b.vy)<.6)b.vy=0;}
+      if(b.y<-200){b.y=-R;b.vy=1;}
+    }
+    var cell=2*R+2, cols=Math.max(1,Math.ceil(W/cell)), rows=Math.max(1,Math.ceil(H/cell)), grid={};
+    for(i=0;i<bodies.length;i++){ b=bodies[i];
+      var k=Math.max(0,Math.min(cols-1,(b.x/cell)|0))+','+Math.max(0,Math.min(rows-1,(b.y/cell)|0));
+      (grid[k]||(grid[k]=[])).push(i);
+    }
+    function pair(a,c2){
+      var A=bodies[a],B=bodies[c2];
+      if(A.rest>55&&B.rest>55)return;
+      var dx=B.x-A.x,dy=B.y-A.y,d2=dx*dx+dy*dy,min=2*R;
+      if(d2>=min*min||d2===0)return;
+      var d=Math.sqrt(d2),nx=dx/d,ny=dy/d,ov=(min-d)/2;
+      if(A.rest<=55){A.x-=nx*ov;A.y-=ny*ov;} else {B.x+=nx*ov;B.y+=ny*ov;}
+      if(B.rest<=55){B.x+=nx*ov;B.y+=ny*ov;} else {A.x-=nx*ov;A.y-=ny*ov;}
+      var rvx=B.vx-A.vx,rvy=B.vy-A.vy,vn=rvx*nx+rvy*ny;
+      if(vn<0){var jimp=-(1+REST*.8)*vn/2;
+        if(A.rest<=55){A.vx-=jimp*nx;A.vy-=jimp*ny;}
+        if(B.rest<=55){B.vx+=jimp*nx;B.vy+=jimp*ny;}
+        if(ov>R*.45){A.rest=0;B.rest=0;}
+      }
+    }
+    for(var key in grid){
+      var listA=grid[key], parts=key.split(','), gx=+parts[0], gy=+parts[1];
+      for(i=0;i<listA.length;i++){
+        for(var j2=i+1;j2<listA.length;j2++)pair(listA[i],listA[j2]);
+        var neigh=[(gx+1)+','+gy, gx+','+(gy+1), (gx+1)+','+(gy+1), (gx-1)+','+(gy+1)];
+        for(var nn=0;nn<4;nn++){var lb=grid[neigh[nn]];if(!lb)continue;
+          for(var m=0;m<lb.length;m++)pair(listA[i],lb[m]);}
+      }
+    }
+    for(i=0;i<bodies.length;i++){ b=bodies[i];
+      if(b.rest>55)continue;
+      if(Math.abs(b.vx)+Math.abs(b.vy)<.35&&b.y>H*.35){b.rest++;}else b.rest=0;
+      b.rot+=b.vx*.02;
+    }
+    return awake+queue.length;
+  }
+  var sprites={}, spriteR=0;
+  function shade(hex,amt){
+    var n=parseInt(hex.slice(1),16),r=n>>16,g=(n>>8)&255,b=n&255,t=amt>0?255:0,a=Math.abs(amt);
+    return 'rgb('+Math.round(r+(t-r)*a)+','+Math.round(g+(t-g)*a)+','+Math.round(b+(t-b)*a)+')';
+  }
+  function sprite(c){ // pre-baked realistic gummy: radial body, gloss, rim
+    if(Math.abs(spriteR-R)>.4){sprites={};spriteR=R;}
+    var sp=sprites[c]; if(sp)return sp;
+    var d=Math.ceil(R*2+6), off=document.createElement('canvas');
+    off.width=off.height=Math.ceil(d*DPR);
+    var o=off.getContext('2d'); o.scale(DPR,DPR); var m=d/2;
+    var g=o.createRadialGradient(m-R*.38,m-R*.42,R*.12,m,m,R*1.06);
+    g.addColorStop(0,shade(c,.55)); g.addColorStop(.42,c); g.addColorStop(1,shade(c,-.24));
+    o.fillStyle=g; o.beginPath(); o.arc(m,m,R,0,6.2832); o.fill();
+    o.globalAlpha=.65; o.fillStyle='#fff'; o.beginPath();
+    o.ellipse(m-R*.34,m-R*.44,R*.34,R*.18,-.55,0,6.2832); o.fill();
+    o.globalAlpha=.22; o.beginPath();
+    o.ellipse(m+R*.3,m+R*.44,R*.2,R*.1,.5,0,6.2832); o.fill();
+    o.globalAlpha=1;
+    sprites[c]=off; return off;
+  }
+  function draw(){
+    cx.clearRect(0,0,W,H);
+    // glass interior: edge vignette + floor gradient + shine streaks
+    var eg=cx.createLinearGradient(0,0,W,0);
+    eg.addColorStop(0,'rgba(0,0,0,.05)');eg.addColorStop(.09,'rgba(0,0,0,0)');
+    eg.addColorStop(.91,'rgba(0,0,0,0)');eg.addColorStop(1,'rgba(0,0,0,.05)');
+    cx.fillStyle=eg;cx.fillRect(0,0,W,H);
+    var fg=cx.createLinearGradient(0,H-36,0,H);
+    fg.addColorStop(0,'rgba(0,0,0,0)');fg.addColorStop(1,'rgba(0,0,0,.09)');
+    cx.fillStyle=fg;cx.fillRect(0,H-36,W,36);
+    cx.save();cx.globalAlpha=.05;cx.fillStyle='#fff';
+    cx.beginPath();cx.moveTo(W*.14,0);cx.lineTo(W*.24,0);cx.lineTo(W*.06,H);cx.lineTo(W*-.04,H);cx.closePath();cx.fill();
+    cx.beginPath();cx.moveTo(W*.30,0);cx.lineTo(W*.34,0);cx.lineTo(W*.16,H);cx.lineTo(W*.12,H);cx.closePath();cx.fill();
+    cx.restore();
+    // soft contact shadows under every gummy
+    cx.fillStyle='rgba(0,0,0,.07)';
+    for(var i=0;i<bodies.length;i++){var b=bodies[i];
+      cx.beginPath();cx.ellipse(b.x,Math.min(b.y+R*.8,H-2.5),R*.82,R*.26,0,0,6.2832);cx.fill();}
+    // gummies via cached sprites (fast + rich shading)
+    for(i=0;i<bodies.length;i++){b=bodies[i];
+      var sp=sprite(b.c), d=sp.width/DPR;
+      cx.save();cx.translate(b.x,b.y);cx.rotate(b.rot);cx.scale(b.sq,1/b.sq);
+      cx.drawImage(sp,-d/2,-d/2,d,d);cx.restore();
+    }
+  }
+  function step(){ raf=null; var active=sim(); draw(); if(visible&&active>0) raf=requestAnimationFrame(step); }
+  function wake(){ if(raf===null&&!reduced&&visible) raf=requestAnimationFrame(step); }
+  window.__bbFlush=function(){ while(queue.length){var q=queue.shift();settleInstant(q.c,q.g);} draw(); };
+
+  // swirl: dragging (or moving) across the jar pushes gummies around
+  var lastP=null;
+  function swirl(e){
+    var r=cv.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top;
+    if(lastP){
+      var dx=x-lastP.x, dy=y-lastP.y, reach=R*3.2;
+      if(Math.abs(dx)+Math.abs(dy)>1){
+        for(var i=0;i<bodies.length;i++){var b=bodies[i];
+          var ddx=b.x-x, ddy=b.y-y;
+          if(ddx*ddx+ddy*ddy<reach*reach){
+            b.vx+=Math.max(-6,Math.min(6,dx*.28)); b.vy+=Math.max(-6,Math.min(6,dy*.28))-.6;
+            b.rest=0;
+          }
+        }
+        wake();
+      }
+    }
+    lastP={x:x,y:y};
+  }
+  cv.addEventListener('pointermove',swirl,{passive:true});
+  cv.addEventListener('pointerleave',function(){lastP=null;},{passive:true});
+
+  /* ---------- decorative arc ---------- */
+  var GSVG=function(c,sz){return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:'+sz+'px;height:'+sz+'px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="'+c+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>';};
+  function fly(fromEl,color){
+    try{
+      var f=fromEl.getBoundingClientRect(), t=drop.getBoundingClientRect();
+      var el=document.createElement('div');el.className='bb-fly';el.innerHTML=GSVG(color,40);
+      document.body.appendChild(el);
+      var sx=f.left+f.width/2-20, sy=f.top+f.height/2-20;
+      var ex=t.left+t.width/2-20, ey=t.top+20;
+      el.animate([
+        {transform:'translate('+sx+'px,'+sy+'px) scale(1)'},
+        {transform:'translate('+((sx+ex)/2)+'px,'+(Math.min(sy,ey)-110)+'px) scale(1.2) rotate(120deg)',offset:.55},
+        {transform:'translate('+ex+'px,'+ey+'px) scale(.6) rotate(300deg)',opacity:.85}
+      ],{duration:540,easing:'cubic-bezier(.45,-.15,.35,1)'}).onfinish=function(){
+        el.remove();
+        boxEl.classList.remove('bb-land');void boxEl.offsetWidth;boxEl.classList.add('bb-land');
+      };
+      setTimeout(function(){if(el.parentNode)el.remove();},1400);
+    }catch(e){}
+  }
+
+  /* ---------- state / summary / per-jar cart ---------- */
+  function groups(){
+    var order=[],map={};
+    box.forEach(function(it){var k=it.gid+'|'+it.tabs;
+      if(!map[k]){map[k]={it:it,n:0};order.push(k);} map[k].n++;});
+    return order.map(function(k){return map[k];});
+  }
+  function render(){
+    var gs=groups(), total=0, tabs=0, lines='';
+    gs.forEach(function(g){
+      lines+='<div class="bb-sumline"><span><b>'+g.it.name+'</b> · '+g.it.tabs+' tabs'+(g.n>1?' ×'+g.n:'')+'</span><span>'+inr(g.it.price*g.n)+'</span></div>';
+      total+=g.it.price*g.n; tabs+=g.it.tabs*g.n;
+    });
+    drop.classList.toggle('bb-has',box.length>0);
+    document.getElementById('bb-lines').innerHTML=lines||'<div class="bb-sumline"><span>Nothing packed yet</span><span>—</span></div>';
+    document.getElementById('bb-total').textContent=inr(total);
+    document.getElementById('bb-tabs').textContent=tabs+' tabs packed'+(tabs?' · every gummy in the jar is one tab':'');
+    document.getElementById('bb-count').textContent=box.length?(box.length+(box.length>1?' jars':' jar')):'empty';
+    var cta=document.getElementById('bb-cta');
+    cta.disabled=!box.length;
+    cta.textContent=box.length?('Pack my box · '+box.length+(box.length>1?' jars':' jar')+' · '+inr(total)):'Pack my box → add to bag';
+    builder.querySelectorAll('.bb-row').forEach(function(r){
+      var id=r.getAttribute('data-bb-id');
+      var q=box.filter(function(it){return it.gid===id;}).length;
+      r.classList.toggle('bb-on',q>0);
+      r.querySelector('.bb-qty').textContent=q;
+    });
+  }
+
+  builder.addEventListener('click',function(e){
+    var sz=e.target.closest('.bb-size');
+    if(sz){
+      var row=sz.closest('.bb-row');
+      row.querySelectorAll('.bb-size').forEach(function(b){b.classList.toggle('bb-sel',b===sz);});
+      row.querySelector('.bb-price').textContent=inr(+sz.getAttribute('data-bb-price'));
+      return;
+    }
+    if(e.target.closest('#bb-reset')){ box=[]; clearSim(); render(); return; }
+    var minus=e.target.closest('.bb-minus');
+    if(minus){
+      var rid=minus.closest('.bb-row').getAttribute('data-bb-id');
+      for(var i=box.length-1;i>=0;i--){ if(box[i].gid===rid){ removeJar(rid,box[i].tabs); box.splice(i,1); break; } }
+      render(); return;
+    }
+    var add=e.target.closest('.bb-add');
+    if(add){
+      var row2=add.closest('.bb-row'), sel=row2.querySelector('.bb-size.bb-sel');
+      var it={gid:row2.getAttribute('data-bb-id'),name:row2.getAttribute('data-bb-name'),
+        color:row2.getAttribute('data-bb-color'),short:row2.getAttribute('data-bb-short'),
+        tabs:+sel.getAttribute('data-bb-size'),price:+sel.getAttribute('data-bb-price')};
+      box.push(it); render();
+      fly(add,it.color); pourJar(it.gid,it.color,it.tabs);
+      return;
+    }
+    if(e.target.closest('#bb-cta')){
+      if(!box.length)return;
+      var gs=groups();
+      try{
+        gs.forEach(function(g){
+          var id='jar-'+g.it.gid+'-'+g.it.tabs, ex=null;
+          for(var i=0;i<cart.length;i++){ if(cart[i].id===id){ex=cart[i];break;} }
+          if(ex){ ex.quantity+=g.n; }
+          else cart.push({id:id,name:g.it.name+' — '+g.it.tabs+' tabs',price:g.it.price,
+            image:'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="'+g.it.color+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>'),
+            variant:g.it.short.toUpperCase()+' · '+g.it.tabs+' TABS',quantity:g.n});
+        });
+        syncCart();openCart();
+        box=[];clearSim();render();
+      }catch(err){alert('Packed! Total '+inr(gs.reduce(function(a,g){return a+g.it.price*g.n;},0)));}
+    }
+  });
+  render();
+})();
+</script>
+<footer class="mx-foot">GummyChums Maachis Co. · keep away from boring routines · Made in India</footer>
+
+<!-- ===================== SHARED BILL / CHECKOUT (unchanged from index.html) ===================== -->
+<div id="cart-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+  <div id="cart-backdrop" class="absolute inset-0 bg-[#261236]/80 backdrop-blur-sm cursor-pointer transition-opacity duration-300"></div>
+  <div id="receipt-wrapper" class="relative z-10 w-full max-w-[440px] transition-all duration-300 transform scale-90 translate-y-8 flex flex-col" style="filter: drop-shadow(8px 8px 0px #261236)">
+    <button id="close-cart-btn" class="absolute -top-3 -right-3 z-30 bg-white text-[#261236] p-2 border-4 border-[#261236] neo-shadow-sm hover:bg-[#b80865] hover:text-white transition-all font-bold flex items-center justify-center jelly-pop">
+      <span class="material-symbols-outlined text-2xl">close</span>
+    </button>
+    <div id="receipt-modal-content" class="bg-white text-black p-6 md:p-8 font-receipt select-none overflow-y-auto max-h-[85vh] flex flex-col border-x border-black/10">
+      <div class="text-center flex flex-col items-center mt-2 flex-shrink-0">
+        <div class="flex items-center justify-center border-4 border-black px-4 py-2 font-black text-2xl uppercase tracking-widest bg-black text-white mb-2 select-none">
+          <span class="material-symbols-outlined mr-2 scale-x-[-1] text-2xl">reply</span> GUMMYCHUMS
+        </div>
+        <div class="text-xs tracking-wider opacity-60">******************************************</div>
+        <div class="text-sm font-bold uppercase tracking-widest my-1">** SHOPPING BAG **</div>
+        <div id="receipt-date" class="text-xs font-semibold my-1 tracking-wider">MON 29/06/26 21:27</div>
+        <div class="text-xs tracking-wider opacity-60">******************************************</div>
+      </div>
+      <div id="receipt-items" class="flex-grow my-4 space-y-6 overflow-y-auto pr-1 receipt-scrollbar max-h-[40vh] min-h-[120px]"></div>
+      <div class="mt-auto pt-2 border-t border-dashed border-black/30 flex-shrink-0">
+        <div class="text-xs tracking-wider opacity-60 text-center">******************************************</div>
+        <div class="flex justify-between items-end my-3">
+          <span class="text-xs font-bold tracking-widest uppercase opacity-60">SUBTOTAL</span>
+          <span id="receipt-subtotal" class="text-2xl font-black tracking-tighter">₹0</span>
+        </div>
+        <div class="text-[10px] tracking-wider opacity-50 text-center uppercase mb-4">SHIPPING CALCULATED AT CHECKOUT</div>
+        <button id="checkout-btn" class="w-full bg-black text-white py-4 border-4 border-black hover:bg-white hover:text-black font-black text-xl uppercase tracking-wider transition-all select-none focus:outline-none mb-4 jelly-pop">CHECKOUT</button>
+        <div class="text-xs tracking-wider opacity-60 text-center">******************************************</div>
+        <div class="flex flex-col items-center justify-center my-3">
+          <div class="w-full px-4 mb-1"><svg class="w-full h-10" viewBox="0 0 100 40" preserveAspectRatio="none">
+<rect x="0" y="0" width="1.5" height="40" fill="black"/><rect x="3" y="0" width="1" height="40" fill="black"/><rect x="5" y="0" width="2" height="40" fill="black"/><rect x="8" y="0" width="1" height="40" fill="black"/><rect x="10" y="0" width="3" height="40" fill="black"/><rect x="15" y="0" width="1" height="40" fill="black"/><rect x="17" y="0" width="2.5" height="40" fill="black"/><rect x="21" y="0" width="1" height="40" fill="black"/><rect x="23" y="0" width="2" height="40" fill="black"/><rect x="26" y="0" width="1.5" height="40" fill="black"/><rect x="29" y="0" width="1" height="40" fill="black"/><rect x="31" y="0" width="3" height="40" fill="black"/><rect x="36" y="0" width="1" height="40" fill="black"/><rect x="38" y="0" width="2" height="40" fill="black"/><rect x="41" y="0" width="1" height="40" fill="black"/><rect x="43" y="0" width="2.5" height="40" fill="black"/><rect x="47" y="0" width="1" height="40" fill="black"/><rect x="49" y="0" width="1.5" height="40" fill="black"/><rect x="52" y="0" width="3" height="40" fill="black"/><rect x="56" y="0" width="1" height="40" fill="black"/><rect x="58" y="0" width="2" height="40" fill="black"/><rect x="61" y="0" width="1" height="40" fill="black"/><rect x="63" y="0" width="2.5" height="40" fill="black"/><rect x="67" y="0" width="1" height="40" fill="black"/><rect x="69" y="0" width="1.5" height="40" fill="black"/><rect x="72" y="0" width="3" height="40" fill="black"/><rect x="76" y="0" width="1" height="40" fill="black"/><rect x="78" y="0" width="2" height="40" fill="black"/><rect x="81" y="0" width="1" height="40" fill="black"/><rect x="83" y="0" width="2.5" height="40" fill="black"/><rect x="87" y="0" width="1" height="40" fill="black"/><rect x="89" y="0" width="1.5" height="40" fill="black"/><rect x="92" y="0" width="3" height="40" fill="black"/><rect x="96" y="0" width="1" height="40" fill="black"/><rect x="98" y="0" width="2" height="40" fill="black"/></svg></div>
+          <span id="barcode-id" class="text-[9px] tracking-[0.25em] font-bold text-black/60">GUMMY-8374-2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="success-modal" class="fixed inset-0 z-[110] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+  <div id="success-backdrop" class="absolute inset-0 bg-[#261236]/90 backdrop-blur-md cursor-pointer transition-opacity duration-300"></div>
+  <div id="success-card" class="relative z-10 w-full max-w-[400px] bg-[#fecf34] border-8 border-[#261236] p-8 text-center neo-shadow-lg transform scale-90 translate-y-8 transition-all duration-300">
+    <div class="w-20 h-20 bg-white border-4 border-[#261236] flex items-center justify-center mx-auto mb-6 neo-shadow-sm animate-bounce">
+      <span class="material-symbols-outlined text-5xl text-[#006d36]">check_circle</span>
+    </div>
+    <h3 class="text-3xl uppercase tracking-tighter mb-4 text-[#261236] font-black">Order Placed!</h3>
+    <p class="text-lg text-[#261236]/80 mb-8 font-bold">Your gummy order is locked in. Get ready to feel good.</p>
+    <button id="close-success-btn" class="w-full bg-[#b80865] text-white py-4 border-4 border-[#261236] neo-shadow jelly-pop font-black uppercase text-xl tracking-wider">Let's Go</button>
+  </div>
+</div>
+
+<script>
+
+
+// ===================== SHARED CHECKOUT LOGIC (from index.html) =====================
+const PRODUCTS = {
+  'dreamy-sleep':      { name:'Dreamy Sleep', price:699,  image:'mascot.png', variant:'LVL 99' },
+  'electric-blue':     { name:'Electric Blue', price:749, image:'mascot.png', variant:'FOCUS' },
+  'neon-violet':       { name:'Neon Violet', price:899,   image:'mascot.png', variant:'SMART' },
+  'bundle-full-gang':  { name:'The Full Gang', price:1899, image:'bears.png',  variant:'BUNDLE' },
+  'bundle-night-shift':{ name:'The Night Shift', price:1199, image:'mascot.png', variant:'BUNDLE' },
+  'bundle-gut-feeling':{ name:'The Gut Feeling', price:999,  image:'logo.png',  variant:'BUNDLE' }
+};
+let cart = JSON.parse(localStorage.getItem('gummy_cart')) || [];
+const cartModal = document.getElementById('cart-modal');
+const successModal = document.getElementById('success-modal');
+const cartItemsContainer = document.getElementById('receipt-items');
+const cartSubtotalEl = document.getElementById('receipt-subtotal');
+const receiptDateEl = document.getElementById('receipt-date');
+const receiptContentEl = document.getElementById('receipt-modal-content');
+const barcodeIdEl = document.getElementById('barcode-id');
+function getReceiptDate(){
+  const now=new Date();const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const p=n=>String(n).padStart(2,'0');
+  return `${days[now.getDay()]} ${p(now.getDate())}/${p(now.getMonth()+1)}/${String(now.getFullYear()).slice(-2)} ${p(now.getHours())}:${p(now.getMinutes())}`;
+}
+function generateReceiptClipPath(el){
+  if(!el)return;const w=el.offsetWidth,h=el.offsetHeight;if(!w||!h)return;
+  const tw=10,th=6,count=Math.ceil(w/tw),pts=[];
+  for(let i=0;i<=count;i++){const x=(i/count)*100;const y=i%2===0?0:(th/h)*100;pts.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);}
+  for(let i=count;i>=0;i--){const x=(i/count)*100;const y=100-(i%2===0?0:(th/h)*100);pts.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`);}
+  el.style.clipPath=`polygon(${pts.join(', ')})`;
+}
+function syncCart(){
+  localStorage.setItem('gummy_cart',JSON.stringify(cart));
+  let totalCount=0,subtotal=0;
+  cart.forEach(i=>{totalCount+=i.quantity;subtotal+=i.price*i.quantity;});
+  document.querySelectorAll('.cart-count').forEach(el=>{
+    if(totalCount>0){el.innerText=totalCount;el.classList.remove('hidden');}else{el.classList.add('hidden');}
+  });
+  cartSubtotalEl.innerText=`₹${subtotal.toLocaleString('en-IN')}`;
+  if(cart.length===0){
+    cartItemsContainer.innerHTML=`<div class="flex flex-col items-center justify-center py-12 text-center"><span class="material-symbols-outlined text-5xl text-black/30 mb-4 animate-bounce">shopping_basket</span><p class="font-bold text-sm uppercase tracking-wider opacity-60">Your bag is empty!</p><p class="text-xs opacity-50 mt-1">Go grab some gummies.</p></div>`;
+  }else{
+    cartItemsContainer.innerHTML=cart.map(item=>`
+      <div class="flex gap-4 items-start relative pb-4 border-b border-dashed border-black/20 text-left">
+        <img src="${item.image}" class="w-16 h-16 object-cover border-2 border-black flex-shrink-0" alt="${item.name}"/>
+        <div class="flex-grow min-w-0">
+          <div class="flex justify-between items-start">
+            <h4 class="font-bold text-sm uppercase tracking-tight truncate pr-4">${item.name}</h4>
+            <button onclick="removeFromCart('${item.id}')" class="text-black/40 hover:text-black font-bold text-lg leading-none transition-colors">&times;</button>
+          </div>
+          <div class="text-[10px] opacity-60 uppercase mb-1 tracking-wider">${item.variant}</div>
+          <div class="flex justify-between items-center mt-2">
+            <span class="font-black text-sm">₹${(item.price*item.quantity).toLocaleString('en-IN')}</span>
+            <div class="flex border border-black text-xs font-bold bg-white select-none">
+              <button onclick="changeQuantity('${item.id}',-1)" class="px-2 py-0.5 border-r border-black hover:bg-black/10 transition-colors">-</button>
+              <span class="px-3 py-0.5">${item.quantity}</span>
+              <button onclick="changeQuantity('${item.id}',1)" class="px-2 py-0.5 border-l border-black hover:bg-black/10 transition-colors">+</button>
+            </div>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+  generateReceiptClipPath(receiptContentEl);
+}
+window.addToCart=function(id){
+  const info=PRODUCTS[id];if(!info)return;
+  const ex=cart.find(i=>i.id===id);
+  if(ex){ex.quantity+=1;}else{cart.push({id,name:info.name,price:info.price,image:info.image,variant:info.variant,quantity:1});}
+  syncCart();openCart();
+};
+window.changeQuantity=function(id,d){
+  const it=cart.find(i=>i.id===id);if(!it)return;it.quantity+=d;
+  if(it.quantity<=0)cart=cart.filter(i=>i.id!==id);syncCart();
+};
+window.removeFromCart=function(id){cart=cart.filter(i=>i.id!==id);syncCart();};
+function openCart(){
+  receiptDateEl.innerText=getReceiptDate();
+  barcodeIdEl.innerText=`GUMMY-${Math.floor(1000+Math.random()*9000)}-2026`;
+  cartModal.classList.add('modal-active');document.body.classList.add('overflow-hidden');
+  setTimeout(()=>generateReceiptClipPath(receiptContentEl),50);
+}
+function closeCart(){cartModal.classList.remove('modal-active');document.body.classList.remove('overflow-hidden');}
+function openSuccess(){successModal.classList.add('modal-active');document.body.classList.add('overflow-hidden');}
+function closeSuccess(){successModal.classList.remove('modal-active');document.body.classList.remove('overflow-hidden');}
+document.addEventListener('DOMContentLoaded',()=>{
+  syncCart();
+  if(receiptContentEl){new ResizeObserver(()=>generateReceiptClipPath(receiptContentEl)).observe(receiptContentEl);}
+  // delegated so buttons added later / overlaid elements can never break the bag
+  document.addEventListener('click',e=>{
+    const add=e.target.closest('.add-to-cart-btn');
+    if(add){e.preventDefault();const id=add.getAttribute('data-product-id');if(id)addToCart(id);return;}
+    if(e.target.closest('.cart-trigger')){e.preventDefault();openCart();}
+  });
+  const a=document.getElementById('close-cart-btn'),b=document.getElementById('cart-backdrop');
+  if(a)a.addEventListener('click',closeCart);if(b)b.addEventListener('click',closeCart);
+  const c=document.getElementById('close-success-btn'),d=document.getElementById('success-backdrop');
+  if(c)c.addEventListener('click',closeSuccess);if(d)d.addEventListener('click',closeSuccess);
+  const ck=document.getElementById('checkout-btn');
+  if(ck)ck.addEventListener('click',()=>{if(cart.length===0){alert('Your bag is empty!');return;}closeCart();setTimeout(()=>{openSuccess();cart=[];syncCart();},300);});
+  document.documentElement.classList.add('gcready');
+  const revealEls=document.querySelectorAll('.gc-reveal');
+  // threshold:0 so tall (taller-than-viewport) hero blocks reveal on ANY intersection
+  const io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}})},{threshold:0,rootMargin:'0px 0px -8% 0px'});
+  revealEls.forEach(el=>io.observe(el));
+  // failsafe: anything at/above the fold reveals immediately; nothing can stay blank
+  const revealInView=()=>revealEls.forEach(el=>{if(el.getBoundingClientRect().top < innerHeight*1.05) el.classList.add('in');});
+  revealInView();
+  requestAnimationFrame(revealInView);
+  window.addEventListener('load',revealInView);
+});
+
+// ===== inertial smooth scroll (mini-Lenis): wheel is eased through a lerp,
+// so every scroll-driven effect (scrubs, pins, parallax) glides. Native
+// behaviour is kept on touch, reduced-motion, scroll-snap pages, open modals
+// and inner scrollables (receipt list, rails).
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  if((getComputedStyle(document.documentElement).scrollSnapType||'none')!=='none')return;
+  var target=window.scrollY,cur=target,raf=null;
+  window.__gcSmooth=true;
+  function max(){return document.documentElement.scrollHeight-innerHeight;}
+  function loop(){
+    cur+=(target-cur)*0.16;
+    if(Math.abs(target-cur)<0.5){cur=target;window.scrollTo({top:cur,behavior:'instant'});raf=null;return;}
+    window.scrollTo({top:cur,behavior:'instant'});
+    raf=requestAnimationFrame(loop);
+  }
+  addEventListener('wheel',function(e){
+    if(e.ctrlKey)return; // pinch zoom
+    if(document.body.classList.contains('overflow-hidden'))return; // modal open
+    if(e.target.closest&&e.target.closest('#receipt-items,.cf-rail,[data-native-scroll],textarea,select'))return;
+    e.preventDefault();
+    var d=e.deltaY*(e.deltaMode===1?16:(e.deltaMode===2?innerHeight:1));
+    if(raf===null){cur=window.scrollY;target=cur;}
+    target=Math.max(0,Math.min(max(),target+d));
+    if(!raf)raf=requestAnimationFrame(loop);
+  },{passive:false});
+  addEventListener('scroll',function(){if(raf===null){target=cur=window.scrollY;}},{passive:true});
+})();
+
+
+/* ===== premium motion kit ===== */
+(function(){
+  // 1) round-gummy art inside the shared bill (data only; checkout UI untouched)
+  function gum(c){return 'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="'+c+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg>');}
+  var GMAP={'dreamy-sleep':'#8b5cf6','electric-blue':'#38bdf8','neon-violet':'#e44bd3','bundle-full-gang':'#ff5c8a','bundle-night-shift':'#7c6cf6','bundle-gut-feeling':'#39c98e'};
+  try{ for(var k in GMAP){ if(PRODUCTS[k]) PRODUCTS[k].image=gum(GMAP[k]); } }catch(e){}
+
+  var fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+  // 2) gummy blob cursor
+  var cur=document.getElementById('pkc');
+  if(fine&&cur){
+    document.documentElement.classList.add('pk');
+    var x=0,y=0,tx=innerWidth/2,ty=innerHeight/2;
+    addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY;cur.classList.add('on')});
+    (function loop(){x+=(tx-x)*.55;y+=(ty-y)*.55;cur.style.left=x+'px';cur.style.top=y+'px';requestAnimationFrame(loop)})();
+    document.addEventListener('mouseover',function(e){var h=e.target.closest('a,button,[data-hot]');cur.style.width=h?'54px':'30px';cur.style.height=h?'54px':'30px'});
+    addEventListener('mousedown',function(){cur.style.width='20px';cur.style.height='20px'});
+    addEventListener('mouseup',function(){cur.style.width='30px';cur.style.height='30px'});
+    document.querySelectorAll('.pk-mag').forEach(function(b){
+      b.addEventListener('mousemove',function(e){var r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.22)+'px,'+((e.clientY-r.top-r.height/2)*.35)+'px)'});
+      b.addEventListener('mouseleave',function(){b.style.transform=''});
+    });
+  }
+  // 3) scroll-scrub engine: sets --p (0→1 progress through viewport) on [data-scrub]
+  var scr=document.querySelectorAll('[data-scrub]');
+  function up(){var vh=innerHeight;scr.forEach(function(el){var r=el.getBoundingClientRect();var p=Math.min(Math.max((vh-r.top)/(vh+r.height),0),1);el.style.setProperty('--p',p.toFixed(4));});}
+  var tk=false;addEventListener('scroll',function(){if(!tk){requestAnimationFrame(function(){up();tk=false});tk=true}},{passive:true});
+  addEventListener('resize',up);up();
+  // 4) char-split reveals (keeps <br>; words stay unbreakable)
+  document.querySelectorAll('.pk-chars').forEach(function(el){
+    var nodes=Array.prototype.slice.call(el.childNodes);el.textContent='';var i=0;
+    nodes.forEach(function(n){
+      if(n.nodeType===1&&n.tagName==='BR'){el.appendChild(document.createElement('br'));return;}
+      var txt=n.textContent||'';
+      txt.split(' ').forEach(function(word,wi,arr){
+        if(word){var w=document.createElement('span');w.style.whiteSpace='nowrap';w.style.display='inline-block';
+          Array.prototype.forEach.call(word,function(c){var sp=document.createElement('span');sp.textContent=c;sp.style.transitionDelay=(i++*32)+'ms';w.appendChild(sp)});
+          el.appendChild(w);}
+        if(wi<arr.length-1){el.appendChild(document.createTextNode(' '));i++;}
+      });
+    });
+    new IntersectionObserver(function(es,o){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('go');o.unobserve(en.target)}})},{threshold:.35}).observe(el);
+  });
+  // 5) squash on click for any gummy art
+  document.addEventListener('click',function(e){
+    var g=e.target.closest('.pk-gummy');if(!g)return;
+    g.classList.remove('pk-squash');void g.offsetWidth;g.classList.add('pk-squash');
+  });
+})();
+
+
+</script>
+<script>(function(){document.querySelectorAll("[data-pdp]").forEach(function(c){c.style.cursor="pointer";c.setAttribute("data-hot","");c.addEventListener("click",function(e){if(e.target.closest("button,a"))return;location.href=c.getAttribute("data-pdp");});});})();</script>
+
+</body>
+</html>
