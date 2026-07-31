@@ -10,7 +10,7 @@
   body{font-family:'Manrope',sans-serif}
 
   /* ===== chum box builder (soft-depth, borderless) ===== */
-  #bb-builder{--bb-acc:#1a43ff;--bb-panel:rgba(0,0,0,.045);--bb-line:rgba(0,0,0,.10);--bb-soft:rgba(0,0,0,.55);
+  #bb-builder{--bb-acc:#477971;--bb-panel:rgba(0,0,0,.045);--bb-line:rgba(0,0,0,.10);--bb-soft:rgba(0,0,0,.55);
     padding:6rem 1.25rem;}
   #bb-builder *{box-sizing:border-box}
   .bb-wrap{max-width:72rem;margin:0 auto}
@@ -23,21 +23,21 @@
   /* --- the jar card --- */
   .bb-boxcol{position:sticky;top:90px}
   @media(max-width:879px){.bb-boxcol{position:static}}
-  .bb-box{position:relative;background:linear-gradient(180deg,#ffffff,#fcfafa);border-radius:26px;
-    padding:1rem 1rem 1.2rem;box-shadow:0 24px 50px -24px rgba(40,20,50,.28), 0 4px 14px -8px rgba(40,20,50,.14)}
+  .bb-box{position:relative;background:linear-gradient(180deg,#ffffff,#ffffff);border-radius:26px;
+    padding:1rem 1rem 1.2rem;box-shadow:0 24px 50px -24px rgba(31,28,26,.28), 0 4px 14px -8px rgba(31,28,26,.14)}
   .bb-lid{height:14px;border-radius:13px 13px 0 0;margin:-1rem -1rem 14px;
-    background:linear-gradient(180deg,rgba(26,67,255,.95),rgba(26,67,255,.75));
-    box-shadow:0 3px 8px -3px rgba(26,67,255,.32)}
+    background:linear-gradient(180deg,rgba(71,121,113,.95),rgba(71,121,113,.75));
+    box-shadow:0 3px 8px -3px rgba(71,121,113,.32)}
   .bb-label{display:flex;justify-content:space-between;align-items:baseline;font-weight:800;margin-bottom:10px}
   .bb-label small{color:var(--bb-soft);font-weight:600}
-  .bb-drop{position:relative;height:340px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#fdfdfd,#f4f2f3);
+  .bb-drop{position:relative;height:340px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#ffffff,#ffffff);
     box-shadow:inset 0 3px 12px rgba(0,0,0,.07), inset 0 -10px 22px rgba(0,0,0,.05);
     transition:box-shadow .45s cubic-bezier(.22,.8,.26,1)}
   @media(max-width:560px){.bb-drop{height:260px}}
   .bb-drop canvas{display:block;width:100%;height:100%;touch-action:none}
   .bb-drop.bb-has canvas{cursor:grab}
   .bb-drop.bb-has{box-shadow:inset 0 3px 12px rgba(0,0,0,.07), inset 0 -10px 22px rgba(0,0,0,.05),
-    inset 0 0 0 1.5px rgba(26,67,255,.22), 0 0 26px -8px rgba(26,67,255,.32)}
+    inset 0 0 0 1.5px rgba(71,121,113,.22), 0 0 26px -8px rgba(71,121,113,.32)}
   .bb-swirl{position:absolute;right:12px;bottom:9px;font-size:.72rem;font-weight:700;color:var(--bb-soft);opacity:0;
     pointer-events:none;transition:opacity .4s;letter-spacing:.06em;text-transform:uppercase}
   .bb-drop.bb-has .bb-swirl{opacity:.55}
@@ -58,10 +58,10 @@
     margin-top:.6rem;padding-top:.7rem;font-weight:800}
   .bb-total span:last-child{font-size:1.7rem}
   .bb-cta{width:100%;margin-top:.9rem;border:0;border-radius:999px;padding:1.05rem;font-weight:800;font-size:1.05rem;
-    background:linear-gradient(180deg,rgba(26,67,255,1),rgba(26,67,255,.85));color:#fff;cursor:pointer;
-    box-shadow:0 10px 24px -10px rgba(26,67,255,.32), inset 0 1px 0 rgba(255,255,255,.25);
+    background:linear-gradient(180deg,rgba(71,121,113,1),rgba(71,121,113,.85));color:#fff;cursor:pointer;
+    box-shadow:0 10px 24px -10px rgba(71,121,113,.32), inset 0 1px 0 rgba(255,255,255,.25);
     transition:transform .3s cubic-bezier(.22,.8,.26,1),box-shadow .3s cubic-bezier(.22,.8,.26,1),opacity .2s}
-  .bb-cta:hover{transform:translateY(-2px);box-shadow:0 16px 32px -10px rgba(26,67,255,.32), inset 0 1px 0 rgba(255,255,255,.25)}
+  .bb-cta:hover{transform:translateY(-2px);box-shadow:0 16px 32px -10px rgba(71,121,113,.32), inset 0 1px 0 rgba(255,255,255,.25)}
   .bb-cta:active{transform:scale(.97)}
   .bb-cta[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none;transform:none}
   /* --- pickers --- */
@@ -69,7 +69,7 @@
     border-radius:20px;padding:.9rem 1.05rem;margin-bottom:.7rem;
     transition:background .35s cubic-bezier(.22,.8,.26,1),box-shadow .35s cubic-bezier(.22,.8,.26,1),transform .35s cubic-bezier(.22,.8,.26,1)}
   .bb-row:hover{transform:translateY(-2px);box-shadow:0 12px 26px -16px rgba(0,0,0,.35)}
-  .bb-row.bb-on{background:rgba(26,67,255,.13);box-shadow:inset 0 0 0 1.5px rgba(26,67,255,.4), 0 10px 24px -16px rgba(26,67,255,.32)}
+  .bb-row.bb-on{background:rgba(71,121,113,.13);box-shadow:inset 0 0 0 1.5px rgba(71,121,113,.4), 0 10px 24px -16px rgba(71,121,113,.32)}
   .bb-dot{flex:0 0 44px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.18))}
   .bb-meta{flex:1 1 auto;min-width:0}
   .bb-meta b{display:block;font-size:1.02rem}
@@ -79,16 +79,16 @@
     padding:.38rem .66rem;font-weight:700;font-size:.8rem;cursor:pointer;white-space:nowrap;
     transition:background .3s cubic-bezier(.22,.8,.26,1),color .3s,box-shadow .3s cubic-bezier(.22,.8,.26,1),transform .2s cubic-bezier(.22,.8,.26,1)}
   .bb-size:hover{transform:translateY(-1px)}
-  .bb-size.bb-sel{background:var(--bb-acc);color:#fff;box-shadow:0 6px 14px -6px rgba(26,67,255,.32)}
+  .bb-size.bb-sel{background:var(--bb-acc);color:#fff;box-shadow:0 6px 14px -6px rgba(71,121,113,.32)}
   .bb-add{border:0;border-radius:999px;width:2.4rem;height:2.4rem;font-size:1.2rem;font-weight:800;cursor:pointer;
     background:var(--bb-acc);color:#fff;flex:0 0 auto;line-height:1;
-    box-shadow:0 6px 14px -6px rgba(26,67,255,.32);transition:transform .25s cubic-bezier(.22,.8,.26,1),box-shadow .25s cubic-bezier(.22,.8,.26,1)}
+    box-shadow:0 6px 14px -6px rgba(71,121,113,.32);transition:transform .25s cubic-bezier(.22,.8,.26,1),box-shadow .25s cubic-bezier(.22,.8,.26,1)}
   .bb-add:hover{transform:translateY(-2px)}
   .bb-add:active{transform:scale(.9)}
   .bb-qtywrap{display:flex;align-items:center;gap:.35rem;flex:0 0 auto}
-  .bb-minus{border:0;background:rgba(26,67,255,.13);color:var(--bb-acc);border-radius:999px;width:2.4rem;height:2.4rem;
+  .bb-minus{border:0;background:rgba(71,121,113,.13);color:var(--bb-acc);border-radius:999px;width:2.4rem;height:2.4rem;
     font-size:1.2rem;font-weight:800;cursor:pointer;line-height:1;transition:transform .25s cubic-bezier(.22,.8,.26,1),background .3s}
-  .bb-minus:hover{background:rgba(26,67,255,.22)}
+  .bb-minus:hover{background:rgba(71,121,113,.22)}
   .bb-minus:active{transform:scale(.9)}
   .bb-qty{font-weight:800;min-width:1.1rem;text-align:center}
   .bb-row:not(.bb-on) .bb-minus,.bb-row:not(.bb-on) .bb-qty{display:none}
@@ -114,11 +114,11 @@
 
     /* ---- shared bill/checkout support (identical across all designs) ---- */
     .material-symbols-outlined { font-variation-settings:'FILL' 1,'wght' 700,'GRAD' 0,'opsz' 24; }
-    .neo-shadow    { box-shadow: 8px 8px 0 0 #261236; }
-    .neo-shadow-lg { box-shadow: 12px 12px 0 0 #261236; }
-    .neo-shadow-sm { box-shadow: 4px 4px 0 0 #261236; }
+    .neo-shadow    { box-shadow: 8px 8px 0 0 #1f1c1a; }
+    .neo-shadow-lg { box-shadow: 12px 12px 0 0 #1f1c1a; }
+    .neo-shadow-sm { box-shadow: 4px 4px 0 0 #1f1c1a; }
     .jelly-pop { transition: transform .1s, box-shadow .1s; }
-    .jelly-pop:active { transform: scale(.95) translate(4px,4px); box-shadow: 2px 2px 0 0 #261236; }
+    .jelly-pop:active { transform: scale(.95) translate(4px,4px); box-shadow: 2px 2px 0 0 #1f1c1a; }
     .modal-active { opacity:1 !important; pointer-events:auto !important; }
     .modal-active #receipt-wrapper, .modal-active #success-card { transform: scale(1) translateY(0) !important; }
     .receipt-scrollbar::-webkit-scrollbar { width:4px; }
@@ -151,7 +151,7 @@
 
 </style>
 </head>
-<body class="bg-[#f4f1ea] text-[#141414] font-[Manrope] overflow-x-hidden">
+<body class="bg-[#f1e7da] text-[#1f1c1a] font-[Manrope] overflow-x-hidden">
 
 <nav class="fixed top-0 inset-x-0 z-50 mix-blend-difference text-white px-5 md:px-10 py-4 flex items-center justify-between">
   <div class="flex items-center gap-2 cursor-pointer" onclick="scrollTo({top:0,behavior:'smooth'})"><span class="ho-disp text-2xl">GummyChums</span></div>
@@ -160,14 +160,14 @@
 </nav>
 
 <header class="relative min-h-screen flex flex-col justify-center px-5 md:px-10 overflow-hidden">
-  <div class="ho-parx absolute right-[6vw] top-[16vh] w-52 h-52 md:w-80 md:h-80 rounded-full" data-speed="0.25" style="background:radial-gradient(circle,#1a43ff,#0a1f8f)"></div>
-  <div class="ho-parx absolute left-[10vw] bottom-[14vh] w-32 h-32 rounded-full" data-speed="-0.4" style="background:#ff5a3c"></div>
-  <div class="ho-parx absolute right-[24vw] bottom-[20vh] w-20 h-20 rounded-full" data-speed="0.6" style="background:#ffcf33"></div>
+  <div class="ho-parx absolute right-[6vw] top-[16vh] w-52 h-52 md:w-80 md:h-80 rounded-full" data-speed="0.25" style="background:radial-gradient(circle,#477971,#477971)"></div>
+  <div class="ho-parx absolute left-[10vw] bottom-[14vh] w-32 h-32 rounded-full" data-speed="-0.4" style="background:#e8503a"></div>
+  <div class="ho-parx absolute right-[24vw] bottom-[20vh] w-20 h-20 rounded-full" data-speed="0.6" style="background:#f4c84f"></div>
   <div class="relative z-10 max-w-7xl mx-auto w-full">
     <p class="ho-mask ho-disp uppercase tracking-[0.3em] text-sm mb-6"><span>Wellness · in motion</span></p>
-    <h1 class="ho-disp ho-big font-semibold"><span class="ho-mask"><span>Chew the</span></span><span class="ho-mask"><span class="text-[#1a43ff] italic">good stuff.</span></span></h1>
+    <h1 class="ho-disp ho-big font-semibold"><span class="ho-mask"><span>Chew the</span></span><span class="ho-mask"><span class="text-[#477971] italic">good stuff.</span></span></h1>
     <div class="ho-mask mt-8"><span><p class="text-xl max-w-md text-black/70">Science-backed gummies for real Indian lives. Now scroll sideways →</p></span></div>
-    <div class="ho-mask mt-9"><span><a href="#odyssey" class="ho-btn inline-block bg-[#141414] text-white ho-disp px-8 py-4 rounded-full">Meet the Chums</a></span></div>
+    <div class="ho-mask mt-9"><span><a href="#odyssey" class="ho-btn inline-block bg-[#1f1c1a] text-white ho-disp px-8 py-4 rounded-full">Meet the Chums</a></span></div>
   </div>
   <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs font-bold uppercase tracking-[0.3em] text-black/40">Scroll ↓</div>
 </header>
@@ -175,26 +175,26 @@
 <section id="odyssey" class="ho-hwrap">
   <div class="ho-sticky">
     <div class="ho-track" id="ho-track">
-      <div class="ho-panel" style="background:linear-gradient(135deg,#c9b6ff,#efe6ff)">
-        <div class="p-8 md:p-12 flex flex-col justify-between w-1/2"><div><span class="ho-disp text-sm uppercase tracking-widest text-[#6b2fb3]">01 · Sleep</span><h3 class="ho-disp text-4xl md:text-6xl mt-2">Dreamy Sleep</h3><p class="mt-4 text-black/70">Melatonin + Chamomile.</p></div><div class="flex items-center gap-5"><span class="ho-disp text-3xl">₹699</span><button class="add-to-cart-btn ho-btn bg-[#141414] text-white px-6 py-3 rounded-full font-bold" data-product-id="dreamy-sleep">Add</button></div></div>
+      <div class="ho-panel" style="background:linear-gradient(135deg,#f1e7da,#f1e7da)">
+        <div class="p-8 md:p-12 flex flex-col justify-between w-1/2"><div><span class="ho-disp text-sm uppercase tracking-widest text-[#6b2f6a]">01 · Sleep</span><h3 class="ho-disp text-4xl md:text-6xl mt-2">Dreamy Sleep</h3><p class="mt-4 text-black/70">Melatonin + Chamomile.</p></div><div class="flex items-center gap-5"><span class="ho-disp text-3xl">₹699</span><button class="add-to-cart-btn ho-btn bg-[#1f1c1a] text-white px-6 py-3 rounded-full font-bold" data-product-id="dreamy-sleep">Add</button></div></div>
         <div class="w-1/2 grid place-items-center bg-white/40"><img src="mascot.png" class="w-3/4" style="filter:hue-rotate(230deg)"/></div>
       </div>
-      <div class="ho-panel" style="background:linear-gradient(135deg,#a6e3ff,#e6f7ff)">
-        <div class="p-8 md:p-12 flex flex-col justify-between w-1/2"><div><span class="ho-disp text-sm uppercase tracking-widest text-[#1a6bb3]">02 · Focus</span><h3 class="ho-disp text-4xl md:text-6xl mt-2">Electric Blue</h3><p class="mt-4 text-black/70">Lutein for screen days.</p></div><div class="flex items-center gap-5"><span class="ho-disp text-3xl">₹749</span><button class="add-to-cart-btn ho-btn bg-[#141414] text-white px-6 py-3 rounded-full font-bold" data-product-id="electric-blue">Add</button></div></div>
+      <div class="ho-panel" style="background:linear-gradient(135deg,#f1e7da,#f1e7da)">
+        <div class="p-8 md:p-12 flex flex-col justify-between w-1/2"><div><span class="ho-disp text-sm uppercase tracking-widest text-[#477971]">02 · Focus</span><h3 class="ho-disp text-4xl md:text-6xl mt-2">Electric Blue</h3><p class="mt-4 text-black/70">Lutein for screen days.</p></div><div class="flex items-center gap-5"><span class="ho-disp text-3xl">₹749</span><button class="add-to-cart-btn ho-btn bg-[#1f1c1a] text-white px-6 py-3 rounded-full font-bold" data-product-id="electric-blue">Add</button></div></div>
         <div class="w-1/2 grid place-items-center bg-white/40"><img src="mascot.png" class="w-3/4" style="filter:hue-rotate(150deg)"/></div>
       </div>
-      <div class="ho-panel" style="background:linear-gradient(135deg,#ffb6e6,#ffe6f5)">
-        <div class="p-8 md:p-12 flex flex-col justify-between w-1/2"><div><span class="ho-disp text-sm uppercase tracking-widest text-[#b3197a]">03 · Calm</span><h3 class="ho-disp text-4xl md:text-6xl mt-2">Neon Violet</h3><p class="mt-4 text-black/70">Ashwagandha + Brahmi.</p></div><div class="flex items-center gap-5"><span class="ho-disp text-3xl">₹899</span><button class="add-to-cart-btn ho-btn bg-[#141414] text-white px-6 py-3 rounded-full font-bold" data-product-id="neon-violet">Add</button></div></div>
+      <div class="ho-panel" style="background:linear-gradient(135deg,#e8a0b2,#e8a0b2)">
+        <div class="p-8 md:p-12 flex flex-col justify-between w-1/2"><div><span class="ho-disp text-sm uppercase tracking-widest text-[#6b1e21]">03 · Calm</span><h3 class="ho-disp text-4xl md:text-6xl mt-2">Neon Violet</h3><p class="mt-4 text-black/70">Ashwagandha + Brahmi.</p></div><div class="flex items-center gap-5"><span class="ho-disp text-3xl">₹899</span><button class="add-to-cart-btn ho-btn bg-[#1f1c1a] text-white px-6 py-3 rounded-full font-bold" data-product-id="neon-violet">Add</button></div></div>
         <div class="w-1/2 grid place-items-center bg-white/40"><img src="mascot.png" class="w-3/4" style="filter:hue-rotate(300deg)"/></div>
       </div>
-      <div class="ho-panel bg-[#141414] text-white">
-        <div class="p-8 md:p-12 flex flex-col justify-center w-full text-center"><h3 class="ho-disp text-4xl md:text-6xl">The whole gang<br/>lives together.</h3><p class="mt-4 text-white/60">Bundle all three & save.</p><div class="flex items-center gap-5 justify-center mt-6"><span class="ho-disp text-3xl">₹1899</span><button class="add-to-cart-btn ho-btn bg-[#1a43ff] text-white px-6 py-3 rounded-full font-bold" data-product-id="bundle-full-gang">Add bundle</button></div></div>
+      <div class="ho-panel bg-[#1f1c1a] text-white">
+        <div class="p-8 md:p-12 flex flex-col justify-center w-full text-center"><h3 class="ho-disp text-4xl md:text-6xl">The whole gang<br/>lives together.</h3><p class="mt-4 text-white/60">Bundle all three & save.</p><div class="flex items-center gap-5 justify-center mt-6"><span class="ho-disp text-3xl">₹1899</span><button class="add-to-cart-btn ho-btn bg-[#477971] text-white px-6 py-3 rounded-full font-bold" data-product-id="bundle-full-gang">Add bundle</button></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="px-5 md:px-10 py-28 bg-[#1a43ff] text-white overflow-hidden">
+<section class="px-5 md:px-10 py-28 bg-[#477971] text-white overflow-hidden">
   <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 text-center">
     <div><div class="ho-disp ho-big text-[6rem]" data-count="12" data-suffix="k">0</div><p class="uppercase tracking-widest font-bold mt-2">daily chums</p></div>
     <div><div class="ho-disp ho-big text-[6rem]" data-count="6" data-suffix="">0</div><p class="uppercase tracking-widest font-bold mt-2">flavours</p></div>
@@ -206,8 +206,8 @@
   <div class="ho-disp text-3xl md:text-6xl leading-tight space-y-2">
     <div class="ho-line"><span>Wellness shouldn't</span></div>
     <div class="ho-line"><span>feel like a chore.</span></div>
-    <div class="ho-line"><span class="text-[#1a43ff]">It should feel</span></div>
-    <div class="ho-line"><span class="text-[#1a43ff] italic">like a treat.</span></div>
+    <div class="ho-line"><span class="text-[#477971]">It should feel</span></div>
+    <div class="ho-line"><span class="text-[#477971] italic">like a treat.</span></div>
   </div>
 </section>
 
@@ -221,7 +221,7 @@
 
 
 <!-- BB:START -->
-<section id="bb-builder"><div class="bb-wrap"><p class="bb-kick">Build your own · mix any of the six</p><h2 class="bb-title">Pack your Chum Box.</h2><p class="bb-sub">Pick your gummies, pick your size — watch every single tab tumble in, one by one. One box, your rules: 15 tabs ₹349 · 30 tabs ₹549 · 45 tabs ₹749 per jar. Love one? Stack it twice. Or five times — your box.</p><div class="bb-grid"><div class="bb-boxcol"><div class="bb-box" id="bb-box"><div class="bb-lid"></div><div class="bb-label"><span>GummyChums · MY CHUM BOX</span><span style="display:flex;gap:.55rem;align-items:center"><small id="bb-count">empty</small><button class="bb-reset" id="bb-reset" title="Empty the box" aria-label="Empty the box" data-hot>&#8634;</button></span></div><div class="bb-drop" id="bb-drop"><canvas id="bb-canvas"></canvas><span class="bb-drop-empty" id="bb-empty">Your box is waiting — add a chum →</span><span class="bb-swirl">drag inside to swirl</span></div><div class="bb-tabs" id="bb-tabs">0 tabs packed</div></div><div class="bb-sum"><div id="bb-lines"><div class="bb-sumline"><span>Nothing packed yet</span><span>—</span></div></div><div class="bb-total"><span>Box total</span><span id="bb-total">₹0</span></div><button class="bb-cta" id="bb-cta" disabled data-hot>Pack my box → add to bag</button></div></div><div><div class="bb-row" data-bb-id="dreamy-sleep" data-bb-name="Dreamy Sleep" data-bb-color="#8b5cf6" data-bb-short="Sleep"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#8b5cf6"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Dreamy Sleep</b><small>Sleep</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Dreamy Sleep" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Dreamy Sleep to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="electric-blue" data-bb-name="Electric Blue" data-bb-color="#38bdf8" data-bb-short="Focus"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#38bdf8"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Electric Blue</b><small>Focus</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Electric Blue" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Electric Blue to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="neon-violet" data-bb-name="Neon Violet" data-bb-color="#e44bd3" data-bb-short="Calm"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e44bd3"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Neon Violet</b><small>Calm</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Neon Violet" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Neon Violet to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="minty-fresh" data-bb-name="Minty Fresh" data-bb-color="#39c98e" data-bb-short="Gut"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#39c98e"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Minty Fresh</b><small>Gut</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Minty Fresh" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Minty Fresh to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="burnt-orange" data-bb-name="Burnt Orange" data-bb-color="#ffb02e" data-bb-short="Immunity"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ffb02e"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Burnt Orange</b><small>Immunity</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Burnt Orange" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Burnt Orange to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="coral-sunrise" data-bb-name="Coral Sunrise" data-bb-color="#ff5c8a" data-bb-short="Glow"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#ff5c8a"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Coral Sunrise</b><small>Glow</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Coral Sunrise" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Coral Sunrise to box" data-hot>+</button></span></div></div></div></div></section>
+<section id="bb-builder"><div class="bb-wrap"><p class="bb-kick">Build your own · mix any of the six</p><h2 class="bb-title">Pack your Chum Box.</h2><p class="bb-sub">Pick your gummies, pick your size — watch every single tab tumble in, one by one. One box, your rules: 15 tabs ₹349 · 30 tabs ₹549 · 45 tabs ₹749 per jar. Love one? Stack it twice. Or five times — your box.</p><div class="bb-grid"><div class="bb-boxcol"><div class="bb-box" id="bb-box"><div class="bb-lid"></div><div class="bb-label"><span>GummyChums · MY CHUM BOX</span><span style="display:flex;gap:.55rem;align-items:center"><small id="bb-count">empty</small><button class="bb-reset" id="bb-reset" title="Empty the box" aria-label="Empty the box" data-hot>&#8634;</button></span></div><div class="bb-drop" id="bb-drop"><canvas id="bb-canvas"></canvas><span class="bb-drop-empty" id="bb-empty">Your box is waiting — add a chum →</span><span class="bb-swirl">drag inside to swirl</span></div><div class="bb-tabs" id="bb-tabs">0 tabs packed</div></div><div class="bb-sum"><div id="bb-lines"><div class="bb-sumline"><span>Nothing packed yet</span><span>—</span></div></div><div class="bb-total"><span>Box total</span><span id="bb-total">₹0</span></div><button class="bb-cta" id="bb-cta" disabled data-hot>Pack my box → add to bag</button></div></div><div><div class="bb-row" data-bb-id="dreamy-sleep" data-bb-name="Dreamy Sleep" data-bb-color="#6b2f6a" data-bb-short="Sleep"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#6b2f6a"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Dreamy Sleep</b><small>Sleep</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Dreamy Sleep" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Dreamy Sleep to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="electric-blue" data-bb-name="Electric Blue" data-bb-color="#477971" data-bb-short="Focus"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#477971"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Electric Blue</b><small>Focus</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Electric Blue" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Electric Blue to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="neon-violet" data-bb-name="Neon Violet" data-bb-color="#d72638" data-bb-short="Calm"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#d72638"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Neon Violet</b><small>Calm</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Neon Violet" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Neon Violet to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="minty-fresh" data-bb-name="Minty Fresh" data-bb-color="#98c64b" data-bb-short="Gut"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#98c64b"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Minty Fresh</b><small>Gut</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Minty Fresh" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Minty Fresh to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="burnt-orange" data-bb-name="Burnt Orange" data-bb-color="#f4c84f" data-bb-short="Immunity"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#f4c84f"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Burnt Orange</b><small>Immunity</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Burnt Orange" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Burnt Orange to box" data-hot>+</button></span></div><div class="bb-row" data-bb-id="coral-sunrise" data-bb-name="Coral Sunrise" data-bb-color="#e8a0b2" data-bb-short="Glow"><span class="bb-dot"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;display:block"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#e8a0b2"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/></svg></span><span class="bb-meta"><b>Coral Sunrise</b><small>Glow</small></span><span class="bb-sizes"><button class="bb-size" data-bb-size="15" data-bb-price="349">15 tabs</button><button class="bb-size bb-sel" data-bb-size="30" data-bb-price="549">30 tabs</button><button class="bb-size" data-bb-size="45" data-bb-price="749">45 tabs</button></span><span class="bb-price">₹549</span><span class="bb-qtywrap"><button class="bb-minus" aria-label="Remove one Coral Sunrise" data-hot>–</button><span class="bb-qty">0</span><button class="bb-add" aria-label="Add Coral Sunrise to box" data-hot>+</button></span></div></div></div></div></section>
 <!-- BB:END -->
 
 <script>
@@ -500,7 +500,7 @@
   render();
 })();
 </script>
-<footer class="bg-[#141414] text-white py-16 px-5 md:px-10 text-center">
+<footer class="bg-[#1f1c1a] text-white py-16 px-5 md:px-10 text-center">
   <span class="ho-disp text-4xl">GummyChums</span>
   <p class="text-white/50 mt-4 mb-6 uppercase tracking-widest text-sm">Made in India · In motion</p>
   <div class="flex gap-6 justify-center font-bold uppercase text-sm"><a href="#">Instagram</a><a href="#">Privacy</a></div>
@@ -509,9 +509,9 @@
 
 <!-- ===================== SHARED BILL / CHECKOUT (unchanged from index.html) ===================== -->
 <div id="cart-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
-  <div id="cart-backdrop" class="absolute inset-0 bg-[#261236]/80 backdrop-blur-sm cursor-pointer transition-opacity duration-300"></div>
-  <div id="receipt-wrapper" class="relative z-10 w-full max-w-[440px] transition-all duration-300 transform scale-90 translate-y-8 flex flex-col" style="filter: drop-shadow(8px 8px 0px #261236)">
-    <button id="close-cart-btn" class="absolute -top-3 -right-3 z-30 bg-white text-[#261236] p-2 border-4 border-[#261236] neo-shadow-sm hover:bg-[#b80865] hover:text-white transition-all font-bold flex items-center justify-center jelly-pop">
+  <div id="cart-backdrop" class="absolute inset-0 bg-[#1f1c1a]/80 backdrop-blur-sm cursor-pointer transition-opacity duration-300"></div>
+  <div id="receipt-wrapper" class="relative z-10 w-full max-w-[440px] transition-all duration-300 transform scale-90 translate-y-8 flex flex-col" style="filter: drop-shadow(8px 8px 0px #1f1c1a)">
+    <button id="close-cart-btn" class="absolute -top-3 -right-3 z-30 bg-white text-[#1f1c1a] p-2 border-4 border-[#1f1c1a] neo-shadow-sm hover:bg-[#6b1e21] hover:text-white transition-all font-bold flex items-center justify-center jelly-pop">
       <span class="material-symbols-outlined text-2xl">close</span>
     </button>
     <div id="receipt-modal-content" class="bg-white text-black p-6 md:p-8 font-receipt select-none overflow-y-auto max-h-[85vh] flex flex-col border-x border-black/10">
@@ -544,14 +544,14 @@
   </div>
 </div>
 <div id="success-modal" class="fixed inset-0 z-[110] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
-  <div id="success-backdrop" class="absolute inset-0 bg-[#261236]/90 backdrop-blur-md cursor-pointer transition-opacity duration-300"></div>
-  <div id="success-card" class="relative z-10 w-full max-w-[400px] bg-[#fecf34] border-8 border-[#261236] p-8 text-center neo-shadow-lg transform scale-90 translate-y-8 transition-all duration-300">
-    <div class="w-20 h-20 bg-white border-4 border-[#261236] flex items-center justify-center mx-auto mb-6 neo-shadow-sm animate-bounce">
-      <span class="material-symbols-outlined text-5xl text-[#006d36]">check_circle</span>
+  <div id="success-backdrop" class="absolute inset-0 bg-[#1f1c1a]/90 backdrop-blur-md cursor-pointer transition-opacity duration-300"></div>
+  <div id="success-card" class="relative z-10 w-full max-w-[400px] bg-[#f4c84f] border-8 border-[#1f1c1a] p-8 text-center neo-shadow-lg transform scale-90 translate-y-8 transition-all duration-300">
+    <div class="w-20 h-20 bg-white border-4 border-[#1f1c1a] flex items-center justify-center mx-auto mb-6 neo-shadow-sm animate-bounce">
+      <span class="material-symbols-outlined text-5xl text-[#234225]">check_circle</span>
     </div>
-    <h3 class="text-3xl uppercase tracking-tighter mb-4 text-[#261236] font-black">Order Placed!</h3>
-    <p class="text-lg text-[#261236]/80 mb-8 font-bold">Your gummy order is locked in. Get ready to feel good.</p>
-    <button id="close-success-btn" class="w-full bg-[#b80865] text-white py-4 border-4 border-[#261236] neo-shadow jelly-pop font-black uppercase text-xl tracking-wider">Let's Go</button>
+    <h3 class="text-3xl uppercase tracking-tighter mb-4 text-[#1f1c1a] font-black">Order Placed!</h3>
+    <p class="text-lg text-[#1f1c1a]/80 mb-8 font-bold">Your gummy order is locked in. Get ready to feel good.</p>
+    <button id="close-success-btn" class="w-full bg-[#6b1e21] text-white py-4 border-4 border-[#1f1c1a] neo-shadow jelly-pop font-black uppercase text-xl tracking-wider">Let's Go</button>
   </div>
 </div>
 
