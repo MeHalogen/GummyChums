@@ -177,89 +177,108 @@ def story_body():
     hero=('<header class="sec halftone" style="min-height:88vh;display:grid;place-items:center;text-align:center;position:relative">'
       '<span class="sticker" style="top:18%;left:8%;background:var(--saffron);transform:rotate(-8deg)">since 2026</span>'
       '<span class="sticker" style="top:24%;right:7%;background:var(--mango);transform:rotate(7deg)">100% Veg</span>'
-      '<div class="wrap reveal"><p class="eyebrow">GummyChums · The Story</p>'
-      '<h1 class="big" style="margin:1rem 0">It started with<br/>one question.</h1>'
-      '<p class="lead" style="margin:0 auto">“Why does taking care of our health have to feel like taking <span class="hi">medicine</span>?”</p>'
-      '<p style="margin-top:2.5rem;font-weight:800;letter-spacing:.2em;opacity:.5">SCROLL ↓</p></div></header>')
+      '<div class="wrap reveal"><p class="eyebrow">GummyChums &middot; The Story</p>'
+      '<h1 class="big" style="margin:1rem 0">Wellness got<br/>complicated.</h1>'
+      '<p class="lead" style="margin:0 auto">Somewhere along the way, taking care of yourself became a '
+      '<span class="hi">checklist</span>. And that&rsquo;s where most people quietly stop.</p>'
+      '<p style="margin-top:2.5rem;font-weight:800;letter-spacing:.2em;opacity:.5">SCROLL &darr;</p></div></header>')
     c1=chap("var(--cream)","var(--ink)",
-      '<div class="reveal"><h2 class="big">It got to be<br/>too much.</h2>'
-      '<p class="lead" style="margin-top:1.4rem">Multiple bottles. Different capsules. Remembering which one, when — carrying them everywhere. '
-      'Wellness had quietly become <span class="hi">another task on the to-do list.</span></p></div>')
+      '<div class="reveal"><h2 class="big">The list that<br/>never ends.</h2>'
+      '<div style="margin:1.6rem 0">'
+      + ''.join('<span class="chip">%s</span>'%w for w in
+          ["Take your vitamins","Finish your protein","Drink your water","Sleep 8 hours",
+           "10,000 steps","Reduce stress","Repeat tomorrow"])
+      + '</div>'
+      '<p class="lead">Individually, none of it is hard. Together, it&rsquo;s overwhelming &mdash; '
+      'and wellness starts to feel like <b>work</b>.</p></div>')
     c2=chap("var(--saffron)","var(--ink)",
-      '<div class="reveal"><h2 class="big">I wasn&rsquo;t alone.</h2>'
-      '<p class="lead" style="margin-top:1.4rem">So many people give up on their supplements — not because they don’t care about their health, '
-      'but because the <b>experience itself isn’t enjoyable.</b> Pills feel clinical. Powders are a chore.</p></div>')
-    # THE SPARK — fall-in takeover
+      '<div class="reveal"><h2 class="big">The products weren&rsquo;t bad.<br/>The experience was.</h2>'
+      '<p class="lead" style="margin-top:1.4rem">Some days it was vitamins. Some days protein. '
+      'Most days, simply forgetting. Everything felt clinical, repetitive &mdash; like <b>another responsibility</b>.</p></div>')
     spark=('<section class="fallin"><div class="pin halftone">'
       '<div class="fg">'+gummy("var(--coral)")+'</div>'
-      '<div class="ftitle reveal in"><p class="eyebrow">The spark</p>'
-      '<h2 class="big" style="max-width:16ch;margin:1rem auto">What if wellness<br/>felt like candy?</h2>'
-      '<p class="lead" style="margin:0 auto">As enjoyable as your favourite childhood treat — that you actually look forward to.</p>'
-      '<p style="margin-top:2rem;font-weight:800;letter-spacing:.2em;opacity:.5">SCROLL ↓</p></div>'
-      '<div class="finside"><div><h2 class="big">That’s where<br/><span style="color:var(--saffron)">GummyChums</span> began.</h2></div></div>'
+      '<div class="ftitle reveal in"><p class="eyebrow">The question</p>'
+      '<h2 class="big" style="max-width:15ch;margin:1rem auto">What if wellness felt like something you looked forward to?</h2>'
+      '<p class="lead" style="margin:0 auto">&mdash; instead of something you had to remember.</p>'
+      '<p style="margin-top:2rem;font-weight:800;letter-spacing:.2em;opacity:.5">SCROLL &darr;</p></div>'
+      '<div class="finside"><div><h2 class="big">That question became<br/><span style="color:var(--saffron)">GummyChums.</span></h2></div></div>'
       '</div></section>')
-    c4=chap("var(--teal)","var(--cream)",
-      '<div class="reveal"><p class="eyebrow" style="color:var(--saffron)">This one’s personal</p>'
-      '<h2 class="big" style="margin:.6rem 0 1.4rem">This one&rsquo;s personal.</h2>'
-      '<p class="lead">Lactose-intolerant, so I rethought my supplements. I went from non-veg to <b>pure vegetarian</b>, '
-      'swapping fish oil for plant-based. Later, a job change brought anxiety, and for a while, medication. '
-      'It taught me how <b>intimidating</b> wellness can feel — and that everyday wellness shouldn’t.</p></div>')
-    c5=chap("var(--cream)","var(--ink)",
-      '<div class="reveal"><h2 class="big">“Chums” means <span class="hi">friends.</span></h2>'
-      '<p class="lead" style="margin-top:1.4rem">Your daily wellness companion. The little friend you happily reach for every day — '
-      '<b>not because you have to, but because you want to.</b></p></div>')
-    finale=('<section class="sec halftone" style="min-height:80vh;display:grid;place-items:center;text-align:center;background:var(--maroon);color:var(--cream)">'
-      '<div class="wrap reveal"><p class="eyebrow" style="color:var(--saffron)">Our mission</p>'
-      '<h2 class="big" style="margin:1rem 0 2rem">A treat,<br/>not a task.</h2>'
-      '<p class="lead" style="margin:0 auto 2.4rem">Make wellness feel like a <span style="color:var(--saffron)">treat</span>, not a task.</p>'
-      '<a href="index31.html#shop" class="btn" style="background:var(--saffron);color:var(--ink)">Meet the Chums →</a></div></section>')
-    return hero+c1+c2+spark+c4+c5+finale
+    why=chap("var(--teal)","var(--cream)",
+      '<div class="reveal"><p class="eyebrow" style="color:var(--saffron)">Why &ldquo;Chums&rdquo;</p>'
+      '<h2 class="big" style="margin:.6rem 0 1.4rem">We all had<br/>a chum.</h2>'
+      '<p class="lead">The friend who reminded you about homework. Shared their lunch. Stayed up studying. '
+      'Called after a bad day. A chum never <b>forced</b> you &mdash; they just made life better. '
+      'That&rsquo;s exactly who we want to be. Not another supplement &mdash; <b>your daily chum</b>.</p></div>')
+    believe=chap("var(--cream)","var(--ink)",
+      '<div class="reveal"><h2 class="big">What we believe.</h2>'
+      '<p class="lead" style="margin:1.4rem 0 1.2rem">Wellness shouldn&rsquo;t feel like medicine. Shouldn&rsquo;t be intimidating. '
+      'Shouldn&rsquo;t only belong to influencers. Shouldn&rsquo;t cost a fortune. Shouldn&rsquo;t need perfect discipline.</p>'
+      '<p class="big" style="font-size:clamp(1.8rem,6vw,4rem);color:var(--coral)">Wellness should feel <span style="color:var(--ink)">human</span>.</p></div>')
+    finale=('<section class="sec halftone" style="min-height:82vh;display:grid;place-items:center;text-align:center;background:var(--maroon);color:var(--cream)">'
+      '<div class="wrap reveal"><p class="eyebrow" style="color:var(--saffron)">The manifesto</p>'
+      '<h2 class="big" style="margin:1rem 0 1.6rem">Wellness is better<br/>with your Chums.</h2>'
+      '<p class="lead" style="margin:0 auto 2.4rem">Don&rsquo;t make wellness another burden. Make it your favourite part of the day. '
+      'Show up &mdash; one small habit, one smile, one Chum at a time.</p>'
+      '<a href="index31.html#shop" class="btn" style="background:var(--saffron);color:var(--ink)">Meet the Chums &rarr;</a></div></section>')
+    return hero+c1+c2+spark+why+believe+finale
 
 # ------------------------------------------------------------------ ABOUT
 def about_body():
     hero=('<header class="sec halftone" style="min-height:72vh;display:grid;place-items:center;text-align:center;position:relative">'
       '<span class="sticker" style="top:22%;right:9%;background:var(--teal);color:var(--cream);transform:rotate(7deg)">not a supplement co.</span>'
       '<div class="wrap reveal"><p class="eyebrow">About GummyChums</p>'
-      '<h1 class="big" style="margin:1rem 0">We&rsquo;re not another<br/>supplement brand.</h1>'
-      '<p class="lead" style="margin:0 auto">We’re building a new way for India to experience wellness — '
-      '<b>modern, playful, proudly Indian</b>, and impossible to ignore.</p></div></header>')
-    solve=('<section class="sec" style="background:var(--coral);color:var(--cream)"><div class="wrap reveal">'
-      '<h2 class="big">Wellness should be <span style="color:var(--saffron)">fun</span>, not a chore.</h2>'
-      '<p class="lead" style="margin-top:1.4rem">The biggest problem in wellness isn’t the product — it’s <b>consistency.</b> '
-      'People start with good intentions, then forget, lose motivation, or just don’t enjoy it. '
-      'We make delicious, science-backed gummies you actually look forward to.</p></div></section>')
-    who=('<section class="sec"><div class="wrap"><div class="reveal"><p class="eyebrow">Who it’s for</p>'
-      '<h2 class="big" style="margin:.6rem 0 2rem">20–45, busy &amp; ambitious.</h2></div>'
-      '<div class="grid3">'
-      '<div class="card reveal"><div class="anton" style="font-size:2.2rem;color:var(--coral)">01</div><b style="font-size:1.3rem">Young professionals</b><p style="margin-top:.5rem;opacity:.75">Metro &amp; Tier 1/2, juggling work, fitness, travel &amp; family.</p></div>'
-      '<div class="card reveal d1"><div class="anton" style="font-size:2.2rem;color:var(--teal)">02</div><b style="font-size:1.3rem">Students</b><p style="margin-top:.5rem;opacity:.75">Competitive &amp; govt-exam prep — long hours, real focus &amp; energy.</p></div>'
-      '<div class="card reveal d2"><div class="anton" style="font-size:2.2rem;color:var(--mango)">03</div><b style="font-size:1.3rem">Fitness &amp; travel</b><p style="margin-top:.5rem;opacity:.75">Convenient hydration, recovery &amp; on-the-go wellness — no bottles to lug.</p></div>'
+      '<h1 class="big" style="margin:1rem 0">We build habits,<br/>not products.</h1>'
+      '<p class="lead" style="margin:0 auto">The wellness industry spent years making products. We&rsquo;re here to build habits &mdash; '
+      'because the real challenge was never awareness. It&rsquo;s <b>consistency</b>.</p></div></header>')
+    diff=('<section class="sec" style="background:var(--coral);color:var(--cream)"><div class="wrap"><div class="reveal">'
+      '<p class="eyebrow" style="color:var(--saffron)">What makes us different</p>'
+      '<h2 class="big" style="margin:.6rem 0 1.6rem">We don&rsquo;t sell guilt.<br/>We sell <span style="color:var(--saffron)">joy</span>.</h2></div>'
+      '<div class="reveal" style="font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;line-height:2">'
+      'Not perfection &mdash; we celebrate <b>consistency</b>.<br/>'
+      'We don&rsquo;t scare &mdash; we <b>invite</b>.<br/>'
+      'We don&rsquo;t speak like doctors &mdash; we speak like <b>friends</b>.<br/>'
+      'We don&rsquo;t chase trends &mdash; we build <b>habits</b>.</div></div></section>')
+    mvp=('<section class="sec"><div class="wrap"><div class="grid3">'
+      '<div class="block reveal" style="background:var(--mango)"><div class="anton" style="font-size:1.6rem">Mission</div><p style="margin-top:.6rem;font-weight:600">Make wellness enjoyable enough that consistency happens naturally.</p></div>'
+      '<div class="block reveal d1" style="background:var(--pink)"><div class="anton" style="font-size:1.6rem">Vision</div><p style="margin-top:.6rem;font-weight:600">Build India&rsquo;s happiest wellness community &mdash; millions of better everyday habits.</p></div>'
+      '<div class="block reveal d2" style="background:var(--teal);color:var(--cream)"><div class="anton" style="font-size:1.6rem">Promise</div><p style="margin-top:.6rem;font-weight:600">&ldquo;Would we be excited to take this every single day?&rdquo; If no, it&rsquo;s not a GummyChum.</p></div>'
       '</div></div></section>')
-    feel=('<section class="sec" style="background:var(--saffron)"><div class="wrap reveal"><p class="eyebrow">How we want you to feel</p>'
-      '<h2 class="big" style="margin:.6rem 0 1.6rem">Wellness = the best part of your day.</h2>'
-      '<div>'+''.join(f'<span class="chip">{w}</span>' for w in
-        ["Happy","Confident","Energized","Comforted","Curious","Proud","Consistent"])+'</div></div></section>')
-    persona=('<section class="sec"><div class="wrap reveal"><p class="eyebrow">If we were a person</p>'
-      '<h2 class="big" style="margin:.6rem 0 1.6rem">That friend who makes<br/>self-care easy.</h2>'
-      '<div>'+''.join(f'<span class="chip" style="background:var(--pink)">{w}</span>' for w in
-        ["Playful","Honest","Confident","Curious","Modern","Inclusive"])+'</div>'
-      '<p class="lead" style="margin-top:1.6rem">Playful without being childish. Confident without being arrogant. '
-      'Informative without ever being preachy.</p></div></section>')
-    never=('<section class="sec" style="background:var(--ink);color:var(--cream)"><div class="wrap reveal">'
-      '<p class="eyebrow" style="color:var(--saffron)">What we’ll never be</p>'
-      '<h2 class="big" style="margin:.6rem 0 1.6rem;line-height:1.15">We will never be '
-      + ' '.join(f'<span class="strike">{w}</span>' for w in ["clinical","childish","preachy","complicated","just another supplement bottle"])
-      + '.</h2><p class="lead">Not a supplement company. Not a candy brand. Not an Ayurvedic brand. '
-      'A modern lifestyle brand that happens to make wellness — one India actually loves.</p></div></section>')
-    values=('<section class="sec"><div class="wrap"><div class="reveal"><p class="eyebrow">Non-negotiables</p>'
-      '<h2 class="big" style="margin:.6rem 0 2rem">Three things we stand for.</h2></div><div class="grid3">'
-      '<div class="block reveal" style="background:var(--mango)"><div class="anton" style="font-size:1.8rem">Accessibility</div><p style="margin-top:.6rem">Premium experience, affordable price. Great wellness shouldn’t feel out of reach.</p></div>'
-      '<div class="block reveal d1" style="background:var(--pink)"><div class="anton" style="font-size:1.8rem">Joy</div><p style="margin-top:.6rem">Every flavour, pack &amp; message should make you smile. Wellness you look forward to.</p></div>'
-      '<div class="block reveal d2" style="background:var(--teal);color:var(--cream)"><div class="anton" style="font-size:1.8rem">Trust</div><p style="margin-top:.6rem">Honest labels, quality ingredients, certified facilities. No question marks.</p></div>'
-      '</div><div class="reveal" style="text-align:center;margin-top:3rem"><a href="story.html" class="btn">Read our story →</a></div></div></section>')
-    return hero+solve+who+feel+persona+never+values
+    values=('<section class="sec" style="background:var(--saffron)"><div class="wrap reveal"><p class="eyebrow">Our values</p>'
+      '<h2 class="big" style="margin:.6rem 0 1.6rem">Five things we<br/>never bend on.</h2>'
+      '<div>'+''.join('<span class="chip">%s</span>'%w for w in
+        ["Friendship","Transparency","Accessibility","Playfulness","Quality"])+'</div>'
+      '<p class="lead" style="margin-top:1.4rem">The best habits are easier when shared. If it&rsquo;s inside our product, you&rsquo;ll know exactly why. '
+      'Wellness shouldn&rsquo;t be a luxury. Healthy doesn&rsquo;t have to mean boring. And we never compromise on ingredients, taste or texture.</p></div></section>')
+    persona=('<section class="sec"><div class="wrap reveal"><p class="eyebrow">If we walked into a room</p>'
+      '<h2 class="big" style="margin:.6rem 0 1.6rem">The friend everyone&rsquo;s<br/>comfortable around.</h2>'
+      '<div>'+''.join('<span class="chip" style="background:var(--pink)">%s</span>'%w for w in
+        ["Colourful","Curious","Funny","Supportive","Optimistic"])+'</div>'
+      '<p class="lead" style="margin-top:1.6rem">Never loud for attention. Never fake. Always honest, always encouraging &mdash; and never judgmental.</p></div></section>')
+    community=('<section class="sec" style="background:var(--green);color:var(--cream)"><div class="wrap reveal">'
+      '<p class="eyebrow" style="color:var(--saffron)">Our community</p>'
+      '<h2 class="big" style="margin:.6rem 0 1.6rem">You&rsquo;re already<br/>a Chum.</h2>'
+      '<div>'+''.join('<span class="chip" style="background:transparent;color:var(--cream);border-color:var(--cream);box-shadow:3px 3px 0 var(--saffron)">%s</span>'%w for w in
+        ["Students","Professionals","Creators","Gamers","Gym lovers","Night-shift workers","Parents","Travellers","Dreamers"])+'</div>'
+      '<p class="lead" style="margin-top:1.6rem">If you&rsquo;re trying to become a healthier version of yourself &mdash; you&rsquo;re one of us.</p></div></section>')
+    design=('<section class="sec" style="background:var(--ink);color:var(--cream)"><div class="wrap reveal">'
+      '<p class="eyebrow" style="color:var(--saffron)">Design philosophy</p>'
+      '<h2 class="big" style="margin:.6rem 0 1.6rem">Proudly Indian.<br/>Proudly modern.</h2>'
+      '<p class="lead">Not traditional. Not stereotypical. Our world should feel like walking through an '
+      '<b>Indian street market</b> &mdash; colours, conversations, snacks, music, laughter, festivals. '
+      'Bold. Warm. Playful. Impossible to ignore.</p></div></section>')
+    voice=('<section class="sec"><div class="wrap"><div class="reveal"><p class="eyebrow">Our voice</p>'
+      '<h2 class="big" style="margin:.6rem 0 2rem">We talk like a friend.</h2></div><div class="grid3">'
+      + ''.join('<div class="card reveal"><p style="opacity:.5;text-decoration:line-through">%s</p>'
+                '<p class="anton" style="font-size:1.4rem;margin-top:.5rem;color:var(--coral)">%s</p></div>'%(a,b) for a,b in [
+        ("&ldquo;Consume two gummies daily.&rdquo;","Your daily chums are waiting."),
+        ("&ldquo;Supports healthy sleep.&rdquo;","Sleep tight, Chum."),
+        ("&ldquo;Contains Vitamin C.&rdquo;","Tiny gummy. Big immunity energy.")])
+      + '</div><div class="reveal" style="text-align:center;margin-top:3rem">'
+      '<a href="story.html" class="btn" style="margin:.4rem">Read our story &rarr;</a>'
+      '<a href="index31.html#shop" class="btn" style="margin:.4rem;background:var(--saffron);color:var(--ink)">Meet the Chums &rarr;</a></div></div></section>')
+    return hero+diff+mvp+values+persona+community+design+voice
 
-# ------------------------------------------------------------------ CONTACT
+
 def contact_body():
     # NOTE: placeholder contact details — swap for the real email + handles.
     hero=('<header class="sec halftone" style="min-height:60vh;display:grid;place-items:center;text-align:center;position:relative">'
