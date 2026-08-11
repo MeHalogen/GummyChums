@@ -127,7 +127,7 @@ def nav(active):
 FOOTER=('<footer class="footer"><div class="flinks">'
   '<a href="story.html">Story</a><a href="about.html">About</a><a href="contact.html">Contact</a>'
   '<a href="index31.html#shop">Shop</a></div>'
-  '<p class="anton" style="font-size:1.6rem">सेहत को बनाओ ट्रीट, टास्क नहीं।</p>'
+  '<p class="anton" style="font-size:1.6rem">A treat, not a task.</p>'
   '<small>GummyChums · Make wellness feel like a treat, not a task · Made in India · © 2026</small></footer>')
 
 JS=r"""<script>
@@ -176,41 +176,41 @@ def story_body():
         return f'<section class="sec" style="background:{bg};color:{fg}"><div class="wrap">{inner}</div></section>'
     hero=('<header class="sec halftone" style="min-height:88vh;display:grid;place-items:center;text-align:center;position:relative">'
       '<span class="sticker" style="top:18%;left:8%;background:var(--saffron);transform:rotate(-8deg)">since 2026</span>'
-      '<span class="sticker" style="top:24%;right:7%;background:var(--mango);transform:rotate(7deg)">100% देसी</span>'
+      '<span class="sticker" style="top:24%;right:7%;background:var(--mango);transform:rotate(7deg)">100% Veg</span>'
       '<div class="wrap reveal"><p class="eyebrow">GummyChums · The Story</p>'
-      '<h1 class="big" style="margin:1rem 0">एक सवाल से<br/>शुरू हुआ।</h1>'
+      '<h1 class="big" style="margin:1rem 0">It started with<br/>one question.</h1>'
       '<p class="lead" style="margin:0 auto">“Why does taking care of our health have to feel like taking <span class="hi">medicine</span>?”</p>'
       '<p style="margin-top:2.5rem;font-weight:800;letter-spacing:.2em;opacity:.5">SCROLL ↓</p></div></header>')
     c1=chap("var(--cream)","var(--ink)",
-      '<div class="reveal"><h2 class="big">बहुत हो गया।</h2>'
+      '<div class="reveal"><h2 class="big">It got to be<br/>too much.</h2>'
       '<p class="lead" style="margin-top:1.4rem">Multiple bottles. Different capsules. Remembering which one, when — carrying them everywhere. '
       'Wellness had quietly become <span class="hi">another task on the to-do list.</span></p></div>')
     c2=chap("var(--saffron)","var(--ink)",
-      '<div class="reveal"><h2 class="big">मैं अकेला नहीं था।</h2>'
+      '<div class="reveal"><h2 class="big">I wasn&rsquo;t alone.</h2>'
       '<p class="lead" style="margin-top:1.4rem">So many people give up on their supplements — not because they don’t care about their health, '
       'but because the <b>experience itself isn’t enjoyable.</b> Pills feel clinical. Powders are a chore.</p></div>')
     # THE SPARK — fall-in takeover
     spark=('<section class="fallin"><div class="pin halftone">'
       '<div class="fg">'+gummy("var(--coral)")+'</div>'
       '<div class="ftitle reveal in"><p class="eyebrow">The spark</p>'
-      '<h2 class="big" style="max-width:16ch;margin:1rem auto">अगर सेहत, कैंडी जितनी मज़ेदार हो?</h2>'
-      '<p class="lead" style="margin:0 auto">What if wellness could be as enjoyable as your favourite candy?</p>'
+      '<h2 class="big" style="max-width:16ch;margin:1rem auto">What if wellness<br/>felt like candy?</h2>'
+      '<p class="lead" style="margin:0 auto">As enjoyable as your favourite childhood treat — that you actually look forward to.</p>'
       '<p style="margin-top:2rem;font-weight:800;letter-spacing:.2em;opacity:.5">SCROLL ↓</p></div>'
       '<div class="finside"><div><h2 class="big">That’s where<br/><span style="color:var(--saffron)">GummyChums</span> began.</h2></div></div>'
       '</div></section>')
     c4=chap("var(--teal)","var(--cream)",
       '<div class="reveal"><p class="eyebrow" style="color:var(--saffron)">This one’s personal</p>'
-      '<h2 class="big" style="margin:.6rem 0 1.4rem">ये निजी है।</h2>'
+      '<h2 class="big" style="margin:.6rem 0 1.4rem">This one&rsquo;s personal.</h2>'
       '<p class="lead">Lactose-intolerant, so I rethought my supplements. I went from non-veg to <b>pure vegetarian</b>, '
       'swapping fish oil for plant-based. Later, a job change brought anxiety, and for a while, medication. '
       'It taught me how <b>intimidating</b> wellness can feel — and that everyday wellness shouldn’t.</p></div>')
     c5=chap("var(--cream)","var(--ink)",
-      '<div class="reveal"><h2 class="big">“Chums” का मतलब — <span class="hi">दोस्त।</span></h2>'
+      '<div class="reveal"><h2 class="big">“Chums” means <span class="hi">friends.</span></h2>'
       '<p class="lead" style="margin-top:1.4rem">Your daily wellness companion. The little friend you happily reach for every day — '
       '<b>not because you have to, but because you want to.</b></p></div>')
     finale=('<section class="sec halftone" style="min-height:80vh;display:grid;place-items:center;text-align:center;background:var(--maroon);color:var(--cream)">'
       '<div class="wrap reveal"><p class="eyebrow" style="color:var(--saffron)">Our mission</p>'
-      '<h2 class="big" style="margin:1rem 0 2rem">सेहत को बनाओ<br/>ट्रीट, टास्क नहीं।</h2>'
+      '<h2 class="big" style="margin:1rem 0 2rem">A treat,<br/>not a task.</h2>'
       '<p class="lead" style="margin:0 auto 2.4rem">Make wellness feel like a <span style="color:var(--saffron)">treat</span>, not a task.</p>'
       '<a href="index31.html#shop" class="btn" style="background:var(--saffron);color:var(--ink)">Meet the Chums →</a></div></section>')
     return hero+c1+c2+spark+c4+c5+finale
@@ -220,7 +220,7 @@ def about_body():
     hero=('<header class="sec halftone" style="min-height:72vh;display:grid;place-items:center;text-align:center;position:relative">'
       '<span class="sticker" style="top:22%;right:9%;background:var(--teal);color:var(--cream);transform:rotate(7deg)">not a supplement co.</span>'
       '<div class="wrap reveal"><p class="eyebrow">About GummyChums</p>'
-      '<h1 class="big" style="margin:1rem 0">हम एक और सप्लिमेंट<br/>ब्रांड नहीं हैं।</h1>'
+      '<h1 class="big" style="margin:1rem 0">We&rsquo;re not another<br/>supplement brand.</h1>'
       '<p class="lead" style="margin:0 auto">We’re building a new way for India to experience wellness — '
       '<b>modern, playful, proudly Indian</b>, and impossible to ignore.</p></div></header>')
     solve=('<section class="sec" style="background:var(--coral);color:var(--cream)"><div class="wrap reveal">'
@@ -236,7 +236,7 @@ def about_body():
       '<div class="card reveal d2"><div class="anton" style="font-size:2.2rem;color:var(--mango)">03</div><b style="font-size:1.3rem">Fitness &amp; travel</b><p style="margin-top:.5rem;opacity:.75">Convenient hydration, recovery &amp; on-the-go wellness — no bottles to lug.</p></div>'
       '</div></div></section>')
     feel=('<section class="sec" style="background:var(--saffron)"><div class="wrap reveal"><p class="eyebrow">How we want you to feel</p>'
-      '<h2 class="big" style="margin:.6rem 0 1.6rem">सेहत = the best part of your day.</h2>'
+      '<h2 class="big" style="margin:.6rem 0 1.6rem">Wellness = the best part of your day.</h2>'
       '<div>'+''.join(f'<span class="chip">{w}</span>' for w in
         ["Happy","Confident","Energized","Comforted","Curious","Proud","Consistent"])+'</div></div></section>')
     persona=('<section class="sec"><div class="wrap reveal"><p class="eyebrow">If we were a person</p>'
@@ -265,7 +265,7 @@ def contact_body():
     hero=('<header class="sec halftone" style="min-height:60vh;display:grid;place-items:center;text-align:center;position:relative">'
       '<span class="sticker" style="top:20%;left:8%;background:var(--mango);transform:rotate(-7deg)">we’re all ears</span>'
       '<div class="wrap reveal"><p class="eyebrow">Contact</p>'
-      '<h1 class="big" style="margin:1rem 0">आओ बात करें.<br/>Say hi.</h1>'
+      '<h1 class="big" style="margin:1rem 0">Say hi.</h1>'
       '<p class="lead" style="margin:0 auto">Questions, collabs, or just wanna tell us your GummyChums story? '
       'Slide into any of these.</p></div></header>')
     def tile(bg,fg,label,val,href):
