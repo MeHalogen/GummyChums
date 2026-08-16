@@ -80,9 +80,21 @@
     form input{text-align:center;padding:6px 0} form button{width:100%;padding:14px}
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.logo{opacity:1}}
+
+/*MARQ*/
+body{padding-top:46px!important}
+.marq{position:fixed;left:0;right:0;z-index:20;overflow:hidden;pointer-events:none;padding:8px 0;background:var(--ink)}
+.marq.top{top:0}.marq.bot{bottom:0}
+.marq .trk{display:inline-flex;white-space:nowrap;color:#FCFAF6;font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:.16em;animation:mscroll 55s linear infinite}
+.marq.bot .trk{animation-direction:reverse}
+.marq .trk span{padding:0 18px}
+@keyframes mscroll{to{transform:translateX(-50%)}}
+.foot{bottom:48px!important}
+@media (prefers-reduced-motion:reduce){.marq .trk{animation:none!important}}
 </style>
 </head>
 <body>
+<div class="marq top"><div class="trk" id="mt"></div></div><div class="marq bot"><div class="trk" id="mb"></div></div>
 <div id="wash"></div>
 <div id="gcur" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#191316"/><ellipse cx="35" cy="28" rx="15" ry="9" fill="#fff" opacity=".9" transform="rotate(-25 35 28)"/></svg></div>
 
@@ -176,6 +188,16 @@
       else{throw new Error(r.status);} }).catch(function(){btn.disabled=false;btn.textContent=lbl;
         emailEl.value='';emailEl.setAttribute('placeholder','Try again');emailEl.focus();});
   });
+})();
+
+;/*MARQJS*/(function(){var msg='GUMMY CHUMS \u2726 COMING SOON \u2726 WELLNESS, BUT MAKE IT FUN \u2726 MADE IN INDIA \u2726 ';
+function fill(el){if(!el)return;var o='';for(var i=0;i<6;i++)o+='<span>'+msg+'</span>';el.innerHTML=o+o;}
+fill(document.getElementById('mt'));fill(document.getElementById('mb'));
+var TR=['#DE1D61','#8DAA31','#F9740D'],ti=0,lt=0;
+if(matchMedia('(hover:hover) and (pointer:fine)').matches){addEventListener('pointermove',function(e){
+var n=performance.now();if(n-lt<42)return;lt=n;var d=document.createElement('div');
+d.style.cssText='position:fixed;left:'+e.clientX+'px;top:'+e.clientY+'px;width:16px;height:16px;z-index:6;margin:-8px 0 0 -8px;border-radius:50%;pointer-events:none;background:'+TR[ti++%3]+';opacity:.5;will-change:transform,opacity;';
+document.body.appendChild(d);d.animate([{transform:'scale(1)',opacity:.5},{transform:'scale(2.6)',opacity:0}],{duration:720,easing:'ease-out'}).onfinish=function(){d.remove();};});}
 })();
 </script>
 </body>
