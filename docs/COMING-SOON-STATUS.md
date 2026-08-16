@@ -50,6 +50,13 @@ Self-contained single HTML file, vanilla JS, Shopify/Hostinger-portable. Feature
 _Re-deploy after edits:_ `cp coming-soon-b.html deploy/index.html && cp -r .vercel deploy/.vercel && (cd deploy && vercel --prod --yes) && rm -rf deploy/.vercel`
 _(Also keep the zip fresh for reference:_ `cd deploy && zip -r -X ../gummychums-coming-soon.zip index.html fonts logo)`
 
+## 2026-08 round 2 — founder feedback + 3-flavor mockups
+Founder feedback on the live 6-colour version: too chaotic / not appealing, weak on mobile (most traffic = Instagram→phone). Wants: **3 colours = 3 real flavours** (not 6), a **tease**, **splashy** click interactions, mobile-first. Anti-gravity (another IDE tool) had edited the live bundle with Gemini photo-fruit + janky clicks — founder didn't like it.
+- **Anti-gravity's version is PRESERVED on branch `antigravity-version`** (its `deploy/index.html`, 3 fruit PNGs in `deploy/images/`, and a tighter logo with the dotted underline removed). Don't delete that branch.
+- **Flavour → colour:** 🍒 Cherry `#DE1D61` (sleep) · 🥭 Mango `#8DAA31` green/kaccha-aam (focus) · 🍊 Orange `#F9740D` (eye care). Black logo on light bg. Mango is swappable to gold if desired.
+- **4 mockups built** (all: black logo, 3 flavours, smooth CSS/WAAPI splashes, gummy cursor, mobile-first, real Klaviyo capture, logo save-protection): `mock-splash.html` (tap gummy → colour splash), `mock-thirds.html` (3 colour bands, fills phone), `mock-liquid.html` (minimal, drifting flavour blobs, tap anywhere), `mock-cards.html` (3 flavour cards that tease each product).
+- **Viewable publicly on phone** at `https://gummychums.com/mock-splash.html` / `-thirds` / `-liquid` / `-cards` (added into `deploy/`; **homepage `/` unchanged** = current live coming-soon). Remove these `/mock-*` files from `deploy/` once the founder picks a direction. (Vercel preview URLs are login-walled by Deployment Protection — that's why mockups are served from the prod domain instead.)
+
 ## The other drafts (kept as options/experiments)
 - `coming-soon-a` Gummy Downpour · `-c` Squish jelly · `-d` Magnet Mochi · `-e` Scratch reveal · `-f` Fill-the-jar (all playful, **use NaN Jaune trial → not deploy-ready**).
 - `coming-soon-g` (light) / `-h` (dark) = **minimalist** finalists, licence-clean (real logo PNG + Manrope). Mock email capture only — would need the same Klaviyo snippet as B to go live.
