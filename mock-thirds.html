@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GummyChums — Coming Soon</title>
+<meta name="description" content="Three flavors are coming. India's most fun wellness gummy — join the list."/>
+<link rel="icon" type="image/png" href="logo/gc-monogram.png"/>
+<style>
+  @font-face{font-family:'Manrope';src:url('fonts/Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
+  :root{--ink:#191316; --cherry:#DE1D61; --mango:#8DAA31; --orange:#F9740D;}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{font-family:'Manrope',system-ui,sans-serif;background:#fff;color:var(--ink);
+    -webkit-font-smoothing:antialiased;overflow:hidden;display:flex;flex-direction:column;height:100svh}
+  @media (hover:hover) and (pointer:fine){body{cursor:none}}
+
+  #gcur{position:fixed;left:0;top:0;width:28px;height:28px;z-index:90;pointer-events:none;
+    transform:translate(-50%,-50%);opacity:0;transition:opacity .25s;filter:drop-shadow(0 3px 5px rgba(0,0,0,.3))}
+  #gcur svg{width:100%;height:100%;display:block;animation:gwob 4s ease-in-out infinite}
+  @keyframes gwob{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+  #gcur.on{opacity:1} @media (hover:none){#gcur{display:none}}
+
+  header{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 18px 14px}
+  .logo-wrap{position:relative;display:inline-block;line-height:0}
+  .logo-shield{position:absolute;inset:0;z-index:3}
+  .logo{display:block;width:min(240px,52vw);height:auto;pointer-events:none;-webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+  .kick{font-weight:800;letter-spacing:.26em;text-transform:uppercase;font-size:10.5px;color:#191316aa}
+
+  .bands{flex:1 1 auto;display:flex;min-height:0}
+  @media (max-width:720px){.bands{flex-direction:column}}
+  .band{flex:1 1 0;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:10px;color:#fff;cursor:pointer;overflow:hidden;transition:flex-grow .45s cubic-bezier(.22,.8,.26,1);
+    -webkit-tap-highlight-color:transparent}
+  @media (hover:hover) and (pointer:fine){.band{cursor:none}}
+  .band::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 0%,rgba(255,255,255,.22),transparent 60%);pointer-events:none}
+  .band[data-f="cherry"]{background:var(--cherry)} .band[data-f="mango"]{background:var(--mango)} .band[data-f="orange"]{background:var(--orange)}
+  .band svg{width:clamp(64px,9vw,104px);height:auto;display:block;filter:drop-shadow(0 10px 16px rgba(0,0,0,.22));
+    animation:bob 5s ease-in-out infinite;position:relative;z-index:1}
+  .band:nth-child(2) svg{animation-delay:-1.6s} .band:nth-child(3) svg{animation-delay:-3.2s}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+  .band b{font-weight:800;font-size:clamp(1.1rem,3.4vw,1.6rem);position:relative;z-index:1;text-shadow:0 2px 10px rgba(0,0,0,.18)}
+  .band small{font-weight:600;font-size:clamp(.72rem,2vw,.9rem);opacity:.92;position:relative;z-index:1}
+  .band.pop svg{animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes pop{35%{transform:scale(1.18,.84)}70%{transform:scale(.92,1.1)}}
+  @media (hover:hover){.band:hover{flex-grow:1.35}}
+
+  footer{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px 18px 18px;background:#fff}
+  .tag{font-weight:800;font-size:clamp(1.05rem,2.6vw,1.3rem);text-align:center}
+  form{display:flex;gap:8px;background:#f3f0ec;border-radius:999px;padding:6px 6px 6px 18px;width:min(440px,94vw)}
+  form input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;font-weight:600;font-size:1rem;color:var(--ink)}
+  form input::placeholder{color:#19131666}
+  form button{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:.95rem;white-space:nowrap;color:#fff;background:var(--ink);border-radius:999px;padding:11px 20px}
+  form button:active{transform:scale(.94)}
+  .thanks{display:none;font-weight:800;color:var(--cherry)} .thanks.show{display:block}
+  .foot-links{display:flex;gap:12px;font-weight:700;font-size:.76rem;color:#19131699}
+  .foot-links a{color:inherit;text-decoration:none} .hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden;opacity:0}
+  @media (max-width:520px){form{flex-direction:column;border-radius:18px;padding:10px;gap:8px}form input{text-align:center;padding:6px 0}form button{width:100%;padding:13px}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="gcur" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#fff" stroke="rgba(0,0,0,.25)" stroke-width="3"/><ellipse cx="35" cy="28" rx="15" ry="9" fill="#fff" transform="rotate(-25 35 28)"/></svg></div>
+
+<header>
+  <span class="logo-wrap">
+    <img class="logo" src="logo/gc-wordmark-stack.png" alt="gummy chums" draggable="false" oncontextmenu="return false"/>
+    <span class="logo-shield" aria-hidden="true" oncontextmenu="return false"></span>
+  </span>
+  <p class="kick">Wellness, but make it fun · Coming soon</p>
+</header>
+
+<div class="bands" id="bands">
+  <div class="band" data-f="cherry" data-color="#DE1D61">
+    <svg viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#b81550"/><ellipse cx="36" cy="28" rx="16" ry="9.5" fill="#fff" opacity=".45" transform="rotate(-25 36 28)"/></svg>
+    <b>Cherry</b><small>for calm nights</small>
+  </div>
+  <div class="band" data-f="mango" data-color="#8DAA31">
+    <svg viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#6d8626"/><ellipse cx="36" cy="28" rx="16" ry="9.5" fill="#fff" opacity=".42" transform="rotate(-25 36 28)"/></svg>
+    <b>Mango</b><small>for sharp focus</small>
+  </div>
+  <div class="band" data-f="orange" data-color="#F9740D">
+    <svg viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#d55c08"/><ellipse cx="36" cy="28" rx="16" ry="9.5" fill="#fff" opacity=".42" transform="rotate(-25 36 28)"/></svg>
+    <b>Orange</b><small>for bright eyes</small>
+  </div>
+</div>
+
+<footer>
+  <p class="tag">Three flavors. One happy habit — <b>tap one</b>.</p>
+  <form id="notify" novalidate>
+    <input id="email" type="email" placeholder="your@email.com" required aria-label="Email"/>
+    <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"/>
+    <button type="submit">Notify me</button>
+  </form>
+  <p class="thanks" id="thanks">You&rsquo;re on the list! 🎉</p>
+  <div class="foot-links">
+    <a href="https://www.instagram.com/gummy.chums/" target="_blank" rel="noopener">Instagram</a>
+    <span style="opacity:.4">·</span><span>Made in India 🇮🇳</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  function splashAt(x,y,color){
+    var s=document.createElement('div');
+    s.style.cssText='position:fixed;left:'+x+'px;top:'+y+'px;width:40px;height:40px;z-index:80;margin:-20px 0 0 -20px;'+
+      'border-radius:46% 54% 52% 48%/48% 46% 54% 52%;pointer-events:none;background:'+color+';opacity:.85;will-change:transform,opacity;';
+    document.body.appendChild(s);
+    s.animate([{transform:'scale(.2)',opacity:.8},{transform:'scale(30)',opacity:0}],{duration:800,easing:'cubic-bezier(.22,.7,.2,1)'}).onfinish=function(){s.remove();};
+  }
+  document.getElementById('bands').addEventListener('pointerdown',function(e){
+    var b=e.target.closest('.band'); if(!b)return;
+    b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
+    splashAt(e.clientX,e.clientY,b.getAttribute('data-color'));
+  });
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches){var c=document.getElementById('gcur');
+    addEventListener('pointermove',function(e){c.classList.add('on');c.style.left=e.clientX+'px';c.style.top=e.clientY+'px';});
+    document.addEventListener('mouseleave',function(){c.classList.remove('on');});}
+  var lw=document.querySelector('.logo-wrap');
+  if(lw){lw.addEventListener('contextmenu',function(e){e.preventDefault();});lw.addEventListener('dragstart',function(e){e.preventDefault();});}
+
+  var KLAVIYO_PUBLIC_KEY='RVzvWv',KLAVIYO_LIST_ID='UaVrj2';
+  var f=document.getElementById('notify'),th=document.getElementById('thanks'),emailEl=document.getElementById('email'),btn=f.querySelector('button'),hp=f.querySelector('.hp'),lbl=btn.textContent;
+  var RE=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  f.addEventListener('submit',function(e){e.preventDefault(); if(hp&&hp.value)return; var em=emailEl.value.trim(); if(!RE.test(em)){emailEl.focus();return;}
+    btn.disabled=true;btn.textContent='Joining…';
+    fetch('https://a.klaviyo.com/client/subscriptions/?company_id='+KLAVIYO_PUBLIC_KEY,{method:'POST',headers:{'Content-Type':'application/json','revision':'2024-10-15'},
+      body:JSON.stringify({data:{type:'subscription',attributes:{custom_source:'Coming Soon (thirds)',profile:{data:{type:'profile',attributes:{email:em}}}},relationships:{list:{data:{type:'list',id:KLAVIYO_LIST_ID}}}}})})
+    .then(function(r){if(r.status===202||r.ok){f.style.display='none';th.classList.add('show');}else{throw new Error(r.status);}})
+    .catch(function(){btn.disabled=false;btn.textContent=lbl;emailEl.value='';emailEl.setAttribute('placeholder','Try again');emailEl.focus();});
+  });
+})();
+</script>
+</body>
+</html>
