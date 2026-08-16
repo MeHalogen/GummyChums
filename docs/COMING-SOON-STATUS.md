@@ -4,7 +4,12 @@ _Living doc. If the chat/context resets, read this first to continue exactly whe
 _Last updated: 2026-08-16._
 
 ## TL;DR — where we are
-The coming-soon page is **BUILT + LIVE on Vercel**. Only the custom domain is left to connect.
+**🟢 LIVE.** The coming-soon page is deployed and serving on the real domains with valid SSL:
+- **https://gummychums.com** (primary) · **https://gummychums.in** (also live)
+- Emails flow to Klaviyo. Pushed to GitHub `main`.
+- Remaining polish: set `gummychums.in` → redirect to `.com` (Vercel dashboard, optional); delete 2 Klaviyo test entries.
+
+DNS = A-record method at Hostinger (records editable in hPanel; nameservers left at dns-parking): `A @ → 76.76.21.21`, `CNAME www → cname.vercel-dns.com` on BOTH domains. Verified resolving via Google + Cloudflare DNS.
 - **Chosen design:** `coming-soon-b.html` (bold six-colour panels + marquees, real logo, gummy cursor).
 - **Email capture:** wired to **Klaviyo**, tested live (HTTP `202`). Real emails flow into the "Coming Soon Waitlist".
 - **HOSTING = Vercel (free).** NOT Hostinger hosting (that was never bought — Hostinger only holds the domain, parked). Project = **gummy-chums** (`mehalogens-projects`), CLI user `mehalogen`. Deployed the clean `deploy/` bundle as production → **LIVE at https://gummy-chums.vercel.app** (clean `/`, no experiments exposed).

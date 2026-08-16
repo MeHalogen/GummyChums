@@ -54,10 +54,14 @@
     margin-bottom:22px;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.4)}
 
   /* real logo — solid white so it stays legible on every panel */
+  .logo-wrap{position:relative;display:inline-block;line-height:0}
+  /* transparent shield on top: eats right-click / "save image as" and drag */
+  .logo-shield{position:absolute;inset:0;z-index:3}
   .logo{display:block;width:min(560px,82vw);height:auto;
     filter:invert(1) drop-shadow(0 14px 28px rgba(0,0,0,.42));
     opacity:0;transform:translateY(22px) scale(.97);
-    animation:rise .9s .1s cubic-bezier(.19,1,.22,1) forwards;-webkit-user-drag:none;user-select:none}
+    animation:rise .9s .1s cubic-bezier(.19,1,.22,1) forwards;
+    pointer-events:none;-webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
   @keyframes rise{to{opacity:1;transform:none}}
 
   .tag{font-weight:800;font-size:clamp(1.1rem,3vw,1.55rem);margin-top:30px;
@@ -88,21 +92,23 @@
   .marq.bot{bottom:0}
   .marq .track{display:inline-flex;white-space:nowrap;font-family:'Manrope',sans-serif;
     font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:.1em;
-    animation:scroll 20s linear infinite}
+    animation:scroll 44s linear infinite}
   .marq.bot .track{animation-direction:reverse}
   .marq .track span{padding:0 22px}
   @keyframes scroll{to{transform:translateX(-50%)}}
 
-  .foot{position:fixed;left:0;right:0;bottom:40px;z-index:12;display:flex;justify-content:center;
-    align-items:center;flex-wrap:wrap;gap:14px;font-weight:700;font-size:.8rem;pointer-events:none;
-    color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.55)}
-  .foot a,.foot span.item{color:#fff;text-decoration:none;pointer-events:auto;opacity:.95}
+  /* footer as a floating pill — sits clearly above the bottom marquee, readable on any panel */
+  .foot{position:fixed;left:50%;bottom:56px;transform:translateX(-50%);z-index:13;
+    display:flex;align-items:center;gap:14px;font-weight:700;font-size:.8rem;white-space:nowrap;
+    color:#fff;background:rgba(20,10,18,.38);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    padding:8px 18px;border-radius:999px;box-shadow:0 10px 26px -12px rgba(0,0,0,.55)}
+  .foot a,.foot span.item{color:#fff;text-decoration:none;opacity:.96}
   .foot a:hover{text-decoration:underline}
 
   @media (max-width:640px){
     .panel:nth-child(n+5){display:none}
     .logo{width:min(460px,88vw)}
-    .foot{bottom:34px;font-size:.76rem;gap:12px}
+    .foot{bottom:52px;font-size:.75rem;gap:11px;padding:7px 15px}
   }
   @media (max-width:520px){
     form.notify{flex-direction:column;border-radius:16px;padding:12px;gap:10px}
@@ -131,9 +137,12 @@
 
 <div class="stage">
   <p class="kick">Wellness, but make it fun</p>
-  <img class="logo" src="logo/gc-wordmark-stack.png" alt="gummy chums"/>
+  <span class="logo-wrap">
+    <img class="logo" src="logo/gc-wordmark-stack.png" alt="gummy chums" draggable="false" oncontextmenu="return false"/>
+    <span class="logo-shield" aria-hidden="true" oncontextmenu="return false"></span>
+  </span>
   <p class="tag">Not another supplement brand.</p>
-  <p class="sub">We&rsquo;re making healthy habits feel good. Drop your email — we launch soon, Chum.</p>
+  <p class="sub">We&rsquo;re making healthy habits feel good. Drop your email — we launch soon.</p>
   <form class="notify" id="notify" novalidate>
     <input type="email" id="email" placeholder="your@email.com" required aria-label="Email"/>
     <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"/>
@@ -186,6 +195,11 @@
   var msg='GUMMY CHUMS ✦ COMING SOON ✦ WELLNESS, BUT MAKE IT FUN ✦ MADE IN INDIA ✦ ';
   function fill(el){var one='';for(var i=0;i<6;i++) one+='<span>'+msg+'</span>';el.innerHTML=one+one;}
   fill(document.getElementById('mt'));fill(document.getElementById('mb'));
+
+  // deter saving the logo (right-click / drag). Note: screenshots & devtools can't be blocked.
+  var lw=document.querySelector('.logo-wrap');
+  if(lw){lw.addEventListener('contextmenu',function(e){e.preventDefault();});
+    lw.addEventListener('dragstart',function(e){e.preventDefault();});}
 
   // ===== Klaviyo waitlist signup (client-side, no backend) =====
   var KLAVIYO_PUBLIC_KEY='RVzvWv';   // public Site ID — safe to expose
