@@ -4,11 +4,12 @@ _Living doc. If the chat/context resets, read this first to continue exactly whe
 _Last updated: 2026-08-16._
 
 ## TL;DR — where we are
-The **coming-soon page is built, working, and packaged for deploy** — but **not yet uploaded** to the live domain.
+The coming-soon page is **BUILT + LIVE on Vercel**. Only the custom domain is left to connect.
 - **Chosen design:** `coming-soon-b.html` (bold six-colour panels + marquees, real logo, gummy cursor).
-- **Email capture:** wired to **Klaviyo**, tested live (got HTTP `202`). Real emails flow into the "Coming Soon Waitlist".
-- **Deploy bundle ready:** `deploy/` folder + `gummychums-coming-soon.zip` (self-contained: index.html + fonts/ + logo/).
-- **Next action:** upload the zip to **Hostinger `public_html`**, extract, enable SSL, open **https://gummychums.com**.
+- **Email capture:** wired to **Klaviyo**, tested live (HTTP `202`). Real emails flow into the "Coming Soon Waitlist".
+- **HOSTING = Vercel (free).** NOT Hostinger hosting (that was never bought — Hostinger only holds the domain, parked). Project = **gummy-chums** (`mehalogens-projects`), CLI user `mehalogen`. Deployed the clean `deploy/` bundle as production → **LIVE at https://gummy-chums.vercel.app** (clean `/`, no experiments exposed).
+  - How it was deployed: `cp -r .vercel deploy/.vercel && cd deploy && vercel --prod --yes` (then removed the nested copy). Re-deploy the same way after edits. (Repo-root `vercel --prod` would serve the OLD `index.html` at `/` because Vercel won't let a rewrite override an existing file — that's why we deploy the `deploy/` subfolder.)
+- **NEXT ACTION:** connect **gummychums.com** (registered at Hostinger, nameservers currently `*.dns-parking.com`) → point it at Vercel (see Deploy section). Then SSL auto-issues and https://gummychums.com goes live.
 
 ## The brand (source of truth)
 - **Domain:** gummychums.com (bought; hosting is on **Hostinger**). This repo is the **home/source repo**.
@@ -33,20 +34,24 @@ Self-contained single HTML file, vanilla JS, Shopify/Hostinger-portable. Feature
 - Endpoint: `POST https://a.klaviyo.com/client/subscriptions/?company_id=<pubkey>` with header `revision:2024-10-15`. Tested → `202`.
 - ⚠️ **TODO: delete 2 test signups** in Klaviyo: `waitlist.test@gummychums.in`, `waitlist.test2@gummychums.in`.
 
-## Deploy — Hostinger (NOT yet done)
-1. hPanel → confirm `gummychums.com` points to this hosting (nameservers if bought elsewhere).
-2. hPanel → **Files → File Manager → `public_html`**. Remove only the default placeholder file.
-3. Upload **`gummychums-coming-soon.zip`** → right-click **Extract** → delete the zip. Result: `public_html/index.html`, `/fonts/`, `/logo/`.
-4. hPanel → **Security → SSL** on.
-5. Open **https://gummychums.com**, submit a test email, confirm it appears in Klaviyo.
-_To rebuild the bundle after edits:_ `cp coming-soon-b.html deploy/index.html && (cd deploy && zip -r -X ../gummychums-coming-soon.zip index.html fonts logo)`
+## Deploy — Vercel (DONE) + connect domain (PENDING)
+**Hosting is Vercel, free.** Live at https://gummy-chums.vercel.app. To connect gummychums.com:
+1. **vercel.com → gummy-chums project → Settings → Domains → Add** `gummychums.com` (and `www.gummychums.com`).
+2. Vercel shows DNS. Simplest = **nameserver method**: set the domain's nameservers to **`ns1.vercel-dns.com`** and **`ns2.vercel-dns.com`**.
+3. **Hostinger → Domains → gummychums.com → DNS / Nameservers → Edit** → replace the two `*.dns-parking.com` nameservers with the two Vercel ones → Save.
+4. Wait (mins–hours). Vercel auto-verifies + issues SSL. Then **https://gummychums.com** is live.
+5. Test: submit an email on the live site → confirm it lands in Klaviyo.
+
+_Re-deploy after edits:_ `cp coming-soon-b.html deploy/index.html && cp -r .vercel deploy/.vercel && (cd deploy && vercel --prod --yes) && rm -rf deploy/.vercel`
+_(Also keep the zip fresh for reference:_ `cd deploy && zip -r -X ../gummychums-coming-soon.zip index.html fonts logo)`
 
 ## The other drafts (kept as options/experiments)
 - `coming-soon-a` Gummy Downpour · `-c` Squish jelly · `-d` Magnet Mochi · `-e` Scratch reveal · `-f` Fill-the-jar (all playful, **use NaN Jaune trial → not deploy-ready**).
 - `coming-soon-g` (light) / `-h` (dark) = **minimalist** finalists, licence-clean (real logo PNG + Manrope). Mock email capture only — would need the same Klaviyo snippet as B to go live.
 
 ## Open items / next steps
-- [ ] Deploy B to Hostinger (steps above).
+- [x] Deploy B → **DONE** (Vercel, https://gummy-chums.vercel.app).
+- [ ] **Connect gummychums.com** (Vercel Domains + Hostinger nameservers → Vercel). ← current step
 - [ ] Delete the 2 Klaviyo test entries.
 - [ ] (optional) Mirror the Klaviyo snippet into G/H if design changes; swap success id `done`→`thanks`.
 - [ ] (optional) Real contact email once they have one.
