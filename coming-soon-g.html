@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GummyChums — Coming Soon</title>
+<meta name="description" content="India's most fun wellness gummy. Almost here — join the list for early access."/>
+<style>
+  @font-face{font-family:'Manrope';src:url('fonts/Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
+  :root{
+    --bg:#FBFAF8; --ink:#151113; --mute:#151113;
+    --accent:#DE1D61;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--ink);
+    -webkit-font-smoothing:antialiased;overflow:hidden;
+    display:grid;grid-template-rows:auto 1fr auto;min-height:100svh;padding:clamp(18px,3vw,34px)}
+
+  /* top rail */
+  .rail{display:flex;justify-content:space-between;align-items:center}
+  .rail-mark{height:clamp(26px,3.6vw,34px);width:auto;display:block}
+  .status{display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:12px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+  .status .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:beat 2.2s ease-out infinite}
+  @keyframes beat{0%{box-shadow:0 0 0 0 rgba(222,29,97,.5)}70%,100%{box-shadow:0 0 0 9px rgba(222,29,97,0)}}
+
+  /* hero */
+  .hero{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:clamp(24px,3.6vw,40px)}
+  .logo-parallax{will-change:transform}
+  .logo{display:block;width:min(600px,82vw);height:auto;opacity:0;cursor:pointer;
+    animation:fade 1s .1s forwards;-webkit-user-drag:none;user-select:none}
+  @keyframes fade{to{opacity:1}}
+
+  .lede{max-width:32ch;font-weight:600;font-size:clamp(1rem,2.3vw,1.18rem);color:var(--ink);
+    opacity:0;animation:fadeup 1s .7s forwards}
+  @keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:.88;transform:none}}
+
+  form{display:flex;align-items:center;gap:14px;border-bottom:1.5px solid var(--ink);
+    padding:10px 2px;width:min(400px,82vw);opacity:0;animation:fadeup 1s .9s forwards}
+  form input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;
+    font-weight:600;font-size:1rem;color:var(--ink)}
+  form input::placeholder{color:rgba(21,17,19,.4)}
+  form button{border:0;background:transparent;cursor:pointer;color:var(--ink);display:grid;place-items:center;
+    width:34px;height:34px;border-radius:50%;transition:transform .18s,background .2s}
+  form button:hover{background:var(--ink);color:var(--bg)}
+  form button:active{transform:scale(.9)}
+  form button svg{width:17px;height:17px}
+  .thanks{font-weight:700;font-size:1.02rem;color:var(--accent);display:none}
+  .thanks.show{display:block;animation:fadeup .6s forwards}
+
+  /* bottom rail */
+  .foot{display:flex;justify-content:space-between;align-items:center;
+    font-weight:600;font-size:12px;letter-spacing:.04em;color:var(--mute);opacity:.82}
+  .foot a{color:inherit;text-decoration:none}
+  .foot a:hover{text-decoration:underline;text-underline-offset:3px}
+  .foot .mid{display:flex;gap:16px}
+  @media (max-width:560px){.foot{flex-direction:column;gap:8px}form{width:100%}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
+    .logo,.lede,form{opacity:1}}
+</style>
+</head>
+<body>
+  <div class="rail">
+    <img class="rail-mark" src="logo/gc-monogram.png" alt="GummyChums"/>
+    <span class="status"><span class="dot"></span>Launching soon</span>
+  </div>
+
+  <div class="hero">
+    <div class="logo-parallax" id="lp">
+      <img class="logo" id="logo" src="logo/gc-wordmark-stack.png" alt="gummy chums"/>
+    </div>
+    <p class="lede">India&rsquo;s most fun wellness gummy. We&rsquo;re nearly ready — leave your email and we&rsquo;ll say hello first.</p>
+    <form id="notify" novalidate>
+      <input id="email" type="email" placeholder="Email for early access" aria-label="Email for early access" required/>
+      <button type="submit" aria-label="Join the list">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </form>
+    <p class="thanks" id="thanks">On the list. Talk soon, Chum. ✳</p>
+  </div>
+
+  <div class="foot">
+    <span>Made in India</span>
+    <span class="mid"><a href="#">Instagram</a><a href="#">hello@gummychums.in</a></span>
+    <span>First drop · 2026</span>
+  </div>
+
+<script>
+(function(){
+  var lp=document.getElementById('lp'), logo=document.getElementById('logo');
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+  // the whole mark gently leans toward the cursor and floats — the one live detail
+  var tx=0,ty=0,cx=0,cy=0;
+  if(fine){addEventListener('pointermove',function(e){
+    tx=(e.clientX/innerWidth-.5)*2; ty=(e.clientY/innerHeight-.5)*2;});}
+  function loop(t){
+    cx+=(tx-cx)*0.06; cy+=(ty-cy)*0.06;
+    var fy=reduce?0:Math.sin(t*0.0016)*5;
+    lp.style.transform='translate('+(cx*14).toFixed(2)+'px,'+(cy*10+fy).toFixed(2)+'px)';
+    requestAnimationFrame(loop);
+  }
+  if(!reduce||fine)requestAnimationFrame(loop);
+
+  // click the gummy → a soft jelly squish
+  logo.addEventListener('pointerdown',function(){
+    if(reduce||!logo.animate)return;
+    logo.animate([{transform:'scale(1,1)'},{transform:'scale(1.05,.93)'},
+      {transform:'scale(.98,1.03)'},{transform:'scale(1,1)'}],
+      {duration:460,easing:'cubic-bezier(.34,1.56,.64,1)'});
+  });
+
+  // notify (front-end mock — real capture needs a backend/Shopify form)
+  var f=document.getElementById('notify'),th=document.getElementById('thanks');
+  f.addEventListener('submit',function(e){e.preventDefault();
+    var em=document.getElementById('email').value.trim();
+    if(!em||em.indexOf('@')<1){document.getElementById('email').focus();return;}
+    try{var l=JSON.parse(localStorage.getItem('gc_waitlist')||'[]');l.push({e:em,t:Date.now()});localStorage.setItem('gc_waitlist',JSON.stringify(l));}catch(_){}
+    f.style.display='none';th.classList.add('show');
+  });
+})();
+</script>
+</body>
+</html>

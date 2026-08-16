@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GummyChums — Coming Soon</title>
+<meta name="description" content="Something chewy is coming. India's most fun wellness gummy — join the list."/>
+<style>
+  @font-face{font-family:'NaN Jaune';src:url('fonts/NaNJaune-MaxiMedium-TRIAL.ttf') format('truetype');font-weight:500;font-display:swap}
+  @font-face{font-family:'Manrope';src:url('fonts/Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
+  :root{--ink:#000;--white:#fff;--purple:#592354;--brown:#6E2F15;--green:#8DAA31;--pink:#DE1D61;--orange:#F9740D}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{font-family:'Manrope',system-ui,sans-serif;background:#0d0b0d;color:var(--white);
+    overflow:hidden;position:relative;-webkit-font-smoothing:antialiased}
+  @media (hover:hover) and (pointer:fine){body{cursor:none}}
+  canvas#field{position:fixed;inset:0;z-index:1;display:block}
+  #blob{position:fixed;left:0;top:0;width:34px;height:34px;z-index:60;pointer-events:none;
+    transform:translate(-50%,-50%);border-radius:46% 54% 52% 48%/48% 46% 54% 52%;
+    background:var(--pink);mix-blend-mode:screen;opacity:0;transition:opacity .3s;
+    box-shadow:inset -5px -6px 10px rgba(0,0,0,.25),inset 5px 6px 10px rgba(255,255,255,.5)}
+  #blob.on{opacity:.9}
+  @media (hover:none){#blob{display:none}}
+
+  .wrap{position:relative;z-index:10;height:100%;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:24px;pointer-events:none}
+  .wrap>*{pointer-events:auto}
+  .kick{font-weight:800;letter-spacing:.34em;text-transform:uppercase;font-size:12px;opacity:.85;
+    margin-bottom:20px;display:flex;align-items:center;gap:12px}
+  .kick .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.7);opacity:.5}}
+  .logo{font-family:'NaN Jaune',sans-serif;font-weight:500;line-height:.82;text-transform:lowercase;
+    letter-spacing:-.01em;font-size:clamp(3.4rem,15vw,9.5rem);color:var(--white)}
+  .logo .l2{position:relative;display:inline-block}
+  .logo .l2::after{content:"";position:absolute;left:2%;right:2%;bottom:-.02em;height:.07em;
+    background-image:radial-gradient(currentColor 42%,transparent 46%);background-size:.16em .16em;
+    background-repeat:repeat-x;background-position:center;opacity:.9}
+  .logo .word{display:inline-block;opacity:0;transform:translateY(60%) rotate(6deg);
+    animation:pop .7s cubic-bezier(.34,1.56,.64,1) forwards}
+  .logo .l1 .word{animation-delay:.15s}.logo .l2 .word{animation-delay:.32s}
+  @keyframes pop{to{opacity:1;transform:none}}
+  .tag{font-weight:800;font-size:clamp(1.15rem,3.2vw,1.7rem);margin-top:26px}
+  .tag em{font-style:normal;color:var(--orange)}
+  .sub{font-weight:500;opacity:.72;margin-top:12px;font-size:clamp(.95rem,2.4vw,1.05rem);max-width:40ch}
+  form.notify{margin-top:34px;display:flex;gap:8px;background:var(--white);border-radius:999px;
+    padding:7px 7px 7px 20px;box-shadow:0 18px 40px -18px rgba(0,0,0,.6);width:min(440px,90vw)}
+  form.notify input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;
+    font-weight:600;font-size:1rem;color:var(--ink)}
+  form.notify input::placeholder{color:#00000066}
+  form.notify button{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:.95rem;white-space:nowrap;
+    color:var(--white);background:var(--pink);border-radius:999px;padding:12px 22px;transition:transform .12s,background .2s}
+  form.notify button:hover{background:var(--orange)}
+  form.notify button:active{transform:scale(.93)}
+  .done{margin-top:34px;font-weight:800;font-size:1.15rem;color:var(--green);background:#ffffff12;
+    padding:14px 26px;border-radius:999px;display:none}
+  .done.show{display:inline-block;animation:pop .55s cubic-bezier(.34,1.56,.64,1)}
+  .foot{position:fixed;left:0;right:0;bottom:20px;z-index:10;display:flex;justify-content:center;gap:16px;
+    font-weight:700;font-size:.8rem;opacity:.8}
+  .foot a{color:var(--white);text-decoration:none;opacity:.85}
+  .foot a:hover{opacity:1;text-decoration:underline}
+  .hint{position:fixed;top:20px;left:22px;z-index:10;font-weight:700;font-size:.78rem;opacity:.45;
+    letter-spacing:.08em;text-transform:uppercase}
+  @media (max-width:520px){
+    .logo{font-size:clamp(3rem,17vw,5rem)}
+    form.notify{flex-direction:column;border-radius:22px;padding:12px;gap:10px}
+    form.notify input{text-align:center;padding:6px 0}
+    form.notify button{width:100%;padding:14px}
+    .hint{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important}}
+</style>
+</head>
+<body>
+<canvas id="field"></canvas>
+<div id="blob"></div>
+<div class="hint">move through the gummies →</div>
+<div class="wrap">
+  <p class="kick"><span class="dot"></span>Wellness, but make it fun</p>
+  <div class="logo"><div class="l1"><span class="word">gummy</span></div><div class="l2"><span class="word">chums</span></div></div>
+  <p class="tag">Something <em>chewy</em> is coming.</p>
+  <p class="sub">India&rsquo;s most fun wellness gummy is almost here. Give the jar a stir — then drop your email, Chum.</p>
+  <form class="notify" id="notify">
+    <input type="email" id="email" placeholder="your@email.com" required aria-label="Email"/>
+    <button type="submit">Notify me</button>
+  </form>
+  <div class="done" id="done">You&rsquo;re on the list, Chum! 🎉</div>
+</div>
+<div class="foot">
+  <a href="#">Instagram</a><span style="opacity:.4">·</span>
+  <a href="#">Made in India 🇮🇳</a><span style="opacity:.4">·</span>
+  <a href="#">hello@gummychums.in</a>
+</div>
+<script>
+(function(){
+  var COLORS=['#8DAA31','#DE1D61','#F9740D','#592354','#6E2F15','#DE1D61','#F9740D'];
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var cv=document.getElementById('field'),ctx=cv.getContext('2d');
+  var W=1,H=1,M=1,DPR=Math.min(devicePixelRatio||1,2);
+  var gs=[]; // normalized: hx,hy home; x,y pos; vx,vy vel (all 0..1). nr = fraction of min side
+  var mouse={x:-1,y:-1,down:0};
+  function paintNow(){ctx.clearRect(0,0,W,H);gs.forEach(drawG);}
+  function size(){W=cv.width=innerWidth*DPR;H=cv.height=innerHeight*DPR;M=Math.min(W,H);
+    cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';paintNow();}
+  var COUNT=reduce?16:30;
+  for(var i=0;i<COUNT;i++){
+    var hx=0.06+Math.random()*0.88, hy=0.08+Math.random()*0.84;
+    gs.push({hx:hx,hy:hy,x:hx,y:hy,vx:0,vy:0,nr:0.02+Math.random()*0.02,
+      rot:Math.random()*6.28,vr:(Math.random()-.5)*.04,wob:Math.random()*6.28,
+      c:COLORS[(Math.random()*COLORS.length)|0]});
+  }
+  function drawG(g){
+    var px=g.x*W, py=g.y*H, r=g.nr*M;
+    ctx.save();ctx.translate(px,py);ctx.rotate(g.rot+Math.sin(g.wob)*.1);
+    var sx=1+Math.sin(g.wob)*.05, sy=1-Math.sin(g.wob)*.05;ctx.scale(sx,sy);
+    ctx.beginPath();ctx.moveTo(0,-r);
+    ctx.bezierCurveTo(r*.75,-r*1.05,r*1.08,-r*.3,r,r*.05);
+    ctx.bezierCurveTo(r*1.03,r*.7,r*.5,r*1.06,0,r);
+    ctx.bezierCurveTo(-r*.55,r*1.06,-r*1.03,r*.6,-r,-r*.05);
+    ctx.bezierCurveTo(-r*1.05,-r*.5,-r*.7,-r*1.02,0,-r);
+    ctx.closePath();ctx.fillStyle=g.c;ctx.shadowColor=g.c;ctx.shadowBlur=18*DPR;ctx.fill();ctx.shadowBlur=0;
+    ctx.globalAlpha=.5;ctx.beginPath();ctx.ellipse(-r*.28,-r*.42,r*.34,r*.2,-.5,0,6.28);ctx.fillStyle='#fff';ctx.fill();
+    ctx.globalAlpha=1;ctx.restore();
+  }
+  function frame(){
+    if(document.hidden){requestAnimationFrame(frame);return;}
+    ctx.clearRect(0,0,W,H);
+    var aspect=W/H;
+    for(var i=0;i<gs.length;i++){var g=gs[i];
+      // spring home
+      g.vx+=(g.hx-g.x)*0.006; g.vy+=(g.hy-g.y)*0.006;
+      // cursor repel (measure in aspect-corrected space so it's a circle)
+      if(mouse.x>=0){var dx=(g.x-mouse.x)*aspect, dy=(g.y-mouse.y);
+        var d2=dx*dx+dy*dy, rad=0.16;
+        if(d2<rad*rad){var d=Math.sqrt(d2)||.0001,f=(1-d/rad)*(mouse.down?0.010:0.005);
+          g.vx+=(dx/d)/aspect*f; g.vy+=(dy/d)*f;}}
+      g.vx*=0.9; g.vy*=0.9; g.x+=g.vx; g.y+=g.vy; g.wob+=.03; g.rot+=g.vr+g.vx*2;
+      // soft walls
+      if(g.x<g.nr){g.x=g.nr;g.vx*=-.5} if(g.x>1-g.nr){g.x=1-g.nr;g.vx*=-.5}
+      if(g.y<g.nr){g.y=g.nr;g.vy*=-.5} if(g.y>1-g.nr){g.y=1-g.nr;g.vy*=-.5}
+      drawG(g);
+    }
+    requestAnimationFrame(frame);
+  }
+  size();addEventListener('resize',size);
+  if(!reduce)requestAnimationFrame(frame);
+  // pointer
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+    var blob=document.getElementById('blob');
+    addEventListener('pointermove',function(e){mouse.x=e.clientX/innerWidth;mouse.y=e.clientY/innerHeight;
+      blob.classList.add('on');blob.style.left=e.clientX+'px';blob.style.top=e.clientY+'px';});
+    addEventListener('pointerdown',function(){mouse.down=1;});
+    addEventListener('pointerup',function(){mouse.down=0;});
+    addEventListener('pointerleave',function(){mouse.x=-1;});
+  }
+  // touch: shove on touchmove
+  addEventListener('touchmove',function(e){var t=e.touches[0];if(t){mouse.x=t.clientX/innerWidth;mouse.y=t.clientY/innerHeight;mouse.down=1;}},{passive:true});
+  addEventListener('touchend',function(){mouse.down=0;mouse.x=-1;});
+  // notify (front-end mock — real capture needs a backend/Shopify form)
+  var f=document.getElementById('notify'),done=document.getElementById('done');
+  f.addEventListener('submit',function(e){e.preventDefault();var em=document.getElementById('email').value.trim();if(!em)return;
+    try{var l=JSON.parse(localStorage.getItem('gc_waitlist')||'[]');l.push({e:em,t:Date.now()});localStorage.setItem('gc_waitlist',JSON.stringify(l));}catch(_){}
+    f.style.display='none';done.classList.add('show');});
+})();
+</script>
+</body>
+</html>

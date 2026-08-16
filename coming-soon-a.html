@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GummyChums — Coming Soon</title>
+<meta name="description" content="Something chewy is coming. India's most fun wellness gummy — join the list."/>
+<style>
+  @font-face{font-family:'NaN Jaune';src:url('fonts/NaNJaune-MaxiMedium-TRIAL.ttf') format('truetype');font-weight:500;font-display:swap}
+  @font-face{font-family:'Manrope';src:url('fonts/Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
+
+  :root{
+    --ink:#000; --white:#fff; --purple:#592354; --brown:#6E2F15;
+    --green:#8DAA31; --pink:#DE1D61; --orange:#F9740D;
+    --bg:#592354;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    font-family:'Manrope',system-ui,sans-serif;
+    background:var(--bg); color:var(--white);
+    overflow:hidden; position:relative;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (hover:hover) and (pointer:fine){ body{cursor:none} }
+  canvas#rain{position:fixed;inset:0;z-index:1;display:block}
+
+  /* blob cursor */
+  #blob{position:fixed;left:0;top:0;width:30px;height:30px;z-index:60;pointer-events:none;
+    transform:translate(-50%,-50%);border-radius:46% 54% 52% 48%/48% 46% 54% 52%;
+    background:var(--orange);mix-blend-mode:screen;opacity:0;transition:opacity .3s,width .2s,height .2s;
+    box-shadow:inset -4px -5px 8px rgba(0,0,0,.2),inset 4px 5px 8px rgba(255,255,255,.5);}
+  #blob.on{opacity:.9}
+  @media (hover:none){#blob{display:none}}
+
+  .wrap{position:relative;z-index:10;height:100%;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;padding:24px;pointer-events:none}
+  .wrap > *{pointer-events:auto}
+
+  .kick{font-weight:800;letter-spacing:.34em;text-transform:uppercase;font-size:12px;
+    opacity:.9;margin-bottom:22px;display:flex;align-items:center;gap:12px}
+  .kick .dot{width:8px;height:8px;border-radius:50%;background:var(--green);
+    animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.7);opacity:.5}}
+
+  /* logo lockup — wordmark set in the brand primary font */
+  .logo{font-family:'NaN Jaune',sans-serif;font-weight:500;line-height:.82;
+    text-transform:lowercase;letter-spacing:-.01em;
+    font-size:clamp(3.4rem,15vw,9.5rem);color:var(--white);
+    filter:drop-shadow(0 14px 24px rgba(0,0,0,.28))}
+  .logo .l2{position:relative;display:inline-block}
+  /* dotted underline like the mark */
+  .logo .l2::after{content:"";position:absolute;left:2%;right:2%;bottom:-.02em;height:.07em;
+    background-image:radial-gradient(currentColor 42%,transparent 46%);
+    background-size:.16em .16em;background-repeat:repeat-x;background-position:center;opacity:.9}
+  .logo .word{display:inline-block;opacity:0;transform:translateY(60%) rotate(6deg);
+    animation:pop .7s cubic-bezier(.34,1.56,.64,1) forwards}
+  .logo .l1 .word{animation-delay:.15s}
+  .logo .l2 .word{animation-delay:.32s}
+  @keyframes pop{to{opacity:1;transform:none}}
+  .logo:hover{animation:squish .5s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes squish{35%{transform:scale(1.05,.9)}70%{transform:scale(.97,1.05)}}
+
+  .tag{font-weight:800;font-size:clamp(1.15rem,3.2vw,1.7rem);margin-top:26px;max-width:22ch}
+  .tag em{font-style:normal;color:var(--orange)}
+  .sub{font-weight:500;opacity:.82;margin-top:12px;font-size:clamp(.95rem,2.4vw,1.05rem);max-width:38ch}
+
+  /* notify form */
+  form.notify{margin-top:34px;display:flex;gap:8px;background:var(--white);border-radius:999px;
+    padding:7px 7px 7px 20px;box-shadow:0 18px 40px -18px rgba(0,0,0,.5);width:min(440px,90vw)}
+  form.notify input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;
+    font-weight:600;font-size:1rem;color:var(--ink)}
+  form.notify input::placeholder{color:#00000066}
+  form.notify button{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:.95rem;
+    color:var(--white);background:var(--pink);border-radius:999px;padding:12px 22px;
+    transition:transform .12s,background .2s}
+  form.notify button:hover{background:var(--orange)}
+  form.notify button:active{transform:scale(.93)}
+  .done{margin-top:34px;font-weight:800;font-size:1.15rem;color:var(--green);
+    background:var(--white);padding:14px 26px;border-radius:999px;display:none;
+    box-shadow:0 18px 40px -18px rgba(0,0,0,.5)}
+  .done.show{display:inline-block;animation:pop .55s cubic-bezier(.34,1.56,.64,1)}
+
+  .foot{position:fixed;left:0;right:0;bottom:20px;z-index:10;display:flex;justify-content:center;
+    gap:18px;font-weight:700;font-size:.82rem;letter-spacing:.02em;opacity:.9;pointer-events:none}
+  .foot a{color:var(--white);text-decoration:none;pointer-events:auto;opacity:.85;transition:opacity .2s}
+  .foot a:hover{opacity:1;text-decoration:underline}
+  .counter{position:fixed;top:20px;right:22px;z-index:10;font-weight:800;font-size:.85rem;
+    background:#ffffff1f;backdrop-filter:blur(6px);padding:8px 15px;border-radius:999px;
+    letter-spacing:.04em}
+  .counter b{color:var(--green)}
+  .hint{position:fixed;top:20px;left:22px;z-index:10;font-weight:700;font-size:.78rem;opacity:.6;
+    letter-spacing:.08em;text-transform:uppercase}
+
+  @media (max-width:520px){
+    .logo{font-size:clamp(3rem,17vw,5rem)}
+    form.notify{flex-direction:column;border-radius:22px;padding:12px;gap:10px}
+    form.notify input{text-align:center;padding:6px 0}
+    form.notify button{width:100%;padding:14px}
+    .hint{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important}}
+</style>
+</head>
+<body>
+<canvas id="rain"></canvas>
+<div id="blob"></div>
+
+<div class="hint">tap the gummies →</div>
+<div class="counter">caught <b id="count">0</b></div>
+
+<div class="wrap">
+  <p class="kick"><span class="dot"></span>Wellness, but make it fun</p>
+  <div class="logo">
+    <div class="l1"><span class="word">gummy</span></div>
+    <div class="l2"><span class="word">chums</span></div>
+  </div>
+  <p class="tag">Something <em>chewy</em> is coming.</p>
+  <p class="sub">India&rsquo;s most fun wellness gummy is almost here. Drop your email — be first in line, Chum.</p>
+
+  <form class="notify" id="notify">
+    <input type="email" id="email" placeholder="your@email.com" required aria-label="Email"/>
+    <button type="submit">Notify me</button>
+  </form>
+  <div class="done" id="done">You&rsquo;re on the list, Chum! 🎉</div>
+</div>
+
+<div class="foot">
+  <a href="#">Instagram</a><span style="opacity:.4">·</span>
+  <a href="#">Made in India 🇮🇳</a><span style="opacity:.4">·</span>
+  <a href="#">hello@gummychums.in</a>
+</div>
+
+<script>
+(function(){
+  var COLORS=['#8DAA31','#DE1D61','#F9740D','#ffffff','#6E2F15'];
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var cv=document.getElementById('rain'),ctx=cv.getContext('2d');
+  var W=1,H=1,DPR=Math.min(devicePixelRatio||1,2),M=1; // M = min(W,H) for size-independent radii
+  var gummies=[],pops=[],caught=0;
+  // Positions are stored NORMALIZED (nx,ny in 0..1; nr as a fraction of the smaller side),
+  // so the canvas can resize at any time without ever clustering the gummies.
+  function paintNow(){ctx.clearRect(0,0,W,H);gummies.forEach(drawGummy);pops.forEach(drawPop);}
+  function size(){
+    W=cv.width=innerWidth*DPR;H=cv.height=innerHeight*DPR;M=Math.min(W,H);
+    cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';paintNow();
+  }
+  var countEl=document.getElementById('count');
+
+  function spawn(top){
+    gummies.push({
+      nx:Math.random(), ny:top?-0.1-Math.random()*0.3:Math.random()*0.95,
+      nr:0.018+Math.random()*0.018,
+      vy:0.0016+Math.random()*0.0022, vx:(Math.random()-.5)*0.0007,
+      rot:Math.random()*Math.PI, vr:(Math.random()-.5)*.05,
+      c:COLORS[(Math.random()*COLORS.length)|0], wob:Math.random()*6.28
+    });
+  }
+  var target=reduce?18:44;
+  for(var i=0;i<(reduce?14:26);i++) spawn(false); // seed spread across the whole screen
+
+  function drawGummy(g){
+    var px=g.nx*W, py=g.ny*H, r=g.nr*M;
+    ctx.save();ctx.translate(px,py);ctx.rotate(g.rot+Math.sin(g.wob)*.12);
+    var sx=1+Math.sin(g.wob)*.06, sy=1-Math.sin(g.wob)*.06;
+    ctx.scale(sx,sy);
+    ctx.beginPath();
+    ctx.moveTo(0,-r);
+    ctx.bezierCurveTo(r*.75,-r*1.05, r*1.08,-r*.3, r,r*.05);
+    ctx.bezierCurveTo(r*1.03,r*.7, r*.5,r*1.06, 0,r);
+    ctx.bezierCurveTo(-r*.55,r*1.06, -r*1.03,r*.6, -r,-r*.05);
+    ctx.bezierCurveTo(-r*1.05,-r*.5, -r*.7,-r*1.02, 0,-r);
+    ctx.closePath();
+    ctx.fillStyle=g.c;ctx.fill();
+    ctx.globalAlpha=.5;ctx.beginPath();
+    ctx.ellipse(-r*.28,-r*.42,r*.34,r*.2,-.5,0,6.28);ctx.fillStyle='#fff';ctx.fill();
+    ctx.globalAlpha=.09;ctx.beginPath();
+    ctx.ellipse(r*.1,r*.28,r*.55,r*.4,0,0,6.28);ctx.fillStyle='#000';ctx.fill();
+    ctx.globalAlpha=1;ctx.restore();
+  }
+  function drawPop(p){
+    ctx.save();ctx.globalAlpha=Math.max(0,p.life);
+    for(var i=0;i<p.bits.length;i++){var b=p.bits[i];
+      ctx.beginPath();ctx.arc(p.nx*W+b.x,p.ny*H+b.y,b.r,0,6.28);ctx.fillStyle=b.c;ctx.fill();}
+    ctx.restore();
+  }
+
+  function frame(){
+    if(document.hidden){requestAnimationFrame(frame);return;}
+    ctx.clearRect(0,0,W,H);
+    if(gummies.length<target && Math.random()<.06) spawn(true);
+    for(var i=gummies.length-1;i>=0;i--){var g=gummies[i];
+      g.vy+=0.00002; g.ny+=g.vy; g.nx+=g.vx; g.rot+=g.vr; g.wob+=.03;
+      if(g.ny-g.nr>1.05){gummies.splice(i,1);continue;}
+      drawGummy(g);
+    }
+    for(var j=pops.length-1;j>=0;j--){var p=pops[j];
+      p.life-=.03; for(var k=0;k<p.bits.length;k++){var b=p.bits[k];b.x+=b.vx;b.y+=b.vy;b.vy+=.15;}
+      if(p.life<=0){pops.splice(j,1);continue;} drawPop(p);
+    }
+    requestAnimationFrame(frame);
+  }
+  size();addEventListener('resize',size); // first paint + keep canvas in sync
+  requestAnimationFrame(frame);
+
+  function popAt(nx,ny){
+    for(var i=gummies.length-1;i>=0;i--){var g=gummies[i];
+      var dx=(nx-g.nx),dy=(ny-g.ny),rr=g.nr*1.3;
+      if(dx*dx+dy*dy < rr*rr){
+        var bits=[];for(var b=0;b<10;b++){var a=Math.random()*6.28,s=(1+Math.random()*3)*DPR;
+          bits.push({x:0,y:0,vx:Math.cos(a)*s,vy:Math.sin(a)*s-1*DPR,r:(2+Math.random()*4)*DPR,c:g.c});}
+        pops.push({nx:g.nx,ny:g.ny,life:1,bits:bits});
+        gummies.splice(i,1);
+        caught++;countEl.textContent=caught;
+        return true;
+      }
+    }
+    return false;
+  }
+  cv.addEventListener('pointerdown',function(e){var t=e.touches?e.touches[0]:e;
+    popAt(t.clientX/innerWidth, t.clientY/innerHeight);});
+
+  // blob cursor
+  var blob=document.getElementById('blob');
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+    addEventListener('pointermove',function(e){blob.classList.add('on');
+      blob.style.left=e.clientX+'px';blob.style.top=e.clientY+'px';});
+    addEventListener('pointerdown',function(){blob.style.transform='translate(-50%,-50%) scale(.7)';});
+    addEventListener('pointerup',function(){blob.style.transform='translate(-50%,-50%) scale(1)';});
+  }
+
+  // notify (front-end mock — real capture needs a backend/Shopify form)
+  var f=document.getElementById('notify'),done=document.getElementById('done');
+  f.addEventListener('submit',function(e){e.preventDefault();
+    var em=document.getElementById('email').value.trim(); if(!em) return;
+    try{var l=JSON.parse(localStorage.getItem('gc_waitlist')||'[]');l.push({e:em,t:Date.now()});
+      localStorage.setItem('gc_waitlist',JSON.stringify(l));}catch(_){}
+    f.style.display='none'; done.classList.add('show');
+    for(var i=0;i<24;i++) setTimeout(spawn,i*40);
+  });
+})();
+</script>
+</body>
+</html>

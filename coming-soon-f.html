@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GummyChums — Coming Soon</title>
+<meta name="description" content="Something chewy is coming. India's most fun wellness gummy — join the list."/>
+<style>
+  @font-face{font-family:'NaN Jaune';src:url('fonts/NaNJaune-MaxiMedium-TRIAL.ttf') format('truetype');font-weight:500;font-display:swap}
+  @font-face{font-family:'Manrope';src:url('fonts/Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
+  :root{--ink:#000;--white:#fff;--purple:#592354;--brown:#6E2F15;--green:#8DAA31;--pink:#DE1D61;--orange:#F9740D}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{min-height:100%}
+  body{font-family:'Manrope',system-ui,sans-serif;background:var(--orange);color:var(--purple);
+    min-height:100svh;position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:26px 22px}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;
+    background:radial-gradient(90% 60% at 50% 8%,rgba(255,255,255,.28),transparent 60%)}
+  @media (hover:hover) and (pointer:fine){body{cursor:none}}
+  #blob{position:fixed;left:0;top:0;width:30px;height:30px;z-index:60;pointer-events:none;
+    transform:translate(-50%,-50%);border-radius:46% 54% 52% 48%/48% 46% 54% 52%;background:var(--pink);
+    mix-blend-mode:screen;opacity:0;transition:opacity .3s;
+    box-shadow:inset -4px -5px 8px rgba(0,0,0,.2),inset 4px 5px 8px rgba(255,255,255,.55)}
+  #blob.on{opacity:.9}@media (hover:none){#blob{display:none}}
+
+  .kick{font-weight:800;letter-spacing:.32em;text-transform:uppercase;font-size:12px;color:#59235499;margin-bottom:14px;position:relative;z-index:2}
+  .logo{font-family:'NaN Jaune',sans-serif;font-weight:500;line-height:.82;text-transform:lowercase;
+    letter-spacing:-.015em;font-size:clamp(2.6rem,8.5vw,5rem);color:var(--purple);position:relative;z-index:2}
+  .logo .l2{position:relative;display:inline-block}
+  .logo .l2::after{content:"";position:absolute;left:2%;right:2%;bottom:-.02em;height:.07em;
+    background-image:radial-gradient(currentColor 42%,transparent 46%);background-size:.16em .16em;background-repeat:repeat-x;background-position:center;opacity:.85}
+
+  .jarwrap{position:relative;z-index:2;margin:18px 0 6px;width:min(300px,74vw)}
+  canvas#jar{display:block;width:100%;height:auto;touch-action:manipulation;cursor:none}
+  .meter{font-weight:800;font-size:.92rem;color:var(--purple);letter-spacing:.04em;position:relative;z-index:2}
+  .meter b{color:var(--white)}
+
+  .tag{font-weight:800;font-size:clamp(1.15rem,3vw,1.6rem);margin-top:12px;position:relative;z-index:2}
+  .tag em{font-style:normal;color:var(--white)}
+  .sub{font-weight:600;color:#592354aa;margin-top:8px;font-size:1rem;max-width:34ch;position:relative;z-index:2}
+
+  form.notify{margin-top:22px;display:flex;gap:8px;background:var(--white);border-radius:999px;
+    padding:7px 7px 7px 20px;box-shadow:0 18px 40px -18px rgba(89,35,84,.45);width:min(440px,94vw);position:relative;z-index:2}
+  form.notify input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;font-weight:600;font-size:1rem;color:var(--purple)}
+  form.notify input::placeholder{color:#59235577}
+  form.notify button{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:.95rem;white-space:nowrap;
+    color:var(--white);background:var(--purple);border-radius:999px;padding:12px 22px;transition:transform .12s,background .2s}
+  form.notify button:hover{background:var(--pink)}form.notify button:active{transform:scale(.93)}
+  .done-msg{margin-top:22px;font-weight:800;font-size:1.1rem;color:var(--white);display:none;position:relative;z-index:2}
+  .done-msg.show{display:block;animation:pp .5s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes pp{35%{transform:scale(1.05)}70%{transform:scale(.98)}}
+  .foot{margin-top:24px;display:flex;justify-content:center;gap:16px;font-weight:700;font-size:.8rem;color:#592354aa;position:relative;z-index:2}
+  .foot a{color:var(--purple);text-decoration:none}.foot a:hover{text-decoration:underline}
+  @media (max-width:520px){
+    form.notify{flex-direction:column;border-radius:22px;padding:12px;gap:10px}
+    form.notify input{text-align:center;padding:6px 0}form.notify button{width:100%;padding:14px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important}}
+</style>
+</head>
+<body>
+<div id="blob"></div>
+<p class="kick">Wellness, but make it fun</p>
+<div class="logo"><div class="l1"><span>gummy</span></div><div class="l2"><span>chums</span></div></div>
+
+<div class="jarwrap"><canvas id="jar" width="600" height="720"></canvas></div>
+<p class="meter">jar <b id="pct">0%</b> full &middot; tap to pour</p>
+
+<p class="tag">Fill it up. <em>Almost there.</em></p>
+<p class="sub">Tap the jar to pour in the good stuff — then drop your email and we&rsquo;ll call you at launch, Chum.</p>
+
+<form class="notify" id="notify">
+  <input type="email" id="email" placeholder="your@email.com" required aria-label="Email"/>
+  <button type="submit">Notify me</button>
+</form>
+<div class="done-msg" id="donemsg">You&rsquo;re on the list, Chum! 🎉</div>
+
+<div class="foot">
+  <a href="#">Instagram</a><span style="opacity:.4">·</span>
+  <a href="#">Made in India 🇮🇳</a><span style="opacity:.4">·</span>
+  <a href="#">hello@gummychums.in</a>
+</div>
+
+<script>
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var cv=document.getElementById('jar'),ctx=cv.getContext('2d');
+  var pctEl=document.getElementById('pct');
+  var W=cv.width,H=cv.height; // fixed internal resolution — crisp & resolution-independent
+  var level=0, target=0, phase=0, amp=0;
+  var COLORS=['#DE1D61','#F9740D','#8DAA31','#592354'];
+  // gummies suspended in the liquid: depth 0..1 (fraction up from bottom), x 0..1
+  var bits=[];for(var i=0;i<10;i++)bits.push({x:0.12+Math.random()*0.76,depth:Math.random(),c:COLORS[(Math.random()*COLORS.length)|0],r:14+Math.random()*10,wob:Math.random()*6.28});
+
+  // jar interior geometry
+  var pad=90, top=120, iw, ih, ix, iy;
+  function geom(){ix=pad;iy=top;iw=W-pad*2;ih=H-top-70;}
+  geom();
+
+  function roundRectPath(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // jar lid
+    ctx.fillStyle='#ffffff';roundRectPath(ix-22,top-46,iw+44,40,16);ctx.fill();
+    ctx.fillStyle='rgba(89,35,84,.10)';roundRectPath(ix-22,top-46,iw+44,40,16);ctx.fill();
+    // glass body (translucent white)
+    ctx.save();roundRectPath(ix,iy,iw,ih,44);ctx.clip();
+    ctx.fillStyle='rgba(255,255,255,.34)';ctx.fillRect(ix,iy,iw,ih);
+    // liquid
+    var surfaceY=iy+ih*(1-level);
+    var grad=ctx.createLinearGradient(0,surfaceY,0,iy+ih);
+    grad.addColorStop(0,'#ff5a90');grad.addColorStop(.55,'#DE1D61');grad.addColorStop(1,'#F9740D');
+    ctx.beginPath();ctx.moveTo(ix,iy+ih);
+    var A=amp*ih*0.05;
+    for(var x=ix;x<=ix+iw;x+=6){var y=surfaceY+Math.sin((x/iw*7)+phase)*A;ctx.lineTo(x,y);}
+    ctx.lineTo(ix+iw,iy+ih);ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+    // suspended gummies (only those below the surface)
+    for(var i=0;i<bits.length;i++){var b=bits[i];
+      var by=iy+ih*(1-level*b.depth); // ride up as level rises
+      if(by>surfaceY+6){
+        ctx.save();ctx.translate(ix+iw*b.x,by+Math.sin(phase+b.wob)*4);ctx.rotate(Math.sin(phase*0.6+b.wob)*.3);
+        ctx.beginPath();ctx.arc(0,0,b.r,0,6.28);ctx.fillStyle=b.c;ctx.globalAlpha=.92;ctx.fill();
+        ctx.globalAlpha=.5;ctx.beginPath();ctx.ellipse(-b.r*.3,-b.r*.35,b.r*.34,b.r*.2,-.5,0,6.28);ctx.fillStyle='#fff';ctx.fill();
+        ctx.restore();ctx.globalAlpha=1;
+      }
+    }
+    // surface shine line
+    ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=3;ctx.beginPath();
+    for(var x2=ix;x2<=ix+iw;x2+=6){var yy=surfaceY+Math.sin((x2/iw*7)+phase)*A;if(x2===ix)ctx.moveTo(x2,yy);else ctx.lineTo(x2,yy);}
+    ctx.stroke();
+    ctx.restore();
+    // glass outline + highlight
+    ctx.strokeStyle='rgba(255,255,255,.85)';ctx.lineWidth=8;roundRectPath(ix,iy,iw,ih,44);ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=10;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(ix+22,iy+40);ctx.lineTo(ix+22,iy+ih-60);ctx.stroke();
+  }
+
+  function frame(){
+    if(document.hidden){requestAnimationFrame(frame);return;}
+    level+=(target-level)*0.12; phase+=0.12; amp*=0.94;
+    draw();
+    pctEl.textContent=Math.round(level*100)+'%';
+    requestAnimationFrame(frame);
+  }
+  draw();                       // paint once immediately
+  if(!reduce)requestAnimationFrame(frame);
+
+  var full=false;
+  function pour(){
+    if(target>=1){return;}
+    target=Math.min(1,target+0.12); amp=1;
+    // squish the canvas element for tactile feedback
+    cv.animate?cv.animate([{transform:'scale(1)'},{transform:'scale(1.04,.96)'},{transform:'scale(1)'}],{duration:280,easing:'cubic-bezier(.34,1.56,.64,1)'}):0;
+    if(target>=1&&!full){full=true;
+      var m=document.querySelector('.meter');m.innerHTML='jar <b>100%</b> full &middot; you did it! 🎉';}
+  }
+  cv.addEventListener('pointerdown',function(){pour();});
+  // reduced-motion: fill instantly on tap
+  if(reduce){cv.addEventListener('pointerdown',function(){level=target;draw();pctEl.textContent=Math.round(level*100)+'%';});}
+
+  // blob cursor
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches){var blob=document.getElementById('blob');
+    addEventListener('pointermove',function(e){blob.classList.add('on');blob.style.left=e.clientX+'px';blob.style.top=e.clientY+'px';});}
+
+  // notify (front-end mock — real capture needs a backend/Shopify form)
+  var f=document.getElementById('notify'),dm=document.getElementById('donemsg');
+  f.addEventListener('submit',function(e){e.preventDefault();var em=document.getElementById('email').value.trim();if(!em)return;
+    try{var l=JSON.parse(localStorage.getItem('gc_waitlist')||'[]');l.push({e:em,t:Date.now()});localStorage.setItem('gc_waitlist',JSON.stringify(l));}catch(_){}
+    f.style.display='none';dm.classList.add('show');});
+})();
+</script>
+</body>
+</html>

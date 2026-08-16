@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GummyChums — Coming Soon</title>
+<meta name="description" content="Something chewy is coming. India's most fun wellness gummy — join the list."/>
+<style>
+  @font-face{font-family:'NaN Jaune';src:url('fonts/NaNJaune-MaxiMedium-TRIAL.ttf') format('truetype');font-weight:500;font-display:swap}
+  @font-face{font-family:'Manrope';src:url('fonts/Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
+  :root{--ink:#000;--white:#fff;--purple:#592354;--brown:#6E2F15;--green:#8DAA31;--pink:#DE1D61;--orange:#F9740D}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{min-height:100%}
+  body{font-family:'Manrope',system-ui,sans-serif;background:var(--purple);color:var(--white);
+    min-height:100svh;position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 22px}
+  @media (hover:hover) and (pointer:fine){body{cursor:none}}
+  #blob{position:fixed;left:0;top:0;width:30px;height:30px;z-index:60;pointer-events:none;
+    transform:translate(-50%,-50%);border-radius:46% 54% 52% 48%/48% 46% 54% 52%;background:var(--orange);
+    mix-blend-mode:screen;opacity:0;transition:opacity .3s;
+    box-shadow:inset -4px -5px 8px rgba(0,0,0,.2),inset 4px 5px 8px rgba(255,255,255,.5)}
+  #blob.on{opacity:.9}@media (hover:none){#blob{display:none}}
+
+  .kick{font-weight:800;letter-spacing:.34em;text-transform:uppercase;font-size:12px;opacity:.8;margin-bottom:22px}
+
+  .card{position:relative;width:min(680px,94vw);aspect-ratio:16/9;border-radius:26px;overflow:hidden;
+    box-shadow:0 30px 70px -30px rgba(0,0,0,.6)}
+  /* the prize underneath */
+  .prize{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:radial-gradient(120% 140% at 50% 0%,#fff 0%,#ffe9f1 60%,#ffd9c7 100%);color:var(--purple);gap:6px}
+  .prize .logo{font-family:'NaN Jaune',sans-serif;font-weight:500;line-height:.82;text-transform:lowercase;
+    font-size:clamp(2.6rem,9vw,5rem);letter-spacing:-.015em}
+  .prize .logo .l2{position:relative;display:inline-block}
+  .prize .logo .l2::after{content:"";position:absolute;left:2%;right:2%;bottom:-.02em;height:.07em;
+    background-image:radial-gradient(currentColor 42%,transparent 46%);background-size:.16em .16em;background-repeat:repeat-x;background-position:center;opacity:.8}
+  .prize .teaser{font-weight:800;font-size:clamp(1rem,2.6vw,1.35rem);color:var(--pink);margin-top:6px}
+  .prize .small{font-weight:600;font-size:.9rem;color:#59235499}
+  .gem{position:absolute;width:34px;opacity:.9}
+  /* the foil you scratch off */
+  canvas#foil{position:absolute;inset:0;width:100%;height:100%;touch-action:none;z-index:2;cursor:none}
+  .card.done canvas#foil{opacity:0;transition:opacity .6s ease;pointer-events:none}
+  .card.done .prize{animation:prizepop .6s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes prizepop{35%{transform:scale(1.03)}70%{transform:scale(.99)}}
+
+  .scratchhint{margin-top:20px;font-weight:700;font-size:.85rem;letter-spacing:.05em;opacity:.75;
+    display:flex;align-items:center;gap:8px;justify-content:center}
+  .scratchhint.hide{opacity:0;transition:opacity .4s}
+
+  form.notify{margin-top:22px;display:flex;gap:8px;background:var(--white);border-radius:999px;
+    padding:7px 7px 7px 20px;box-shadow:0 18px 40px -18px rgba(0,0,0,.5);width:min(440px,94vw)}
+  form.notify input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;font-weight:600;font-size:1rem;color:var(--ink)}
+  form.notify input::placeholder{color:#00000066}
+  form.notify button{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:.95rem;white-space:nowrap;
+    color:var(--white);background:var(--pink);border-radius:999px;padding:12px 22px;transition:transform .12s,background .2s}
+  form.notify button:hover{background:var(--orange)}form.notify button:active{transform:scale(.93)}
+  .done-msg{margin-top:22px;font-weight:800;font-size:1.1rem;color:var(--green);display:none}
+  .done-msg.show{display:block;animation:prizepop .5s cubic-bezier(.34,1.56,.64,1)}
+  .foot{margin-top:26px;display:flex;justify-content:center;gap:16px;font-weight:700;font-size:.8rem;opacity:.8}
+  .foot a{color:var(--white);text-decoration:none}.foot a:hover{text-decoration:underline}
+  @media (max-width:520px){
+    .card{aspect-ratio:4/3}
+    form.notify{flex-direction:column;border-radius:22px;padding:12px;gap:10px}
+    form.notify input{text-align:center;padding:6px 0}form.notify button{width:100%;padding:14px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important}}
+</style>
+</head>
+<body>
+<div id="blob"></div>
+<p class="kick">Wellness, but make it fun</p>
+
+<div class="card" id="card">
+  <div class="prize">
+    <div class="logo"><div class="l1"><span>gummy</span></div><div class="l2"><span>chums</span></div></div>
+    <div class="teaser">Coming soon — worth the wait 🍬</div>
+    <div class="small">India&rsquo;s most fun wellness gummy</div>
+    <svg class="gem" style="left:8%;top:16%;transform:rotate(-12deg)" viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#8DAA31"/></svg>
+    <svg class="gem" style="right:9%;top:20%;transform:rotate(10deg)" viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#F9740D"/></svg>
+    <svg class="gem" style="left:14%;bottom:14%;transform:rotate(6deg)" viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#DE1D61"/></svg>
+    <svg class="gem" style="right:12%;bottom:12%;transform:rotate(-8deg)" viewBox="0 0 100 100"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#592354"/></svg>
+  </div>
+  <canvas id="foil"></canvas>
+</div>
+
+<p class="scratchhint" id="hint">✨ scratch the foil to reveal</p>
+
+<form class="notify" id="notify">
+  <input type="email" id="email" placeholder="your@email.com" required aria-label="Email"/>
+  <button type="submit">Notify me</button>
+</form>
+<div class="done-msg" id="donemsg">You&rsquo;re on the list, Chum! 🎉</div>
+
+<div class="foot">
+  <a href="#">Instagram</a><span style="opacity:.4">·</span>
+  <a href="#">Made in India 🇮🇳</a><span style="opacity:.4">·</span>
+  <a href="#">hello@gummychums.in</a>
+</div>
+
+<script>
+(function(){
+  var card=document.getElementById('card'),cv=document.getElementById('foil'),ctx=cv.getContext('2d');
+  var hint=document.getElementById('hint');
+  var DPR=Math.min(devicePixelRatio||1,2),W=1,H=1,revealed=false;
+  function paintFoil(){
+    var b=cv.getBoundingClientRect();W=cv.width=Math.max(1,b.width*DPR);H=cv.height=Math.max(1,b.height*DPR);
+    // brand foil gradient
+    var g=ctx.createLinearGradient(0,0,W,H);
+    g.addColorStop(0,'#DE1D61');g.addColorStop(.5,'#F9740D');g.addColorStop(1,'#8DAA31');
+    ctx.globalCompositeOperation='source-over';ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    // sheen stripes
+    ctx.globalAlpha=.12;ctx.fillStyle='#fff';
+    for(var i=-H;i<W;i+=46*DPR){ctx.save();ctx.translate(i,0);ctx.rotate(0.5);ctx.fillRect(0,-H,14*DPR,H*3);ctx.restore();}
+    ctx.globalAlpha=1;
+    // label text
+    ctx.fillStyle='rgba(255,255,255,.95)';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.font='700 '+Math.round(W*0.05)+'px Manrope, sans-serif';
+    ctx.fillText('SCRATCH ME', W/2, H*0.44);
+    ctx.font='600 '+Math.round(W*0.025)+'px Manrope, sans-serif';
+    ctx.fillText('reveal what’s coming ✨', W/2, H*0.58);
+  }
+  paintFoil();addEventListener('resize',function(){if(!revealed)paintFoil();});
+
+  var scratching=false,last=null;
+  function pos(e){var b=cv.getBoundingClientRect();var t=e.touches?e.touches[0]:e;
+    return[(t.clientX-b.left)*DPR,(t.clientY-b.top)*DPR];}
+  function scratch(p){
+    ctx.globalCompositeOperation='destination-out';
+    ctx.lineWidth=42*DPR;ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.beginPath();
+    if(last){ctx.moveTo(last[0],last[1]);ctx.lineTo(p[0],p[1]);ctx.stroke();}
+    ctx.arc(p[0],p[1],21*DPR,0,6.28);ctx.fill();
+    last=p;
+    hint.classList.add('hide');
+  }
+  function pct(){
+    var s=ctx.getImageData(0,0,W,H).data,clear=0,total=0;
+    for(var i=3;i<s.length;i+=4*16){total++;if(s[i]===0)clear++;}
+    return clear/total;
+  }
+  function maybeReveal(){if(revealed)return;if(pct()>0.5){revealed=true;card.classList.add('done');}}
+  cv.addEventListener('pointerdown',function(e){scratching=true;last=null;scratch(pos(e));cv.setPointerCapture&&cv.setPointerCapture(e.pointerId);});
+  cv.addEventListener('pointermove',function(e){if(scratching)scratch(pos(e));});
+  cv.addEventListener('pointerup',function(){scratching=false;last=null;maybeReveal();});
+  cv.addEventListener('pointerleave',function(){scratching=false;last=null;maybeReveal();});
+
+  // blob cursor
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches){var blob=document.getElementById('blob');
+    addEventListener('pointermove',function(e){blob.classList.add('on');blob.style.left=e.clientX+'px';blob.style.top=e.clientY+'px';});}
+
+  // notify (front-end mock — real capture needs a backend/Shopify form)
+  var f=document.getElementById('notify'),dm=document.getElementById('donemsg');
+  f.addEventListener('submit',function(e){e.preventDefault();var em=document.getElementById('email').value.trim();if(!em)return;
+    try{var l=JSON.parse(localStorage.getItem('gc_waitlist')||'[]');l.push({e:em,t:Date.now()});localStorage.setItem('gc_waitlist',JSON.stringify(l));}catch(_){}
+    f.style.display='none';dm.classList.add('show');});
+})();
+</script>
+</body>
+</html>
