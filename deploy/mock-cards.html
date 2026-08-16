@@ -16,7 +16,7 @@
     display:flex;flex-direction:column;align-items:center;text-align:center;min-height:100svh;padding:26px 20px 96px}
   @media (hover:hover) and (pointer:fine){body{cursor:none}}
 
-  #gcur{position:fixed;left:0;top:0;width:28px;height:28px;z-index:90;pointer-events:none;transform:translate(-50%,-50%);opacity:0;transition:opacity .25s;filter:drop-shadow(0 3px 5px rgba(0,0,0,.25))}
+  #gcur{position:fixed;left:0;top:0;width:28px;height:28px;z-index:90;pointer-events:none;will-change:transform;transform:translate(-50%,-50%);opacity:0;transition:opacity .25s;filter:drop-shadow(0 3px 5px rgba(0,0,0,.25))}
   #gcur svg{width:100%;height:100%;display:block;animation:gwob 4s ease-in-out infinite}
   @keyframes gwob{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
   #gcur.on{opacity:1} @media (hover:none){#gcur{display:none}}
@@ -135,7 +135,7 @@ body{padding-top:46px!important}
     card.classList.add('open'); card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop');
     splashAt(e.clientX,e.clientY,card.getAttribute('data-color'));});
   if(matchMedia('(hover:hover) and (pointer:fine)').matches){var c=document.getElementById('gcur');
-    addEventListener('pointermove',function(e){c.classList.add('on');c.style.left=e.clientX+'px';c.style.top=e.clientY+'px';});
+    addEventListener('pointermove',function(e){c.classList.add('on');c.__x=e.clientX;c.__y=e.clientY;},{passive:true});(function L(){if(c.__x!=null)c.style.transform='translate3d('+c.__x+'px,'+c.__y+'px,0) translate(-50%,-50%)';requestAnimationFrame(L);})();
     document.addEventListener('mouseleave',function(){c.classList.remove('on');});}
   var lw=document.querySelector('.logo-wrap');
   if(lw){lw.addEventListener('contextmenu',function(e){e.preventDefault();});lw.addEventListener('dragstart',function(e){e.preventDefault();});}

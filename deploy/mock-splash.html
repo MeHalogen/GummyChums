@@ -19,7 +19,7 @@
   /* soft flavor wash that briefly floods on tap */
   #wash{position:fixed;inset:0;z-index:0;opacity:0;pointer-events:none;transition:opacity .5s ease}
 
-  #gcur{position:fixed;left:0;top:0;width:28px;height:28px;z-index:90;pointer-events:none;
+  #gcur{position:fixed;left:0;top:0;width:28px;height:28px;z-index:90;pointer-events:none;will-change:transform;
     transform:translate(-50%,-50%);opacity:0;transition:opacity .25s;
     filter:drop-shadow(0 3px 5px rgba(0,0,0,.25))}
   #gcur svg{width:100%;height:100%;display:block;animation:gwob 4s ease-in-out infinite}
@@ -165,7 +165,7 @@ body{padding-top:46px!important}
   // gummy cursor
   if(matchMedia('(hover:hover) and (pointer:fine)').matches){
     var c=document.getElementById('gcur');
-    addEventListener('pointermove',function(e){c.classList.add('on');c.style.left=e.clientX+'px';c.style.top=e.clientY+'px';});
+    addEventListener('pointermove',function(e){c.classList.add('on');c.__x=e.clientX;c.__y=e.clientY;},{passive:true});(function L(){if(c.__x!=null)c.style.transform='translate3d('+c.__x+'px,'+c.__y+'px,0) translate(-50%,-50%)';requestAnimationFrame(L);})();
     document.addEventListener('mouseleave',function(){c.classList.remove('on');});
   }
   // logo save deterrent
