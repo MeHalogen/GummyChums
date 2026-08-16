@@ -16,7 +16,7 @@
     -webkit-font-smoothing:antialiased;overflow:hidden;position:relative;
     display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
     min-height:100svh;padding:32px 24px 92px}
-  @media (hover:hover) and (pointer:fine){body{cursor:none}}
+  @media (hover:hover) and (pointer:fine){body, body *{cursor:none!important}}
 
   /* drifting flavor blobs (the "liquid") */
   .blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:.55;z-index:0;pointer-events:none;will-change:transform}
@@ -28,7 +28,8 @@
   @keyframes d3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-26px) scale(1.14)}}
 
   #gcur{position:fixed;left:0;top:0;width:28px;height:28px;z-index:90;pointer-events:none;will-change:transform;
-    transform:translate(-50%,-50%);opacity:0;transition:opacity .25s;filter:drop-shadow(0 3px 5px rgba(0,0,0,.25))}
+    transform:translate(-50%,-50%);opacity:0;transition:opacity .25s, width .2s, height .2s;filter:drop-shadow(0 3px 5px rgba(0,0,0,.25))}
+  #gcur.hovering{width:42px;height:42px}
   #gcur svg{width:100%;height:100%;display:block;animation:gwob 4s ease-in-out infinite}
   @keyframes gwob{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
   #gcur.on{opacity:1} @media (hover:none){#gcur{display:none}}
@@ -148,8 +149,16 @@ body{padding-top:46px!important}
     splashAt(e.clientX,e.clientY,col);
   });
   if(matchMedia('(hover:hover) and (pointer:fine)').matches){var c=document.getElementById('gcur');
-    addEventListener('pointermove',function(e){c.classList.add('on');c.__x=e.clientX;c.__y=e.clientY;},{passive:true});(function L(){if(c.__x!=null)c.style.transform='translate3d('+c.__x+'px,'+c.__y+'px,0) translate(-50%,-50%)';requestAnimationFrame(L);})();
-    document.addEventListener('mouseleave',function(){c.classList.remove('on');});}
+    addEventListener('pointermove',function(e){
+      c.classList.add('on');c.__x=e.clientX;c.__y=e.clientY;
+      if(e.target.closest('a, button, input')){
+        c.classList.add('hovering');
+      } else {
+        c.classList.remove('hovering');
+      }
+    },{passive:true});
+    (function L(){if(c.__x!=null)c.style.transform='translate3d('+c.__x+'px,'+c.__y+'px,0) translate(-50%,-50%)';requestAnimationFrame(L);})();
+    document.addEventListener('mouseleave',function(){c.classList.remove('on');c.classList.remove('hovering');});}
   var lw=document.querySelector('.logo-wrap');
   if(lw){lw.addEventListener('contextmenu',function(e){e.preventDefault();});lw.addEventListener('dragstart',function(e){e.preventDefault();});}
 
