@@ -66,6 +66,21 @@
   .marq .trk span{padding:0 18px}
   @keyframes mscroll{to{transform:translateX(-50%)}}
   @media (prefers-reduced-motion:reduce){.marq .trk{animation:none!important}}
+
+/*FOOT2*/
+.foot-links{align-items:center}
+.foot .ig,.foot-links .ig{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:inherit;transition:color .2s}
+.foot .ig svg,.foot-links .ig svg{width:15px;height:15px;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.foot .ig:hover,.foot-links .ig:hover{color:var(--cherry)}
+.foot .ig:hover svg,.foot-links .ig:hover svg{transform:rotate(-10deg) scale(1.12)}
+.gdot{width:11px;height:11px;flex:0 0 auto;display:inline-block;border-radius:46% 54% 52% 48%/48% 46% 54% 52%;
+  background:var(--cherry);box-shadow:inset -2px -2px 3px rgba(0,0,0,.18),inset 2px 2px 3px rgba(255,255,255,.55);
+  animation:gdotc 4.8s linear infinite, gdotw 3s ease-in-out infinite}
+@keyframes gdotc{0%,100%{background:#DE1D61}33%{background:#8DAA31}66%{background:#F9740D}}
+@keyframes gdotw{0%,100%{transform:rotate(-9deg) scale(1)}50%{transform:rotate(9deg) scale(1.12)}}
+.foot{transition:transform .22s cubic-bezier(.34,1.56,.64,1),box-shadow .22s}
+.foot:hover{transform:translateX(-50%) translateY(-3px);box-shadow:0 16px 34px -14px rgba(25,19,22,.5)}
+@media (prefers-reduced-motion:reduce){.gdot{animation:none!important}}
 </style>
 </head>
 <body>
@@ -104,8 +119,8 @@
   </form>
   <p class="thanks" id="thanks">You&rsquo;re on the list! 🎉</p>
   <div class="foot-links">
-    <a href="https://www.instagram.com/gummy.chums/" target="_blank" rel="noopener">Instagram</a>
-    <span style="opacity:.4">·</span><span>Made in India 🇮🇳</span>
+    <a class="ig" href="https://www.instagram.com/gummy.chums/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.3" fill="currentColor" stroke="none"/></svg>Instagram</a>
+    <span class="gdot" aria-hidden="true"></span><span>Made in India&nbsp;🇮🇳</span>
   </div>
 </footer>
 
