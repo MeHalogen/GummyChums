@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GummyChums — Coming Soon</title>
+<meta name="description" content="Something chewy is coming. India's most fun wellness gummy — join the list."/>
+<link rel="icon" type="image/png" href="logo/gc-monogram.png"/>
+<meta property="og:title" content="GummyChums — Coming Soon"/>
+<meta property="og:description" content="India's most fun wellness gummy. Almost here — join the list."/>
+<meta name="theme-color" content="#DE1D61"/>
+<style>
+  @font-face{font-family:'Manrope';src:url('fonts/Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
+
+  :root{
+    --ink:#000; --white:#fff; --purple:#592354; --brown:#6E2F15;
+    --green:#8DAA31; --pink:#DE1D61; --orange:#F9740D;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{min-height:100%}
+  body{font-family:'Manrope',system-ui,sans-serif;background:var(--ink);color:var(--white);
+    overflow-x:hidden;overflow-y:auto;position:relative;-webkit-font-smoothing:antialiased}
+
+  /* gummy cursor */
+  @media (hover:hover) and (pointer:fine){
+    body{cursor:none} .stage a,.stage button,.stage input,.foot a{cursor:none}
+  }
+  #gcur{position:fixed;left:0;top:0;width:30px;height:30px;z-index:9999;pointer-events:none;
+    transform:translate(-50%,-50%);opacity:0;transition:opacity .25s,width .16s,height .16s;
+    filter:drop-shadow(0 3px 6px rgba(0,0,0,.4));will-change:transform,left,top}
+  #gcur.on{opacity:1} #gcur.press{width:23px;height:23px}
+  #gcur svg{width:100%;height:100%;display:block;animation:gwob 4s ease-in-out infinite}
+  @keyframes gwob{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+  @media (hover:none){#gcur{display:none}}
+
+  /* the reactive color panels */
+  .panels{position:fixed;inset:0;z-index:1;display:flex}
+  .panel{flex:1 1 0;height:100%;position:relative;
+    transition:flex-grow .5s cubic-bezier(.22,.8,.26,1);will-change:flex-grow;overflow:hidden}
+  .panel::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(120% 90% at 50% -10%,rgba(255,255,255,.18),transparent 60%)}
+  /* floating gummy silhouette inside each panel */
+  .panel .g{position:absolute;left:50%;top:50%;width:46%;transform:translate(-50%,-50%);
+    opacity:.16;animation:bob 7s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translate(-50%,-50%) translateY(0) rotate(-4deg)}
+    50%{transform:translate(-50%,-50%) translateY(-16px) rotate(4deg)}}
+
+  /* overlay content — flows & centres; scrolls instead of truncating if it ever overflows */
+  .stage{position:relative;z-index:10;min-height:100svh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;padding:64px 24px 84px;pointer-events:none}
+  .stage > *{pointer-events:auto}
+
+  .kick{font-weight:800;letter-spacing:.34em;text-transform:uppercase;font-size:12px;
+    margin-bottom:22px;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.4)}
+
+  /* real logo — solid white so it stays legible on every panel */
+  .logo-wrap{position:relative;display:inline-block;line-height:0}
+  /* transparent shield on top: eats right-click / "save image as" and drag */
+  .logo-shield{position:absolute;inset:0;z-index:3}
+  .logo{display:block;width:min(560px,82vw);height:auto;
+    filter:invert(1) drop-shadow(0 14px 28px rgba(0,0,0,.42));
+    opacity:0;transform:translateY(22px) scale(.97);
+    animation:rise .9s .1s cubic-bezier(.19,1,.22,1) forwards;
+    pointer-events:none;-webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  .tag{font-weight:800;font-size:clamp(1.1rem,3vw,1.55rem);margin-top:30px;
+    color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.45)}
+  .sub{font-weight:600;opacity:.96;margin-top:10px;font-size:clamp(.9rem,2.3vw,1.02rem);
+    max-width:40ch;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.45)}
+
+  form.notify{margin-top:32px;display:flex;gap:8px;background:var(--white);border-radius:14px;
+    padding:7px 7px 7px 18px;box-shadow:0 24px 50px -20px rgba(0,0,0,.7);width:min(460px,90vw)}
+  form.notify input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;
+    font-weight:600;font-size:1rem;color:var(--ink)}
+  form.notify input::placeholder{color:#00000055}
+  form.notify button{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:.95rem;
+    color:var(--white);background:var(--ink);border-radius:9px;padding:12px 22px;transition:transform .12s,background .25s}
+  form.notify button:active{transform:scale(.94)}
+  .done{margin-top:32px;font-weight:800;font-size:1.1rem;color:var(--ink);background:var(--white);
+    padding:14px 26px;border-radius:14px;display:none;box-shadow:0 24px 50px -20px rgba(0,0,0,.7)}
+  .done.show{display:inline-block;animation:rise .5s cubic-bezier(.34,1.56,.64,1)}
+  .consent{margin-top:14px;font-size:.72rem;font-weight:600;color:#fff;opacity:.9;
+    text-shadow:0 1px 8px rgba(0,0,0,.55)}
+  .hp{position:absolute!important;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;
+    opacity:0;pointer-events:none}
+
+  /* marquees top + bottom */
+  .marq{position:fixed;left:0;right:0;z-index:12;overflow:hidden;pointer-events:none;
+    padding:9px 0;background:var(--white);color:var(--ink)}
+  .marq.top{top:0;transform:rotate(0)}
+  .marq.bot{bottom:0}
+  .marq .track{display:inline-flex;white-space:nowrap;font-family:'Manrope',sans-serif;
+    font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:.1em;
+    animation:scroll 44s linear infinite}
+  .marq.bot .track{animation-direction:reverse}
+  .marq .track span{padding:0 22px}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  /* footer as a floating pill — sits clearly above the bottom marquee, readable on any panel */
+  .foot{position:fixed;left:50%;bottom:56px;transform:translateX(-50%);z-index:13;
+    display:flex;align-items:center;gap:14px;font-weight:700;font-size:.8rem;white-space:nowrap;
+    color:#fff;background:rgba(20,10,18,.38);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    padding:8px 18px;border-radius:999px;box-shadow:0 10px 26px -12px rgba(0,0,0,.55)}
+  .foot a,.foot span.item{color:#fff;text-decoration:none;opacity:.96}
+  .foot a:hover{text-decoration:underline}
+
+  @media (max-width:640px){
+    .panel:nth-child(n+5){display:none}
+    .logo{width:min(460px,88vw)}
+    .foot{bottom:52px;font-size:.75rem;gap:11px;padding:7px 15px}
+  }
+  @media (max-width:520px){
+    form.notify{flex-direction:column;border-radius:16px;padding:12px;gap:10px}
+    form.notify input{text-align:center;padding:6px 0}
+    form.notify button{width:100%;padding:14px}
+    .tag{font-size:clamp(1.05rem,5vw,1.3rem);margin-top:24px}
+    .sub{font-size:.92rem}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important}.panel{transition:none}}
+</style>
+</head>
+<body>
+
+<div id="gcur" aria-hidden="true">
+  <svg viewBox="0 0 100 100">
+    <path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="#f5f2ef" stroke="rgba(20,10,18,.28)" stroke-width="3.5"/>
+    <ellipse cx="35" cy="28" rx="16" ry="9.5" fill="#ffffff" transform="rotate(-25 35 28)"/>
+    <ellipse cx="56" cy="64" rx="26" ry="17" fill="#3a1030" opacity=".08"/>
+  </svg>
+</div>
+
+<div class="panels" id="panels"></div>
+
+<div class="marq top"><div class="track" id="mt"></div></div>
+<div class="marq bot"><div class="track" id="mb"></div></div>
+
+<div class="stage">
+  <p class="kick">Wellness, but make it fun</p>
+  <span class="logo-wrap">
+    <img class="logo" src="logo/gc-wordmark-stack.png" alt="gummy chums" draggable="false" oncontextmenu="return false"/>
+    <span class="logo-shield" aria-hidden="true" oncontextmenu="return false"></span>
+  </span>
+  <p class="tag">Not another supplement brand.</p>
+  <p class="sub">We&rsquo;re making healthy habits feel good. Drop your email — we launch soon.</p>
+  <form class="notify" id="notify" novalidate>
+    <input type="email" id="email" placeholder="your@email.com" required aria-label="Email"/>
+    <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"/>
+    <button type="submit">Keep me posted</button>
+  </form>
+  <p class="consent">No spam — just one email when we launch.</p>
+  <div class="done" id="done">You&rsquo;re on the list, Chum! 🎉</div>
+</div>
+
+<div class="foot">
+  <a href="https://www.instagram.com/gummy.chums/" target="_blank" rel="noopener">Instagram</a>
+  <span style="opacity:.5">·</span>
+  <span class="item">Made in India 🇮🇳</span>
+</div>
+
+<script>
+(function(){
+  var COLORS=['#DE1D61','#F9740D','#8DAA31','#592354','#6E2F15','#DE1D61'];
+  var GPATH='M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z';
+  // build panels
+  var panels=document.getElementById('panels');
+  COLORS.forEach(function(c,i){
+    var p=document.createElement('div');p.className='panel';p.style.background=c;
+    p.innerHTML='<svg class="g" viewBox="0 0 100 100" style="animation-delay:'+(-i*0.9)+'s">'+
+      '<path d="'+GPATH+'" fill="#fff"/></svg>';
+    panels.appendChild(p);
+  });
+  var panelEls=[].slice.call(panels.children);
+
+  // reactive panels + gummy cursor (desktop / fine pointers only)
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+    var cur=document.getElementById('gcur');
+    addEventListener('pointermove',function(e){
+      // gummy cursor follows
+      cur.classList.add('on');cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+      // panels flex toward cursor
+      var x=e.clientX/innerWidth; var idx=Math.floor(x*panelEls.length);
+      panelEls.forEach(function(p,i){
+        var d=Math.abs(i-idx);
+        p.style.flexGrow = d===0?2.1 : d===1?1.25 : 1;
+      });
+    });
+    addEventListener('pointerdown',function(){cur.classList.add('press');});
+    addEventListener('pointerup',function(){cur.classList.remove('press');});
+    document.addEventListener('mouseleave',function(){cur.classList.remove('on');});
+    addEventListener('pointerleave',function(){panelEls.forEach(function(p){p.style.flexGrow=1;});});
+  }
+
+  // marquees
+  var msg='GUMMY CHUMS ✦ COMING SOON ✦ WELLNESS, BUT MAKE IT FUN ✦ MADE IN INDIA ✦ ';
+  function fill(el){var one='';for(var i=0;i<6;i++) one+='<span>'+msg+'</span>';el.innerHTML=one+one;}
+  fill(document.getElementById('mt'));fill(document.getElementById('mb'));
+
+  // deter saving the logo (right-click / drag). Note: screenshots & devtools can't be blocked.
+  var lw=document.querySelector('.logo-wrap');
+  if(lw){lw.addEventListener('contextmenu',function(e){e.preventDefault();});
+    lw.addEventListener('dragstart',function(e){e.preventDefault();});}
+
+  // ===== Klaviyo waitlist signup (client-side, no backend) =====
+  var KLAVIYO_PUBLIC_KEY='RVzvWv';   // public Site ID — safe to expose
+  var KLAVIYO_LIST_ID='UaVrj2';      // "Coming Soon Waitlist"
+  var f=document.getElementById('notify'),done=document.getElementById('done'),
+      emailEl=document.getElementById('email'),btn=f.querySelector('button'),
+      hp=f.querySelector('.hp'),btnLabel=btn?btn.textContent:'';
+  var EMAIL_RE=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  f.addEventListener('submit',function(e){e.preventDefault();
+    if(hp&&hp.value)return;                        // honeypot: silently drop bots
+    var em=emailEl.value.trim();
+    if(!EMAIL_RE.test(em)){emailEl.focus();return;}
+    if(btn){btn.disabled=true;btn.textContent='Joining…';}
+    fetch('https://a.klaviyo.com/client/subscriptions/?company_id='+KLAVIYO_PUBLIC_KEY,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','revision':'2024-10-15'},
+      body:JSON.stringify({data:{type:'subscription',attributes:{
+        custom_source:'Coming Soon Page',
+        profile:{data:{type:'profile',attributes:{email:em}}}},
+        relationships:{list:{data:{type:'list',id:KLAVIYO_LIST_ID}}}}})
+    }).then(function(r){
+      if(r.status===202||r.ok){f.style.display='none';done.classList.add('show');}
+      else{return r.text().then(function(t){throw new Error('HTTP '+r.status+' '+t);});}
+    }).catch(function(err){
+      console.warn('Klaviyo signup failed:',err);
+      if(btn){btn.disabled=false;btn.textContent=btnLabel;}
+      emailEl.setAttribute('placeholder','Try again — that didn’t send');
+      emailEl.value='';emailEl.focus();
+    });
+  });
+})();
+</script>
+</body>
+</html>
