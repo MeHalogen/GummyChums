@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": false,
   "trailingSlash": false,
-  "redirects": [
-    { "source": "/", "destination": "/index-gallery.html", "permanent": false }
+  "rewrites": [
+    { "source": "/", "destination": "/coming-soon-b.html" }
   ]
 }
