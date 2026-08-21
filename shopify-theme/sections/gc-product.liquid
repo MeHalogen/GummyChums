@@ -1,0 +1,215 @@
+{%- comment -%} GummyChums product page — brand design, real variants + cart {%- endcomment -%}
+{%- assign GPATH = 'M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z' -%}
+{%- assign t = product.title | downcase -%}
+{%- if t contains 'melatonin' or t contains 'sleep' -%}
+  {%- assign col = '#DE1D61' -%}{%- assign c2 = '#ff5f94' -%}{%- assign c3 = '#a51447' -%}
+  {%- assign role = 'Sleep' -%}{%- assign flavour = 'Cherry' -%}{%- assign line = 'Sleep tight, Chum.' -%}
+{%- elsif t contains 'eye' -%}
+  {%- assign col = '#F9740D' -%}{%- assign c2 = '#ffa34d' -%}{%- assign c3 = '#b8500a' -%}
+  {%- assign role = 'Eye care' -%}{%- assign flavour = 'Orange' -%}{%- assign line = 'Screen-tired eyes? New bestie.' -%}
+{%- else -%}
+  {%- assign col = '#8DAA31' -%}{%- assign c2 = '#c3e05f' -%}{%- assign c3 = '#5f7620' -%}
+  {%- assign role = 'Focus' -%}{%- assign flavour = 'Mango' -%}{%- assign line = 'Big brain energy, tiny gummy.' -%}
+{%- endif -%}
+
+<style>
+  .gp{--pc:{{ col }};max-width:1180px;margin:0 auto;padding:clamp(26px,4vw,52px) 22px clamp(50px,7vw,90px)}
+  .gp-crumb{font-size:.85rem;font-weight:700;color:#19131680;margin-bottom:20px}
+  .gp-crumb a{color:inherit;text-decoration:none}.gp-crumb a:hover{color:var(--pc)}
+  .gp-top{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(24px,4vw,56px);align-items:start}
+  @media(max-width:899px){.gp-top{grid-template-columns:1fr}}
+
+  .gp-media{position:relative;border-radius:32px;overflow:hidden;aspect-ratio:1/1;display:grid;place-items:center;
+    background:var(--pc)18;box-shadow:0 34px 64px -40px rgba(25,19,22,.45)}
+  .gp-media::before{content:"";position:absolute;width:80%;height:80%;border-radius:50%;filter:blur(60px);
+    background:var(--pc);opacity:.25}
+  .gp-media img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1}
+  .gp-media svg{width:62%;height:auto;position:relative;z-index:1;animation:gpFloat 6s ease-in-out infinite;
+    filter:drop-shadow(0 22px 30px rgba(25,19,22,.25))}
+  @keyframes gpFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(3deg)}}
+  .gp-badge{position:absolute;z-index:2;top:16px;left:16px;background:#fff;color:var(--pc);font-size:.72rem;
+    font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border-radius:999px;
+    box-shadow:0 8px 18px -10px rgba(0,0,0,.4)}
+
+  .gp-kick{font-weight:800;letter-spacing:.22em;text-transform:uppercase;font-size:11.5px;color:var(--pc);margin:0}
+  .gp-title{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.04;margin:12px 0 0}
+  .gp-line{font-size:clamp(1.05rem,2.2vw,1.3rem);font-weight:700;color:#191316b0;margin:12px 0 0}
+  .gp-price{display:flex;align-items:baseline;gap:12px;margin:22px 0 0}
+  .gp-price b{font-size:2.1rem;font-weight:800;color:var(--pc)}
+  .gp-price s{font-size:1.1rem;font-weight:700;color:#19131666}
+  .gp-tax{font-size:.82rem;font-weight:600;color:#19131680;margin:6px 0 0}
+  .gp-desc{font-size:1rem;font-weight:600;color:#191316b0;line-height:1.6;margin:22px 0 0}
+  .gp-desc p{margin:0 0 10px}
+
+  .gp-facts{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 0}
+  .gp-fact{background:#fff;border-radius:999px;padding:8px 15px;font-size:.8rem;font-weight:800;
+    box-shadow:0 8px 18px -13px rgba(25,19,22,.5)}
+
+  .gp-form{margin:26px 0 0;display:flex;flex-direction:column;gap:12px}
+  .gp-variants{display:flex;gap:8px;flex-wrap:wrap}
+  .gp-var{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:.9rem;padding:11px 18px;border-radius:999px;
+    background:#fff;color:var(--ink);box-shadow:inset 0 0 0 2px #19131618;transition:box-shadow .2s,transform .15s}
+  .gp-var[aria-pressed="true"]{box-shadow:inset 0 0 0 2.5px var(--pc);color:var(--pc)}
+  .gp-var:active{transform:scale(.95)}
+  .gp-qty{display:flex;align-items:center;gap:14px;background:#fff;border-radius:999px;padding:8px 16px;
+    align-self:flex-start;box-shadow:0 10px 22px -16px rgba(25,19,22,.5)}
+  .gp-qty button{border:0;background:transparent;cursor:pointer;font-size:1.3rem;font-weight:800;color:var(--pc);
+    line-height:1;padding:2px 6px;font-family:inherit}
+  .gp-qty span{font-weight:800;min-width:22px;text-align:center}
+  .gp-buy{background:var(--pc);color:#fff;border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:1.08rem;
+    padding:17px 30px;border-radius:999px;transition:transform .15s var(--gc-spring),filter .25s;
+    box-shadow:0 18px 34px -18px var(--pc)}
+  .gp-buy:hover{filter:brightness(1.08);transform:translateY(-2px)} .gp-buy:active{transform:scale(.96)}
+  .gp-note{font-size:.84rem;font-weight:600;color:#19131680;text-align:center}
+
+  .gp-acc{margin:30px 0 0}
+  .gp-acc details{background:#fff;border-radius:18px;margin-bottom:10px;overflow:hidden;
+    box-shadow:0 14px 30px -26px rgba(25,19,22,.45)}
+  .gp-acc summary{cursor:pointer;list-style:none;padding:16px 20px;font-weight:800;font-size:.98rem;
+    display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .gp-acc summary::-webkit-details-marker{display:none}
+  .gp-acc summary::after{content:"+";font-size:1.35rem;color:var(--pc);transition:transform .3s var(--gc-ease);line-height:1}
+  .gp-acc details[open] summary::after{transform:rotate(45deg)}
+  .gp-acc .body{padding:0 20px 18px;font-weight:600;font-size:.94rem;color:#191316a8;line-height:1.55}
+
+  .gp-more{margin-top:clamp(50px,7vw,86px)}
+  .gp-more h2{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;letter-spacing:-.02em;text-align:center;margin:0 0 26px}
+  .gp-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:760px;margin:0 auto}
+  @media(max-width:749px){.gp-grid{grid-template-columns:1fr}}
+  .gp-mini{background:#fff;border-radius:24px;padding:16px;display:flex;align-items:center;gap:16px;text-decoration:none;
+    color:var(--ink);box-shadow:0 22px 44px -34px rgba(25,19,22,.42);transition:transform .2s var(--gc-spring),box-shadow .2s}
+  .gp-mini:hover{transform:translateY(-5px);box-shadow:0 30px 54px -32px rgba(222,29,97,.4)}
+  .gp-mini .sh{width:78px;height:78px;flex:0 0 auto;border-radius:16px;display:grid;place-items:center;overflow:hidden}
+  .gp-mini .sh img{width:100%;height:100%;object-fit:cover}
+  .gp-mini .sh svg{width:74%}
+  .gp-mini b{display:block;font-size:1.02rem;font-weight:800}
+  .gp-mini span{font-size:.9rem;font-weight:700;color:#19131690}
+</style>
+
+<div class="gp">
+  <p class="gp-crumb"><a href="{{ routes.root_url }}">Home</a> / <a href="{{ routes.all_products_collection_url }}">Shop</a> / {{ product.title }}</p>
+
+  <div class="gp-top">
+    <!-- media -->
+    <div class="gp-media gc-rise in">
+      <span class="gp-badge">{{ role }} · {{ flavour }}</span>
+      {%- if product.featured_image -%}
+        {{ product.featured_image | image_url: width: 1100 | image_tag: alt: product.title }}
+      {%- else -%}
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ product.title }}">
+          <defs><radialGradient id="gpG" cx="38%" cy="30%" r="76%">
+            <stop offset="0%" stop-color="{{ c2 }}"/><stop offset="60%" stop-color="{{ col }}"/><stop offset="100%" stop-color="{{ c3 }}"/>
+          </radialGradient></defs>
+          <path d="{{ GPATH }}" fill="url(#gpG)"/>
+          <ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/>
+        </svg>
+      {%- endif -%}
+    </div>
+
+    <!-- info -->
+    <div>
+      <p class="gp-kick">{{ role }} ✦ {{ flavour }} flavour</p>
+      <h1 class="gp-title">{{ product.title }}</h1>
+      <p class="gp-line">{{ line }}</p>
+
+      <div class="gp-price">
+        <b>{{ product.selected_or_first_available_variant.price | money }}</b>
+        {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+      </div>
+      <p class="gp-tax">Inclusive of all taxes · Free shipping over ₹699</p>
+
+      <div class="gp-facts">
+        <span class="gp-fact">🌱 100% Veg</span>
+        <span class="gp-fact">🚫 No Added Sugar</span>
+        <span class="gp-fact">🇮🇳 Made in India</span>
+      </div>
+
+      <form method="post" action="{{ routes.cart_add_url }}" class="gp-form" id="gp-form">
+        {%- if product.variants.size > 1 -%}
+          <div class="gp-variants" id="gp-vars">
+            {%- for v in product.variants -%}
+              <button type="button" class="gp-var" data-vid="{{ v.id }}"
+                aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">{{ v.title }}</button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+        <input type="hidden" name="id" id="gp-vid" value="{{ product.selected_or_first_available_variant.id }}">
+
+        <div class="gp-qty">
+          <button type="button" id="gp-minus" aria-label="Decrease">−</button>
+          <span id="gp-qtyv">1</span>
+          <button type="button" id="gp-plus" aria-label="Increase">+</button>
+        </div>
+        <input type="hidden" name="quantity" id="gp-qty" value="1">
+
+        {%- if product.available -%}
+          <button type="submit" class="gp-buy">Add to bag · {{ product.selected_or_first_available_variant.price | money }}</button>
+          <p class="gp-note">Ships in 3–7 days · Easy returns</p>
+        {%- else -%}
+          <button type="button" class="gp-buy" style="background:#bbb;cursor:default" disabled>Sold out</button>
+        {%- endif -%}
+      </form>
+
+      <div class="gp-acc">
+        <details open><summary>What’s inside</summary>
+          <div class="body">{{ product.description | strip_html | default: 'Full ingredient list coming soon.' }}</div>
+        </details>
+        <details><summary>How to take it</summary>
+          <div class="body">Two gummies a day, whenever suits you. No water, no pills, no fuss — your daily chums are waiting.</div>
+        </details>
+        <details><summary>Shipping &amp; returns</summary>
+          <div class="body">We ship pan-India, usually delivered in 3–7 working days with tracking. Free shipping over ₹699. Unopened packs can be returned within 7 days.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- other flavours -->
+  <div class="gp-more">
+    <h2>Meet the other chums</h2>
+    <div class="gp-grid">
+      {%- for p in collections.all.products -%}
+        {%- unless p.id == product.id -%}
+          {%- assign pt = p.title | downcase -%}
+          {%- if pt contains 'melatonin' or pt contains 'sleep' -%}{%- assign pc = '#DE1D61' -%}
+          {%- elsif pt contains 'eye' -%}{%- assign pc = '#F9740D' -%}
+          {%- else -%}{%- assign pc = '#8DAA31' -%}{%- endif -%}
+          <a class="gp-mini" href="{{ p.url }}">
+            <span class="sh" style="background:{{ pc }}1a">
+              {%- if p.featured_image -%}
+                {{ p.featured_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: p.title }}
+              {%- else -%}
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="{{ GPATH }}" fill="{{ pc }}"/>
+                  <ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/>
+                </svg>
+              {%- endif -%}
+            </span>
+            <span><b>{{ p.title }}</b><span>{{ p.price | money }}</span></span>
+          </a>
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var q=1,qv=document.getElementById('gp-qtyv'),qi=document.getElementById('gp-qty');
+  var minus=document.getElementById('gp-minus'),plus=document.getElementById('gp-plus');
+  function set(n){q=Math.max(1,Math.min(20,n));qv.textContent=q;qi.value=q;}
+  if(minus)minus.addEventListener('click',function(){set(q-1);});
+  if(plus)plus.addEventListener('click',function(){set(q+1);});
+  var vars=document.getElementById('gp-vars');
+  if(vars){vars.addEventListener('click',function(e){
+    var b=e.target.closest('.gp-var'); if(!b)return;
+    vars.querySelectorAll('.gp-var').forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true');
+    document.getElementById('gp-vid').value=b.dataset.vid;
+  });}
+})();
+</script>
+
+{% schema %}
+{ "name": "GummyChums Product", "settings": [] }
+{% endschema %}

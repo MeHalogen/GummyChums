@@ -1,0 +1,86 @@
+{%- comment -%} GummyChums footer — brand, not Dawn's newsletter block {%- endcomment -%}
+<style>
+  .gcf{background:var(--gc-ink);color:var(--gc-cream);padding:clamp(48px,6vw,76px) 22px 26px;position:relative;overflow:hidden}
+  .gcf::before{content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;filter:blur(90px);opacity:.16;
+    background:var(--gc-cherry);left:-15vw;top:-25vw;pointer-events:none}
+  .gcf-in{max-width:1180px;margin:0 auto;position:relative;z-index:1}
+  .gcf-top{display:flex;flex-wrap:wrap;gap:36px;justify-content:space-between;align-items:flex-start}
+  .gcf-brand{max-width:26rem}
+  .gcf-logo{height:auto;width:min(230px,58vw);display:block;filter:invert(1);
+    -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+  .gcf-tag{font-weight:700;font-size:1.05rem;color:rgba(253,247,244,.75);margin:16px 0 0;line-height:1.5}
+  .gcf-cols{display:flex;gap:clamp(30px,6vw,70px);flex-wrap:wrap}
+  .gcf-col h4{font-weight:800;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--gc-cherry);margin:0 0 14px}
+  .gcf-col a,.gcf-col span{display:block;color:rgba(253,247,244,.82);text-decoration:none;font-weight:600;
+    font-size:.98rem;margin-bottom:10px;transition:color .2s,transform .2s var(--gc-ease)}
+  .gcf-col a:hover{color:#fff;transform:translateX(3px)}
+  .gcf-bot{margin-top:44px;padding-top:20px;border-top:1px solid rgba(253,247,244,.14);
+    display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;
+    font-size:.85rem;font-weight:600;color:rgba(253,247,244,.6)}
+  .gcf-dot{width:11px;height:11px;display:inline-block;border-radius:46% 54% 52% 48%/48% 46% 54% 52%;
+    background:var(--gc-cherry);vertical-align:-1px;margin:0 7px;
+    animation:gcfDot 4.8s linear infinite, gcfWob 3s ease-in-out infinite}
+  @keyframes gcfDot{0%,100%{background:#DE1D61}33%{background:#8DAA31}66%{background:#F9740D}}
+  @keyframes gcfWob{0%,100%{transform:rotate(-9deg) scale(1)}50%{transform:rotate(9deg) scale(1.15)}}
+  @media(max-width:749px){.gcf-top{flex-direction:column;gap:30px}}
+  @media (prefers-reduced-motion:reduce){.gcf-dot{animation:none}}
+</style>
+
+<footer class="gcf">
+  <div class="gcf-in">
+    <div class="gcf-top">
+      <div class="gcf-brand">
+        <img class="gcf-logo" src="{{ 'gc-wordmark-stack.png' | asset_url }}" alt="{{ shop.name }}" width="230" draggable="false" oncontextmenu="return false">
+        <p class="gcf-tag">{{ section.settings.tagline }}</p>
+      </div>
+
+      <div class="gcf-cols">
+        <div class="gcf-col">
+          <h4>Shop</h4>
+          {%- for product in collections.all.products limit: 3 -%}
+            <a href="{{ product.url }}">{{ product.title }}</a>
+          {%- endfor -%}
+          <a href="{{ routes.all_products_collection_url }}">All gummies</a>
+        </div>
+        <div class="gcf-col">
+          <h4>Company</h4>
+          <a href="{{ routes.root_url }}#gc-story">Our story</a>
+          <a href="{{ routes.root_url }}#gc-faq">FAQ</a>
+          {%- if section.settings.instagram != blank -%}
+            <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener">Instagram</a>
+          {%- endif -%}
+        </div>
+        <div class="gcf-col">
+          <h4>Help</h4>
+          {%- for link in linklists.footer.links -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endfor -%}
+          {%- if section.settings.email != blank -%}
+            <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="gcf-bot">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}<span class="gcf-dot"></span>Made in India 🇮🇳</span>
+      <span>{{ section.settings.legal }}</span>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "GummyChums Footer",
+  "settings": [
+    { "type": "text", "id": "tagline", "label": "Tagline",
+      "default": "Not another supplement brand. We’re making healthy habits feel good." },
+    { "type": "text", "id": "instagram", "label": "Instagram URL",
+      "default": "https://www.instagram.com/gummy.chums/" },
+    { "type": "text", "id": "email", "label": "Support email" },
+    { "type": "text", "id": "legal", "label": "Legal line",
+      "default": "These statements have not been evaluated by the FSSAI. Not intended to diagnose or treat." }
+  ]
+}
+{% endschema %}

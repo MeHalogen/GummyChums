@@ -1,292 +1,256 @@
-{%- comment -%} GummyChums homepage — faithful index31 "Tapri" build: scroll fall-in, catch game, cards, marquee, manifesto {%- endcomment -%}
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+{%- comment -%} GummyChums homepage — coming-soon vibe, pink-forward, scroll fall-in kept {%- endcomment -%}
+{%- assign s = section.settings -%}
+{%- assign GPATH = 'M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z' -%}
 <style>
-  .gc31{--cream:#f1e7da;--ink:#1f1c1a;--coral:#e8503a;--saffron:#f4c84f;--neem:#234225;
-    --purple:#6b2f6a;--teal:#477971;--red:#d72638;--pink:#e8a0b2;--green:#98c64b;
-    font-family:'Baloo 2',cursive;color:var(--ink);background:var(--cream);
-    margin:0 -1.5rem;overflow-x:hidden}
-  @media(max-width:749px){.gc31{margin:0 -1rem}}
-  .gc31 *{box-sizing:border-box}
-  .gc31 .anton{font-family:'Anton',sans-serif;letter-spacing:.005em}
+  .gc-home{--cherry:#DE1D61;--mango:#8DAA31;--orange:#F9740D;--ink:#191316;--cream:#FDF7F4;
+    margin:0 -1.5rem;overflow-x:clip;color:var(--ink)}
+  @media(max-width:749px){.gc-home{margin:0 -1rem}}
+  .gc-home *{box-sizing:border-box}
+  .gc-wrap{max-width:1180px;margin:0 auto;padding:0 22px}
 
-  /* ---------- ACT 1: scroll fall-in zoom stage ---------- */
-  .tp-stage{position:relative;height:270vh}
-  .tp-pin{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;place-items:center;background:var(--cream)}
-  .tp-pin::before{content:"";position:absolute;inset:0;opacity:.5;pointer-events:none;
-    background-image:radial-gradient(rgba(31,28,26,.14) 1.5px,transparent 1.6px);background-size:16px 16px}
-  /* blurred three-flavour chums (from the coming-soon page) */
-  .tp-blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.42;pointer-events:none;z-index:0;will-change:transform}
-  .tp-b1{width:46vw;height:46vw;background:var(--red);left:-8vw;top:-6vw;animation:tpb1 17s ease-in-out infinite}
-  .tp-b2{width:40vw;height:40vw;background:var(--green);right:-8vw;top:4vw;animation:tpb2 21s ease-in-out infinite}
-  .tp-b3{width:44vw;height:44vw;background:#ff7a2f;left:22vw;bottom:-14vw;animation:tpb3 24s ease-in-out infinite}
-  @keyframes tpb1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(26px,32px) scale(1.12)}}
-  @keyframes tpb2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-30px,26px) scale(1.08)}}
-  @keyframes tpb3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(22px,-28px) scale(1.14)}}
+  /* ---------- ACT 1 — hero + scroll fall-in ---------- */
+  .gh-stage{position:relative;height:250vh}
+  .gh-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
+    background:linear-gradient(180deg,#FFF3F7 0%,var(--cream) 60%)}
+  .gh-blob{position:absolute;border-radius:50%;filter:blur(72px);pointer-events:none;z-index:0;will-change:transform}
+  .gh-b1{width:52vw;height:52vw;background:var(--cherry);opacity:.34;left:-10vw;top:-12vw;animation:ghb1 18s ease-in-out infinite}
+  .gh-b2{width:42vw;height:42vw;background:var(--mango);opacity:.20;right:-8vw;top:2vw;animation:ghb2 22s ease-in-out infinite}
+  .gh-b3{width:48vw;height:48vw;background:var(--orange);opacity:.22;left:26vw;bottom:-18vw;animation:ghb3 25s ease-in-out infinite}
+  .gh-b4{width:38vw;height:38vw;background:var(--cherry);opacity:.22;right:6vw;bottom:-10vw;animation:ghb2 20s ease-in-out infinite reverse}
+  @keyframes ghb1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(28px,34px) scale(1.14)}}
+  @keyframes ghb2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-32px,26px) scale(1.1)}}
+  @keyframes ghb3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(24px,-30px) scale(1.15)}}
 
-  .tp-gummy{position:absolute;left:50%;bottom:4%;width:min(32vw,190px);will-change:transform;transform-origin:center bottom;
-    transform:translateX(-50%) scale(calc(1 + var(--z,0) * var(--z,0) * 26));z-index:1}
-  .tp-title{position:relative;z-index:2;text-align:center;padding:0 1.25rem;
-    opacity:calc(1 - var(--z,0) * 2.6);will-change:opacity}
-  .tp-logo{display:block;width:min(760px,86vw);height:auto;margin:0 auto;
+  .gh-gummy{position:absolute;left:50%;bottom:3%;width:min(30vw,180px);z-index:1;will-change:transform;
+    transform-origin:center bottom;transform:translateX(-50%) scale(calc(1 + var(--z,0) * var(--z,0) * 28))}
+  .gh-mid{position:relative;z-index:2;text-align:center;padding:0 22px;
+    opacity:calc(1 - var(--z,0) * 2.7);will-change:opacity}
+  .gh-logo{display:block;width:min(680px,88vw);height:auto;margin:0 auto 22px;
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none;pointer-events:none}
-  .tp-kick{font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--coral);
-    font-size:clamp(.75rem,1.6vw,1rem);margin:0 0 1rem}
-  .tp-lede{font-weight:700;font-size:clamp(1rem,2vw,1.25rem);color:rgba(31,28,26,.7);max-width:30rem;margin:1.4rem auto 0}
-  .tp-scroll{margin-top:1.4rem;font-weight:800;letter-spacing:.18em;color:rgba(31,28,26,.45);animation:tpbounce 1.6s ease-in-out infinite}
-  @keyframes tpbounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
-  .tp-sticker{position:absolute;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:.72rem;letter-spacing:.06em;
-    text-transform:uppercase;border:2px solid var(--ink);border-radius:999px;padding:.32rem .85rem;
-    box-shadow:3px 3px 0 var(--ink);white-space:nowrap;z-index:3}
-  .tp-inside{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;padding:0 1.25rem;
-    color:var(--cream);opacity:calc((var(--z,0) - .62) * 3.6);pointer-events:none}
+  .gh-tag{font-size:clamp(1.6rem,4.6vw,3rem);font-weight:800;letter-spacing:-.025em;line-height:1.04;margin:0 auto;max-width:17ch}
+  .gh-sub{font-size:clamp(1.02rem,2.2vw,1.3rem);font-weight:600;color:#191316a8;margin:14px auto 0;max-width:34ch;line-height:1.45}
+  .gh-cta{margin-top:26px;display:inline-flex}
+  .gh-pills{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .gh-pill{background:#fff;border-radius:999px;padding:7px 15px;font-size:.78rem;font-weight:800;
+    letter-spacing:.04em;box-shadow:0 8px 18px -12px rgba(25,19,22,.5)}
+  .gh-scroll{margin-top:24px;font-weight:800;letter-spacing:.2em;font-size:.72rem;color:#19131666;
+    animation:ghBounce 1.7s ease-in-out infinite}
+  @keyframes ghBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+  .gh-reveal{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;padding:0 22px;
+    color:#fff;opacity:calc((var(--z,0) - .60) * 3.8);pointer-events:none}
+  .gh-reveal h2{font-size:clamp(2rem,7vw,4.6rem);font-weight:800;letter-spacing:-.03em;line-height:1;margin:0}
+  .gh-reveal p{font-size:clamp(1rem,2.4vw,1.45rem);font-weight:700;margin:16px auto 0;max-width:30ch;opacity:.92}
 
-  /* ---------- ACT 2: the catch game ---------- */
-  .tp-game{position:relative;overflow:hidden;min-height:94vh;background:var(--neem);color:var(--cream);
-    display:grid;place-items:center;padding:4rem 1.25rem}
-  .holi-drop{position:absolute;top:0;border:0;background:transparent;padding:0;margin:0;cursor:pointer;
-    will-change:transform;opacity:.95;-webkit-tap-highlight-color:transparent}
-  .holi-drop svg{width:100%;height:100%;display:block;pointer-events:none;filter:drop-shadow(0 6px 8px rgba(31,28,26,.22))}
-  @keyframes holi-fall{0%{transform:translate3d(0,-16vh,0) rotate(0)}100%{transform:translate3d(var(--sway,0),116vh,0) rotate(330deg)}}
-  .holi-puff{position:fixed;border-radius:50%;pointer-events:none;z-index:120;transform:translate(-50%,-50%);
-    will-change:transform,opacity;animation:holi-puff .62s cubic-bezier(.2,.7,.2,1) forwards}
-  @keyframes holi-puff{0%{transform:translate(-50%,-50%) scale(.4);opacity:.95}
-    100%{transform:translate(calc(-50% + var(--px,0)),calc(-50% + var(--py,0))) scale(1.1);opacity:0}}
-  .tp-caught{margin-top:1.3rem;display:inline-flex;align-items:center;gap:.5rem;background:var(--cream);color:var(--neem);
-    font-weight:800;padding:.5rem 1.25rem;border-radius:999px;pointer-events:auto}
+  /* ---------- ACT 2 — flavours ---------- */
+  .gh-sec{padding:clamp(52px,7vw,92px) 0}
+  .gh-head{text-align:center;margin-bottom:clamp(28px,4vw,46px)}
+  .gh-head h2{font-size:clamp(2rem,5.4vw,3.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.04;margin:10px 0 0}
+  .gh-head p{font-size:clamp(1rem,2.1vw,1.2rem);font-weight:600;color:#191316a0;margin:12px auto 0;max-width:40ch}
+  .gh-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
+  @media(max-width:900px){.gh-grid{grid-template-columns:1fr;max-width:430px;margin:0 auto}}
+  .gh-card{background:#fff;border-radius:28px;padding:18px;display:flex;flex-direction:column;gap:12px;
+    box-shadow:0 28px 56px -34px rgba(25,19,22,.42);
+    transition:transform .22s var(--gc-spring),box-shadow .22s}
+  .gh-card:hover{transform:translateY(-8px);box-shadow:0 38px 70px -32px rgba(222,29,97,.45)}
+  .gh-shot{border-radius:20px;aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden;position:relative}
+  .gh-shot img{width:100%;height:100%;object-fit:cover}
+  .gh-shot svg{width:66%;height:auto;animation:ghFloat 6s ease-in-out infinite;
+    filter:drop-shadow(0 16px 22px rgba(25,19,22,.22))}
+  @keyframes ghFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-15px) rotate(3deg)}}
+  .gh-badge{position:absolute;top:12px;left:12px;background:#fff;color:var(--ink);font-size:.68rem;font-weight:800;
+    letter-spacing:.1em;text-transform:uppercase;padding:6px 11px;border-radius:999px;box-shadow:0 6px 14px -8px rgba(0,0,0,.4)}
+  .gh-name{font-size:1.4rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);text-decoration:none;margin:2px 0 0}
+  .gh-desc{font-size:.94rem;font-weight:600;color:#191316a0;margin:0;line-height:1.45;min-height:2.9em}
+  .gh-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:4px}
+  .gh-price{font-size:1.35rem;font-weight:800}
+  .gh-add{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:.94rem;color:#fff;
+    padding:12px 22px;border-radius:999px;transition:transform .14s var(--gc-spring),filter .25s}
+  .gh-add:hover{filter:brightness(1.08)} .gh-add:active{transform:scale(.93)}
 
-  /* ---------- ACT 3: Tapri product cards (real Shopify products) ---------- */
-  .tp-shop{max-width:72rem;margin:0 auto;padding:6rem 1.25rem}
-  .tp-h2{font-weight:800;font-size:clamp(2.2rem,6vw,4.4rem);text-align:center;margin:0 0 3.5rem}
-  .tp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2.25rem}
-  @media(max-width:900px){.tp-grid{grid-template-columns:1fr;max-width:26rem;margin:0 auto}}
-  .tp-card{position:relative;background:#fff;border:3px solid var(--ink);box-shadow:8px 8px 0 var(--ink);border-radius:18px;
-    padding:1.6rem 1.4rem;text-align:center;transition:transform .3s cubic-bezier(.22,.8,.26,1),box-shadow .3s cubic-bezier(.22,.8,.26,1)}
-  .tp-card:hover{transform:translate(-2px,-5px);box-shadow:12px 15px 0 var(--ink)}
-  .tp-shot{display:grid;place-items:center;padding:1rem;border-radius:1.5rem;margin-bottom:1rem;overflow:hidden}
-  .tp-shot img{width:100%;height:100%;object-fit:cover;border-radius:1rem}
-  .tp-shot svg{width:72%;height:auto;animation:tpfloat 6s ease-in-out infinite}
-  @keyframes tpfloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-18px) rotate(3deg)}}
-  .tp-name{font-weight:800;font-size:1.5rem;margin:0;color:var(--ink);text-decoration:none;display:block}
-  .tp-desc{font-weight:600;color:rgba(31,28,26,.55);font-size:.88rem;margin:.75rem 0 1rem;min-height:3.2em}
-  .tp-foot{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
-  .tp-price{font-weight:800;font-size:1.5rem}
-  .tp-add{border:2px solid var(--ink);background:var(--coral);color:var(--cream);font-weight:800;border-radius:10px;
-    padding:.6rem 1.3rem;cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:transform .15s,box-shadow .15s;font-family:inherit}
-  .tp-add:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+  /* ---------- ACT 3 — story ---------- */
+  .gh-story{background:var(--ink);color:var(--cream);border-radius:34px;padding:clamp(38px,6vw,74px) clamp(24px,4vw,60px);
+    position:relative;overflow:hidden;text-align:center}
+  .gh-story::before{content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;filter:blur(90px);
+    opacity:.28;background:var(--cherry);left:-18vw;top:-30vw;pointer-events:none}
+  .gh-story-in{position:relative;z-index:1}
+  .gh-story h2{font-size:clamp(1.8rem,5vw,3.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin:0 auto;max-width:22ch}
+  .gh-story h2 em{font-style:normal;color:var(--cherry)}
+  .gh-story p{font-size:clamp(1rem,2.1vw,1.2rem);font-weight:600;color:rgba(253,247,244,.78);
+    margin:20px auto 0;max-width:46ch;line-height:1.55}
+  .gh-vals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:36px}
+  @media(max-width:749px){.gh-vals{grid-template-columns:1fr}}
+  .gh-val{background:rgba(253,247,244,.07);border-radius:20px;padding:20px}
+  .gh-val b{display:block;font-size:1.05rem;color:var(--cherry);margin-bottom:6px}
+  .gh-val span{font-size:.92rem;font-weight:600;color:rgba(253,247,244,.72);line-height:1.45}
 
-  /* ---------- marquee ---------- */
-  .tp-marq{overflow:hidden;padding:1.25rem 0;background:var(--coral)}
-  .tp-marq .trk{display:flex;white-space:nowrap;font-weight:800;font-size:1.4rem;color:var(--cream);
-    will-change:transform;animation:tpmv 30s linear infinite}
-  .tp-marq .trk span{padding:0 1.5rem}
-  @keyframes tpmv{to{transform:translateX(-50%)}}
+  /* ---------- ACT 4 — FAQ ---------- */
+  .gh-faq{max-width:760px;margin:0 auto}
+  .gh-q{background:#fff;border-radius:20px;margin-bottom:12px;box-shadow:0 16px 34px -28px rgba(25,19,22,.4);overflow:hidden}
+  .gh-q summary{cursor:pointer;list-style:none;padding:18px 22px;font-weight:800;font-size:1.04rem;
+    display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .gh-q summary::-webkit-details-marker{display:none}
+  .gh-q summary::after{content:"+";font-size:1.5rem;color:var(--cherry);transition:transform .3s var(--gc-ease);line-height:1}
+  .gh-q[open] summary::after{transform:rotate(45deg)}
+  .gh-q p{margin:0;padding:0 22px 20px;font-weight:600;font-size:.97rem;color:#191316a8;line-height:1.55}
 
-  /* ---------- manifesto ---------- */
-  .tp-mani{max-width:60rem;margin:0 auto;padding:6rem 1.25rem;text-align:center}
-  .tp-mani h3{font-weight:800;font-size:clamp(1.9rem,5.4vw,3.6rem);line-height:1.08;margin:0}
-  .tp-strike{position:relative;white-space:nowrap;opacity:.5}
-  .tp-strike::after{content:"";position:absolute;left:-2%;right:-2%;top:52%;height:.09em;border-radius:99px;
-    background:var(--pink);transform:scaleX(0);transform-origin:left center;transition:transform .7s cubic-bezier(.77,0,.18,1)}
-  .tp-mani.go .tp-strike:nth-of-type(1)::after{transform:scaleX(1);transition-delay:.15s}
-  .tp-mani.go .tp-strike:nth-of-type(2)::after{transform:scaleX(1);transition-delay:.5s}
-  .tp-mark{background-image:linear-gradient(rgba(244,200,79,.55),rgba(244,200,79,.55));background-repeat:no-repeat;
-    background-size:0% 82%;background-position:0 62%;transition:background-size .8s .85s cubic-bezier(.77,0,.18,1);padding:0 .1em}
-  .tp-mani.go .tp-mark{background-size:100% 82%}
-  .tp-treat{color:var(--purple)}
-  .tp-cta{display:inline-flex;align-items:center;gap:.5rem;margin-top:2.5rem;border:3px solid var(--ink);
-    background:var(--saffron);color:var(--ink);font-weight:800;font-size:1.05rem;text-decoration:none;
-    padding:.9rem 1.9rem;border-radius:12px;box-shadow:5px 5px 0 var(--ink);transition:transform .15s,box-shadow .15s}
-  .tp-cta:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+  /* ---------- ACT 5 — closing CTA ---------- */
+  .gh-end{text-align:center;padding:clamp(56px,8vw,110px) 22px}
+  .gh-end h2{font-size:clamp(2rem,6vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.03;margin:0 auto;max-width:16ch}
+  .gh-end h2 em{font-style:normal;color:var(--cherry)}
+  .gh-end p{font-size:clamp(1rem,2.2vw,1.25rem);font-weight:600;color:#191316a0;margin:16px auto 30px;max-width:36ch}
 
   @media (prefers-reduced-motion:reduce){
-    .gc31 *{animation:none!important;transition:none!important}
-    .tp-stage{height:auto}.tp-pin{position:relative;height:auto;padding:5rem 0}
-    .tp-gummy{display:none}.tp-title{opacity:1!important}.tp-inside{display:none}
+    .gh-stage{height:auto}.gh-pin{position:relative;height:auto;padding:70px 0}
+    .gh-gummy{display:none}.gh-mid{opacity:1!important}.gh-reveal{display:none}
   }
 </style>
 
-{%- assign s = section.settings -%}
-{%- assign GPATH = 'M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z' -%}
+<div class="gc-home">
 
-<div class="gc31">
+  <!-- ACT 1 -->
+  <header class="gh-stage" id="gh-stage">
+    <div class="gh-pin">
+      <div class="gh-blob gh-b1"></div><div class="gh-blob gh-b2"></div>
+      <div class="gh-blob gh-b3"></div><div class="gh-blob gh-b4"></div>
 
-  <!-- ACT 1 — scroll fall-in -->
-  <header class="tp-stage" id="tp-stage">
-    <div class="tp-pin">
-      <div class="tp-blob tp-b1"></div><div class="tp-blob tp-b2"></div><div class="tp-blob tp-b3"></div>
-
-      <div class="tp-gummy">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;filter:drop-shadow(0 20px 30px rgba(31,28,26,.28))">
-          <path d="{{ GPATH }}" fill="{{ s.hero_gummy_color }}"/>
+      <div class="gh-gummy">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;filter:drop-shadow(0 22px 34px rgba(222,29,97,.4))">
+          <defs><radialGradient id="ghHero" cx="38%" cy="30%" r="76%">
+            <stop offset="0%" stop-color="#ff5f94"/><stop offset="60%" stop-color="#DE1D61"/><stop offset="100%" stop-color="#a51447"/>
+          </radialGradient></defs>
+          <path d="{{ GPATH }}" fill="url(#ghHero)"/>
           <ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/>
-          <ellipse cx="52" cy="62" rx="30" ry="22" fill="#000" opacity=".07"/>
         </svg>
       </div>
 
-      <div class="tp-title">
-        <span class="tp-sticker" style="top:-2.5rem;left:6%;background:{{ s.sticker1_bg }};transform:rotate(-9deg)">{{ s.sticker1 }}</span>
-        <span class="tp-sticker" style="top:-1.5rem;right:5%;background:{{ s.sticker2_bg }};transform:rotate(8deg)">{{ s.sticker2 }}</span>
-        <span class="tp-sticker" style="bottom:-2rem;left:12%;background:{{ s.sticker3_bg }};color:#f1e7da;transform:rotate(5deg)">{{ s.sticker3 }}</span>
-        <p class="tp-kick">{{ s.kicker }}</p>
-        <img class="tp-logo" src="{{ 'gc-wordmark-stack.png' | asset_url }}" alt="{{ shop.name }}" width="760" draggable="false" oncontextmenu="return false">
-        <p class="tp-lede">{{ s.lede }}</p>
-        <div class="tp-scroll">SCROLL ↓</div>
+      <div class="gh-mid">
+        <img class="gh-logo" src="{{ 'gc-wordmark-stack.png' | asset_url }}" alt="{{ shop.name }}" width="680" draggable="false" oncontextmenu="return false">
+        <h1 class="gh-tag">{{ s.headline }}</h1>
+        <p class="gh-sub">{{ s.sub }}</p>
+        <div class="gh-cta"><a class="gc-btn" href="{{ routes.all_products_collection_url }}">{{ s.cta }}</a></div>
+        <div class="gh-pills">
+          <span class="gh-pill">🌱 100% Veg</span>
+          <span class="gh-pill">🚫 No Added Sugar</span>
+          <span class="gh-pill">🇮🇳 Made in India</span>
+        </div>
+        <div class="gh-scroll">SCROLL ↓</div>
       </div>
 
-      <div class="tp-inside">
+      <div class="gh-reveal">
         <div>
-          <p class="anton" style="font-size:clamp(2.2rem,9vw,5.5rem);line-height:.9;margin:0">{{ s.inside_title }}</p>
-          <p style="font-weight:800;font-size:clamp(1.05rem,2.4vw,1.5rem);margin:1rem auto 0;max-width:36rem">
-            {{ s.inside_sub }}
-          </p>
+          <h2>{{ s.reveal_title }}</h2>
+          <p>{{ s.reveal_sub }}</p>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- ACT 2 — catch the chums -->
-  <section class="tp-game" id="tp-game">
-    <div id="holi-rain" style="position:absolute;inset:0;z-index:1"></div>
-    <div style="position:relative;z-index:2;text-align:center;pointer-events:none">
-      <p style="font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--saffron);margin:0 0 .75rem;font-size:clamp(.75rem,1.6vw,1rem)">{{ s.game_kicker }}</p>
-      <h2 class="anton" style="font-size:clamp(2.6rem,12vw,7rem);line-height:.86;margin:0">{{ s.game_title }}</h2>
-      <p style="font-weight:700;font-size:clamp(1rem,2vw,1.25rem);color:rgba(241,231,218,.8);max-width:28rem;margin:.75rem auto 0">{{ s.game_sub }}</p>
-      <div class="tp-caught">Caught&nbsp;<b id="holi-count" style="color:var(--coral)">0</b></div>
+  <!-- ACT 2 — flavours -->
+  <section class="gh-sec" id="shop">
+    <div class="gc-wrap">
+      <div class="gh-head gc-rise">
+        <p class="gc-kick">{{ s.shop_kicker }}</p>
+        <h2>{{ s.shop_title }}</h2>
+        <p>{{ s.shop_sub }}</p>
+      </div>
+      <div class="gh-grid">
+        {%- for product in collections.all.products limit: 3 -%}
+          {%- assign t = product.title | downcase -%}
+          {%- if t contains 'melatonin' or t contains 'sleep' -%}
+            {%- assign col = '#DE1D61' -%}{%- assign c2 = '#ff5f94' -%}{%- assign c3 = '#a51447' -%}{%- assign role = 'Sleep' -%}
+          {%- elsif t contains 'eye' -%}
+            {%- assign col = '#F9740D' -%}{%- assign c2 = '#ffa34d' -%}{%- assign c3 = '#b8500a' -%}{%- assign role = 'Eye care' -%}
+          {%- else -%}
+            {%- assign col = '#8DAA31' -%}{%- assign c2 = '#c3e05f' -%}{%- assign c3 = '#5f7620' -%}{%- assign role = 'Focus' -%}
+          {%- endif -%}
+          <div class="gh-card gc-rise" style="transition-delay:{{ forloop.index0 | times: 90 }}ms">
+            <a href="{{ product.url }}" class="gh-shot" style="background:{{ col }}16">
+              <span class="gh-badge" style="color:{{ col }}">{{ role }}</span>
+              {%- if product.featured_image -%}
+                {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: product.title }}
+              {%- else -%}
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ product.title }}">
+                  <defs><radialGradient id="g{{ forloop.index }}" cx="38%" cy="30%" r="76%">
+                    <stop offset="0%" stop-color="{{ c2 }}"/><stop offset="60%" stop-color="{{ col }}"/><stop offset="100%" stop-color="{{ c3 }}"/>
+                  </radialGradient></defs>
+                  <path d="{{ GPATH }}" fill="url(#g{{ forloop.index }})"/>
+                  <ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/>
+                </svg>
+              {%- endif -%}
+            </a>
+            <a href="{{ product.url }}" class="gh-name">{{ product.title }}</a>
+            <p class="gh-desc">{{ product.description | strip_html | truncatewords: 15 }}</p>
+            <div class="gh-foot">
+              <span class="gh-price" style="color:{{ col }}">{{ product.price | money }}</span>
+              {%- if product.available -%}
+                <form method="post" action="{{ routes.cart_add_url }}">
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <button type="submit" class="gh-add" style="background:{{ col }}">Add</button>
+                </form>
+              {%- else -%}
+                <span class="gh-add" style="background:#bbb;cursor:default">Sold out</span>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- else -%}
+          <p style="grid-column:1/-1;text-align:center;color:#191316a0">Add products in Shopify — they appear here automatically.</p>
+        {%- endfor -%}
+      </div>
     </div>
   </section>
 
-  <!-- ACT 3 — Meet the three (REAL products) -->
-  <section class="tp-shop" id="shop">
-    <h2 class="tp-h2">{{ s.shop_title }}</h2>
-    <div class="tp-grid">
-      {%- for product in collections.all.products limit: 3 -%}
-        {%- assign t = product.title | downcase -%}
-        {%- if t contains 'melatonin' or t contains 'sleep' -%}{%- assign col = '#6b2f6a' -%}
-        {%- elsif t contains 'eye' -%}{%- assign col = '#477971' -%}
-        {%- else -%}{%- assign col = '#d72638' -%}{%- endif -%}
-        <div class="tp-card">
-          <a href="{{ product.url }}" class="tp-shot" style="background:{{ col }}20">
-            {%- if product.featured_image -%}
-              {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: product.title }}
-            {%- else -%}
-              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ product.title }}">
-                <path d="{{ GPATH }}" fill="{{ col }}"/>
-                <path d="{{ GPATH }}" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/>
-                <ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/>
-                <ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/>
-                <ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/>
-              </svg>
-            {%- endif -%}
-          </a>
-          <a href="{{ product.url }}" class="tp-name">{{ product.title }}</a>
-          <p class="tp-desc">{{ product.description | strip_html | truncatewords: 18 }}</p>
-          <div class="tp-foot">
-            <span class="tp-price" style="color:{{ col }}">{{ product.price | money }}</span>
-            {%- if product.available -%}
-              <form method="post" action="{{ routes.cart_add_url }}">
-                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="tp-add">ADD</button>
-              </form>
-            {%- else -%}
-              <span class="tp-add" style="background:#9995;cursor:default">SOLD OUT</span>
-            {%- endif -%}
+  <!-- ACT 3 — story -->
+  <section class="gh-sec" id="gc-story" style="padding-top:0">
+    <div class="gc-wrap">
+      <div class="gh-story gc-rise">
+        <div class="gh-story-in">
+          <p class="gc-kick" style="color:#fff9">{{ s.story_kicker }}</p>
+          <h2>{{ s.story_title | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
+          <p>{{ s.story_body }}</p>
+          <div class="gh-vals">
+            <div class="gh-val"><b>{{ s.val1_t }}</b><span>{{ s.val1_b }}</span></div>
+            <div class="gh-val"><b>{{ s.val2_t }}</b><span>{{ s.val2_b }}</span></div>
+            <div class="gh-val"><b>{{ s.val3_t }}</b><span>{{ s.val3_b }}</span></div>
           </div>
         </div>
-      {%- else -%}
-        <p style="grid-column:1/-1;text-align:center;color:rgba(31,28,26,.55)">Add products in Shopify — they appear here automatically.</p>
-      {%- endfor -%}
+      </div>
     </div>
   </section>
 
-  <!-- marquee -->
-  <div class="tp-marq"><div class="trk">
-    <span>{{ s.marquee }}</span><span>{{ s.marquee }}</span><span>{{ s.marquee }}</span><span>{{ s.marquee }}</span>
-  </div></div>
+  <!-- ACT 4 — FAQ -->
+  <section class="gh-sec" id="gc-faq" style="padding-top:0">
+    <div class="gc-wrap">
+      <div class="gh-head gc-rise">
+        <p class="gc-kick">Good to know</p>
+        <h2>Questions, answered.</h2>
+      </div>
+      <div class="gh-faq gc-rise">
+        <details class="gh-q"><summary>How many do I take a day?</summary><p>Two gummies a day, any time that suits you. Your daily chums are waiting — no water, no pills, no fuss.</p></details>
+        <details class="gh-q"><summary>Is there added sugar?</summary><p>No added sugar. Just the good stuff, in a gummy you’ll actually look forward to.</p></details>
+        <details class="gh-q"><summary>Are they vegetarian?</summary><p>Yes — 100% vegetarian, pectin-based, and made in India in an FSSAI-compliant facility.</p></details>
+        <details class="gh-q"><summary>How long until I feel a difference?</summary><p>Wellness is a habit, not a switch. Most Chums take theirs daily for 4–6 weeks to feel the difference. Consistency is the whole point.</p></details>
+        <details class="gh-q"><summary>How fast is delivery?</summary><p>We ship pan-India. Orders are usually delivered in 3–7 working days, and you’ll get tracking as soon as it leaves us.</p></details>
+      </div>
+    </div>
+  </section>
 
-  <!-- manifesto -->
-  <section class="tp-mani" id="tp-mani">
-    <h3>
-      {{ s.mani_a }} <span class="tp-strike">{{ s.mani_strike1 }}</span><br>
-      {{ s.mani_b }} <span class="tp-strike">{{ s.mani_strike2 }}</span><br>
-      <span class="tp-mark">{{ s.mani_punch }}</span>
-    </h3>
-    <p style="font-weight:700;font-size:clamp(1.4rem,3.6vw,2.4rem);margin:2.5rem 0 0">
-      wellness = <span class="tp-treat">a treat</span> <span style="opacity:.45">not a task.</span>
-    </p>
-    <a class="tp-cta" href="{{ routes.all_products_collection_url }}">{{ s.cta_label }}</a>
+  <!-- ACT 5 — closing -->
+  <section class="gh-end gc-rise">
+    <h2>{{ s.end_title | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
+    <p>{{ s.end_sub }}</p>
+    <a class="gc-btn" href="{{ routes.all_products_collection_url }}">{{ s.end_cta }}</a>
   </section>
 </div>
 
 <script>
 (function(){
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ---- Act 1: scroll progress --z (0 → 1) ---- */
-  (function(){
-    var stage=document.getElementById('tp-stage'); if(!stage)return;
-    var tk=false;
-    function upd(){var r=stage.getBoundingClientRect();var d=r.height-innerHeight;
-      var z=d>0?Math.min(Math.max(-r.top/d,0),1):0; stage.style.setProperty('--z',z.toFixed(4));}
-    addEventListener('scroll',function(){if(!tk){requestAnimationFrame(function(){upd();tk=false;});tk=true;}},{passive:true});
-    addEventListener('resize',upd); upd();
-  })();
-
-  /* ---- Act 2: raining gummies you can pop ---- */
-  (function(){
-    var rain=document.getElementById('holi-rain'), countEl=document.getElementById('holi-count');
-    if(!rain)return;
-    var COLORS=['#e8503a','#f4c84f','#e8a0b2','#98c64b','#477971','#6b2f6a','#6b1e21','#ff7a2f'];
-    var CAP=reduce?8:(innerWidth<640?20:36), caught=0;
-    function rnd(a,b){return a+Math.random()*(b-a);}
-    function svg(c){return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="{{ GPATH }}" fill="'+c+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="30" ry="22" fill="#000" opacity=".07"/></svg>';}
-    function reset(el,first){
-      var c=COLORS[(Math.random()*COLORS.length)|0]; el.dataset.c=c;
-      var sz=rnd(22,52); el.style.width=el.style.height=sz+'px';
-      el.style.left=rnd(0,96)+'%'; el.style.setProperty('--sway',rnd(-45,45)+'px');
-      el.innerHTML=svg(c);
-      var dur=rnd(5,11);
-      el.style.animation='none'; void el.offsetWidth;
-      el.style.animation='holi-fall '+dur.toFixed(2)+'s linear '+(first?(-rnd(0,dur)).toFixed(2):'0')+'s forwards';
-    }
-    function puff(x,y,c){
-      if(reduce)return;
-      for(var i=0;i<12;i++){var q=document.createElement('span');q.className='holi-puff';
-        q.style.left=x+'px';q.style.top=y+'px';q.style.background=c;
-        var a=Math.random()*6.283,dd=rnd(28,86);
-        q.style.setProperty('--px',(Math.cos(a)*dd).toFixed(1)+'px');
-        q.style.setProperty('--py',(Math.sin(a)*dd).toFixed(1)+'px');
-        var sz=rnd(5,13); q.style.width=q.style.height=sz+'px';
-        document.body.appendChild(q);
-        (function(pp){setTimeout(function(){pp.parentNode&&pp.parentNode.removeChild(pp);},640);})(q);
-      }
-    }
-    function pop(el){var r=el.getBoundingClientRect();
-      puff(r.left+r.width/2,r.top+r.height/2,el.dataset.c);
-      caught++; if(countEl)countEl.textContent=caught; reset(el,false);
-    }
-    for(var i=0;i<CAP;i++){
-      (function(){
-        var el=document.createElement('button'); el.type='button'; el.className='holi-drop';
-        el.setAttribute('aria-label','pop a gummy');
-        el.addEventListener('animationend',function(){reset(el,false);});
-        el.addEventListener('click',function(ev){ev.preventDefault();pop(el);});
-        rain.appendChild(el); reset(el,true);
-      })();
-    }
-  })();
-
-  /* ---- manifesto reveal (IO + scroll + load failsafes) ---- */
-  (function(){
-    var k=document.getElementById('tp-mani'); if(!k)return;
-    function go(){k.classList.add('go');}
-    if('IntersectionObserver' in window){
-      new IntersectionObserver(function(es,o){es.forEach(function(en){if(en.isIntersecting){go();o.disconnect();}});},
-        {threshold:0,rootMargin:'0px 0px -12% 0px'}).observe(k);
-    }
-    addEventListener('scroll',function f(){if(k.getBoundingClientRect().top<innerHeight*.85){go();removeEventListener('scroll',f);}},{passive:true});
-    if(k.getBoundingClientRect().top<innerHeight)go();
-  })();
+  var stage=document.getElementById('gh-stage'); if(!stage)return;
+  var tk=false;
+  function upd(){var r=stage.getBoundingClientRect();var d=r.height-innerHeight;
+    var z=d>0?Math.min(Math.max(-r.top/d,0),1):0;stage.style.setProperty('--z',z.toFixed(4));}
+  addEventListener('scroll',function(){if(!tk){requestAnimationFrame(function(){upd();tk=false;});tk=true;}},{passive:true});
+  addEventListener('resize',upd);upd();
 })();
 </script>
 
@@ -294,32 +258,30 @@
 {
   "name": "GummyChums Home",
   "settings": [
-    { "type": "header", "content": "Act 1 — Hero" },
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "WELLNESS, BUT MAKE IT FUN" },
-    { "type": "text", "id": "lede", "label": "Lede", "default": "India’s most fun wellness gummy. Scroll — straight into the gummy. 👇" },
-    { "type": "color", "id": "hero_gummy_color", "label": "Hero gummy colour", "default": "#e8503a" },
-    { "type": "text", "id": "sticker1", "label": "Sticker 1", "default": "100% Veg" },
-    { "type": "color", "id": "sticker1_bg", "label": "Sticker 1 bg", "default": "#f4c84f" },
-    { "type": "text", "id": "sticker2", "label": "Sticker 2", "default": "No Added Sugar" },
-    { "type": "color", "id": "sticker2_bg", "label": "Sticker 2 bg", "default": "#98c64b" },
-    { "type": "text", "id": "sticker3", "label": "Sticker 3", "default": "Made in India" },
-    { "type": "color", "id": "sticker3_bg", "label": "Sticker 3 bg", "default": "#477971" },
-    { "type": "text", "id": "inside_title", "label": "Reveal title", "default": "WHAT’S INSIDE?" },
-    { "type": "text", "id": "inside_sub", "label": "Reveal sub", "default": "Bacopa · Melatonin · Lutein. Zero junk — just real wellness." },
-    { "type": "header", "content": "Act 2 — Catch game" },
-    { "type": "text", "id": "game_kicker", "label": "Game kicker", "default": "CATCH THE CHUMS" },
-    { "type": "text", "id": "game_title", "label": "Game title", "default": "GUMMYCHUMS!" },
-    { "type": "text", "id": "game_sub", "label": "Game sub", "default": "Gummies are raining — tap one, it pops! 💥" },
-    { "type": "header", "content": "Act 3 — Products" },
-    { "type": "text", "id": "shop_title", "label": "Section title", "default": "MEET THE THREE" },
-    { "type": "header", "content": "Marquee & manifesto" },
-    { "type": "text", "id": "marquee", "label": "Marquee text", "default": "BOLD ✦ PLAYFUL ✦ NO ADDED SUGAR ✦ MADE IN INDIA ✦ PROUDLY INDIAN ✦" },
-    { "type": "text", "id": "mani_a", "label": "Manifesto line 1", "default": "Pills feel like" },
-    { "type": "text", "id": "mani_strike1", "label": "Struck word 1", "default": "homework." },
-    { "type": "text", "id": "mani_b", "label": "Manifesto line 2", "default": "Powders feel like" },
-    { "type": "text", "id": "mani_strike2", "label": "Struck word 2", "default": "chemistry class." },
-    { "type": "text", "id": "mani_punch", "label": "Punchline", "default": "We chose fun." },
-    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "GRAB ALL THREE →" }
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Not another supplement brand." },
+    { "type": "text", "id": "sub", "label": "Subline", "default": "We’re making healthy habits feel good." },
+    { "type": "text", "id": "cta", "label": "CTA label", "default": "Shop the flavours →" },
+    { "type": "text", "id": "reveal_title", "label": "Scroll reveal title", "default": "WHAT’S INSIDE?" },
+    { "type": "text", "id": "reveal_sub", "label": "Scroll reveal sub", "default": "Bacopa · Melatonin · Lutein. Zero junk — just real wellness." },
+    { "type": "header", "content": "Flavours" },
+    { "type": "text", "id": "shop_kicker", "label": "Kicker", "default": "Three flavours ✦ one happy habit" },
+    { "type": "text", "id": "shop_title", "label": "Title", "default": "Meet the three." },
+    { "type": "text", "id": "shop_sub", "label": "Sub", "default": "Supplements you’ll actually look forward to." },
+    { "type": "header", "content": "Story" },
+    { "type": "text", "id": "story_kicker", "label": "Kicker", "default": "Why we exist" },
+    { "type": "text", "id": "story_title", "label": "Title (use [ ] for pink)", "default": "Wellness became a [checklist]. We made it a treat." },
+    { "type": "textarea", "id": "story_body", "label": "Body", "default": "People don’t quit because they don’t care — they quit because it feels like work. So we made the healthiest thing you do all day the tastiest. A chum is the friend who reminds you. That’s the whole plan." },
+    { "type": "text", "id": "val1_t", "label": "Value 1 title", "default": "Joy, non-negotiable" },
+    { "type": "text", "id": "val1_b", "label": "Value 1 body", "default": "If it doesn’t make you smile, it doesn’t ship." },
+    { "type": "text", "id": "val2_t", "label": "Value 2 title", "default": "Trust you can read" },
+    { "type": "text", "id": "val2_b", "label": "Value 2 body", "default": "The label says everything. Every time." },
+    { "type": "text", "id": "val3_t", "label": "Value 3 title", "default": "Within reach" },
+    { "type": "text", "id": "val3_b", "label": "Value 3 body", "default": "Premium should never mean pricey." },
+    { "type": "header", "content": "Closing" },
+    { "type": "text", "id": "end_title", "label": "Title (use [ ] for pink)", "default": "Your daily chums are [waiting]." },
+    { "type": "text", "id": "end_sub", "label": "Sub", "default": "Three flavours. One happy habit. Start today." },
+    { "type": "text", "id": "end_cta", "label": "CTA", "default": "Grab all three →" }
   ],
   "presets": [{ "name": "GummyChums Home" }]
 }

@@ -1,0 +1,89 @@
+/* ============ GummyChums brand layer — coming-soon vibe, pink-forward ============ */
+@font-face{font-family:'Manrope';src:url('Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
+
+:root{
+  --gc-ink:#191316;
+  --gc-cream:#FDF7F4;          /* warm pink-cream page ground */
+  --gc-white:#ffffff;
+  --gc-cherry:#DE1D61;         /* PRIMARY — pink */
+  --gc-cherry-dk:#b4144d;
+  --gc-cherry-soft:#FFE6EF;
+  --gc-mango:#8DAA31;
+  --gc-orange:#F9740D;
+  --gc-radius:26px;
+  --gc-ease:cubic-bezier(.22,.8,.26,1);
+  --gc-spring:cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ---- typography: bigger, tighter ---- */
+body{
+  font-family:'Manrope',system-ui,-apple-system,sans-serif !important;
+  background:var(--gc-cream) !important;
+  color:var(--gc-ink) !important;
+  font-size:17px;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.h0,.h1,.h2,.h3{font-family:'Manrope',system-ui,sans-serif !important;font-weight:800 !important;letter-spacing:-.02em !important;line-height:1.05 !important}
+p,li,a,span,div,button,input,label{font-family:'Manrope',system-ui,sans-serif}
+.gc-h1{font-size:clamp(2.4rem,6.5vw,4.6rem);font-weight:800;line-height:1.02;letter-spacing:-.03em;margin:0}
+.gc-h2{font-size:clamp(2rem,5.2vw,3.4rem);font-weight:800;line-height:1.05;letter-spacing:-.025em;margin:0}
+.gc-lede{font-size:clamp(1.05rem,2.2vw,1.35rem);font-weight:600;line-height:1.45;color:#191316b3}
+.gc-kick{font-weight:800;letter-spacing:.26em;text-transform:uppercase;font-size:12px;color:var(--gc-cherry)}
+
+/* ---- tighten Dawn's oversized section gaps ---- */
+.shopify-section{margin:0 !important}
+.section{padding-top:clamp(40px,5vw,64px) !important;padding-bottom:clamp(40px,5vw,64px) !important}
+.page-width{max-width:1180px}
+
+/* ---- buttons: pink, springy ---- */
+.gc-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  background:var(--gc-cherry);color:#fff;font-weight:800;font-size:1rem;text-decoration:none;
+  border:0;cursor:pointer;padding:15px 30px;border-radius:999px;font-family:inherit;
+  box-shadow:0 14px 30px -14px rgba(222,29,97,.7);
+  transition:transform .16s var(--gc-spring),background .25s,box-shadow .25s}
+.gc-btn:hover{background:var(--gc-cherry-dk);transform:translateY(-2px);box-shadow:0 18px 36px -14px rgba(222,29,97,.8)}
+.gc-btn:active{transform:scale(.95)}
+.gc-btn--ghost{background:transparent;color:var(--gc-ink);box-shadow:inset 0 0 0 2.5px var(--gc-ink)}
+.gc-btn--ghost:hover{background:var(--gc-ink);color:#fff;box-shadow:inset 0 0 0 2.5px var(--gc-ink)}
+/* Dawn buttons → brand */
+.button,button.shopify-payment-button__button--unbranded{border-radius:999px !important;font-weight:800 !important}
+.button:not(.button--secondary){background:var(--gc-cherry) !important;color:#fff !important;box-shadow:none !important}
+
+/* ---- gummy cursor (desktop only) ---- */
+@media (hover:hover) and (pointer:fine){
+  html.gc-cursor, html.gc-cursor body, html.gc-cursor a, html.gc-cursor button,
+  html.gc-cursor input, html.gc-cursor summary, html.gc-cursor label{cursor:none !important}
+}
+#gc-cursor{position:fixed;left:0;top:0;width:30px;height:30px;z-index:9999;pointer-events:none;
+  will-change:transform;opacity:0;transition:opacity .25s,width .18s var(--gc-spring),height .18s var(--gc-spring);
+  filter:drop-shadow(0 4px 7px rgba(25,19,22,.3))}
+#gc-cursor.on{opacity:1}
+#gc-cursor.big{width:46px;height:46px}
+#gc-cursor svg{width:100%;height:100%;display:block;animation:gcWobble 4s ease-in-out infinite}
+@keyframes gcWobble{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@media (hover:none){#gc-cursor{display:none}}
+
+/* ---- click ripple + splash (back from the coming-soon page) ---- */
+.gc-ripple{position:fixed;border-radius:50%;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);border:2.5px solid var(--gc-cherry);opacity:.85;
+  animation:gcRipple .75s var(--gc-ease) forwards}
+@keyframes gcRipple{0%{width:12px;height:12px;opacity:.9}100%{width:280px;height:280px;opacity:0}}
+.gc-splash{position:fixed;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);
+  border-radius:46% 54% 52% 48%/48% 46% 54% 52%;will-change:transform,opacity}
+.gc-flash{position:fixed;inset:0;pointer-events:none;z-index:9996;opacity:0;transition:opacity .45s ease}
+
+/* ---- reveal-on-scroll ---- */
+.gc-rise{opacity:0;transform:translateY(26px);transition:opacity .7s var(--gc-ease),transform .7s var(--gc-ease)}
+.gc-rise.in{opacity:1;transform:none}
+
+/* ---- cards ---- */
+.gc-card{background:var(--gc-white);border-radius:var(--gc-radius);padding:20px;
+  box-shadow:0 26px 54px -34px rgba(25,19,22,.4);
+  transition:transform .22s var(--gc-spring),box-shadow .22s}
+.gc-card:hover{transform:translateY(-7px);box-shadow:0 34px 64px -30px rgba(222,29,97,.42)}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001s !important;transition-duration:.001s !important}
+  .gc-rise{opacity:1;transform:none}
+  .gc-ripple,.gc-splash{display:none}
+}
