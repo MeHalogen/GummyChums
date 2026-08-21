@@ -10,6 +10,27 @@
     var bg = document.createElement('div');
     bg.className = 'gc-bg';
     bg.setAttribute('aria-hidden', 'true');
+
+    // floating blurred gummies — fixed positions so it looks composed, not random
+    var gummies = [
+      { l: '6%',  t: '12%', s: 190, c: '#DE1D61', o: .55, d: 16, dx: '30px',  dy: '-34px' },
+      { l: '80%', t: '6%',  s: 150, c: '#8DAA31', o: .48, d: 21, dx: '-26px', dy: '30px'  },
+      { l: '88%', t: '58%', s: 210, c: '#F9740D', o: .52, d: 19, dx: '-32px', dy: '-26px' },
+      { l: '14%', t: '68%', s: 230, c: '#F9740D', o: .45, d: 24, dx: '28px',  dy: '26px'  },
+      { l: '46%', t: '82%', s: 160, c: '#DE1D61', o: .50, d: 18, dx: '-24px', dy: '-30px' },
+      { l: '38%', t: '4%',  s: 120, c: '#8DAA31', o: .38, d: 22, dx: '22px',  dy: '28px'  },
+      { l: '64%', t: '36%', s: 140, c: '#DE1D61', o: .38, d: 26, dx: '-28px', dy: '24px'  }
+    ];
+    gummies.forEach(function (g, i) {
+      var el = document.createElement('i');
+      el.style.cssText =
+        'left:' + g.l + ';top:' + g.t + ';width:' + g.s + 'px;height:' + g.s + 'px;' +
+        'background:' + g.c + ';opacity:' + g.o + ';' +
+        'animation-duration:' + g.d + 's;animation-delay:' + (-i * 2.5) + 's;' +
+        '--dx:' + g.dx + ';--dy:' + g.dy + ';';
+      bg.appendChild(el);
+    });
+
     document.body.insertBefore(bg, document.body.firstChild);
   }
 

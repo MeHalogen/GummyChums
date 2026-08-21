@@ -16,19 +16,24 @@ html{background:#FDF7F4}
   --gc-spring:cubic-bezier(.34,1.56,.64,1);
 }
 
-/* ---- coming-soon flavour background: ONE fixed GPU layer, zero scroll repaint ---- */
-.gc-bg{position:fixed;inset:-25%;z-index:-1;pointer-events:none;
+/* ---- coming-soon flavour background: colour wash + floating blurred gummies ---- */
+.gc-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
   background:
-    radial-gradient(38vw 38vw at 14% 10%, rgba(222,29,97,.42), transparent 62%),
-    radial-gradient(32vw 32vw at 86% 16%, rgba(141,170,49,.26), transparent 62%),
-    radial-gradient(36vw 36vw at 74% 86%, rgba(249,116,13,.30), transparent 62%),
-    radial-gradient(30vw 30vw at 20% 84%, rgba(222,29,97,.30), transparent 62%);
-  will-change:transform;transform:translateZ(0);backface-visibility:hidden;
-  animation:gcDrift 30s ease-in-out infinite alternate}
-@keyframes gcDrift{
-  from{transform:translate3d(0,0,0) scale(1)}
-  to{transform:translate3d(2.5%,-2%,0) scale(1.09)}}
-@media (prefers-reduced-motion:reduce){.gc-bg{animation:none}}
+    radial-gradient(62vw 62vw at 6% 2%,  rgba(222,29,97,.42), transparent 58%),
+    radial-gradient(52vw 52vw at 95% 10%, rgba(141,170,49,.30), transparent 58%),
+    radial-gradient(58vw 58vw at 82% 95%, rgba(249,116,13,.38), transparent 58%),
+    radial-gradient(50vw 50vw at 10% 92%, rgba(222,29,97,.34), transparent 58%),
+    radial-gradient(70vw 50vw at 50% 50%, rgba(255,214,230,.55), transparent 70%),
+    linear-gradient(180deg,#FFEFF5 0%,#FFF3EC 48%,#FFEDF4 100%)}
+/* blurred gummies drifting behind everything (small surfaces = cheap to blur) */
+.gc-bg i{position:absolute;display:block;
+  border-radius:46% 54% 52% 48%/48% 46% 54% 52%;
+  filter:blur(22px);opacity:.55;will-change:transform;
+  animation:gcFloatBg linear infinite alternate}
+@keyframes gcFloatBg{
+  from{transform:translate3d(0,0,0) rotate(-8deg)}
+  to{transform:translate3d(var(--dx,26px),var(--dy,-30px),0) rotate(8deg)}}
+@media (prefers-reduced-motion:reduce){.gc-bg i{animation:none}}
 
 /* smooth anchor scrolling + stop scroll-anchoring jumps */
 html{scroll-behavior:smooth;overflow-anchor:none}

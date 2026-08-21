@@ -14,19 +14,19 @@
   .gh-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
     background:transparent;contain:paint}
 
-  .gh-gummy{position:absolute;left:50%;bottom:3%;width:min(30vw,180px);z-index:1;
+  .gh-gummy{position:absolute;left:50%;bottom:-6%;width:min(22vw,140px);z-index:1;
     will-change:transform;backface-visibility:hidden;transform-origin:center bottom;
-    transform:translate3d(-50%,0,0) scale(calc(1 + var(--z,0) * var(--z,0) * 28))}
+    transform:translate3d(-50%,0,0) scale(calc(1 + var(--z,0) * var(--z,0) * 34))}
   .gh-mid{position:relative;z-index:2;text-align:center;padding:0 22px;
     opacity:calc(1 - var(--z,0) * 2.7);will-change:opacity}
-  .gh-logo{display:block;width:min(680px,88vw);height:auto;margin:0 auto 22px;
+  .gh-logo{display:block;width:min(520px,80vw);height:auto;margin:0 auto 20px;
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none;pointer-events:none}
   .gh-tag{font-size:clamp(1.6rem,4.6vw,3rem);font-weight:800;letter-spacing:-.025em;line-height:1.04;margin:0 auto;max-width:17ch}
   .gh-sub{font-size:clamp(1.02rem,2.2vw,1.3rem);font-weight:600;color:#191316a8;margin:14px auto 0;max-width:34ch;line-height:1.45}
   .gh-cta{margin-top:26px;display:inline-flex}
   .gh-pills{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:22px}
-  .gh-pill{background:#fff;border-radius:999px;padding:7px 15px;font-size:.78rem;font-weight:800;
-    letter-spacing:.04em;box-shadow:0 8px 18px -12px rgba(25,19,22,.5)}
+  .gh-pill{background:rgba(255,255,255,.9);border-radius:999px;padding:8px 16px;font-size:.78rem;font-weight:800;
+    letter-spacing:.04em;box-shadow:0 8px 18px -12px rgba(25,19,22,.45);outline:1px solid rgba(255,255,255,.8);outline-offset:-1px}
   .gh-scroll{margin-top:24px;font-weight:800;letter-spacing:.2em;font-size:.72rem;color:#19131666;
     animation:ghBounce 1.7s ease-in-out infinite}
   @keyframes ghBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
@@ -36,16 +36,17 @@
   .gh-reveal p{font-size:clamp(1rem,2.4vw,1.45rem);font-weight:700;margin:16px auto 0;max-width:30ch;opacity:.92}
 
   /* ---------- ACT 2 — flavours ---------- */
-  .gh-sec{padding:clamp(52px,7vw,92px) 0}
+  .gh-sec{padding:clamp(46px,6vw,78px) 0}
   .gh-head{text-align:center;margin-bottom:clamp(28px,4vw,46px)}
   .gh-head h2{font-size:clamp(2rem,5.4vw,3.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.04;margin:10px 0 0}
   .gh-head p{font-size:clamp(1rem,2.1vw,1.2rem);font-weight:600;color:#191316a0;margin:12px auto 0;max-width:40ch}
   .gh-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
   @media(max-width:900px){.gh-grid{grid-template-columns:1fr;max-width:430px;margin:0 auto}}
-  .gh-card{background:#fff;border-radius:28px;padding:18px;display:flex;flex-direction:column;gap:12px;
-    box-shadow:0 28px 56px -34px rgba(25,19,22,.42);
+  .gh-card{background:rgba(255,255,255,.92);border-radius:28px;padding:18px;display:flex;flex-direction:column;gap:12px;
+    box-shadow:0 2px 0 rgba(255,255,255,.9) inset, 0 22px 46px -26px rgba(25,19,22,.34);
+    outline:1px solid rgba(255,255,255,.75);outline-offset:-1px;
     transition:transform .22s var(--gc-spring),box-shadow .22s}
-  .gh-card:hover{transform:translateY(-8px);box-shadow:0 38px 70px -32px rgba(222,29,97,.45)}
+  .gh-card:hover{transform:translateY(-8px);box-shadow:0 30px 60px -26px rgba(222,29,97,.4)}
   .gh-shot{border-radius:20px;aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden;position:relative}
   .gh-shot img{width:100%;height:100%;object-fit:cover}
   .gh-shot svg{width:66%;height:auto;animation:ghFloat 6s ease-in-out infinite;will-change:transform}
@@ -78,7 +79,8 @@
 
   /* ---------- ACT 4 — FAQ ---------- */
   .gh-faq{max-width:760px;margin:0 auto}
-  .gh-q{background:#fff;border-radius:20px;margin-bottom:12px;box-shadow:0 16px 34px -28px rgba(25,19,22,.4);overflow:hidden}
+  .gh-q{background:rgba(255,255,255,.92);border-radius:20px;margin-bottom:12px;overflow:hidden;
+    box-shadow:0 16px 34px -28px rgba(25,19,22,.36);outline:1px solid rgba(255,255,255,.75);outline-offset:-1px}
   .gh-q summary{cursor:pointer;list-style:none;padding:18px 22px;font-weight:800;font-size:1.04rem;
     display:flex;align-items:center;justify-content:space-between;gap:14px}
   .gh-q summary::-webkit-details-marker{display:none}
