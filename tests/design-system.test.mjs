@@ -111,3 +111,17 @@ test('images declare width and height (no layout shift)', () => {
   }
   assert.deepEqual(problems, [], `image_tag missing width/height:\n${problems.join('\n')}`);
 });
+
+test('raw <img> tags declare both width and height', () => {
+  const problems = [];
+  for (const file of gcSections()) {
+    const src = readFileSync(join(SECTIONS, file), 'utf8');
+    for (const m of src.matchAll(/<img\b[^>]*>/g)) {
+      const tag = m[0];
+      if (!/\bwidth=/.test(tag) || !/\bheight=/.test(tag)) {
+        problems.push(`${file}: ${tag.slice(0, 70)}`);
+      }
+    }
+  }
+  assert.deepEqual(problems, [], `<img> missing width/height:\n${problems.join('\n')}`);
+});
