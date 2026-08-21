@@ -7,10 +7,10 @@
   @keyframes gchScroll{to{transform:translateX(-50%)}}
   @media (prefers-reduced-motion:reduce){.gch-bar .trk{animation:none}}
 
-  /* solid bg (no backdrop-filter — that repaints the whole bar every scroll frame) */
-  .gch{position:sticky;top:0;z-index:60;background:#FDF7F4F2;
-    border-bottom:1px solid rgba(25,19,22,.08);will-change:transform;transform:translateZ(0)}
-  .gch-in{max-width:1180px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:20px}
+  /* warm pink-tinted bar (no backdrop-filter — that repaints every scroll frame) */
+  .gch{position:sticky;top:0;z-index:60;background:#FFE9F1;
+    border-bottom:1px solid rgba(222,29,97,.14);will-change:transform;transform:translateZ(0)}
+  .gch-in{max-width:1180px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:20px}
   .gch-logo{display:flex;align-items:center;line-height:0;flex:0 0 auto}
   .gch-logo img{height:clamp(30px,4vw,42px);width:auto;display:block;
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
@@ -19,16 +19,20 @@
   .gch-nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.5px;border-radius:99px;
     background:var(--gc-cherry);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--gc-ease)}
   .gch-nav a:hover::after{transform:scaleX(1)}
-  .gch-cart{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:9px;
-    background:var(--gc-cherry) !important;color:#fff !important;
-    font-weight:800;font-size:.88rem;letter-spacing:.06em;text-decoration:none !important;
-    padding:11px 20px;border-radius:999px;line-height:1;white-space:nowrap;box-sizing:border-box;
-    box-shadow:0 12px 26px -14px rgba(222,29,97,.75);transition:transform .16s var(--gc-spring),background .25s}
-  .gch-cart:hover{background:var(--gc-cherry-dk) !important;transform:translateY(-2px)}
-  .gch-cart:active{transform:scale(.95)}
-  .gch-count{flex:0 0 auto;background:#fff;color:var(--gc-cherry);border-radius:999px;
-    min-width:19px;height:19px;display:inline-flex;align-items:center;justify-content:center;
-    font-size:.7rem;font-weight:800;padding:0 5px;line-height:1}
+  .gch .gch-cart,.gch .gch-cart:link,.gch .gch-cart:visited,.gch .gch-cart:hover,.gch .gch-cart:active{
+    color:#fff !important;text-decoration:none !important}
+  .gch .gch-cart{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    background:#DE1D61 !important;background-image:none !important;
+    font-weight:800;font-size:.88rem;letter-spacing:.08em;
+    padding:12px 22px;border-radius:999px;line-height:1;white-space:nowrap;box-sizing:border-box;
+    box-shadow:0 12px 26px -14px rgba(222,29,97,.75);
+    transition:transform .16s var(--gc-spring),filter .25s}
+  .gch .gch-cart:hover{filter:brightness(1.08);transform:translateY(-2px)}
+  .gch .gch-cart:active{transform:scale(.95)}
+  .gch .gch-cart-label{color:#fff !important;display:inline-block;line-height:1}
+  .gch .gch-count{flex:0 0 auto;background:#fff !important;color:#DE1D61 !important;border-radius:999px;
+    min-width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;
+    font-size:.72rem;font-weight:800;padding:0 6px;line-height:1;box-sizing:border-box}
   @media(max-width:749px){
     .gch-nav{gap:16px}
     .gch-nav a.gch-hide{display:none}
@@ -53,7 +57,7 @@
       <a href="{{ routes.root_url }}#gc-story" class="gch-hide">Story</a>
       <a href="{{ routes.root_url }}#gc-faq" class="gch-hide">FAQ</a>
       <a href="{{ routes.cart_url }}" class="gch-cart">
-        BAG
+        <span class="gch-cart-label">BAG</span>
         <span class="gch-count" id="gc-cart-count">{{ cart.item_count }}</span>
       </a>
     </nav>

@@ -29,9 +29,9 @@ html{background:#FDF7F4}
   border-radius:46% 54% 52% 48%/48% 46% 54% 52%;
   filter:blur(58px);opacity:.34;will-change:transform;
   animation:gcFloatBg linear infinite alternate}
-/* keep the centre calm so type always reads */
+/* light pool behind the type — subtle, keeps colour visible */
 .gc-bg::after{content:"";position:absolute;inset:0;
-  background:radial-gradient(58vw 42vw at 50% 46%, rgba(255,252,250,.72), transparent 72%)}
+  background:radial-gradient(40vw 30vw at 50% 46%, rgba(255,248,251,.42), transparent 72%)}
 @keyframes gcFloatBg{
   from{transform:translate3d(0,0,0) rotate(-8deg)}
   to{transform:translate3d(var(--dx,26px),var(--dy,-30px),0) rotate(8deg)}}
