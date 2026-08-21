@@ -1,0 +1,9 @@
+{
+  "name": "gummychums",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/design-system.test.mjs",
+    "lint:theme": "shopify theme check --path shopify-theme"
+  }
+}

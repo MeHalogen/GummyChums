@@ -196,7 +196,7 @@
             <a href="{{ product.url }}" class="gh-shot" style="background:{{ col }}16">
               <span class="gh-badge" style="color:{{ col }}">{{ role }}</span>
               {%- if product.featured_image -%}
-                {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: product.title }}
+                {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', width: 700, height: 700, alt: product.title }}
               {%- else -%}
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ product.title }}">
                   <defs><radialGradient id="g{{ forloop.index }}" cx="38%" cy="30%" r="76%">

@@ -1,0 +1,71 @@
+/* ============================================================
+   GummyChums — DESIGN TOKENS · single source of truth
+   No component may hard-code a raw value. Restrained premium:
+   calm canvas, ONE accent reserved for actions.
+   ============================================================ */
+:root{
+  /* ---- spacing · 4px base ---- */
+  --sp-1:4px;   --sp-2:8px;   --sp-3:12px;  --sp-4:16px;  --sp-5:24px;
+  --sp-6:32px;  --sp-7:48px;  --sp-8:64px;  --sp-9:96px;  --sp-10:128px;
+
+  /* ---- type · exactly 8 sizes, nothing else permitted ---- */
+  --fs-xs:0.75rem;                          /* labels, legal        */
+  --fs-sm:0.875rem;                         /* meta, captions       */
+  --fs-base:1.0625rem;                      /* body (17px)          */
+  --fs-lg:clamp(1.15rem,1.6vw,1.3rem);      /* lede                 */
+  --fs-xl:clamp(1.35rem,2.2vw,1.6rem);      /* card titles          */
+  --fs-2xl:clamp(1.8rem,3.4vw,2.4rem);      /* section headings     */
+  --fs-3xl:clamp(2.4rem,5vw,3.5rem);        /* page headings        */
+  --fs-4xl:clamp(3rem,7vw,5rem);            /* hero                 */
+
+  --lh-tight:1.04; --lh-snug:1.25; --lh-body:1.55;
+  --ls-tight:-0.03em; --ls-normal:-0.01em; --ls-wide:0.18em;
+  --fw-body:600; --fw-bold:700; --fw-black:800;
+
+  /* ---- colour BY ROLE ---- */
+  --c-bg:#FDFBF9;                 /* calm canvas                     */
+  --c-bg-warm:#FFF6F3;            /* subtle warm band                */
+  --c-surface:#FFFFFF;            /* cards, panels                   */
+  --c-ink:#191316;                /* primary text                    */
+  --c-ink-2:rgba(25,19,22,0.66);  /* secondary text                  */
+  --c-ink-3:rgba(25,19,22,0.42);  /* tertiary / meta                 */
+  --c-line:rgba(25,19,22,0.10);   /* hairlines                       */
+
+  /* ACCENT — interactive & primary actions ONLY.
+     Max one accent element per viewport region. */
+  --c-accent:#DE1D61;
+  --c-accent-hover:#B4144D;
+  --c-accent-ink:#FFFFFF;
+  --c-accent-soft:rgba(222,29,97,0.10);
+
+  /* FLAVOUR — product identity ONLY, never chrome */
+  --c-cherry:#DE1D61; --c-cherry-soft:rgba(222,29,97,0.12);
+  --c-mango:#8DAA31;  --c-mango-soft:rgba(141,170,49,0.12);
+  --c-orange:#F9740D; --c-orange-soft:rgba(249,116,13,0.12);
+
+  /* ---- radii ---- */
+  --r-sm:12px; --r-md:20px; --r-lg:28px; --r-full:999px;
+
+  /* ---- elevation · three only ---- */
+  --sh-1:0 1px 2px rgba(25,19,22,0.05);
+  --sh-2:0 12px 28px -18px rgba(25,19,22,0.28);
+  --sh-3:0 26px 54px -30px rgba(25,19,22,0.34);
+
+  /* ---- layout ---- */
+  --container:1200px;
+  --gutter:clamp(20px,4vw,40px);
+  --header-h:68px;
+
+  /* ---- motion ---- */
+  --ease:cubic-bezier(.22,.8,.26,1);
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --dur-1:140ms; --dur-2:240ms; --dur-3:420ms;
+}
+
+/* shared layout primitive — every section uses this */
+.gc-container{
+  width:100%;
+  max-width:var(--container);
+  margin-inline:auto;
+  padding-inline:var(--gutter);
+}

@@ -93,7 +93,7 @@
     <div class="gp-media gc-rise in">
       <span class="gp-badge">{{ role }} · {{ flavour }}</span>
       {%- if product.featured_image -%}
-        {{ product.featured_image | image_url: width: 1100 | image_tag: alt: product.title }}
+        {{ product.featured_image | image_url: width: 1100 | image_tag: width: 1100, height: 1100, alt: product.title }}
       {%- else -%}
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ product.title }}">
           <defs><radialGradient id="gpG" cx="38%" cy="30%" r="76%">
@@ -176,7 +176,7 @@
           <a class="gp-mini" href="{{ p.url }}">
             <span class="sh" style="background:{{ pc }}1a">
               {%- if p.featured_image -%}
-                {{ p.featured_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: p.title }}
+                {{ p.featured_image | image_url: width: 200 | image_tag: loading: 'lazy', width: 200, height: 200, alt: p.title }}
               {%- else -%}
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path d="{{ GPATH }}" fill="{{ pc }}"/>

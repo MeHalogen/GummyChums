@@ -320,7 +320,8 @@
       }
     </script>
 
-    {%- comment -%} GummyChums brand layer {%- endcomment -%}
+    {%- comment -%} GummyChums design system: tokens must load first {%- endcomment -%}
+    {{ 'gc-tokens.css' | asset_url | stylesheet_tag }}
     {{ 'gc-brand.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'gc-brand.js' | asset_url }}" defer></script>
   </head>
