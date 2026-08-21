@@ -1,0 +1,122 @@
+{%- comment -%} GummyChums custom homepage — index31 energy, finalised brand, real products {%- endcomment -%}
+<style>
+  @font-face{font-family:'GCManrope';src:url('{{ "Manrope-Variable.ttf" | asset_url }}') format('truetype');font-weight:200 800;font-display:swap}
+  .gc-home{--ink:#191316;--cream:#FCFAF6;--cherry:#DE1D61;--mango:#8DAA31;--orange:#F9740D;--white:#fff;
+    font-family:'GCManrope',system-ui,sans-serif;background:var(--cream);color:var(--ink);
+    margin:0 -1.5rem;overflow:hidden;-webkit-font-smoothing:antialiased}
+  @media(max-width:749px){.gc-home{margin:0 -1rem}}
+  .gc-home *{box-sizing:border-box}
+
+  /* hero */
+  .gc-hero{max-width:1100px;margin:0 auto;padding:clamp(32px,6vw,72px) 22px 10px;text-align:center;
+    display:flex;flex-direction:column;align-items:center;gap:20px}
+  .gc-kick{font-weight:800;letter-spacing:.28em;text-transform:uppercase;font-size:12px;color:#191316aa}
+  .gc-logo{display:block;width:min(560px,86vw);height:auto}
+  .gc-tag{font-weight:800;font-size:clamp(1.7rem,5.4vw,3.2rem);line-height:1.04;max-width:16ch;margin:0}
+  .gc-sub{font-weight:600;font-size:clamp(1rem,2.6vw,1.2rem);color:#191316b0;max-width:34ch;margin:-6px 0 0}
+  .gc-cta{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--white);
+    font-weight:800;font-size:1rem;text-decoration:none;padding:14px 26px;border-radius:999px;
+    transition:transform .12s,background .25s}
+  .gc-cta:hover{background:var(--cherry)} .gc-cta:active{transform:scale(.95)}
+
+  /* marquee */
+  .gc-marq{margin-top:34px;background:var(--ink);overflow:hidden;padding:9px 0}
+  .gc-marq .trk{display:inline-flex;white-space:nowrap;color:var(--cream);font-weight:800;
+    text-transform:uppercase;font-size:13px;letter-spacing:.16em;animation:gcm 42s linear infinite}
+  .gc-marq .trk span{padding:0 20px}
+  @keyframes gcm{to{transform:translateX(-50%)}}
+
+  /* flavours */
+  .gc-flavs{max-width:1100px;margin:0 auto;padding:clamp(40px,7vw,80px) 22px}
+  .gc-h2{font-weight:800;font-size:clamp(1.8rem,5vw,3rem);text-align:center;margin:0 0 40px}
+  .gc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+  @media(max-width:849px){.gc-grid{grid-template-columns:1fr;max-width:420px;margin:0 auto}}
+  .gc-card{background:var(--white);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:12px;
+    box-shadow:0 24px 50px -30px rgba(25,19,22,.35);transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s}
+  .gc-card:hover{transform:translateY(-6px);box-shadow:0 30px 56px -28px rgba(25,19,22,.4)}
+  .gc-thumb{border-radius:18px;aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden}
+  .gc-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .gc-thumb svg{width:66%;height:auto;filter:drop-shadow(0 12px 18px rgba(25,19,22,.2))}
+  .gc-cname{font-weight:800;font-size:1.35rem;margin:2px 0 0;text-decoration:none;color:var(--ink)}
+  .gc-cdesc{font-weight:600;font-size:.9rem;color:#191316a0;margin:0;min-height:2.6em}
+  .gc-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;gap:10px}
+  .gc-price{font-weight:800;font-size:1.3rem}
+  .gc-add{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:.95rem;color:var(--white);
+    background:var(--ink);border-radius:999px;padding:11px 20px;transition:transform .12s,background .25s}
+  .gc-add:hover{background:var(--cherry)} .gc-add:active{transform:scale(.93)}
+
+  /* manifesto */
+  .gc-mani{background:var(--ink);color:var(--cream);text-align:center;padding:clamp(48px,8vw,90px) 22px}
+  .gc-mani h3{font-weight:800;font-size:clamp(1.6rem,5vw,2.8rem);margin:0 auto;max-width:20ch;line-height:1.1}
+  .gc-mani em{font-style:normal;color:var(--orange)}
+  @media (prefers-reduced-motion:reduce){.gc-marq .trk{animation:none}}
+</style>
+
+{%- assign gp = section.settings -%}
+<div class="gc-home">
+  <div class="gc-hero">
+    {%- if gp.kicker != blank -%}<p class="gc-kick">{{ gp.kicker }}</p>{%- endif -%}
+    <img class="gc-logo" src="{{ 'gc-wordmark-stack.png' | asset_url }}" alt="{{ shop.name }}" width="560" draggable="false" oncontextmenu="return false">
+    {%- if gp.headline != blank -%}<h1 class="gc-tag">{{ gp.headline }}</h1>{%- endif -%}
+    {%- if gp.sub != blank -%}<p class="gc-sub">{{ gp.sub }}</p>{%- endif -%}
+    <a class="gc-cta" href="{{ routes.all_products_collection_url }}">Shop the flavours →</a>
+  </div>
+
+  <div class="gc-marq" aria-hidden="true"><div class="trk">
+    {%- for i in (1..8) -%}<span>GUMMY CHUMS ✦ WELLNESS, BUT MAKE IT FUN ✦ MADE IN INDIA ✦</span>{%- endfor -%}
+  </div></div>
+
+  <div class="gc-flavs">
+    <h2 class="gc-h2">Meet the three.</h2>
+    <div class="gc-grid">
+      {%- for product in collections.all.products limit: 3 -%}
+        {%- assign t = product.title | downcase -%}
+        {%- if t contains 'brain' -%}{%- assign col = '#8DAA31' -%}{%- assign tint = '#8DAA3118' -%}
+        {%- elsif t contains 'melatonin' or t contains 'sleep' -%}{%- assign col = '#DE1D61' -%}{%- assign tint = '#DE1D6118' -%}
+        {%- else -%}{%- assign col = '#F9740D' -%}{%- assign tint = '#F9740D18' -%}{%- endif -%}
+        <div class="gc-card">
+          <a href="{{ product.url }}" class="gc-thumb" style="background:{{ tint }}">
+            {%- if product.featured_image -%}
+              {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: product.title }}
+            {%- else -%}
+              <svg viewBox="0 0 100 100" role="img" aria-label="{{ product.title }}"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="{{ col }}"/><ellipse cx="36" cy="28" rx="16" ry="9.5" fill="#fff" opacity=".5" transform="rotate(-25 36 28)"/></svg>
+            {%- endif -%}
+          </a>
+          <a href="{{ product.url }}" class="gc-cname">{{ product.title }}</a>
+          <p class="gc-cdesc">{{ product.description | strip_html | truncatewords: 16 }}</p>
+          <div class="gc-row">
+            <span class="gc-price" style="color:{{ col }}">{{ product.price | money }}</span>
+            {%- if product.available -%}
+              <form method="post" action="{{ routes.cart_add_url }}">
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="gc-add">Add</button>
+              </form>
+            {%- else -%}
+              <span class="gc-add" style="background:#9993;color:#1913165c;cursor:default">Sold out</span>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- else -%}
+        <p style="text-align:center;grid-column:1/-1;color:#191316a0">Add products in Shopify → they show up here automatically.</p>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <div class="gc-mani">
+    <h3>{{ gp.manifesto }}</h3>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "GummyChums Home",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Wellness, but make it fun ✦" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Three flavours. One happy habit." },
+    { "type": "text", "id": "sub", "label": "Subline", "default": "Supplements you’ll actually look forward to." },
+    { "type": "text", "id": "manifesto", "label": "Manifesto line", "default": "Wellness = a treat, not a task." }
+  ],
+  "presets": [{ "name": "GummyChums Home" }]
+}
+{% endschema %}
