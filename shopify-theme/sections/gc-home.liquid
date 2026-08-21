@@ -18,13 +18,45 @@
     will-change:transform,opacity;backface-visibility:hidden;transform-origin:center bottom;
     opacity:calc(var(--z,0) * 5);
     transform:translate3d(-50%,0,0) scale(calc(1 + var(--z,0) * var(--z,0) * 36))}
+  /* ---- glossy gummy characters ---- */
+  .gcg{width:100%;height:auto;display:block}
+  .gh-char{position:absolute;z-index:1;will-change:transform;pointer-events:none;
+    translate:var(--px,0) var(--py,0);
+    animation:ghDrift ease-in-out infinite alternate}
+  .gh-c1{width:clamp(120px,15vw,215px);left:4%;top:14%;animation-duration:7s}
+  .gh-c2{width:clamp(88px,11vw,158px);right:7%;top:9%;animation-duration:9s;animation-delay:-2s}
+  .gh-c3{width:clamp(105px,13vw,190px);right:3%;bottom:14%;animation-duration:8s;animation-delay:-4s}
+  .gh-c4{width:clamp(70px,8vw,118px);left:11%;bottom:12%;animation-duration:10s;animation-delay:-6s}
+  @keyframes ghDrift{from{transform:translate3d(0,0,0) rotate(-6deg)}to{transform:translate3d(0,-24px,0) rotate(6deg)}}
+  @media(max-width:900px){.gh-c2,.gh-c4{display:none}
+    .gh-c1{width:110px;left:-2%;top:11%}.gh-c3{width:100px;right:-2%;bottom:17%}}
+
+  /* ---- rotated sticker badges ---- */
+  .gh-stick{position:absolute;z-index:3;font-weight:800;font-size:.7rem;letter-spacing:.1em;
+    background:#fff;color:var(--ink);padding:9px 15px;border-radius:999px;white-space:nowrap;
+    box-shadow:0 4px 0 var(--ink);border:2px solid var(--ink)}
+  .gh-s1{left:7%;top:38%;transform:rotate(-9deg);background:#FFE45C}
+  .gh-s2{right:8%;top:44%;transform:rotate(8deg);background:#B7E36B}
+  .gh-s3{left:14%;bottom:26%;transform:rotate(5deg);background:#FFB27A}
+  @media(max-width:900px){.gh-s1{left:2%;top:30%}.gh-s2{right:2%;top:auto;bottom:30%}.gh-s3{display:none}}
+
   .gh-mid{position:relative;z-index:2;text-align:center;padding:0 22px;
     opacity:calc(1 - var(--z,0) * 2.7);will-change:opacity}
+  .gh-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;
+    font-weight:800;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+    padding:8px 16px;border-radius:999px;margin-bottom:20px}
+  .gh-tag mark{background:linear-gradient(180deg,transparent 58%,rgba(222,29,97,.28) 58%);
+    color:inherit;padding:0 .06em}
+  .gh-cta{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+  .gh-cta2{color:var(--ink);font-weight:800;font-size:.98rem;text-decoration:none;
+    display:inline-flex;align-items:center;gap:7px;padding:6px 2px;border-bottom:2.5px solid var(--ink)}
+  .gh-cta2 span{transition:transform .25s var(--gc-ease);display:inline-block}
+  .gh-cta2:hover span{transform:translateX(5px)}
   .gh-logo{display:block;width:min(470px,74vw);height:auto;margin:0 auto 14px;
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none;pointer-events:none}
   .gh-tag{font-size:clamp(1.6rem,4.6vw,3rem);font-weight:800;letter-spacing:-.025em;line-height:1.04;margin:0 auto;max-width:17ch}
   .gh-sub{font-size:clamp(1.05rem,2.2vw,1.3rem);font-weight:600;color:#191316cc;margin:11px auto 0;max-width:34ch;line-height:1.4}
-  .gh-cta{margin-top:22px;display:inline-flex}
+  .gh-cta{margin-top:26px;display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
   .gh-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
   .gh-pill{background:rgba(255,255,255,.94);border-radius:999px;padding:10px 18px;font-size:.82rem;font-weight:800;
     letter-spacing:.04em;box-shadow:0 8px 18px -12px rgba(25,19,22,.45);outline:1px solid rgba(255,255,255,.8);outline-offset:-1px}
@@ -105,29 +137,33 @@
 
   <!-- ACT 1 -->
   <header class="gh-stage" id="gh-stage">
-    <div class="gh-pin">
-      <div class="gh-gummy">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%">
-          <defs><radialGradient id="ghHero" cx="38%" cy="30%" r="76%">
-            <stop offset="0%" stop-color="#ff5f94"/><stop offset="60%" stop-color="#DE1D61"/><stop offset="100%" stop-color="#a51447"/>
-          </radialGradient></defs>
-          <path d="{{ GPATH }}" fill="url(#ghHero)"/>
-          <ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/>
-        </svg>
-      </div>
+    <div class="gh-pin" id="gh-pin">
+
+      {%- comment -%} glossy gummy characters — parallax to cursor {%- endcomment -%}
+      <div class="gh-char gh-c1" data-depth="26">{% render 'gc-gummy', c1:'#ff7aa8', c2:'#DE1D61', c3:'#9c1246', id:'h1' %}</div>
+      <div class="gh-char gh-c2" data-depth="-34">{% render 'gc-gummy', c1:'#cbe86b', c2:'#8DAA31', c3:'#55691c', id:'h2' %}</div>
+      <div class="gh-char gh-c3" data-depth="20">{% render 'gc-gummy', c1:'#ffb066', c2:'#F9740D', c3:'#a94708', id:'h3' %}</div>
+      <div class="gh-char gh-c4" data-depth="-16">{% render 'gc-gummy', c1:'#ff7aa8', c2:'#DE1D61', c3:'#9c1246', id:'h4' %}</div>
+
+      {%- comment -%} the one that zooms on scroll {%- endcomment -%}
+      <div class="gh-gummy">{% render 'gc-gummy', c1:'#ff5f94', c2:'#DE1D61', c3:'#a51447', id:'hz' %}</div>
 
       <div class="gh-mid">
+        <span class="gh-eyebrow">{{ s.eyebrow }}</span>
         <img class="gh-logo" src="{{ 'gc-wordmark-stack.png' | asset_url }}" alt="{{ shop.name }}" width="680" draggable="false" oncontextmenu="return false">
-        <h1 class="gh-tag">{{ s.headline }}</h1>
+        <h1 class="gh-tag">{{ s.headline | replace: '[', '<mark>' | replace: ']', '</mark>' }}</h1>
         <p class="gh-sub">{{ s.sub }}</p>
-        <div class="gh-cta"><a class="gc-btn" href="{{ routes.all_products_collection_url }}">{{ s.cta }}</a></div>
-        <div class="gh-pills">
-          <span class="gh-pill">🌱 100% Veg</span>
-          <span class="gh-pill">🚫 No Added Sugar</span>
-          <span class="gh-pill">🇮🇳 Made in India</span>
+        <div class="gh-cta">
+          <a class="gc-btn" href="{{ routes.all_products_collection_url }}">{{ s.cta }}</a>
+          <a class="gh-cta2" href="#gc-story">Why gummies? <span>→</span></a>
         </div>
         <div class="gh-scroll">SCROLL ↓</div>
       </div>
+
+      {%- comment -%} rotated sticker badges {%- endcomment -%}
+      <span class="gh-stick gh-s1">100% VEG</span>
+      <span class="gh-stick gh-s2">NO ADDED SUGAR</span>
+      <span class="gh-stick gh-s3">MADE IN INDIA</span>
 
       <div class="gh-reveal">
         <div>
@@ -238,6 +274,27 @@
 
 <script>
 (function(){
+  /* gummy characters drift toward the cursor — subtle depth */
+  var pin=document.getElementById('gh-pin');
+  if(pin && matchMedia('(hover:hover) and (pointer:fine)').matches
+     && !matchMedia('(prefers-reduced-motion:reduce)').matches){
+    var chars=[].slice.call(pin.querySelectorAll('.gh-char'));
+    var tx=0,ty=0,cx=0,cy=0,raf=null;
+    addEventListener('pointermove',function(e){
+      tx=(e.clientX/innerWidth-.5); ty=(e.clientY/innerHeight-.5);
+      if(!raf)raf=requestAnimationFrame(run);
+    },{passive:true});
+    function run(){
+      cx+=(tx-cx)*.06; cy+=(ty-cy)*.06;
+      chars.forEach(function(el){
+        var d=parseFloat(el.dataset.depth)||14;
+        el.style.setProperty('--px',(cx*d).toFixed(2)+'px');
+        el.style.setProperty('--py',(cy*d).toFixed(2)+'px');
+      });
+      raf=(Math.abs(tx-cx)>.001||Math.abs(ty-cy)>.001)?requestAnimationFrame(run):null;
+    }
+  }
+
   var stage=document.getElementById('gh-stage'); if(!stage)return;
   var tk=false;
   function upd(){var r=stage.getBoundingClientRect();var d=r.height-innerHeight;
@@ -252,7 +309,8 @@
   "name": "GummyChums Home",
   "settings": [
     { "type": "header", "content": "Hero" },
-    { "type": "text", "id": "headline", "label": "Headline", "default": "Not another supplement brand." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow chip", "default": "✦ Wellness, but make it fun" },
+    { "type": "text", "id": "headline", "label": "Headline (use [ ] to highlight)", "default": "Not another [supplement] brand." },
     { "type": "text", "id": "sub", "label": "Subline", "default": "We’re making healthy habits feel good." },
     { "type": "text", "id": "cta", "label": "CTA label", "default": "Shop the flavours →" },
     { "type": "text", "id": "reveal_title", "label": "Scroll reveal title", "default": "WHAT’S INSIDE?" },

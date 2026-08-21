@@ -2,10 +2,12 @@
   "sections": {
     "gc_home": {
       "type": "gc-home",
-      "settings": {}
+      "settings": {
+        "eyebrow": "✦ Wellness, but make it fun",
+        "headline": "Not another [supplement] brand.",
+        "sub": "We’re making healthy habits feel good."
+      }
     }
   },
-  "order": [
-    "gc_home"
-  ]
+  "order": ["gc_home"]
 }
