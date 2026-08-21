@@ -2,12 +2,7 @@
   "sections": {
     "gc_home": {
       "type": "gc-home",
-      "settings": {
-        "kicker": "Wellness, but make it fun ✦",
-        "headline": "Three flavours. One happy habit.",
-        "sub": "Supplements you’ll actually look forward to.",
-        "manifesto": "Wellness = a treat, not a task."
-      }
+      "settings": {}
     }
   },
   "order": [

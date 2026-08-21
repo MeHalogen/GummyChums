@@ -1,121 +1,325 @@
-{%- comment -%} GummyChums custom homepage — index31 energy, finalised brand, real products {%- endcomment -%}
+{%- comment -%} GummyChums homepage — faithful index31 "Tapri" build: scroll fall-in, catch game, cards, marquee, manifesto {%- endcomment -%}
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-  @font-face{font-family:'GCManrope';src:url('{{ "Manrope-Variable.ttf" | asset_url }}') format('truetype');font-weight:200 800;font-display:swap}
-  .gc-home{--ink:#191316;--cream:#FCFAF6;--cherry:#DE1D61;--mango:#8DAA31;--orange:#F9740D;--white:#fff;
-    font-family:'GCManrope',system-ui,sans-serif;background:var(--cream);color:var(--ink);
-    margin:0 -1.5rem;overflow:hidden;-webkit-font-smoothing:antialiased}
-  @media(max-width:749px){.gc-home{margin:0 -1rem}}
-  .gc-home *{box-sizing:border-box}
+  .gc31{--cream:#f1e7da;--ink:#1f1c1a;--coral:#e8503a;--saffron:#f4c84f;--neem:#234225;
+    --purple:#6b2f6a;--teal:#477971;--red:#d72638;--pink:#e8a0b2;--green:#98c64b;
+    font-family:'Baloo 2',cursive;color:var(--ink);background:var(--cream);
+    margin:0 -1.5rem;overflow-x:hidden}
+  @media(max-width:749px){.gc31{margin:0 -1rem}}
+  .gc31 *{box-sizing:border-box}
+  .gc31 .anton{font-family:'Anton',sans-serif;letter-spacing:.005em}
 
-  /* hero */
-  .gc-hero{max-width:1100px;margin:0 auto;padding:clamp(32px,6vw,72px) 22px 10px;text-align:center;
-    display:flex;flex-direction:column;align-items:center;gap:20px}
-  .gc-kick{font-weight:800;letter-spacing:.28em;text-transform:uppercase;font-size:12px;color:#191316aa}
-  .gc-logo{display:block;width:min(560px,86vw);height:auto}
-  .gc-tag{font-weight:800;font-size:clamp(1.7rem,5.4vw,3.2rem);line-height:1.04;max-width:16ch;margin:0}
-  .gc-sub{font-weight:600;font-size:clamp(1rem,2.6vw,1.2rem);color:#191316b0;max-width:34ch;margin:-6px 0 0}
-  .gc-cta{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--white);
-    font-weight:800;font-size:1rem;text-decoration:none;padding:14px 26px;border-radius:999px;
-    transition:transform .12s,background .25s}
-  .gc-cta:hover{background:var(--cherry)} .gc-cta:active{transform:scale(.95)}
+  /* ---------- ACT 1: scroll fall-in zoom stage ---------- */
+  .tp-stage{position:relative;height:270vh}
+  .tp-pin{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;place-items:center;background:var(--cream)}
+  .tp-pin::before{content:"";position:absolute;inset:0;opacity:.5;pointer-events:none;
+    background-image:radial-gradient(rgba(31,28,26,.14) 1.5px,transparent 1.6px);background-size:16px 16px}
+  /* blurred three-flavour chums (from the coming-soon page) */
+  .tp-blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.42;pointer-events:none;z-index:0;will-change:transform}
+  .tp-b1{width:46vw;height:46vw;background:var(--red);left:-8vw;top:-6vw;animation:tpb1 17s ease-in-out infinite}
+  .tp-b2{width:40vw;height:40vw;background:var(--green);right:-8vw;top:4vw;animation:tpb2 21s ease-in-out infinite}
+  .tp-b3{width:44vw;height:44vw;background:#ff7a2f;left:22vw;bottom:-14vw;animation:tpb3 24s ease-in-out infinite}
+  @keyframes tpb1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(26px,32px) scale(1.12)}}
+  @keyframes tpb2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-30px,26px) scale(1.08)}}
+  @keyframes tpb3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(22px,-28px) scale(1.14)}}
 
-  /* marquee */
-  .gc-marq{margin-top:34px;background:var(--ink);overflow:hidden;padding:9px 0}
-  .gc-marq .trk{display:inline-flex;white-space:nowrap;color:var(--cream);font-weight:800;
-    text-transform:uppercase;font-size:13px;letter-spacing:.16em;animation:gcm 42s linear infinite}
-  .gc-marq .trk span{padding:0 20px}
-  @keyframes gcm{to{transform:translateX(-50%)}}
+  .tp-gummy{position:absolute;left:50%;bottom:4%;width:min(32vw,190px);will-change:transform;transform-origin:center bottom;
+    transform:translateX(-50%) scale(calc(1 + var(--z,0) * var(--z,0) * 26));z-index:1}
+  .tp-title{position:relative;z-index:2;text-align:center;padding:0 1.25rem;
+    opacity:calc(1 - var(--z,0) * 2.6);will-change:opacity}
+  .tp-logo{display:block;width:min(760px,86vw);height:auto;margin:0 auto;
+    -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none;pointer-events:none}
+  .tp-kick{font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--coral);
+    font-size:clamp(.75rem,1.6vw,1rem);margin:0 0 1rem}
+  .tp-lede{font-weight:700;font-size:clamp(1rem,2vw,1.25rem);color:rgba(31,28,26,.7);max-width:30rem;margin:1.4rem auto 0}
+  .tp-scroll{margin-top:1.4rem;font-weight:800;letter-spacing:.18em;color:rgba(31,28,26,.45);animation:tpbounce 1.6s ease-in-out infinite}
+  @keyframes tpbounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+  .tp-sticker{position:absolute;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:.72rem;letter-spacing:.06em;
+    text-transform:uppercase;border:2px solid var(--ink);border-radius:999px;padding:.32rem .85rem;
+    box-shadow:3px 3px 0 var(--ink);white-space:nowrap;z-index:3}
+  .tp-inside{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;padding:0 1.25rem;
+    color:var(--cream);opacity:calc((var(--z,0) - .62) * 3.6);pointer-events:none}
 
-  /* flavours */
-  .gc-flavs{max-width:1100px;margin:0 auto;padding:clamp(40px,7vw,80px) 22px}
-  .gc-h2{font-weight:800;font-size:clamp(1.8rem,5vw,3rem);text-align:center;margin:0 0 40px}
-  .gc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-  @media(max-width:849px){.gc-grid{grid-template-columns:1fr;max-width:420px;margin:0 auto}}
-  .gc-card{background:var(--white);border-radius:26px;padding:20px;display:flex;flex-direction:column;gap:12px;
-    box-shadow:0 24px 50px -30px rgba(25,19,22,.35);transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s}
-  .gc-card:hover{transform:translateY(-6px);box-shadow:0 30px 56px -28px rgba(25,19,22,.4)}
-  .gc-thumb{border-radius:18px;aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden}
-  .gc-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-  .gc-thumb svg{width:66%;height:auto;filter:drop-shadow(0 12px 18px rgba(25,19,22,.2))}
-  .gc-cname{font-weight:800;font-size:1.35rem;margin:2px 0 0;text-decoration:none;color:var(--ink)}
-  .gc-cdesc{font-weight:600;font-size:.9rem;color:#191316a0;margin:0;min-height:2.6em}
-  .gc-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;gap:10px}
-  .gc-price{font-weight:800;font-size:1.3rem}
-  .gc-add{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:.95rem;color:var(--white);
-    background:var(--ink);border-radius:999px;padding:11px 20px;transition:transform .12s,background .25s}
-  .gc-add:hover{background:var(--cherry)} .gc-add:active{transform:scale(.93)}
+  /* ---------- ACT 2: the catch game ---------- */
+  .tp-game{position:relative;overflow:hidden;min-height:94vh;background:var(--neem);color:var(--cream);
+    display:grid;place-items:center;padding:4rem 1.25rem}
+  .holi-drop{position:absolute;top:0;border:0;background:transparent;padding:0;margin:0;cursor:pointer;
+    will-change:transform;opacity:.95;-webkit-tap-highlight-color:transparent}
+  .holi-drop svg{width:100%;height:100%;display:block;pointer-events:none;filter:drop-shadow(0 6px 8px rgba(31,28,26,.22))}
+  @keyframes holi-fall{0%{transform:translate3d(0,-16vh,0) rotate(0)}100%{transform:translate3d(var(--sway,0),116vh,0) rotate(330deg)}}
+  .holi-puff{position:fixed;border-radius:50%;pointer-events:none;z-index:120;transform:translate(-50%,-50%);
+    will-change:transform,opacity;animation:holi-puff .62s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes holi-puff{0%{transform:translate(-50%,-50%) scale(.4);opacity:.95}
+    100%{transform:translate(calc(-50% + var(--px,0)),calc(-50% + var(--py,0))) scale(1.1);opacity:0}}
+  .tp-caught{margin-top:1.3rem;display:inline-flex;align-items:center;gap:.5rem;background:var(--cream);color:var(--neem);
+    font-weight:800;padding:.5rem 1.25rem;border-radius:999px;pointer-events:auto}
 
-  /* manifesto */
-  .gc-mani{background:var(--ink);color:var(--cream);text-align:center;padding:clamp(48px,8vw,90px) 22px}
-  .gc-mani h3{font-weight:800;font-size:clamp(1.6rem,5vw,2.8rem);margin:0 auto;max-width:20ch;line-height:1.1}
-  .gc-mani em{font-style:normal;color:var(--orange)}
-  @media (prefers-reduced-motion:reduce){.gc-marq .trk{animation:none}}
+  /* ---------- ACT 3: Tapri product cards (real Shopify products) ---------- */
+  .tp-shop{max-width:72rem;margin:0 auto;padding:6rem 1.25rem}
+  .tp-h2{font-weight:800;font-size:clamp(2.2rem,6vw,4.4rem);text-align:center;margin:0 0 3.5rem}
+  .tp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2.25rem}
+  @media(max-width:900px){.tp-grid{grid-template-columns:1fr;max-width:26rem;margin:0 auto}}
+  .tp-card{position:relative;background:#fff;border:3px solid var(--ink);box-shadow:8px 8px 0 var(--ink);border-radius:18px;
+    padding:1.6rem 1.4rem;text-align:center;transition:transform .3s cubic-bezier(.22,.8,.26,1),box-shadow .3s cubic-bezier(.22,.8,.26,1)}
+  .tp-card:hover{transform:translate(-2px,-5px);box-shadow:12px 15px 0 var(--ink)}
+  .tp-shot{display:grid;place-items:center;padding:1rem;border-radius:1.5rem;margin-bottom:1rem;overflow:hidden}
+  .tp-shot img{width:100%;height:100%;object-fit:cover;border-radius:1rem}
+  .tp-shot svg{width:72%;height:auto;animation:tpfloat 6s ease-in-out infinite}
+  @keyframes tpfloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-18px) rotate(3deg)}}
+  .tp-name{font-weight:800;font-size:1.5rem;margin:0;color:var(--ink);text-decoration:none;display:block}
+  .tp-desc{font-weight:600;color:rgba(31,28,26,.55);font-size:.88rem;margin:.75rem 0 1rem;min-height:3.2em}
+  .tp-foot{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+  .tp-price{font-weight:800;font-size:1.5rem}
+  .tp-add{border:2px solid var(--ink);background:var(--coral);color:var(--cream);font-weight:800;border-radius:10px;
+    padding:.6rem 1.3rem;cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:transform .15s,box-shadow .15s;font-family:inherit}
+  .tp-add:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+
+  /* ---------- marquee ---------- */
+  .tp-marq{overflow:hidden;padding:1.25rem 0;background:var(--coral)}
+  .tp-marq .trk{display:flex;white-space:nowrap;font-weight:800;font-size:1.4rem;color:var(--cream);
+    will-change:transform;animation:tpmv 30s linear infinite}
+  .tp-marq .trk span{padding:0 1.5rem}
+  @keyframes tpmv{to{transform:translateX(-50%)}}
+
+  /* ---------- manifesto ---------- */
+  .tp-mani{max-width:60rem;margin:0 auto;padding:6rem 1.25rem;text-align:center}
+  .tp-mani h3{font-weight:800;font-size:clamp(1.9rem,5.4vw,3.6rem);line-height:1.08;margin:0}
+  .tp-strike{position:relative;white-space:nowrap;opacity:.5}
+  .tp-strike::after{content:"";position:absolute;left:-2%;right:-2%;top:52%;height:.09em;border-radius:99px;
+    background:var(--pink);transform:scaleX(0);transform-origin:left center;transition:transform .7s cubic-bezier(.77,0,.18,1)}
+  .tp-mani.go .tp-strike:nth-of-type(1)::after{transform:scaleX(1);transition-delay:.15s}
+  .tp-mani.go .tp-strike:nth-of-type(2)::after{transform:scaleX(1);transition-delay:.5s}
+  .tp-mark{background-image:linear-gradient(rgba(244,200,79,.55),rgba(244,200,79,.55));background-repeat:no-repeat;
+    background-size:0% 82%;background-position:0 62%;transition:background-size .8s .85s cubic-bezier(.77,0,.18,1);padding:0 .1em}
+  .tp-mani.go .tp-mark{background-size:100% 82%}
+  .tp-treat{color:var(--purple)}
+  .tp-cta{display:inline-flex;align-items:center;gap:.5rem;margin-top:2.5rem;border:3px solid var(--ink);
+    background:var(--saffron);color:var(--ink);font-weight:800;font-size:1.05rem;text-decoration:none;
+    padding:.9rem 1.9rem;border-radius:12px;box-shadow:5px 5px 0 var(--ink);transition:transform .15s,box-shadow .15s}
+  .tp-cta:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+
+  @media (prefers-reduced-motion:reduce){
+    .gc31 *{animation:none!important;transition:none!important}
+    .tp-stage{height:auto}.tp-pin{position:relative;height:auto;padding:5rem 0}
+    .tp-gummy{display:none}.tp-title{opacity:1!important}.tp-inside{display:none}
+  }
 </style>
 
-{%- assign gp = section.settings -%}
-<div class="gc-home">
-  <div class="gc-hero">
-    {%- if gp.kicker != blank -%}<p class="gc-kick">{{ gp.kicker }}</p>{%- endif -%}
-    <img class="gc-logo" src="{{ 'gc-wordmark-stack.png' | asset_url }}" alt="{{ shop.name }}" width="560" draggable="false" oncontextmenu="return false">
-    {%- if gp.headline != blank -%}<h1 class="gc-tag">{{ gp.headline }}</h1>{%- endif -%}
-    {%- if gp.sub != blank -%}<p class="gc-sub">{{ gp.sub }}</p>{%- endif -%}
-    <a class="gc-cta" href="{{ routes.all_products_collection_url }}">Shop the flavours →</a>
-  </div>
+{%- assign s = section.settings -%}
+{%- assign GPATH = 'M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z' -%}
 
-  <div class="gc-marq" aria-hidden="true"><div class="trk">
-    {%- for i in (1..8) -%}<span>GUMMY CHUMS ✦ WELLNESS, BUT MAKE IT FUN ✦ MADE IN INDIA ✦</span>{%- endfor -%}
-  </div></div>
+<div class="gc31">
 
-  <div class="gc-flavs">
-    <h2 class="gc-h2">Meet the three.</h2>
-    <div class="gc-grid">
+  <!-- ACT 1 — scroll fall-in -->
+  <header class="tp-stage" id="tp-stage">
+    <div class="tp-pin">
+      <div class="tp-blob tp-b1"></div><div class="tp-blob tp-b2"></div><div class="tp-blob tp-b3"></div>
+
+      <div class="tp-gummy">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;filter:drop-shadow(0 20px 30px rgba(31,28,26,.28))">
+          <path d="{{ GPATH }}" fill="{{ s.hero_gummy_color }}"/>
+          <ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/>
+          <ellipse cx="52" cy="62" rx="30" ry="22" fill="#000" opacity=".07"/>
+        </svg>
+      </div>
+
+      <div class="tp-title">
+        <span class="tp-sticker" style="top:-2.5rem;left:6%;background:{{ s.sticker1_bg }};transform:rotate(-9deg)">{{ s.sticker1 }}</span>
+        <span class="tp-sticker" style="top:-1.5rem;right:5%;background:{{ s.sticker2_bg }};transform:rotate(8deg)">{{ s.sticker2 }}</span>
+        <span class="tp-sticker" style="bottom:-2rem;left:12%;background:{{ s.sticker3_bg }};color:#f1e7da;transform:rotate(5deg)">{{ s.sticker3 }}</span>
+        <p class="tp-kick">{{ s.kicker }}</p>
+        <img class="tp-logo" src="{{ 'gc-wordmark-stack.png' | asset_url }}" alt="{{ shop.name }}" width="760" draggable="false" oncontextmenu="return false">
+        <p class="tp-lede">{{ s.lede }}</p>
+        <div class="tp-scroll">SCROLL ↓</div>
+      </div>
+
+      <div class="tp-inside">
+        <div>
+          <p class="anton" style="font-size:clamp(2.2rem,9vw,5.5rem);line-height:.9;margin:0">{{ s.inside_title }}</p>
+          <p style="font-weight:800;font-size:clamp(1.05rem,2.4vw,1.5rem);margin:1rem auto 0;max-width:36rem">
+            {{ s.inside_sub }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ACT 2 — catch the chums -->
+  <section class="tp-game" id="tp-game">
+    <div id="holi-rain" style="position:absolute;inset:0;z-index:1"></div>
+    <div style="position:relative;z-index:2;text-align:center;pointer-events:none">
+      <p style="font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--saffron);margin:0 0 .75rem;font-size:clamp(.75rem,1.6vw,1rem)">{{ s.game_kicker }}</p>
+      <h2 class="anton" style="font-size:clamp(2.6rem,12vw,7rem);line-height:.86;margin:0">{{ s.game_title }}</h2>
+      <p style="font-weight:700;font-size:clamp(1rem,2vw,1.25rem);color:rgba(241,231,218,.8);max-width:28rem;margin:.75rem auto 0">{{ s.game_sub }}</p>
+      <div class="tp-caught">Caught&nbsp;<b id="holi-count" style="color:var(--coral)">0</b></div>
+    </div>
+  </section>
+
+  <!-- ACT 3 — Meet the three (REAL products) -->
+  <section class="tp-shop" id="shop">
+    <h2 class="tp-h2">{{ s.shop_title }}</h2>
+    <div class="tp-grid">
       {%- for product in collections.all.products limit: 3 -%}
         {%- assign t = product.title | downcase -%}
-        {%- if t contains 'brain' -%}{%- assign col = '#8DAA31' -%}{%- assign tint = '#8DAA3118' -%}
-        {%- elsif t contains 'melatonin' or t contains 'sleep' -%}{%- assign col = '#DE1D61' -%}{%- assign tint = '#DE1D6118' -%}
-        {%- else -%}{%- assign col = '#F9740D' -%}{%- assign tint = '#F9740D18' -%}{%- endif -%}
-        <div class="gc-card">
-          <a href="{{ product.url }}" class="gc-thumb" style="background:{{ tint }}">
+        {%- if t contains 'melatonin' or t contains 'sleep' -%}{%- assign col = '#6b2f6a' -%}
+        {%- elsif t contains 'eye' -%}{%- assign col = '#477971' -%}
+        {%- else -%}{%- assign col = '#d72638' -%}{%- endif -%}
+        <div class="tp-card">
+          <a href="{{ product.url }}" class="tp-shot" style="background:{{ col }}20">
             {%- if product.featured_image -%}
-              {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: product.title }}
+              {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: product.title }}
             {%- else -%}
-              <svg viewBox="0 0 100 100" role="img" aria-label="{{ product.title }}"><path d="M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z" fill="{{ col }}"/><ellipse cx="36" cy="28" rx="16" ry="9.5" fill="#fff" opacity=".5" transform="rotate(-25 36 28)"/></svg>
+              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ product.title }}">
+                <path d="{{ GPATH }}" fill="{{ col }}"/>
+                <path d="{{ GPATH }}" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2"/>
+                <ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/>
+                <ellipse cx="63" cy="76" rx="9" ry="5" fill="#fff" opacity=".18" transform="rotate(-20 63 76)"/>
+                <ellipse cx="52" cy="62" rx="32" ry="24" fill="#000" opacity=".07"/>
+              </svg>
             {%- endif -%}
           </a>
-          <a href="{{ product.url }}" class="gc-cname">{{ product.title }}</a>
-          <p class="gc-cdesc">{{ product.description | strip_html | truncatewords: 16 }}</p>
-          <div class="gc-row">
-            <span class="gc-price" style="color:{{ col }}">{{ product.price | money }}</span>
+          <a href="{{ product.url }}" class="tp-name">{{ product.title }}</a>
+          <p class="tp-desc">{{ product.description | strip_html | truncatewords: 18 }}</p>
+          <div class="tp-foot">
+            <span class="tp-price" style="color:{{ col }}">{{ product.price | money }}</span>
             {%- if product.available -%}
               <form method="post" action="{{ routes.cart_add_url }}">
                 <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                 <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="gc-add">Add</button>
+                <button type="submit" class="tp-add">ADD</button>
               </form>
             {%- else -%}
-              <span class="gc-add" style="background:#9993;color:#1913165c;cursor:default">Sold out</span>
+              <span class="tp-add" style="background:#9995;cursor:default">SOLD OUT</span>
             {%- endif -%}
           </div>
         </div>
       {%- else -%}
-        <p style="text-align:center;grid-column:1/-1;color:#191316a0">Add products in Shopify → they show up here automatically.</p>
+        <p style="grid-column:1/-1;text-align:center;color:rgba(31,28,26,.55)">Add products in Shopify — they appear here automatically.</p>
       {%- endfor -%}
     </div>
-  </div>
+  </section>
 
-  <div class="gc-mani">
-    <h3>{{ gp.manifesto }}</h3>
-  </div>
+  <!-- marquee -->
+  <div class="tp-marq"><div class="trk">
+    <span>{{ s.marquee }}</span><span>{{ s.marquee }}</span><span>{{ s.marquee }}</span><span>{{ s.marquee }}</span>
+  </div></div>
+
+  <!-- manifesto -->
+  <section class="tp-mani" id="tp-mani">
+    <h3>
+      {{ s.mani_a }} <span class="tp-strike">{{ s.mani_strike1 }}</span><br>
+      {{ s.mani_b }} <span class="tp-strike">{{ s.mani_strike2 }}</span><br>
+      <span class="tp-mark">{{ s.mani_punch }}</span>
+    </h3>
+    <p style="font-weight:700;font-size:clamp(1.4rem,3.6vw,2.4rem);margin:2.5rem 0 0">
+      wellness = <span class="tp-treat">a treat</span> <span style="opacity:.45">not a task.</span>
+    </p>
+    <a class="tp-cta" href="{{ routes.all_products_collection_url }}">{{ s.cta_label }}</a>
+  </section>
 </div>
+
+<script>
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- Act 1: scroll progress --z (0 → 1) ---- */
+  (function(){
+    var stage=document.getElementById('tp-stage'); if(!stage)return;
+    var tk=false;
+    function upd(){var r=stage.getBoundingClientRect();var d=r.height-innerHeight;
+      var z=d>0?Math.min(Math.max(-r.top/d,0),1):0; stage.style.setProperty('--z',z.toFixed(4));}
+    addEventListener('scroll',function(){if(!tk){requestAnimationFrame(function(){upd();tk=false;});tk=true;}},{passive:true});
+    addEventListener('resize',upd); upd();
+  })();
+
+  /* ---- Act 2: raining gummies you can pop ---- */
+  (function(){
+    var rain=document.getElementById('holi-rain'), countEl=document.getElementById('holi-count');
+    if(!rain)return;
+    var COLORS=['#e8503a','#f4c84f','#e8a0b2','#98c64b','#477971','#6b2f6a','#6b1e21','#ff7a2f'];
+    var CAP=reduce?8:(innerWidth<640?20:36), caught=0;
+    function rnd(a,b){return a+Math.random()*(b-a);}
+    function svg(c){return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="{{ GPATH }}" fill="'+c+'"/><ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/><ellipse cx="52" cy="62" rx="30" ry="22" fill="#000" opacity=".07"/></svg>';}
+    function reset(el,first){
+      var c=COLORS[(Math.random()*COLORS.length)|0]; el.dataset.c=c;
+      var sz=rnd(22,52); el.style.width=el.style.height=sz+'px';
+      el.style.left=rnd(0,96)+'%'; el.style.setProperty('--sway',rnd(-45,45)+'px');
+      el.innerHTML=svg(c);
+      var dur=rnd(5,11);
+      el.style.animation='none'; void el.offsetWidth;
+      el.style.animation='holi-fall '+dur.toFixed(2)+'s linear '+(first?(-rnd(0,dur)).toFixed(2):'0')+'s forwards';
+    }
+    function puff(x,y,c){
+      if(reduce)return;
+      for(var i=0;i<12;i++){var q=document.createElement('span');q.className='holi-puff';
+        q.style.left=x+'px';q.style.top=y+'px';q.style.background=c;
+        var a=Math.random()*6.283,dd=rnd(28,86);
+        q.style.setProperty('--px',(Math.cos(a)*dd).toFixed(1)+'px');
+        q.style.setProperty('--py',(Math.sin(a)*dd).toFixed(1)+'px');
+        var sz=rnd(5,13); q.style.width=q.style.height=sz+'px';
+        document.body.appendChild(q);
+        (function(pp){setTimeout(function(){pp.parentNode&&pp.parentNode.removeChild(pp);},640);})(q);
+      }
+    }
+    function pop(el){var r=el.getBoundingClientRect();
+      puff(r.left+r.width/2,r.top+r.height/2,el.dataset.c);
+      caught++; if(countEl)countEl.textContent=caught; reset(el,false);
+    }
+    for(var i=0;i<CAP;i++){
+      (function(){
+        var el=document.createElement('button'); el.type='button'; el.className='holi-drop';
+        el.setAttribute('aria-label','pop a gummy');
+        el.addEventListener('animationend',function(){reset(el,false);});
+        el.addEventListener('click',function(ev){ev.preventDefault();pop(el);});
+        rain.appendChild(el); reset(el,true);
+      })();
+    }
+  })();
+
+  /* ---- manifesto reveal (IO + scroll + load failsafes) ---- */
+  (function(){
+    var k=document.getElementById('tp-mani'); if(!k)return;
+    function go(){k.classList.add('go');}
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es,o){es.forEach(function(en){if(en.isIntersecting){go();o.disconnect();}});},
+        {threshold:0,rootMargin:'0px 0px -12% 0px'}).observe(k);
+    }
+    addEventListener('scroll',function f(){if(k.getBoundingClientRect().top<innerHeight*.85){go();removeEventListener('scroll',f);}},{passive:true});
+    if(k.getBoundingClientRect().top<innerHeight)go();
+  })();
+})();
+</script>
 
 {% schema %}
 {
   "name": "GummyChums Home",
   "settings": [
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Wellness, but make it fun ✦" },
-    { "type": "text", "id": "headline", "label": "Headline", "default": "Three flavours. One happy habit." },
-    { "type": "text", "id": "sub", "label": "Subline", "default": "Supplements you’ll actually look forward to." },
-    { "type": "text", "id": "manifesto", "label": "Manifesto line", "default": "Wellness = a treat, not a task." }
+    { "type": "header", "content": "Act 1 — Hero" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "WELLNESS, BUT MAKE IT FUN" },
+    { "type": "text", "id": "lede", "label": "Lede", "default": "India’s most fun wellness gummy. Scroll — straight into the gummy. 👇" },
+    { "type": "color", "id": "hero_gummy_color", "label": "Hero gummy colour", "default": "#e8503a" },
+    { "type": "text", "id": "sticker1", "label": "Sticker 1", "default": "100% Veg" },
+    { "type": "color", "id": "sticker1_bg", "label": "Sticker 1 bg", "default": "#f4c84f" },
+    { "type": "text", "id": "sticker2", "label": "Sticker 2", "default": "No Added Sugar" },
+    { "type": "color", "id": "sticker2_bg", "label": "Sticker 2 bg", "default": "#98c64b" },
+    { "type": "text", "id": "sticker3", "label": "Sticker 3", "default": "Made in India" },
+    { "type": "color", "id": "sticker3_bg", "label": "Sticker 3 bg", "default": "#477971" },
+    { "type": "text", "id": "inside_title", "label": "Reveal title", "default": "WHAT’S INSIDE?" },
+    { "type": "text", "id": "inside_sub", "label": "Reveal sub", "default": "Bacopa · Melatonin · Lutein. Zero junk — just real wellness." },
+    { "type": "header", "content": "Act 2 — Catch game" },
+    { "type": "text", "id": "game_kicker", "label": "Game kicker", "default": "CATCH THE CHUMS" },
+    { "type": "text", "id": "game_title", "label": "Game title", "default": "GUMMYCHUMS!" },
+    { "type": "text", "id": "game_sub", "label": "Game sub", "default": "Gummies are raining — tap one, it pops! 💥" },
+    { "type": "header", "content": "Act 3 — Products" },
+    { "type": "text", "id": "shop_title", "label": "Section title", "default": "MEET THE THREE" },
+    { "type": "header", "content": "Marquee & manifesto" },
+    { "type": "text", "id": "marquee", "label": "Marquee text", "default": "BOLD ✦ PLAYFUL ✦ NO ADDED SUGAR ✦ MADE IN INDIA ✦ PROUDLY INDIAN ✦" },
+    { "type": "text", "id": "mani_a", "label": "Manifesto line 1", "default": "Pills feel like" },
+    { "type": "text", "id": "mani_strike1", "label": "Struck word 1", "default": "homework." },
+    { "type": "text", "id": "mani_b", "label": "Manifesto line 2", "default": "Powders feel like" },
+    { "type": "text", "id": "mani_strike2", "label": "Struck word 2", "default": "chemistry class." },
+    { "type": "text", "id": "mani_punch", "label": "Punchline", "default": "We chose fun." },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "GRAB ALL THREE →" }
   ],
   "presets": [{ "name": "GummyChums Home" }]
 }
