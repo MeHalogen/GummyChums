@@ -12,14 +12,14 @@
     bg.setAttribute('aria-hidden', 'true');
 
     // floating blurred gummies — fixed positions so it looks composed, not random
+    // kept to the edges — the centre column stays clean for type
     var gummies = [
-      { l: '6%',  t: '12%', s: 190, c: '#DE1D61', o: .55, d: 16, dx: '30px',  dy: '-34px' },
-      { l: '80%', t: '6%',  s: 150, c: '#8DAA31', o: .48, d: 21, dx: '-26px', dy: '30px'  },
-      { l: '88%', t: '58%', s: 210, c: '#F9740D', o: .52, d: 19, dx: '-32px', dy: '-26px' },
-      { l: '14%', t: '68%', s: 230, c: '#F9740D', o: .45, d: 24, dx: '28px',  dy: '26px'  },
-      { l: '46%', t: '82%', s: 160, c: '#DE1D61', o: .50, d: 18, dx: '-24px', dy: '-30px' },
-      { l: '38%', t: '4%',  s: 120, c: '#8DAA31', o: .38, d: 22, dx: '22px',  dy: '28px'  },
-      { l: '64%', t: '36%', s: 140, c: '#DE1D61', o: .38, d: 26, dx: '-28px', dy: '24px'  }
+      { l: '-4%', t: '10%', s: 230, c: '#DE1D61', o: .38, d: 18, dx: '32px',  dy: '-30px' },
+      { l: '86%', t: '2%',  s: 190, c: '#8DAA31', o: .30, d: 22, dx: '-28px', dy: '32px'  },
+      { l: '90%', t: '52%', s: 240, c: '#F9740D', o: .34, d: 20, dx: '-34px', dy: '-28px' },
+      { l: '-6%', t: '62%', s: 260, c: '#F9740D', o: .28, d: 25, dx: '30px',  dy: '28px'  },
+      { l: '78%', t: '84%', s: 180, c: '#DE1D61', o: .32, d: 19, dx: '-26px', dy: '-32px' },
+      { l: '8%',  t: '88%', s: 170, c: '#DE1D61', o: .26, d: 23, dx: '24px',  dy: '30px'  }
     ];
     gummies.forEach(function (g, i) {
       var el = document.createElement('i');

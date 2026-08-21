@@ -1,9 +1,9 @@
 {%- comment -%} GummyChums header — brand bar + logo nav + cart {%- endcomment -%}
 <style>
   .gch-bar{background:var(--gc-ink);color:var(--gc-cream);overflow:hidden;padding:8px 0}
-  .gch-bar .trk{display:inline-flex;white-space:nowrap;font-weight:800;text-transform:uppercase;
-    font-size:11.5px;letter-spacing:.18em;animation:gchScroll 60s linear infinite}
-  .gch-bar .trk span{padding:0 18px}
+  .gch-bar .trk{display:inline-flex;white-space:nowrap;font-weight:700;text-transform:uppercase;
+    font-size:10px;letter-spacing:.22em;opacity:.9;animation:gchScroll 70s linear infinite}
+  .gch-bar .trk span{padding:0 16px}
   @keyframes gchScroll{to{transform:translateX(-50%)}}
   @media (prefers-reduced-motion:reduce){.gch-bar .trk{animation:none}}
 
@@ -19,13 +19,16 @@
   .gch-nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.5px;border-radius:99px;
     background:var(--gc-cherry);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--gc-ease)}
   .gch-nav a:hover::after{transform:scaleX(1)}
-  .gch-cart{position:relative;display:inline-flex;align-items:center;gap:8px;background:var(--gc-cherry);color:#fff;
-    font-weight:800;font-size:.92rem;text-decoration:none;padding:11px 20px;border-radius:999px;
+  .gch-cart{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    background:var(--gc-cherry) !important;color:#fff !important;
+    font-weight:800;font-size:.88rem;letter-spacing:.06em;text-decoration:none !important;
+    padding:11px 20px;border-radius:999px;line-height:1;white-space:nowrap;box-sizing:border-box;
     box-shadow:0 12px 26px -14px rgba(222,29,97,.75);transition:transform .16s var(--gc-spring),background .25s}
-  .gch-cart:hover{background:var(--gc-cherry-dk);transform:translateY(-2px)}
+  .gch-cart:hover{background:var(--gc-cherry-dk) !important;transform:translateY(-2px)}
   .gch-cart:active{transform:scale(.95)}
-  .gch-count{background:#fff;color:var(--gc-cherry);border-radius:999px;min-width:20px;height:20px;
-    display:grid;place-items:center;font-size:.72rem;font-weight:800;padding:0 5px}
+  .gch-count{flex:0 0 auto;background:#fff;color:var(--gc-cherry);border-radius:999px;
+    min-width:19px;height:19px;display:inline-flex;align-items:center;justify-content:center;
+    font-size:.7rem;font-weight:800;padding:0 5px;line-height:1}
   @media(max-width:749px){
     .gch-nav{gap:16px}
     .gch-nav a.gch-hide{display:none}
