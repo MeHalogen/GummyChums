@@ -4,6 +4,15 @@
   var FLAV = ['#DE1D61', '#8DAA31', '#F9740D'];
   var GPATH = 'M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z';
 
+  /* ---------- fixed flavour background (coming-soon look, zero scroll cost) ---------- */
+  function initBackground() {
+    if (document.querySelector('.gc-bg')) return;
+    var bg = document.createElement('div');
+    bg.className = 'gc-bg';
+    bg.setAttribute('aria-hidden', 'true');
+    document.body.insertBefore(bg, document.body.firstChild);
+  }
+
   /* ---------- gummy cursor ---------- */
   function initCursor() {
     if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
@@ -17,7 +26,7 @@
       '<ellipse cx="35" cy="28" rx="15" ry="9" fill="#fff" opacity=".75" transform="rotate(-25 35 28)"/></svg>';
     document.body.appendChild(c);
 
-    var x = 0, y = 0, has = false;
+    var x = 0, y = 0, px = -1, py = -1, has = false;
     addEventListener('pointermove', function (e) {
       x = e.clientX; y = e.clientY; has = true;
       c.classList.add('on');
@@ -27,7 +36,11 @@
     document.addEventListener('mouseleave', function () { c.classList.remove('on'); });
 
     (function loop() {
-      if (has) c.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)';
+      // only write when it actually moved — avoids needless style work each frame
+      if (has && (x !== px || y !== py)) {
+        c.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)';
+        px = x; py = y;
+      }
       requestAnimationFrame(loop);
     })();
   }
@@ -110,7 +123,7 @@
     });
   }
 
-  function boot() { initCursor(); initRipple(); initReveal(); }
+  function boot() { initBackground(); initCursor(); initRipple(); initReveal(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
 })();

@@ -7,8 +7,9 @@
   @keyframes gchScroll{to{transform:translateX(-50%)}}
   @media (prefers-reduced-motion:reduce){.gch-bar .trk{animation:none}}
 
-  .gch{position:sticky;top:0;z-index:60;background:rgba(253,247,244,.86);backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(25,19,22,.08)}
+  /* solid bg (no backdrop-filter — that repaints the whole bar every scroll frame) */
+  .gch{position:sticky;top:0;z-index:60;background:#FDF7F4F2;
+    border-bottom:1px solid rgba(25,19,22,.08);will-change:transform;transform:translateZ(0)}
   .gch-in{max-width:1180px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:20px}
   .gch-logo{display:flex;align-items:center;line-height:0;flex:0 0 auto}
   .gch-logo img{height:clamp(30px,4vw,42px);width:auto;display:block;

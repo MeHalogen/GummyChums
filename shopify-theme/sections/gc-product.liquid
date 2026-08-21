@@ -21,11 +21,10 @@
 
   .gp-media{position:relative;border-radius:32px;overflow:hidden;aspect-ratio:1/1;display:grid;place-items:center;
     background:var(--pc)18;box-shadow:0 34px 64px -40px rgba(25,19,22,.45)}
-  .gp-media::before{content:"";position:absolute;width:80%;height:80%;border-radius:50%;filter:blur(60px);
-    background:var(--pc);opacity:.25}
+  .gp-media::before{content:"";position:absolute;inset:0;
+    background:radial-gradient(60% 60% at 50% 45%, var(--pc), transparent 70%);opacity:.30}
   .gp-media img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1}
-  .gp-media svg{width:62%;height:auto;position:relative;z-index:1;animation:gpFloat 6s ease-in-out infinite;
-    filter:drop-shadow(0 22px 30px rgba(25,19,22,.25))}
+  .gp-media svg{width:62%;height:auto;position:relative;z-index:1;animation:gpFloat 6s ease-in-out infinite;will-change:transform}
   @keyframes gpFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(3deg)}}
   .gp-badge{position:absolute;z-index:2;top:16px;left:16px;background:#fff;color:var(--pc);font-size:.72rem;
     font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border-radius:999px;

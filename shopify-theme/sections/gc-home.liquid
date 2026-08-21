@@ -10,19 +10,13 @@
 
   /* ---------- ACT 1 — hero + scroll fall-in ---------- */
   .gh-stage{position:relative;height:250vh}
+  /* transparent so the global fixed flavour background shows through — nothing to repaint */
   .gh-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
-    background:linear-gradient(180deg,#FFF3F7 0%,var(--cream) 60%)}
-  .gh-blob{position:absolute;border-radius:50%;filter:blur(72px);pointer-events:none;z-index:0;will-change:transform}
-  .gh-b1{width:52vw;height:52vw;background:var(--cherry);opacity:.34;left:-10vw;top:-12vw;animation:ghb1 18s ease-in-out infinite}
-  .gh-b2{width:42vw;height:42vw;background:var(--mango);opacity:.20;right:-8vw;top:2vw;animation:ghb2 22s ease-in-out infinite}
-  .gh-b3{width:48vw;height:48vw;background:var(--orange);opacity:.22;left:26vw;bottom:-18vw;animation:ghb3 25s ease-in-out infinite}
-  .gh-b4{width:38vw;height:38vw;background:var(--cherry);opacity:.22;right:6vw;bottom:-10vw;animation:ghb2 20s ease-in-out infinite reverse}
-  @keyframes ghb1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(28px,34px) scale(1.14)}}
-  @keyframes ghb2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-32px,26px) scale(1.1)}}
-  @keyframes ghb3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(24px,-30px) scale(1.15)}}
+    background:transparent;contain:paint}
 
-  .gh-gummy{position:absolute;left:50%;bottom:3%;width:min(30vw,180px);z-index:1;will-change:transform;
-    transform-origin:center bottom;transform:translateX(-50%) scale(calc(1 + var(--z,0) * var(--z,0) * 28))}
+  .gh-gummy{position:absolute;left:50%;bottom:3%;width:min(30vw,180px);z-index:1;
+    will-change:transform;backface-visibility:hidden;transform-origin:center bottom;
+    transform:translate3d(-50%,0,0) scale(calc(1 + var(--z,0) * var(--z,0) * 28))}
   .gh-mid{position:relative;z-index:2;text-align:center;padding:0 22px;
     opacity:calc(1 - var(--z,0) * 2.7);will-change:opacity}
   .gh-logo{display:block;width:min(680px,88vw);height:auto;margin:0 auto 22px;
@@ -54,8 +48,7 @@
   .gh-card:hover{transform:translateY(-8px);box-shadow:0 38px 70px -32px rgba(222,29,97,.45)}
   .gh-shot{border-radius:20px;aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden;position:relative}
   .gh-shot img{width:100%;height:100%;object-fit:cover}
-  .gh-shot svg{width:66%;height:auto;animation:ghFloat 6s ease-in-out infinite;
-    filter:drop-shadow(0 16px 22px rgba(25,19,22,.22))}
+  .gh-shot svg{width:66%;height:auto;animation:ghFloat 6s ease-in-out infinite;will-change:transform}
   @keyframes ghFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-15px) rotate(3deg)}}
   .gh-badge{position:absolute;top:12px;left:12px;background:#fff;color:var(--ink);font-size:.68rem;font-weight:800;
     letter-spacing:.1em;text-transform:uppercase;padding:6px 11px;border-radius:999px;box-shadow:0 6px 14px -8px rgba(0,0,0,.4)}
@@ -70,8 +63,8 @@
   /* ---------- ACT 3 — story ---------- */
   .gh-story{background:var(--ink);color:var(--cream);border-radius:34px;padding:clamp(38px,6vw,74px) clamp(24px,4vw,60px);
     position:relative;overflow:hidden;text-align:center}
-  .gh-story::before{content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;filter:blur(90px);
-    opacity:.28;background:var(--cherry);left:-18vw;top:-30vw;pointer-events:none}
+  .gh-story::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(48vw 48vw at 10% 0%, rgba(222,29,97,.34), transparent 62%)}
   .gh-story-in{position:relative;z-index:1}
   .gh-story h2{font-size:clamp(1.8rem,5vw,3.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin:0 auto;max-width:22ch}
   .gh-story h2 em{font-style:normal;color:var(--cherry)}
@@ -110,11 +103,8 @@
   <!-- ACT 1 -->
   <header class="gh-stage" id="gh-stage">
     <div class="gh-pin">
-      <div class="gh-blob gh-b1"></div><div class="gh-blob gh-b2"></div>
-      <div class="gh-blob gh-b3"></div><div class="gh-blob gh-b4"></div>
-
       <div class="gh-gummy">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;filter:drop-shadow(0 22px 34px rgba(222,29,97,.4))">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%">
           <defs><radialGradient id="ghHero" cx="38%" cy="30%" r="76%">
             <stop offset="0%" stop-color="#ff5f94"/><stop offset="60%" stop-color="#DE1D61"/><stop offset="100%" stop-color="#a51447"/>
           </radialGradient></defs>

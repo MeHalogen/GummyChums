@@ -1,5 +1,6 @@
 /* ============ GummyChums brand layer — coming-soon vibe, pink-forward ============ */
 @font-face{font-family:'Manrope';src:url('Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
+html{background:#FDF7F4}
 
 :root{
   --gc-ink:#191316;
@@ -15,10 +16,27 @@
   --gc-spring:cubic-bezier(.34,1.56,.64,1);
 }
 
+/* ---- coming-soon flavour background: ONE fixed GPU layer, zero scroll repaint ---- */
+.gc-bg{position:fixed;inset:-25%;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(38vw 38vw at 14% 10%, rgba(222,29,97,.42), transparent 62%),
+    radial-gradient(32vw 32vw at 86% 16%, rgba(141,170,49,.26), transparent 62%),
+    radial-gradient(36vw 36vw at 74% 86%, rgba(249,116,13,.30), transparent 62%),
+    radial-gradient(30vw 30vw at 20% 84%, rgba(222,29,97,.30), transparent 62%);
+  will-change:transform;transform:translateZ(0);backface-visibility:hidden;
+  animation:gcDrift 30s ease-in-out infinite alternate}
+@keyframes gcDrift{
+  from{transform:translate3d(0,0,0) scale(1)}
+  to{transform:translate3d(2.5%,-2%,0) scale(1.09)}}
+@media (prefers-reduced-motion:reduce){.gc-bg{animation:none}}
+
+/* smooth anchor scrolling + stop scroll-anchoring jumps */
+html{scroll-behavior:smooth;overflow-anchor:none}
+
 /* ---- typography: bigger, tighter ---- */
 body{
   font-family:'Manrope',system-ui,-apple-system,sans-serif !important;
-  background:var(--gc-cream) !important;
+  background:transparent !important;
   color:var(--gc-ink) !important;
   font-size:17px;
   -webkit-font-smoothing:antialiased;
