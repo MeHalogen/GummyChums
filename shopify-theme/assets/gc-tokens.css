@@ -54,7 +54,7 @@
   /* ---- layout ---- */
   --container:1200px;
   --gutter:clamp(20px,4vw,40px);
-  --header-h:68px;
+  --header-h:82px;
 
   /* ---- motion ---- */
   --ease:cubic-bezier(.22,.8,.26,1);

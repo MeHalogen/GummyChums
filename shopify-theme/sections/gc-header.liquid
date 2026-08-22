@@ -3,7 +3,7 @@
   /* quiet marquee — a detail, not a shouting band */
   .gch-bar{background:var(--c-ink);color:var(--c-bg);overflow:hidden;padding:var(--sp-2) 0}
   .gch-bar .trk{display:inline-flex;white-space:nowrap;font-weight:var(--fw-bold);text-transform:uppercase;
-    font-size:var(--fs-xs);letter-spacing:var(--ls-wide);opacity:.85;animation:gchScroll 70s linear infinite}
+    font-size:var(--fs-sm);letter-spacing:var(--ls-wide);opacity:.92;animation:gchScroll 70s linear infinite}
   .gch-bar .trk span{padding:0 var(--sp-4)}
   @keyframes gchScroll{to{transform:translateX(-50%)}}
 
@@ -16,12 +16,12 @@
     display:grid;grid-template-columns:1fr auto 1fr;align-items:center;column-gap:var(--sp-5)}
 
   .gch-logo{display:flex;align-items:center;line-height:0;justify-self:start}
-  .gch-logo img{height:clamp(30px,4vw,42px);width:auto;display:block;
+  .gch-logo img{height:clamp(38px,4.6vw,54px);width:auto;display:block;
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
 
   .gch-nav{display:flex;align-items:center;gap:var(--sp-6);justify-self:center}
-  .gch-nav a{color:var(--c-ink);text-decoration:none;font-weight:var(--fw-bold);
-    font-size:var(--fs-base);position:relative;padding:var(--sp-1) 0}
+  .gch-nav a{color:var(--c-ink);text-decoration:none;font-weight:var(--fw-black);
+    font-size:var(--fs-lg);letter-spacing:var(--ls-normal);position:relative;padding:var(--sp-2) 0}
   .gch-nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:var(--r-full);
     background:var(--c-accent);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-2) var(--ease)}
   .gch-nav a:hover{color:var(--c-accent)}
@@ -31,8 +31,8 @@
   .gch .gch-cart,.gch .gch-cart:link,.gch .gch-cart:visited,.gch .gch-cart:hover,.gch .gch-cart:active{
     color:var(--c-accent-ink);text-decoration:none}
   .gch .gch-cart{justify-self:end;position:relative;display:inline-flex;align-items:center;justify-content:center;
-    gap:var(--sp-2);background:var(--c-accent);font-weight:var(--fw-black);font-size:var(--fs-sm);
-    letter-spacing:var(--ls-normal);padding:var(--sp-3) var(--sp-5);border-radius:var(--r-full);line-height:1;
+    gap:var(--sp-2);background:var(--c-accent);font-weight:var(--fw-black);font-size:var(--fs-base);
+    letter-spacing:var(--ls-normal);padding:var(--sp-4) var(--sp-6);border-radius:var(--r-full);line-height:1;
     white-space:nowrap;box-sizing:border-box;box-shadow:var(--sh-2);
     transition:transform var(--dur-1) var(--spring),filter var(--dur-2) var(--ease)}
   .gch .gch-cart:hover{filter:brightness(1.08);transform:translateY(-2px)}
@@ -40,8 +40,8 @@
   /* label wrapped in its own element so Dawn's ".header a" colour rule can't win over a bare text node */
   .gch .gch-cart-label{color:var(--c-accent-ink);display:inline-block;line-height:1}
   .gch .gch-count{flex:0 0 auto;background:var(--c-accent-ink);color:var(--c-accent);border-radius:var(--r-full);
-    min-width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;
-    font-size:var(--fs-xs);font-weight:var(--fw-black);padding:0 var(--sp-2);line-height:1;box-sizing:border-box}
+    min-width:23px;height:23px;display:inline-flex;align-items:center;justify-content:center;
+    font-size:var(--fs-sm);font-weight:var(--fw-black);padding:0 var(--sp-2);line-height:1;box-sizing:border-box}
 
   /* each responsive/reduced-motion tweak lives in its own @media block —
      keeps every selector declared exactly once for the design-system linter */

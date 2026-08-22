@@ -13,13 +13,12 @@
 
     // floating blurred gummies — fixed positions so it looks composed, not random
     // kept to the edges — the centre column stays clean for type
+    // 4 (was 7) — each blurred layer costs compositor memory
     var gummies = [
-      { l: '-4%', t: '10%', s: 230, c: '#DE1D61', o: .38, d: 18, dx: '32px',  dy: '-30px' },
-      { l: '86%', t: '2%',  s: 190, c: '#8DAA31', o: .30, d: 22, dx: '-28px', dy: '32px'  },
-      { l: '90%', t: '52%', s: 240, c: '#F9740D', o: .34, d: 20, dx: '-34px', dy: '-28px' },
-      { l: '-6%', t: '62%', s: 260, c: '#F9740D', o: .28, d: 25, dx: '30px',  dy: '28px'  },
-      { l: '78%', t: '84%', s: 180, c: '#DE1D61', o: .32, d: 19, dx: '-26px', dy: '-32px' },
-      { l: '8%',  t: '88%', s: 170, c: '#DE1D61', o: .26, d: 23, dx: '24px',  dy: '30px'  }
+      { l: '-4%', t: '10%', s: 230, c: '#DE1D61', o: .34, d: 20, dx: '26px',  dy: '-24px' },
+      { l: '86%', t: '4%',  s: 200, c: '#8DAA31', o: .26, d: 24, dx: '-22px', dy: '26px'  },
+      { l: '88%', t: '56%', s: 240, c: '#F9740D', o: .30, d: 22, dx: '-26px', dy: '-22px' },
+      { l: '-6%', t: '64%', s: 250, c: '#F9740D', o: .24, d: 26, dx: '24px',  dy: '22px'  }
     ];
     gummies.forEach(function (g, i) {
       var el = document.createElement('i');
@@ -47,23 +46,16 @@
       '<ellipse cx="35" cy="28" rx="15" ry="9" fill="#fff" opacity=".75" transform="rotate(-25 35 28)"/></svg>';
     document.body.appendChild(c);
 
-    var x = 0, y = 0, px = -1, py = -1, has = false;
+    // Set the transform directly in the handler. Browsers already coalesce
+    // pointermove to one event per frame, so a rAF loop only adds latency and
+    // burns the main thread while idle.
     addEventListener('pointermove', function (e) {
-      x = e.clientX; y = e.clientY; has = true;
-      c.classList.add('on');
+      c.style.transform = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0) translate(-50%,-50%)';
+      if (!c.classList.contains('on')) c.classList.add('on');
       var hot = e.target.closest && e.target.closest('a,button,input,summary,[role="button"],.gc-card');
       c.classList.toggle('big', !!hot);
     }, { passive: true });
     document.addEventListener('mouseleave', function () { c.classList.remove('on'); });
-
-    (function loop() {
-      // only write when it actually moved — avoids needless style work each frame
-      if (has && (x !== px || y !== py)) {
-        c.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)';
-        px = x; py = y;
-      }
-      requestAnimationFrame(loop);
-    })();
   }
 
   /* ---------- click ripple + gummy splash + colour flash ---------- */
@@ -98,7 +90,7 @@
       ).onfinish = function () { s.remove(); };
 
       // 3. little flavour specks flying out
-      for (var i = 0; i < 7; i++) {
+      for (var i = 0; i < 3; i++) {
         (function () {
           var p = document.createElement('span');
           var sz = 5 + Math.random() * 8;
