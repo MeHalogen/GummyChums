@@ -60,15 +60,42 @@ test('tokens define layout container and gutter', () => {
 // ------------------------------------------------------- component contracts
 
 test('sections declare each selector only once (no duplicate rules)', () => {
+  // Duplicates are scoped: top-level and each @media block are separate scopes,
+  // so legitimately re-declaring a selector inside a media query is NOT a duplicate.
+  const scopesOf = (css) => {
+    const scopes = [];
+    let top = '';
+    for (let i = 0; i < css.length; i++) {
+      if (css.startsWith('@media', i) || css.startsWith('@supports', i)) {
+        const open = css.indexOf('{', i);
+        if (open === -1) break;
+        let depth = 1, j = open + 1;
+        while (j < css.length && depth > 0) {
+          if (css[j] === '{') depth++;
+          else if (css[j] === '}') depth--;
+          j++;
+        }
+        scopes.push(css.slice(open + 1, j - 1));
+        i = j - 1;
+      } else {
+        top += css[i];
+      }
+    }
+    scopes.push(top);
+    return scopes;
+  };
+
   const problems = [];
   for (const file of gcSections()) {
-    const seen = new Map();
-    for (const m of styleCss(file).matchAll(/(^|\})\s*([^{}@]+?)\s*\{/g)) {
-      const sel = m[2].trim().replace(/\s+/g, ' ');
-      if (!sel || sel.startsWith('@') || sel.includes('%')) continue;
-      seen.set(sel, (seen.get(sel) || 0) + 1);
+    for (const scope of scopesOf(styleCss(file))) {
+      const seen = new Map();
+      for (const m of scope.matchAll(/(^|\})\s*([^{}@]+?)\s*\{/g)) {
+        const sel = m[2].trim().replace(/\s+/g, ' ');
+        if (!sel || sel.startsWith('@') || sel.includes('%')) continue;
+        seen.set(sel, (seen.get(sel) || 0) + 1);
+      }
+      for (const [sel, n] of seen) if (n > 1) problems.push(`${file}: "${sel}" declared ${n}x in one scope`);
     }
-    for (const [sel, n] of seen) if (n > 1) problems.push(`${file}: "${sel}" declared ${n}x`);
   }
   assert.deepEqual(problems, [], `duplicate selectors:\n${problems.join('\n')}`);
 });

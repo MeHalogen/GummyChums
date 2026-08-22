@@ -1,31 +1,37 @@
 {%- comment -%} GummyChums footer — brand, not Dawn's newsletter block {%- endcomment -%}
 <style>
-  .gcf{background:var(--gc-ink);color:var(--gc-cream);padding:clamp(48px,6vw,76px) 22px 26px;position:relative;overflow:hidden}
-  /* gradient instead of blur() — same glow, no repaint cost */
-  .gcf::before{content:"";position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(46vw 46vw at 12% 0%, rgba(222,29,97,.30), transparent 62%)}
-  .gcf-in{max-width:1180px;margin:0 auto;position:relative;z-index:1}
-  .gcf-top{display:flex;flex-wrap:wrap;gap:36px;justify-content:space-between;align-items:flex-start}
-  .gcf-brand{max-width:26rem}
-  .gcf-logo{height:auto;width:min(230px,58vw);display:block;filter:invert(1);
+  .gcf{position:relative;overflow:hidden;background:var(--c-ink);color:var(--c-bg);
+    padding:var(--sp-8) var(--gutter) var(--sp-5)}
+  /* subtle neutral glow — gradient, not blur() — same closing-anchor warmth, no repaint cost */
+  .gcf::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.08;
+    background:radial-gradient(60% 60% at 15% 0%, var(--c-bg), transparent 70%)}
+  .gcf-in{position:relative;z-index:1;max-width:var(--container);margin-inline:auto}
+  .gcf-top{display:flex;flex-wrap:wrap;gap:var(--sp-7);justify-content:space-between;align-items:flex-start}
+  .gcf-brand{max-width:24rem}
+  .gcf-logo{display:block;width:min(210px,56vw);height:auto;filter:invert(1);
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
-  .gcf-tag{font-weight:700;font-size:1.05rem;color:rgba(253,247,244,.75);margin:16px 0 0;line-height:1.5}
-  .gcf-cols{display:flex;gap:clamp(30px,6vw,70px);flex-wrap:wrap}
-  .gcf-col h4{font-weight:800;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;
-    color:var(--gc-cherry);margin:0 0 14px}
-  .gcf-col a,.gcf-col span{display:block;color:rgba(253,247,244,.82);text-decoration:none;font-weight:600;
-    font-size:.98rem;margin-bottom:10px;transition:color .2s,transform .2s var(--gc-ease)}
-  .gcf-col a:hover{color:#fff;transform:translateX(3px)}
-  .gcf-bot{margin-top:44px;padding-top:20px;border-top:1px solid rgba(253,247,244,.14);
-    display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;
-    font-size:.85rem;font-weight:600;color:rgba(253,247,244,.6)}
-  .gcf-dot{width:11px;height:11px;display:inline-block;border-radius:46% 54% 52% 48%/48% 46% 54% 52%;
-    background:var(--gc-cherry);vertical-align:-1px;margin:0 7px;
-    animation:gcfDot 4.8s linear infinite, gcfWob 3s ease-in-out infinite}
-  @keyframes gcfDot{0%,100%{background:#DE1D61}33%{background:#8DAA31}66%{background:#F9740D}}
-  @keyframes gcfWob{0%,100%{transform:rotate(-9deg) scale(1)}50%{transform:rotate(9deg) scale(1.15)}}
-  @media(max-width:749px){.gcf-top{flex-direction:column;gap:30px}}
-  @media (prefers-reduced-motion:reduce){.gcf-dot{animation:none}}
+  .gcf-tag{margin:var(--sp-4) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-body);
+    line-height:var(--lh-body);color:var(--c-bg);opacity:.72}
+  .gcf-cols{display:flex;flex-wrap:wrap;gap:var(--sp-8)}
+  /* single accent element for the whole footer: the column headings. everything
+     else stays on neutral --c-bg/opacity steps — no cherry/mango/orange chrome */
+  .gcf-col h4{margin:0 0 var(--sp-4);font-size:var(--fs-xs);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--c-accent)}
+  .gcf-col a,.gcf-col span{display:block;margin-bottom:var(--sp-3);color:var(--c-bg);opacity:.78;
+    font-size:var(--fs-base);font-weight:var(--fw-body);text-decoration:none;
+    transition:opacity var(--dur-2) var(--ease),transform var(--dur-2) var(--ease)}
+  .gcf-col a:hover,.gcf-col a:focus-visible{opacity:1;transform:translateX(var(--sp-1))}
+  .gcf-hr{height:1px;background:var(--c-bg);opacity:.14;margin:var(--sp-8) 0 var(--sp-5)}
+  .gcf-bot{display:flex;flex-wrap:wrap;gap:var(--sp-3);justify-content:space-between;align-items:center}
+  .gcf-bot span{font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-bg);opacity:.6}
+  .gcf-dot{display:inline-block;width:var(--sp-3);height:var(--sp-3);margin:0 var(--sp-2);
+    vertical-align:-1px;border-radius:var(--r-full);background:var(--c-bg);opacity:.4}
+  @media(max-width:749px){
+    .gcf-top{flex-direction:column;gap:var(--sp-6)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .gcf-col a{transition:none}
+  }
 </style>
 
 <footer class="gcf">
@@ -64,8 +70,10 @@
       </div>
     </div>
 
+    <div class="gcf-hr" aria-hidden="true"></div>
+
     <div class="gcf-bot">
-      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}<span class="gcf-dot"></span>Made in India 🇮🇳</span>
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}<span class="gcf-dot" aria-hidden="true"></span>Made in India 🇮🇳</span>
       <span>{{ section.settings.legal }}</span>
     </div>
   </div>
