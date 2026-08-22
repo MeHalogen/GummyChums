@@ -1,12 +1,9 @@
 {%- comment -%} GummyChums homepage — coming-soon vibe, pink-forward, scroll fall-in kept {%- endcomment -%}
 {%- assign s = section.settings -%}
-{%- assign GPATH = 'M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z' -%}
 <style>
-  .gc-home{--cherry:#DE1D61;--mango:#8DAA31;--orange:#F9740D;--ink:#191316;--cream:#FDF7F4;
-    margin:0 -1.5rem;overflow-x:clip;color:var(--ink)}
-  @media(max-width:749px){.gc-home{margin:0 -1rem}}
+  .gc-home{margin:0 calc(var(--gutter) * -1);overflow-x:clip;color:var(--c-ink)}
   .gc-home *{box-sizing:border-box}
-  .gc-wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+  .gc-wrap{max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter)}
 
   /* ---------- ACT 1 — hero + scroll fall-in ---------- */
   .gh-stage{position:relative;height:200vh}
@@ -18,7 +15,7 @@
     will-change:transform,opacity;backface-visibility:hidden;transform-origin:center bottom;
     opacity:calc(var(--z,0) * 5);
     transform:translate3d(-50%,0,0) scale(calc(1 + var(--z,0) * var(--z,0) * 20))}
-  /* ---- glossy gummy characters ---- */
+  /* ---- gummy characters ---- */
   .gcg{width:100%;height:auto;display:block}
   .gh-char{position:absolute;z-index:1;will-change:transform;pointer-events:none;
     translate:var(--px,0) var(--py,0);
@@ -32,104 +29,115 @@
     .gh-c1{width:110px;left:-2%;top:11%}.gh-c3{width:100px;right:-2%;bottom:17%}}
 
   /* ---- rotated sticker badges ---- */
-  .gh-stick{position:absolute;z-index:3;font-weight:800;font-size:.7rem;letter-spacing:.1em;
-    background:#fff;color:var(--ink);padding:9px 15px;border-radius:999px;white-space:nowrap;
-    box-shadow:0 4px 0 var(--ink);border:2px solid var(--ink)}
-  .gh-s1{left:7%;top:38%;transform:rotate(-9deg);background:#FFE45C}
-  .gh-s2{right:8%;top:44%;transform:rotate(8deg);background:#B7E36B}
-  .gh-s3{left:14%;bottom:26%;transform:rotate(5deg);background:#FFB27A}
+  .gh-stick{position:absolute;z-index:3;font-weight:var(--fw-black);font-size:var(--fs-xs);letter-spacing:var(--ls-wide);
+    background:var(--c-surface);color:var(--c-ink);padding:var(--sp-2) var(--sp-4);border-radius:var(--r-full);white-space:nowrap;
+    box-shadow:0 4px 0 var(--c-ink);border:2px solid var(--c-ink)}
+  .gh-s1{left:7%;top:38%;transform:rotate(-9deg);background:var(--c-mango-soft)}
+  .gh-s2{right:8%;top:44%;transform:rotate(8deg);background:var(--c-orange-soft)}
+  .gh-s3{left:14%;bottom:26%;transform:rotate(5deg);background:var(--c-cherry-soft)}
   @media(max-width:900px){.gh-s1{left:2%;top:30%}.gh-s2{right:2%;top:auto;bottom:30%}.gh-s3{display:none}}
 
-  .gh-mid{position:relative;z-index:2;text-align:center;padding:0 22px;
+  .gh-mid{position:relative;z-index:2;text-align:center;padding:0 var(--sp-5);
     opacity:calc(1 - var(--z,0) * 2.7);will-change:opacity}
-  .gh-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;
-    font-weight:800;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
-    padding:8px 16px;border-radius:999px;margin-bottom:20px}
-  .gh-tag mark{background:linear-gradient(180deg,transparent 58%,rgba(222,29,97,.28) 58%);
+  .gh-eyebrow{display:inline-flex;align-items:center;gap:var(--sp-2);background:var(--c-ink);color:var(--c-surface);
+    font-weight:var(--fw-black);font-size:var(--fs-xs);letter-spacing:var(--ls-wide);text-transform:uppercase;
+    padding:var(--sp-2) var(--sp-4);border-radius:var(--r-full);margin-bottom:var(--sp-4)}
+  .gh-tag mark{background:linear-gradient(180deg,transparent 58%,var(--c-accent-soft) 58%);
     color:inherit;padding:0 .06em}
-  .gh-cta{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
-  .gh-cta2{color:var(--ink);font-weight:800;font-size:.98rem;text-decoration:none;
-    display:inline-flex;align-items:center;gap:7px;padding:6px 2px;border-bottom:2.5px solid var(--ink)}
-  .gh-cta2 span{transition:transform .25s var(--gc-ease);display:inline-block}
+  .gh-cta2{color:var(--c-ink);font-weight:var(--fw-black);font-size:var(--fs-base);text-decoration:none;
+    display:inline-flex;align-items:center;gap:var(--sp-2);padding:var(--sp-1) var(--sp-1);border-bottom:2.5px solid var(--c-ink)}
+  .gh-cta2 span{transition:transform var(--dur-2) var(--ease);display:inline-block}
   .gh-cta2:hover span{transform:translateX(5px)}
-  .gh-logo{display:block;width:min(470px,74vw);height:auto;margin:0 auto 14px;
+  .gh-logo{display:block;width:min(470px,74vw);height:auto;margin:0 auto var(--sp-3);
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none;pointer-events:none}
-  .gh-tag{font-size:clamp(1.6rem,4.6vw,3rem);font-weight:800;letter-spacing:-.025em;line-height:1.04;margin:0 auto;max-width:17ch}
-  .gh-sub{font-size:clamp(1.05rem,2.2vw,1.3rem);font-weight:600;color:#191316cc;margin:11px auto 0;max-width:34ch;line-height:1.4}
-  .gh-cta{margin-top:26px;display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
-  .gh-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
-  .gh-pill{background:rgba(255,255,255,.94);border-radius:999px;padding:10px 18px;font-size:.82rem;font-weight:800;
-    letter-spacing:.04em;box-shadow:0 8px 18px -12px rgba(25,19,22,.45);outline:1px solid rgba(255,255,255,.8);outline-offset:-1px}
-  .gh-scroll{margin-top:18px;font-weight:800;letter-spacing:.2em;font-size:.72rem;color:#19131666;
+  .gh-tag{font-size:var(--fs-4xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0 auto;max-width:17ch}
+  .gh-sub{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-3) auto 0;max-width:34ch;line-height:var(--lh-body)}
+  .gh-cta{margin-top:var(--sp-5);display:flex;align-items:center;justify-content:center;gap:var(--sp-4);flex-wrap:wrap}
+  .gh-pills{display:flex;gap:var(--sp-2);justify-content:center;flex-wrap:wrap;margin-top:var(--sp-4)}
+  .gh-pill{background:var(--c-surface);border-radius:var(--r-full);padding:var(--sp-2) var(--sp-4);font-size:var(--fs-sm);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-normal);box-shadow:var(--sh-2);outline:1px solid var(--c-line);outline-offset:-1px}
+  .gh-scroll{margin-top:var(--sp-4);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);font-size:var(--fs-xs);color:var(--c-ink-3);
     animation:ghBounce 1.7s ease-in-out infinite}
   @keyframes ghBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
-  .gh-reveal{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;padding:0 22px;
-    color:#fff;opacity:calc((var(--z,0) - .60) * 3.8);pointer-events:none}
-  .gh-reveal h2{font-size:clamp(2rem,7vw,4.6rem);font-weight:800;letter-spacing:-.03em;line-height:1;margin:0}
-  .gh-reveal p{font-size:clamp(1rem,2.4vw,1.45rem);font-weight:700;margin:16px auto 0;max-width:30ch;opacity:.92}
+  .gh-reveal{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;padding:0 var(--sp-5);
+    color:var(--c-surface);opacity:calc((var(--z,0) - .60) * 3.8);pointer-events:none}
+  .gh-reveal h2{font-size:var(--fs-4xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0}
+  .gh-reveal p{font-size:var(--fs-xl);font-weight:var(--fw-bold);margin:var(--sp-4) auto 0;max-width:30ch;opacity:.92}
 
   /* ---------- ACT 2 — flavours ---------- */
-  .gh-sec{padding:clamp(46px,6vw,78px) 0}
-  .gh-head{text-align:center;margin-bottom:clamp(28px,4vw,46px)}
-  .gh-head h2{font-size:clamp(2rem,5.4vw,3.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.04;margin:10px 0 0}
-  .gh-head p{font-size:clamp(1rem,2.1vw,1.2rem);font-weight:600;color:#191316a0;margin:12px auto 0;max-width:40ch}
-  .gh-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
+  .gh-sec{padding:clamp(var(--sp-7),6vw,var(--sp-8)) 0}
+  .gh-head{text-align:center;margin-bottom:clamp(var(--sp-5),4vw,var(--sp-7))}
+  .gh-head h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:var(--sp-2) 0 0}
+  .gh-head p{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-3) auto 0;max-width:40ch}
+  .gh-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(var(--sp-4),2vw,var(--sp-5))}
   @media(max-width:900px){.gh-grid{grid-template-columns:1fr;max-width:430px;margin:0 auto}}
-  .gh-card{background:rgba(255,255,255,.92);border-radius:28px;padding:18px;display:flex;flex-direction:column;gap:12px;
-    box-shadow:0 2px 0 rgba(255,255,255,.9) inset, 0 22px 46px -26px rgba(25,19,22,.34);
-    outline:1px solid rgba(255,255,255,.75);outline-offset:-1px;
-    transition:transform .22s var(--gc-spring),box-shadow .22s}
-  .gh-card:hover{transform:translateY(-8px);box-shadow:0 30px 60px -26px rgba(222,29,97,.4)}
-  .gh-shot{border-radius:20px;aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden;position:relative}
-  .gh-shot img{width:100%;height:100%;object-fit:cover}
-  .gh-shot svg{width:66%;height:auto;animation:ghFloat 6s ease-in-out infinite;will-change:transform}
-  @keyframes ghFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-15px) rotate(3deg)}}
-  .gh-badge{position:absolute;top:12px;left:12px;background:#fff;color:var(--ink);font-size:.68rem;font-weight:800;
-    letter-spacing:.1em;text-transform:uppercase;padding:6px 11px;border-radius:999px;box-shadow:0 6px 14px -8px rgba(0,0,0,.4)}
-  .gh-name{font-size:1.4rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);text-decoration:none;margin:2px 0 0}
-  .gh-desc{font-size:.94rem;font-weight:600;color:#191316a0;margin:0;line-height:1.45;min-height:2.9em}
-  .gh-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:4px}
-  .gh-price{font-size:1.35rem;font-weight:800}
-  .gh-add{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:.94rem;color:#fff;
-    padding:12px 22px;border-radius:999px;transition:transform .14s var(--gc-spring),filter .25s}
+
+  .gh-card{background:var(--c-surface);border-radius:var(--r-lg);padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-3);
+    box-shadow:var(--sh-2);transition:transform var(--dur-2) var(--spring),box-shadow var(--dur-2) var(--ease)}
+  .gh-card:hover{transform:translateY(-8px);box-shadow:var(--sh-3)}
+
+  /* shorter, balanced media ratio — no more empty 1:1 void */
+  .gh-shot{position:relative;display:block;border-radius:var(--r-md);aspect-ratio:5/4;overflow:hidden;background:var(--pc-soft)}
+  .gh-shot img{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* cluster of 2-3 gummies at different sizes/rotations — reads as product, not an icon */
+  .gh-cluster{position:absolute;inset:0}
+  .gh-g{position:absolute;display:block;will-change:translate;animation:ghBob ease-in-out infinite alternate}
+  .gh-g1{width:44%;left:9%;top:19%;transform:rotate(-9deg);animation-duration:6.5s}
+  .gh-g2{width:29%;right:9%;top:9%;transform:rotate(13deg);animation-duration:7.8s;animation-delay:-2.4s}
+  .gh-g3{width:26%;left:36%;bottom:8%;transform:rotate(-15deg);animation-duration:7.1s;animation-delay:-4.2s}
+  @keyframes ghBob{0%{translate:0 0}100%{translate:0 -9px}}
+
+  .gh-badge{position:absolute;z-index:1;top:var(--sp-3);left:var(--sp-3);background:var(--c-surface);color:var(--c-ink);
+    font-size:var(--fs-xs);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
+    padding:var(--sp-2) var(--sp-3);border-radius:var(--r-full);box-shadow:var(--sh-1)}
+  .gh-name{font-size:var(--fs-xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);color:var(--c-ink);text-decoration:none;margin:0}
+  .gh-line{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-2);margin:0;line-height:var(--lh-snug)}
+  .gh-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-2);margin-top:auto;padding-top:var(--sp-1)}
+  .gh-price{font-size:var(--fs-xl);font-weight:var(--fw-black)}
+  .gh-add{border:0;cursor:pointer;font-family:inherit;font-weight:var(--fw-black);font-size:var(--fs-sm);color:var(--c-surface);
+    padding:var(--sp-3) var(--sp-5);border-radius:var(--r-full);transition:transform var(--dur-1) var(--spring),filter var(--dur-2) var(--ease)}
   .gh-add:hover{filter:brightness(1.08)} .gh-add:active{transform:scale(.93)}
+  .gh-add--soldout{background:var(--c-ink-3);cursor:default}
+  .gh-empty{grid-column:1/-1;text-align:center;color:var(--c-ink-2)}
 
   /* ---------- ACT 3 — story ---------- */
-  .gh-story{background:var(--ink);color:var(--cream);border-radius:34px;padding:clamp(38px,6vw,74px) clamp(24px,4vw,60px);
+  .gh-story{background:var(--c-ink);color:var(--c-bg-warm);border-radius:var(--r-lg);
+    padding:clamp(var(--sp-7),6vw,var(--sp-8)) clamp(var(--sp-5),4vw,var(--sp-8));
     position:relative;overflow:hidden;text-align:center}
   .gh-story::before{content:"";position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(48vw 48vw at 10% 0%, rgba(222,29,97,.34), transparent 62%)}
+    background:radial-gradient(48vw 48vw at 10% 0%, var(--c-accent-soft), transparent 62%)}
   .gh-story-in{position:relative;z-index:1}
-  .gh-story h2{font-size:clamp(1.8rem,5vw,3.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin:0 auto;max-width:22ch}
-  .gh-story h2 em{font-style:normal;color:var(--cherry)}
-  .gh-story p{font-size:clamp(1rem,2.1vw,1.2rem);font-weight:600;color:rgba(253,247,244,.78);
-    margin:20px auto 0;max-width:46ch;line-height:1.55}
-  .gh-vals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:36px}
+  .gh-story h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-snug);margin:0 auto;max-width:22ch}
+  .gh-story h2 em{font-style:normal;color:var(--c-accent)}
+  .gh-story p{font-size:var(--fs-lg);font-weight:var(--fw-body);opacity:.82;
+    margin:var(--sp-4) auto 0;max-width:46ch;line-height:var(--lh-body)}
+  .gh-vals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-3);margin-top:var(--sp-6)}
   @media(max-width:749px){.gh-vals{grid-template-columns:1fr}}
-  .gh-val{background:rgba(253,247,244,.07);border-radius:20px;padding:20px}
-  .gh-val b{display:block;font-size:1.05rem;color:var(--cherry);margin-bottom:6px}
-  .gh-val span{font-size:.92rem;font-weight:600;color:rgba(253,247,244,.72);line-height:1.45}
+  .gh-val{background:rgba(255,255,255,.06);border-radius:var(--r-md);padding:var(--sp-5)}
+  .gh-val b{display:block;font-size:var(--fs-base);color:var(--c-accent);margin-bottom:var(--sp-1)}
+  .gh-val span{font-size:var(--fs-sm);font-weight:var(--fw-body);opacity:.8}
 
   /* ---------- ACT 4 — FAQ ---------- */
   .gh-faq{max-width:760px;margin:0 auto}
-  .gh-q{background:rgba(255,255,255,.92);border-radius:20px;margin-bottom:12px;overflow:hidden;
-    box-shadow:0 16px 34px -28px rgba(25,19,22,.36);outline:1px solid rgba(255,255,255,.75);outline-offset:-1px}
-  .gh-q summary{cursor:pointer;list-style:none;padding:18px 22px;font-weight:800;font-size:1.04rem;
-    display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .gh-q{background:var(--c-surface);border-radius:var(--r-md);margin-bottom:var(--sp-3);overflow:hidden;box-shadow:var(--sh-2)}
+  .gh-q summary{cursor:pointer;list-style:none;padding:var(--sp-4) var(--sp-5);font-weight:var(--fw-black);font-size:var(--fs-base);
+    display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3)}
   .gh-q summary::-webkit-details-marker{display:none}
-  .gh-q summary::after{content:"+";font-size:1.5rem;color:var(--cherry);transition:transform .3s var(--gc-ease);line-height:1}
+  .gh-q summary::after{content:"+";font-size:var(--fs-xl);color:var(--c-accent);transition:transform var(--dur-3) var(--ease);line-height:1}
   .gh-q[open] summary::after{transform:rotate(45deg)}
-  .gh-q p{margin:0;padding:0 22px 20px;font-weight:600;font-size:.97rem;color:#191316a8;line-height:1.55}
+  .gh-q p{margin:0;padding:0 var(--sp-5) var(--sp-5);font-weight:var(--fw-body);font-size:var(--fs-base);color:var(--c-ink-2);line-height:var(--lh-body)}
 
   /* ---------- ACT 5 — closing CTA ---------- */
-  .gh-end{text-align:center;padding:clamp(56px,8vw,110px) 22px}
-  .gh-end h2{font-size:clamp(2rem,6vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.03;margin:0 auto;max-width:16ch}
-  .gh-end h2 em{font-style:normal;color:var(--cherry)}
-  .gh-end p{font-size:clamp(1rem,2.2vw,1.25rem);font-weight:600;color:#191316a0;margin:16px auto 30px;max-width:36ch}
+  .gh-end{text-align:center;padding:clamp(var(--sp-8),8vw,var(--sp-10)) var(--sp-5)}
+  .gh-end h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0 auto;max-width:16ch}
+  .gh-end h2 em{font-style:normal;color:var(--c-accent)}
+  .gh-end p{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-4) auto var(--sp-6);max-width:36ch}
 
   @media (prefers-reduced-motion:reduce){
     .gh-stage{height:auto}.gh-pin{position:relative;height:auto;padding:70px 0}
     .gh-gummy{display:none}.gh-mid{opacity:1!important}.gh-reveal{display:none}
+    .gh-g{animation:none}
   }
 </style>
 
@@ -139,14 +147,14 @@
   <header class="gh-stage" id="gh-stage">
     <div class="gh-pin" id="gh-pin">
 
-      {%- comment -%} glossy gummy characters — parallax to cursor {%- endcomment -%}
-      <div class="gh-char gh-c1" data-depth="26">{% render 'gc-gummy', c1:'#ff7aa8', c2:'#DE1D61', c3:'#9c1246', id:'h1' %}</div>
-      <div class="gh-char gh-c2" data-depth="-34">{% render 'gc-gummy', c1:'#cbe86b', c2:'#8DAA31', c3:'#55691c', id:'h2' %}</div>
-      <div class="gh-char gh-c3" data-depth="20">{% render 'gc-gummy', c1:'#ffb066', c2:'#F9740D', c3:'#a94708', id:'h3' %}</div>
-      <div class="gh-char gh-c4" data-depth="-16">{% render 'gc-gummy', c1:'#ff7aa8', c2:'#DE1D61', c3:'#9c1246', id:'h4' %}</div>
+      {%- comment -%} gummy characters — parallax to cursor {%- endcomment -%}
+      <div class="gh-char gh-c1" data-depth="26">{% render 'gc-gummy', tone: '--c-cherry', id: 'h1' %}</div>
+      <div class="gh-char gh-c2" data-depth="-34">{% render 'gc-gummy', tone: '--c-mango', id: 'h2' %}</div>
+      <div class="gh-char gh-c3" data-depth="20">{% render 'gc-gummy', tone: '--c-orange', id: 'h3' %}</div>
+      <div class="gh-char gh-c4" data-depth="-16">{% render 'gc-gummy', tone: '--c-cherry', id: 'h4' %}</div>
 
       {%- comment -%} the one that zooms on scroll {%- endcomment -%}
-      <div class="gh-gummy">{% render 'gc-gummy', c1:'#ff5f94', c2:'#DE1D61', c3:'#a51447', id:'hz' %}</div>
+      <div class="gh-gummy">{% render 'gc-gummy', tone: '--c-cherry', id: 'hz' %}</div>
 
       <div class="gh-mid">
         <span class="gh-eyebrow">{{ s.eyebrow }}</span>
@@ -186,44 +194,49 @@
         {%- for product in collections.all.products limit: 3 -%}
           {%- assign t = product.title | downcase -%}
           {%- if t contains 'melatonin' or t contains 'sleep' -%}
-            {%- assign col = '#DE1D61' -%}{%- assign c2 = '#ff5f94' -%}{%- assign c3 = '#a51447' -%}{%- assign role = 'Sleep' -%}
+            {%- assign tone = '--c-cherry' -%}{%- assign tone_soft = '--c-cherry-soft' -%}
+            {%- assign role = 'Sleep' -%}{%- assign benefit = 'Wind down. Sleep tight.' -%}
           {%- elsif t contains 'eye' -%}
-            {%- assign col = '#F9740D' -%}{%- assign c2 = '#ffa34d' -%}{%- assign c3 = '#b8500a' -%}{%- assign role = 'Eye care' -%}
+            {%- assign tone = '--c-orange' -%}{%- assign tone_soft = '--c-orange-soft' -%}
+            {%- assign role = 'Eye care' -%}{%- assign benefit = 'For screen-tired eyes.' -%}
           {%- else -%}
-            {%- assign col = '#8DAA31' -%}{%- assign c2 = '#c3e05f' -%}{%- assign c3 = '#5f7620' -%}{%- assign role = 'Focus' -%}
+            {%- assign tone = '--c-mango' -%}{%- assign tone_soft = '--c-mango-soft' -%}
+            {%- assign role = 'Focus' -%}{%- assign benefit = 'Big brain energy, tiny gummy.' -%}
           {%- endif -%}
+          {%- assign gi = forloop.index -%}
+          {%- assign gid_a = 'a' | append: gi -%}
+          {%- assign gid_b = 'b' | append: gi -%}
+          {%- assign gid_c = 'c' | append: gi -%}
           <div class="gh-card gc-rise" style="transition-delay:{{ forloop.index0 | times: 90 }}ms">
-            <a href="{{ product.url }}" class="gh-shot" style="background:{{ col }}16">
-              <span class="gh-badge" style="color:{{ col }}">{{ role }}</span>
+            <a href="{{ product.url }}" class="gh-shot" style="--pc-soft:var({{ tone_soft }})">
+              <span class="gh-badge" style="color:var({{ tone }})">{{ role }}</span>
               {%- if product.featured_image -%}
-                {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', width: 700, height: 700, alt: product.title }}
+                {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', width: 700, height: 560, alt: product.title }}
               {%- else -%}
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ product.title }}">
-                  <defs><radialGradient id="g{{ forloop.index }}" cx="38%" cy="30%" r="76%">
-                    <stop offset="0%" stop-color="{{ c2 }}"/><stop offset="60%" stop-color="{{ col }}"/><stop offset="100%" stop-color="{{ c3 }}"/>
-                  </radialGradient></defs>
-                  <path d="{{ GPATH }}" fill="url(#g{{ forloop.index }})"/>
-                  <ellipse cx="35" cy="27" rx="16" ry="10" fill="#fff" opacity=".5" transform="rotate(-25 35 27)"/>
-                </svg>
+                <span class="gh-cluster">
+                  <span class="gh-g gh-g1">{% render 'gc-gummy', tone: tone, id: gid_a %}</span>
+                  <span class="gh-g gh-g2">{% render 'gc-gummy', tone: tone, id: gid_b %}</span>
+                  <span class="gh-g gh-g3">{% render 'gc-gummy', tone: tone, id: gid_c %}</span>
+                </span>
               {%- endif -%}
             </a>
             <a href="{{ product.url }}" class="gh-name">{{ product.title }}</a>
-            <p class="gh-desc">{{ product.description | strip_html | truncatewords: 15 }}</p>
+            <p class="gh-line">{{ benefit }}</p>
             <div class="gh-foot">
-              <span class="gh-price" style="color:{{ col }}">{{ product.price | money }}</span>
+              <span class="gh-price" style="color:var({{ tone }})">{{ product.price | money_without_trailing_zeros | replace: 'Rs.', '₹' }}</span>
               {%- if product.available -%}
                 <form method="post" action="{{ routes.cart_add_url }}">
                   <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                   <input type="hidden" name="quantity" value="1">
-                  <button type="submit" class="gh-add" style="background:{{ col }}">Add</button>
+                  <button type="submit" class="gh-add" style="background:var({{ tone }})">Add</button>
                 </form>
               {%- else -%}
-                <span class="gh-add" style="background:#bbb;cursor:default">Sold out</span>
+                <span class="gh-add gh-add--soldout">Sold out</span>
               {%- endif -%}
             </div>
           </div>
         {%- else -%}
-          <p style="grid-column:1/-1;text-align:center;color:#191316a0">Add products in Shopify — they appear here automatically.</p>
+          <p class="gh-empty">Add products in Shopify — they appear here automatically.</p>
         {%- endfor -%}
       </div>
     </div>
@@ -234,7 +247,7 @@
     <div class="gc-wrap">
       <div class="gh-story gc-rise">
         <div class="gh-story-in">
-          <p class="gc-kick" style="color:#fff9">{{ s.story_kicker }}</p>
+          <p class="gc-kick" style="color:var(--c-bg-warm);opacity:.75">{{ s.story_kicker }}</p>
           <h2>{{ s.story_title | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
           <p>{{ s.story_body }}</p>
           <div class="gh-vals">
@@ -266,9 +279,11 @@
 
   <!-- ACT 5 — closing -->
   <section class="gh-end gc-rise">
-    <h2>{{ s.end_title | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
-    <p>{{ s.end_sub }}</p>
-    <a class="gc-btn" href="{{ routes.all_products_collection_url }}">{{ s.end_cta }}</a>
+    <div class="gc-wrap">
+      <h2>{{ s.end_title | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
+      <p>{{ s.end_sub }}</p>
+      <a class="gc-btn" href="{{ routes.all_products_collection_url }}">{{ s.end_cta }}</a>
+    </div>
   </section>
 </div>
 
