@@ -1,46 +1,47 @@
 {%- comment -%}
-  Soft, squishy jelly gummy — flatter and more organic than a sphere, with a
-  diffuse (not marble-glossy) highlight and a hint of inner translucency.
-  Params: tone (a CSS colour-token name, e.g. '--c-cherry' or '--c-mango'), id (unique)
+  Round jelly gummy. Circular silhouette (client: "gummy should be round only"),
+  but a SOFT translucent finish — diffuse specular + inner glow — so it reads as
+  candy rather than a glossy marble.
+  Params: tone (a colour-token name, e.g. '--c-cherry'), id (unique)
   All colour derives from the token via color-mix() — no raw hex anywhere.
 {%- endcomment -%}
-{%- assign base = 'var(' | append: tone | append: ')' -%}
-{%- assign light = 'color-mix(in srgb, var(' | append: tone | append: ') 52%, white)' -%}
-{%- assign dark = 'color-mix(in srgb, var(' | append: tone | append: ') 74%, black)' -%}
-<svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg" class="gcg" role="img" aria-hidden="true">
+{%- assign base  = 'var(' | append: tone | append: ')' -%}
+{%- assign light = 'color-mix(in srgb, var(' | append: tone | append: ') 50%, white)' -%}
+{%- assign dark  = 'color-mix(in srgb, var(' | append: tone | append: ') 76%, black)' -%}
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="gcg" role="img" aria-hidden="true">
   <defs>
-    <radialGradient id="body-{{ id }}" cx="34%" cy="30%" r="82%">
-      <stop offset="0%" stop-color="{{ light }}"/>
-      <stop offset="54%" stop-color="{{ base }}"/>
+    <radialGradient id="body-{{ id }}" cx="36%" cy="30%" r="80%">
+      <stop offset="0%"   stop-color="{{ light }}"/>
+      <stop offset="52%"  stop-color="{{ base }}"/>
       <stop offset="100%" stop-color="{{ dark }}"/>
     </radialGradient>
-    {%- comment -%} inner glow — reads as light passing through translucent jelly {%- endcomment -%}
-    <radialGradient id="inner-{{ id }}" cx="52%" cy="64%" r="60%">
-      <stop offset="0%" stop-color="var(--c-surface)" stop-opacity=".24"/>
-      <stop offset="70%" stop-color="var(--c-surface)" stop-opacity="0"/>
+    {%- comment -%} light passing through the jelly, pooling low {%- endcomment -%}
+    <radialGradient id="inner-{{ id }}" cx="50%" cy="68%" r="58%">
+      <stop offset="0%"   stop-color="var(--c-surface)" stop-opacity=".26"/>
+      <stop offset="72%"  stop-color="var(--c-surface)" stop-opacity="0"/>
     </radialGradient>
-    {%- comment -%} soft ambient ground glow, coloured by the flavour {%- endcomment -%}
-    <radialGradient id="glow-{{ id }}" cx="50%" cy="55%" r="55%">
-      <stop offset="0%" stop-color="{{ base }}" stop-opacity=".3"/>
+    {%- comment -%} ambient flavour glow on the ground {%- endcomment -%}
+    <radialGradient id="glow-{{ id }}" cx="50%" cy="52%" r="52%">
+      <stop offset="0%"   stop-color="{{ base }}" stop-opacity=".28"/>
       <stop offset="100%" stop-color="{{ base }}" stop-opacity="0"/>
     </radialGradient>
-    {%- comment -%} diffuse specular — a soft falloff, not a crisp sphere-highlight {%- endcomment -%}
+    {%- comment -%} DIFFUSE specular — soft falloff. A hard-edged ellipse here is
+        exactly what made the old version read as a marble. {%- endcomment -%}
     <radialGradient id="hi-{{ id }}" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="var(--c-surface)" stop-opacity=".46"/>
-      <stop offset="55%" stop-color="var(--c-surface)" stop-opacity=".1"/>
+      <stop offset="0%"   stop-color="var(--c-surface)" stop-opacity=".42"/>
+      <stop offset="58%"  stop-color="var(--c-surface)" stop-opacity=".08"/>
       <stop offset="100%" stop-color="var(--c-surface)" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
-  <ellipse cx="70" cy="58" rx="60" ry="46" fill="url(#glow-{{ id }})"/>
-  <ellipse cx="74" cy="92" rx="36" ry="7" fill="var(--c-ink)" opacity=".13"/>
+  <circle cx="60" cy="60" r="56" fill="url(#glow-{{ id }})"/>
+  <ellipse cx="62" cy="110" rx="30" ry="6" fill="var(--c-ink)" opacity=".12"/>
 
-  {%- comment -%} body — a wide, slightly lopsided blob (squashed + irregular, not a circle) {%- endcomment -%}
-  <path d="M14 54C10 28 38 5 74 6C110 7 138 24 134 52C130 82 104 99 68 98C33 97 6 79 14 54Z"
-        fill="url(#body-{{ id }})"/>
-  <path d="M14 54C10 28 38 5 74 6C110 7 138 24 134 52C130 82 104 99 68 98C33 97 6 79 14 54Z"
-        fill="url(#inner-{{ id }})"/>
+  {%- comment -%} round body — a true circle, softened by the gradients {%- endcomment -%}
+  <circle cx="60" cy="58" r="49" fill="url(#body-{{ id }})"/>
+  <circle cx="60" cy="58" r="49" fill="url(#inner-{{ id }})"/>
 
-  <ellipse cx="48" cy="32" rx="21" ry="12" fill="url(#hi-{{ id }})" transform="rotate(-20 48 32)"/>
-  <ellipse cx="100" cy="78" rx="8" ry="4" fill="var(--c-surface)" opacity=".14" transform="rotate(-14 100 78)"/>
+  {%- comment -%} soft highlight, plus a small low bounce-light {%- endcomment -%}
+  <ellipse cx="43" cy="38" rx="20" ry="14" fill="url(#hi-{{ id }})" transform="rotate(-22 43 38)"/>
+  <ellipse cx="80" cy="84" rx="9" ry="5" fill="var(--c-surface)" opacity=".13" transform="rotate(-18 80 84)"/>
 </svg>
