@@ -1,6 +1,12 @@
 # GummyChums — Shopify Store Build Plan
 
-_Your calm, step-by-step plan. Today = 7 Sep 2026. Client launch target = **19 Sep 2026** (moved from 14 Sep — Priyal confirmed the push on 7 Sep). First paid client project — read this whenever you feel anxious._
+_Your calm, step-by-step plan. Client launch target = **19 Sep 2026** (moved from 14 Sep — Priyal confirmed the push on 7 Sep). First paid client project — read this whenever you feel anxious._
+
+> **Open decisions live in [`NOTES-TO-PRIYAL.md`](NOTES-TO-PRIYAL.md)** — every question waiting on Priyal, every default chosen on her behalf, and a dated log of what's been settled. Check it before you chase her; add to it as things come up.
+>
+> **Shiprocket setup: [`SHIPROCKET-SETUP.md`](SHIPROCKET-SETUP.md)** — full beginner walkthrough.
+>
+> 🔴 **Current launch blocker:** no India shipping zone, so Indian addresses are rejected at checkout. Needs a rate decision from Priyal (item 1 in the notes), then one command to apply.
 
 ## Founder response received (7 Sep 2026) — what's now confirmed
 Priyal replied to the "everything we need" mail with real data + attachments (nutrition labels, COAs, GMP/FSSC certs, FSSAI license). Confirmed:
