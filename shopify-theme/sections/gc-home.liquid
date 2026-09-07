@@ -11,10 +11,19 @@
   .gh-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
     background:transparent;contain:paint;padding-bottom:4vh}
 
-  .gh-gummy{position:absolute;left:50%;bottom:-14%;width:min(22vw,150px);z-index:1;
-    will-change:transform,opacity;backface-visibility:hidden;transform-origin:center bottom;
+  /* The zooming gummy. Scaling is anchored to the CIRCLE's own centre
+     (cy=58 in a 120 viewBox = 48.333%), not the box, and the element rides up
+     from below the fold to dead-centre as --z grows. That combination is what
+     guarantees full coverage at any aspect ratio: the old `center bottom`
+     origin sat 14% below the fold, so on a tall phone the circle climbed out
+     of the top before it ever reached the bottom edge — leaving a ~74px strip
+     of background along the bottom at peak zoom. Scaling harder made it worse,
+     since the circle rises faster than it grows. */
+  .gh-gummy{position:absolute;left:50%;top:50%;width:min(22vw,150px);z-index:1;
+    will-change:transform,opacity;backface-visibility:hidden;transform-origin:50% 48.333%;
     opacity:calc(var(--z,0) * 5);
-    transform:translate3d(-50%,0,0) scale(calc(1 + var(--z,0) * var(--z,0) * 20))}
+    transform:translate3d(-50%, calc(-48.333% + (1 - var(--z,0)) * 55vh), 0)
+              scale(calc(1 + var(--z,0) * var(--z,0) * 20))}
   /* ---- gummy characters ---- */
   .gcg{width:100%;height:auto;display:block}
   .gh-char{position:absolute;z-index:1;will-change:transform;pointer-events:none;
@@ -61,7 +70,10 @@
   @keyframes ghBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
   .gh-reveal{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;padding:0 var(--sp-5);
     color:var(--c-surface);opacity:calc((var(--z,0) - .60) * 3.8);pointer-events:none}
-  .gh-reveal h2{font-size:var(--fs-4xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0}
+  /* Dawn's base.css sets an explicit colour on h1-h6, and a direct rule beats
+     the colour inherited from .gh-reveal — so headings on dark/coloured
+     backgrounds must restate it or they render near-black. */
+  .gh-reveal h2{font-size:var(--fs-4xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0;color:var(--c-surface)}
   .gh-reveal p{font-size:var(--fs-xl);font-weight:var(--fw-bold);margin:var(--sp-4) auto 0;max-width:30ch;opacity:.92}
 
   /* ---------- ACT 2 — flavours ---------- */
@@ -112,7 +124,9 @@
   .gh-story::before{content:"";position:absolute;inset:0;pointer-events:none;
     background:radial-gradient(48vw 48vw at 10% 0%, var(--c-accent-soft), transparent 62%)}
   .gh-story-in{position:relative;z-index:1}
-  .gh-story h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-snug);margin:0 auto;max-width:22ch}
+  /* same Dawn heading-colour override as .gh-reveal h2 — without this the
+     headline renders near-black on the near-black story panel, i.e. invisible */
+  .gh-story h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-snug);margin:0 auto;max-width:22ch;color:var(--c-bg-warm)}
   .gh-story h2 em{font-style:normal;color:var(--c-accent)}
   .gh-story p{font-size:var(--fs-lg);font-weight:var(--fw-body);opacity:.82;
     margin:var(--sp-4) auto 0;max-width:46ch;line-height:var(--lh-body)}
