@@ -139,5 +139,3 @@ Better to launch on time with four things working well than to risk the date on 
 | 7 Sep 2026 | Add **WhatsApp** (7300039307) alongside Instagram | Priyal |
 | 8 Sep 2026 | Return window **7 days** — publish now, confirm later | Mehal |
 | 8 Sep 2026 | India shipping zone created, US zone/market/location removed — **checkout unblocked and verified** (₹49/₹69/₹99 by weight) | Mehal |
-
----
