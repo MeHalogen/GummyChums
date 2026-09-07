@@ -10,21 +10,38 @@ _The single parked list. Everything not-yet-done lives here: questions for Priya
 
 ## 🔴 Blockers — needed before launch
 
-### 1. Product prices
+### 1. Prices and GST — one decision, not two
 
-All three products sit at **₹399**, which was placeholder test data from the original store setup — not a price anyone chose. It's live on the preview link and drives the "≈ ₹13/day" line on every product card.
+All three products sit at **₹399**, which was placeholder test data from the original store setup — not a price anyone chose.
 
-**Need:** the real price for each of the three SKUs. They can differ per product; the site handles that automatically.
+**The real question isn't "what's the price", it's "is that what the customer pays, or what you keep?"** Those give very different numbers, because GST has to come from somewhere.
 
-### 2. GST rate
+Shopify has GST at **18%** (CGST 9% + SGST 9%), applied automatically when the India market was created. Right now it's set to **add** tax on top of the listed price, so a live checkout today looks like this:
 
-The store has **no India tax region configured** (only United States, left over from the dev-store template), so GST isn't being calculated or recorded on any order — which matters for filings, since Nirmay is GST-registered.
+> Melatonin Gummies ₹399 · Shipping ₹49 · **Estimated taxes ₹71.82** · **Total ₹519.82**
 
-Product pages say **"Inclusive of all taxes"**, so the store must treat the price as GST-inclusive and back-calculate the tax rather than adding it on top at checkout.
+That contradicts the product page, which says **"Inclusive of all taxes"** — the customer sees ₹399 and is charged ₹470.82 for the gummies. That has to change before launch.
 
-**Need:** the **GST rate** for these products, confirmed with your CA. Nutraceuticals and food supplements sit in different slabs depending on classification, and a wrong rate creates a filing problem — not something to guess.
+**Three ways it can work.** One pouch, delivered, at the ₹49 shipping tier:
 
-### 3. Shipping rates — provisional
+| | Listed | GST | Shipping | **Customer pays** | **You keep** (per pouch) |
+|---|---|---|---|---|---|
+| **A. Price includes GST** *(recommended)* | ₹399 | ₹60.86 *(inside)* | ₹49 | **₹448** | **₹338.14** |
+| **B. GST added on top** *(current — contradicts the site)* | ₹399 | ₹71.82 *(added)* | ₹49 | **₹519.82** | ₹399.00 |
+| **C. Includes GST, priced to keep ~₹399** | ₹470 | ₹71.69 *(inside)* | ₹49 | **₹519** | ₹398.31 |
+
+**A** is the Indian norm — MRP on packaged goods is tax-inclusive, and it's what the site already promises. But note it takes **₹60.86 per pouch** out of what you keep versus the ₹399 you may have had in mind.
+
+**C** is A with the maths done backwards: if ₹399 is what you want to *keep*, the listed price needs to be about **₹470** (₹499 would keep ₹422.88).
+
+**B** is where the store sits today. It's legal, but showing ₹399 and charging ₹470.82 reads as a bait-and-switch and will cost you conversions.
+
+**Need from you:**
+1. **Should the listed price include GST, or be added at checkout?** (We recommend included.)
+2. **What should each of the three products be listed at** — and is that number what the customer pays, or what you keep?
+3. **Is 18% the right GST slab?** Please confirm with your CA — Shopify assumed it. Nutraceuticals and food supplements fall into different slabs by classification, and a wrong rate is a filing problem, not just a display one. Also worth asking whether **shipping charges** should be taxed (currently they aren't).
+
+### 2. Shipping rates — provisional
 
 Checkout now works. Customers currently pay, by cart weight (each pouch is 0.15 kg):
 
@@ -42,11 +59,11 @@ Checkout now works. Customers currently pay, by cart weight (each pouch is 0.15 
 
 ## 🟠 Waiting on you — accounts & assets
 
-### 4. Payment gateway KYC ⚠️ most likely to move the launch date
+### 3. Payment gateway KYC ⚠️ most likely to move the launch date
 
 Razorpay / Shopify Payments needs PAN, GST and bank details, and takes **2–5 business days** to approve. It's someone else's queue, not something we can speed up. **If this hasn't started, start it today.**
 
-### 5. Shiprocket account + KYC ⚠️
+### 4. Shiprocket account + KYC ⚠️
 
 Same shape of risk — **24–72 hours** to approve. Only you can do these:
 
@@ -56,13 +73,13 @@ Same shape of risk — **24–72 hours** to approve. Only you can do these:
 
 *(Full walkthrough in Part 3 below.)*
 
-### 6. Product photography
+### 5. Product photography
 
 Still using illustrated gummy graphics. They look good, but real photos convert better and are the biggest visual upgrade left. Ideally per flavour: pouch on a clean background, a loose-gummy shot, and one lifestyle/in-hand shot.
 
 This also fixes social sharing — with no product photos, WhatsApp and Instagram shares currently fall back to the wordmark.
 
-### 7. Real customer reviews
+### 6. Real customer reviews
 
 The homepage now has a review wall, currently filled with **placeholder text, every card stamped "SAMPLE"**.
 
@@ -70,15 +87,15 @@ The homepage now has a review wall, currently filled with **placeholder text, ev
 
 **Options:** collect genuine reviews from early testers before launch; or launch with the section removed and add it once real reviews arrive. Either is fine — inventing them is not.
 
-### 8. Founder note
+### 7. Founder note
 
 The "Why we exist" section is text only. There's a slot ready for a **photo + one-line quote + your name** — it stays hidden until filled. Readers trust a face. Something in your own words about why you started Nirmay is all it needs.
 
-### 9. Legal review of the policies
+### 8. Legal review of the policies
 
 Four policies are drafted from your real business details (Privacy, Terms, Returns & Refunds, Shipping). Written specifically for Nirmay, not templates — **but no lawyer has read them.** For a consumables business taking COD across India, that review is worth doing before launch.
 
-### 10. NaN Jaune font licence
+### 9. NaN Jaune font licence
 
 You confirmed you're buying the web licence. Send the files when you have them and we'll swap from the current Manrope fallback to the real brand typeface.
 
@@ -90,22 +107,22 @@ Each was needed to keep building, and each is easy to change.
 
 | # | Decision | Why | Note |
 |---|---|---|---|
-| 11 | **Pack size = 30 gummies** | Melatonin label says "Serving Per Container: 30"; your email said 15 | **Confirm before packaging goes to print** — it's your manufacturing spec |
-| 12 | **Return window = 7 days** from delivery (48h for damaged/wrong items) | A refund policy can't publish without a number | Standard for Indian consumables |
-| 13 | **One gummy per day** | Every nutrition label says "Serving Size: 1 Gummy"; site had said two | Corrected everywhere |
-| 14 | **FSSAI line = manufacturer's licence** (Biovencer, 10017051002083) | Nirmay's own licence still pending | **Swap the moment yours arrives** |
-| 15 | **"Free shipping over ₹699" removed** | Never confirmed, and contradicts weight-based pricing | Was in five places |
-| 16 | **Delivery shown as 3–10 working days** | Your stated range | Checkout shows 5–8 business days, which sits inside it |
+| 10 | **Pack size = 30 gummies** | Melatonin label says "Serving Per Container: 30"; your email said 15 | **Confirm before packaging goes to print** — it's your manufacturing spec |
+| 11 | **Return window = 7 days** from delivery (48h for damaged/wrong items) | A refund policy can't publish without a number | Standard for Indian consumables |
+| 12 | **One gummy per day** | Every nutrition label says "Serving Size: 1 Gummy"; site had said two | Corrected everywhere |
+| 13 | **FSSAI line = manufacturer's licence** (Biovencer, 10017051002083) | Nirmay's own licence still pending | **Swap the moment yours arrives** |
+| 14 | **"Free shipping over ₹699" removed** | Never confirmed, and contradicts weight-based pricing | Was in five places |
+| 15 | **Delivery shown as 3–10 working days** | Your stated range | Checkout shows 5–8 business days, which sits inside it |
 
 ---
 
 ## 🔵 Worth a decision, not urgent
 
-### 17. COD handling fee
+### 16. COD handling fee
 
 Shiprocket charges ~₹35–40 per COD order, and COD orders are returned undelivered far more often than prepaid. Both costs land on your margin. Many Indian D2C brands add a ₹30–50 COD fee, or offer a small prepaid discount instead. Currently COD is free to the customer — fine to launch that way, just know it's a real cost.
 
-### 18. Post-launch feature wishlist
+### 17. Post-launch feature wishlist
 
 You asked for reviews, WhatsApp support, loyalty and gift options.
 
@@ -127,7 +144,7 @@ Things still to do, or that need doing in the Shopify admin.
 | M1 | **Enable Cash on Delivery** | Settings → Payments → Manual payment methods | ⚠️ The site advertises COD in four places but it **will not appear at checkout** until switched on |
 | M2 | **Publish the policies** | Admin → Policies, or add `write_legal_policies` to the API app | Drafts ready in `docs/policies/`. Footer links stay hidden until published |
 | M3 | **Publish the theme** | Online Store → Themes → GummyChums Build → Publish | Still a draft, so "View Online Store" shows Dawn's Horizon theme |
-| M4 | **Payment gateway setup** | Settings → Payments | Follows Priyal's KYC (item 4) |
+| M4 | **Payment gateway setup** | Settings → Payments | Follows Priyal's KYC (item 3) |
 
 ## 🟡 Before launch
 
@@ -227,7 +244,7 @@ On the real store while it's still password-protected:
 |---|---|---|
 | 7 Sep 2026 | Launch moved 14 → **19 Sep** | Priyal |
 | 7 Sep 2026 | Returns route entirely through **Shiprocket** — no bank-detail form on the site | Mehal |
-| 7 Sep 2026 | Pack size **30** (pending confirm — item 11) | Mehal |
+| 7 Sep 2026 | Pack size **30** (pending confirm — item 10) | Mehal |
 | 7 Sep 2026 | COD **enabled** pan-India | Priyal |
 | 7 Sep 2026 | Delivery **3–10 working days**, pan-India only | Priyal |
 | 7 Sep 2026 | Buying the real **NaN Jaune** licence | Priyal |
