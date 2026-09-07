@@ -1,6 +1,23 @@
 # GummyChums — Shopify Store Build Plan
 
-_Your calm, step-by-step plan. Today = 20 Aug 2026. Client launch target = **14 Sep 2026**. First paid client project — read this whenever you feel anxious._
+_Your calm, step-by-step plan. Today = 7 Sep 2026. Client launch target = **19 Sep 2026** (moved from 14 Sep — Priyal confirmed the push on 7 Sep). First paid client project — read this whenever you feel anxious._
+
+## Founder response received (7 Sep 2026) — what's now confirmed
+Priyal replied to the "everything we need" mail with real data + attachments (nutrition labels, COAs, GMP/FSSC certs, FSSAI license). Confirmed:
+- **Launch date: 19 Sep** (not 14th — this buys 5 real days).
+- **Pack size: 15 gummies per pack** for all 3 SKUs — ⚠️ this *conflicts* with the Melatonin nutrition PDF which says "Serving Per Container: 30 Gummies." Flagged to Priyal for confirmation before it goes on any label/description.
+- **Prices**: not yet — packaging isn't finalized, discussing separately. Do not invent numbers.
+- **Photos**: pending, sent once ready. Theme falls back to an illustrated gummy icon per flavour until then.
+- **Shipping**: via **Shiprocket**, charged by weight/location (not free-over-threshold — removed all "Free shipping over ₹699" copy from the theme). Delivery **3–10 days**, pan-India only for now. **COD confirmed yes.**
+- **Returns/refunds**: window still pending ("let me get back to you"). Refund mechanics given: UPI refunds within 24h via Shiprocket return; **COD refunds need the customer's bank details, targeting a 72h payout** — needs a safe collection method (see open decisions below), not a plain on-site form storing account numbers.
+- **FSSAI**: Nirmay's own license is still pending; using manufacturer Biovencer's license (10017051002083) as an interim compliance line in the footer.
+- **Legal entity**: "Nirmay", proprietor Priyal Ojha, registered in Jaipur. GST, PAN, and bank account details were sent for **Shopify Payments/Razorpay KYC and admin tax settings only** — entered directly into Shopify Admin, never into theme code or this repo.
+- **Font**: NaN Jaune — confirmed, buying the real web license (not swapping to a free alternative).
+- **Certifications now real**: GMP (Eurofins, cert `EI_FA_UC_056`, valid to Nov 2028) and FSSC 22000 (cert `EI_FA_SC_408`, valid to Nov 2028) — built into a new `gc-quality` trust section on the homepage + product pages.
+- **Analytics**: fresh GA4 + Meta Pixel (no existing accounts to migrate).
+- **Klaviyo**: connect the existing waitlist to the store for a launch-day blast.
+- **Social**: add WhatsApp (7300039307) to the footer alongside Instagram.
+- **Feature wishlist ("all of them")**: reviews, WhatsApp support, loyalty, gift options. Realistic take: reviews + WhatsApp chat link are launch-feasible; loyalty + gift options are bigger builds better sequenced as fast-follows in the week after launch rather than risking the date.
 
 ## 0. The single most important truth (read this first)
 **Shopify handles everything scary. You build only the UI.**
