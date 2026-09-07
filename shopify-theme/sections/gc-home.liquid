@@ -330,7 +330,7 @@
         <details class="gh-q"><summary>How fast is delivery?</summary><p>We ship pan-India via Shiprocket. Orders are usually delivered in 3–10 working days, and you’ll get tracking as soon as it leaves us. Cash on Delivery is available.</p></details>
         <details class="gh-q"><summary>Can I take more than one kind?</summary><p>Yes. Brain Booster in the morning and Melatonin at night is a popular combo. Just keep it to one gummy of each per day, and check with your doctor if you’re already on medication.</p></details>
         <details class="gh-q"><summary>Do you accept Cash on Delivery?</summary><p>Yes — COD is available across India, alongside UPI, cards, net banking and wallets. Pay the way that suits you.</p></details>
-        <details class="gh-q"><summary>What if I don’t like it?</summary><p>Tell us. Write to us within the return window on your order and we’ll sort it out — see our <a href="/policies/refund-policy">refund policy</a> for the full details.</p></details>
+        <details class="gh-q"><summary>What if I don’t like it?</summary><p>Tell us. Write to us within the return window on your order and we’ll sort it out — see our {% if shop.refund_policy != blank %}<a href="{{ shop.refund_policy.url }}">refund policy</a>{% else %}refund policy{% endif %} for the full details.</p></details>
         <details class="gh-q"><summary>How should I store them?</summary><p>Somewhere cool and dry, away from direct sunlight — a shelf, not the fridge. Close the pouch properly and they’ll stay perfectly chewy.</p></details>
       </div>
     </div>

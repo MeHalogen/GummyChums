@@ -205,7 +205,11 @@
           <button type="submit" class="gp-buy" id="gp-buy">Add to bag · {% render 'gc-money', price: product.selected_or_first_available_variant.price %}</button>
           <button type="button" class="gp-now" id="gp-now">Buy it now</button>
           <p class="gp-note">Ships in 3–10 days ·
-            <a href="/policies/refund-policy">Easy returns</a>
+            {%- if shop.refund_policy != blank -%}
+              <a href="{{ shop.refund_policy.url }}">Easy returns</a>
+            {%- else -%}
+              Easy returns
+            {%- endif -%}
           </p>
         {%- else -%}
           <button type="button" class="gp-buy" disabled>Sold out</button>
