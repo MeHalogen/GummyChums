@@ -1,0 +1,208 @@
+{%- comment -%}
+  GummyChums cart. Plain Shopify cart form — quantity and remove work via a
+  normal POST to /cart with updates[key], so the page is fully functional with
+  JavaScript off. JS only upgrades it to update in place without a reload.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<style>
+  .gck{padding:var(--sp-8) var(--gutter) var(--sp-9)}
+  .gck-in{max-width:var(--container);margin-inline:auto}
+  .gck-title{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    line-height:var(--lh-tight);color:var(--c-ink);margin:0 0 var(--sp-2)}
+  .gck-count{font-size:var(--fs-base);font-weight:var(--fw-bold);color:var(--c-ink-3);margin:0 0 var(--sp-7)}
+
+  .gck-layout{display:grid;grid-template-columns:1.6fr 1fr;gap:clamp(var(--sp-5),3vw,var(--sp-7));align-items:start}
+  @media(max-width:899px){.gck-layout{grid-template-columns:1fr}}
+
+  /* ---- line items ---- */
+  .gck-items{display:flex;flex-direction:column;gap:var(--sp-4)}
+  .gck-row{background:var(--c-surface);border-radius:var(--r-lg);padding:var(--sp-4);
+    display:grid;grid-template-columns:96px 1fr auto;gap:var(--sp-4);align-items:center;box-shadow:var(--sh-2)}
+  @media(max-width:599px){.gck-row{grid-template-columns:72px 1fr;row-gap:var(--sp-3)}}
+
+  .gck-shot{width:96px;height:96px;border-radius:var(--r-md);overflow:hidden;display:grid;
+    place-items:center;background:var(--pc-soft)}
+  @media(max-width:599px){.gck-shot{width:72px;height:72px}}
+  .gck-shot img{width:100%;height:100%;object-fit:cover}
+  .gck-shot svg{width:78%;height:auto}
+
+  .gck-info b{display:block;font-size:var(--fs-base);font-weight:var(--fw-black);color:var(--c-ink)}
+  .gck-info a{text-decoration:none;color:inherit}
+  .gck-info a:hover{color:var(--c-accent)}
+  .gck-variant{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-3);margin:var(--sp-1) 0 0}
+  .gck-each{font-size:var(--fs-sm);font-weight:var(--fw-bold);color:var(--c-ink-2);margin:var(--sp-2) 0 0}
+
+  .gck-side{display:flex;flex-direction:column;align-items:flex-end;gap:var(--sp-3)}
+  @media(max-width:599px){.gck-side{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center}}
+  .gck-qty{display:inline-flex;align-items:center;gap:var(--sp-3);background:var(--c-bg);
+    border-radius:var(--r-full);padding:var(--sp-2) var(--sp-3);box-shadow:inset 0 0 0 1px var(--c-line)}
+  .gck-qty a{width:26px;height:26px;display:grid;place-items:center;border-radius:var(--r-full);
+    text-decoration:none;color:var(--c-ink);font-weight:var(--fw-black);font-size:var(--fs-base);line-height:1}
+  .gck-qty a:hover{background:var(--c-accent-soft);color:var(--c-accent)}
+  .gck-qty span{min-width:20px;text-align:center;font-weight:var(--fw-black);font-size:var(--fs-sm);color:var(--c-ink)}
+  .gck-line-total{font-size:var(--fs-base);font-weight:var(--fw-black);color:var(--c-ink)}
+  .gck-remove{font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3);text-decoration:underline;
+    text-underline-offset:2px}
+  .gck-remove:hover{color:var(--c-accent)}
+
+  /* ---- summary ---- */
+  .gck-sum{background:var(--c-surface);border-radius:var(--r-lg);padding:var(--sp-6);
+    box-shadow:var(--sh-2);position:sticky;top:calc(var(--header-h) + var(--sp-4))}
+  @media(max-width:899px){.gck-sum{position:static}}
+  .gck-sum h2{font-size:var(--fs-xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    color:var(--c-ink);margin:0 0 var(--sp-5)}
+  .gck-line{display:flex;justify-content:space-between;align-items:baseline;gap:var(--sp-4);
+    font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-ink-2);margin-bottom:var(--sp-3)}
+  .gck-line b{font-weight:var(--fw-black);color:var(--c-ink)}
+  .gck-rule{height:1px;background:var(--c-line);margin:var(--sp-5) 0}
+  .gck-total{display:flex;justify-content:space-between;align-items:baseline;gap:var(--sp-4)}
+  .gck-total span{font-size:var(--fs-base);font-weight:var(--fw-black);color:var(--c-ink)}
+  .gck-total b{font-size:var(--fs-2xl);font-weight:var(--fw-black);color:var(--c-accent);line-height:1}
+  .gck-tax{font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-ink-3);
+    margin:var(--sp-3) 0 0;line-height:var(--lh-body)}
+
+  .gck-go{width:100%;margin-top:var(--sp-5);background:var(--c-accent);color:var(--c-accent-ink);
+    border:0;cursor:pointer;font-family:inherit;font-weight:var(--fw-black);font-size:var(--fs-base);
+    padding:var(--sp-4) var(--sp-6);border-radius:var(--r-full);box-shadow:var(--sh-2);
+    transition:background var(--dur-2) var(--ease),transform var(--dur-1) var(--spring)}
+  .gck-go:hover{background:var(--c-accent-hover);transform:translateY(-2px)}
+  .gck-go:active{transform:scale(.97)}
+  .gck-keep{display:block;text-align:center;margin-top:var(--sp-4);font-size:var(--fs-sm);
+    font-weight:var(--fw-black);color:var(--c-ink-2);text-decoration:none}
+  .gck-keep:hover{color:var(--c-accent)}
+
+  .gck-pay{margin-top:var(--sp-5);padding-top:var(--sp-5);border-top:1px solid var(--c-line)}
+  .gck-pay p{font-size:var(--fs-xs);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);
+    text-transform:uppercase;color:var(--c-ink-3);margin:0 0 var(--sp-3)}
+  .gck-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
+  .gck-chips span{background:var(--c-bg);color:var(--c-ink-2);border-radius:var(--r-sm);
+    padding:var(--sp-2) var(--sp-3);font-size:var(--fs-xs);font-weight:var(--fw-black);
+    box-shadow:inset 0 0 0 1px var(--c-line)}
+
+  /* ---- empty ---- */
+  .gck-empty{text-align:center;padding:clamp(var(--sp-8),8vw,var(--sp-10)) var(--sp-5)}
+  .gck-empty-art{width:min(150px,34vw);margin:0 auto var(--sp-5)}
+  .gck-empty h1{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    line-height:var(--lh-tight);color:var(--c-ink);margin:0 auto;max-width:16ch}
+  .gck-empty p{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);
+    margin:var(--sp-4) auto var(--sp-6);max-width:34ch}
+
+  @media (prefers-reduced-motion:reduce){.gck-go{transition:none}}
+</style>
+
+<section class="gck">
+  <div class="gck-in">
+    {%- if cart.item_count == 0 -%}
+
+      <div class="gck-empty">
+        <div class="gck-empty-art">{% render 'gc-gummy', tone: '--c-cherry', id: 'empty' %}</div>
+        <h1>{{ s.empty_title }}</h1>
+        <p>{{ s.empty_sub }}</p>
+        <a class="gc-btn" href="{{ routes.all_products_collection_url }}">{{ s.empty_cta }}</a>
+      </div>
+
+    {%- else -%}
+
+      <h1 class="gck-title">{{ s.title }}</h1>
+      <p class="gck-count">
+        {{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}
+      </p>
+
+      <form action="{{ routes.cart_url }}" method="post" novalidate id="gck-form">
+        <div class="gck-layout">
+
+          <div class="gck-items">
+            {%- for item in cart.items -%}
+              {%- assign t = item.product.title | downcase -%}
+              {%- if t contains 'melatonin' or t contains 'sleep' -%}
+                {%- assign tone = '--c-cherry' -%}{%- assign tone_soft = '--c-cherry-soft' -%}
+              {%- elsif t contains 'eye' -%}
+                {%- assign tone = '--c-orange' -%}{%- assign tone_soft = '--c-orange-soft' -%}
+              {%- else -%}
+                {%- assign tone = '--c-mango' -%}{%- assign tone_soft = '--c-mango-soft' -%}
+              {%- endif -%}
+              <div class="gck-row">
+                <span class="gck-shot" style="--pc-soft:var({{ tone_soft }})">
+                  {%- if item.image -%}
+                    {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', width: 200, height: 200, alt: item.title }}
+                  {%- else -%}
+                    {% render 'gc-gummy', tone: tone, id: 'k' | append: forloop.index %}
+                  {%- endif -%}
+                </span>
+
+                <div class="gck-info">
+                  <b><a href="{{ item.url }}">{{ item.product.title }}</a></b>
+                  {%- unless item.variant.title contains 'Default' -%}
+                    <p class="gck-variant">{{ item.variant.title }}</p>
+                  {%- endunless -%}
+                  <p class="gck-each">{% render 'gc-money', price: item.final_price %} each · 30 gummies</p>
+                </div>
+
+                <div class="gck-side">
+                  <span class="gck-qty">
+                    {%- assign less = item.quantity | minus: 1 -%}
+                    {%- assign more = item.quantity | plus: 1 -%}
+                    <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ less }}"
+                       aria-label="Decrease quantity of {{ item.product.title }}">−</a>
+                    <span>{{ item.quantity }}</span>
+                    <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ more }}"
+                       aria-label="Increase quantity of {{ item.product.title }}">+</a>
+                  </span>
+                  <span class="gck-line-total">{% render 'gc-money', price: item.final_line_price %}</span>
+                  <a class="gck-remove" href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0">Remove</a>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          <aside class="gck-sum">
+            <h2>Order summary</h2>
+            <div class="gck-line">
+              <span>Subtotal</span>
+              <b>{% render 'gc-money', price: cart.total_price %}</b>
+            </div>
+            <div class="gck-line">
+              <span>Shipping</span>
+              <b>Calculated at checkout</b>
+            </div>
+            <div class="gck-rule" aria-hidden="true"></div>
+            <div class="gck-total">
+              <span>Total</span>
+              <b>{% render 'gc-money', price: cart.total_price %}</b>
+            </div>
+            <p class="gck-tax">{{ s.tax_note }}</p>
+
+            <button type="submit" name="checkout" class="gck-go">{{ s.checkout_label }}</button>
+            <a class="gck-keep" href="{{ routes.all_products_collection_url }}">← Keep shopping</a>
+
+            <div class="gck-pay">
+              <p>Secure checkout</p>
+              <div class="gck-chips">
+                <span>UPI</span><span>Cards</span><span>Net banking</span>
+                <span>Wallets</span><span>Cash on Delivery</span>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </form>
+
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GummyChums Cart",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Your bag" },
+    { "type": "text", "id": "checkout_label", "label": "Checkout button", "default": "Checkout →" },
+    { "type": "textarea", "id": "tax_note", "label": "Tax note",
+      "default": "Inclusive of all taxes. Shipping is calculated at checkout based on your PIN code. Cash on Delivery available across India." },
+    { "type": "text", "id": "empty_title", "label": "Empty title", "default": "Your bag’s feeling light." },
+    { "type": "text", "id": "empty_sub", "label": "Empty subtitle",
+      "default": "Three flavours, one happy habit. Let’s find your chum." },
+    { "type": "text", "id": "empty_cta", "label": "Empty CTA", "default": "Shop the flavours →" }
+  ]
+}
+{% endschema %}

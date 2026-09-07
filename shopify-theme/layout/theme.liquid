@@ -4,12 +4,20 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="">
     <link rel="canonical" href="{{ canonical_url }}">
 
+    {%- comment -%}
+      Falls back to the brand monogram so the tab is never Shopify's default
+      globe — settings.favicon can still override it from the theme editor.
+    {%- endcomment -%}
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+    {%- else -%}
+      <link rel="icon" type="image/png" href="{{ 'gc-monogram.png' | asset_url }}">
+      <link rel="apple-touch-icon" href="{{ 'gc-monogram.png' | asset_url }}">
     {%- endif -%}
+    <meta name="theme-color" content="#DE1D61">
 
     {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>

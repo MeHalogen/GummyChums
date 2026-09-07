@@ -1,0 +1,104 @@
+{%- comment -%}
+  GummyChums search results. Low-traffic (there's no search box in the header),
+  but reachable by URL and from Google — so it gets the brand rather than
+  Dawn's default grid.
+{%- endcomment -%}
+<style>
+  .gcs{padding:var(--sp-8) var(--gutter) var(--sp-9)}
+  .gcs-in{max-width:var(--container);margin-inline:auto}
+  .gcs-head{text-align:center;margin-bottom:clamp(var(--sp-6),5vw,var(--sp-7))}
+  .gcs-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
+    font-size:var(--fs-xs);color:var(--c-accent);margin:0}
+  .gcs-head h1{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    line-height:var(--lh-tight);color:var(--c-ink);margin:var(--sp-3) auto 0;max-width:20ch}
+
+  .gcs-form{display:flex;gap:var(--sp-2);justify-content:center;flex-wrap:wrap;margin-top:var(--sp-5)}
+  .gcs-input{font-family:inherit;font-size:var(--fs-base);font-weight:var(--fw-body);
+    background:var(--c-surface);color:var(--c-ink);border:0;box-shadow:inset 0 0 0 1px var(--c-line);
+    border-radius:var(--r-full);padding:var(--sp-3) var(--sp-5);min-width:min(320px,80vw);outline:none;
+    transition:box-shadow var(--dur-2) var(--ease)}
+  .gcs-input:focus{box-shadow:inset 0 0 0 2px var(--c-accent)}
+  .gcs-btn{border:0;cursor:pointer;font-family:inherit;background:var(--c-accent);color:var(--c-accent-ink);
+    font-weight:var(--fw-black);font-size:var(--fs-base);padding:var(--sp-3) var(--sp-6);
+    border-radius:var(--r-full);transition:background var(--dur-2) var(--ease)}
+  .gcs-btn:hover{background:var(--c-accent-hover)}
+
+  .gcs-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(var(--sp-4),2vw,var(--sp-5))}
+  @media(max-width:900px){.gcs-grid{grid-template-columns:1fr;max-width:430px;margin-inline:auto}}
+
+  .gcs-card{background:var(--c-surface);border-radius:var(--r-lg);padding:var(--sp-5);
+    display:flex;flex-direction:column;gap:var(--sp-3);box-shadow:var(--sh-2);text-decoration:none;
+    transition:transform var(--dur-2) var(--spring),box-shadow var(--dur-2) var(--ease)}
+  .gcs-card:hover{transform:translateY(-6px);box-shadow:var(--sh-3)}
+  .gcs-shot{position:relative;border-radius:var(--r-md);aspect-ratio:5/4;overflow:hidden;
+    display:grid;place-items:center;background:var(--pc-soft)}
+  .gcs-shot img{width:100%;height:100%;object-fit:cover}
+  .gcs-shot svg{width:52%;height:auto}
+  .gcs-name{font-size:var(--fs-xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);color:var(--c-ink);margin:0}
+  .gcs-price{font-size:var(--fs-base);font-weight:var(--fw-black);margin:0}
+
+  .gcs-none{text-align:center;padding:var(--sp-9) 0}
+  .gcs-none p{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);
+    margin:0 auto var(--sp-6);max-width:34ch}
+
+  @media (prefers-reduced-motion:reduce){.gcs-card{transition:none}}
+</style>
+
+<section class="gcs">
+  <div class="gcs-in">
+    <header class="gcs-head">
+      <p class="gcs-kick">Search</p>
+      <h1>
+        {%- if search.performed and search.results_count > 0 -%}
+          {{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for “{{ search.terms | escape }}”
+        {%- elsif search.performed -%}
+          Nothing for “{{ search.terms | escape }}”
+        {%- else -%}
+          Looking for something?
+        {%- endif -%}
+      </h1>
+      <form class="gcs-form" action="{{ routes.search_url }}" method="get" role="search">
+        <input class="gcs-input" type="search" name="q" value="{{ search.terms | escape }}"
+          placeholder="Try “melatonin” or “focus”" aria-label="Search">
+        <button class="gcs-btn" type="submit">Search</button>
+      </form>
+    </header>
+
+    {%- if search.performed and search.results_count > 0 -%}
+      <div class="gcs-grid">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}
+            {%- assign t = item.title | downcase -%}
+            {%- if t contains 'melatonin' or t contains 'sleep' -%}
+              {%- assign tone = '--c-cherry' -%}{%- assign tone_soft = '--c-cherry-soft' -%}
+            {%- elsif t contains 'eye' -%}
+              {%- assign tone = '--c-orange' -%}{%- assign tone_soft = '--c-orange-soft' -%}
+            {%- else -%}
+              {%- assign tone = '--c-mango' -%}{%- assign tone_soft = '--c-mango-soft' -%}
+            {%- endif -%}
+            <a class="gcs-card" href="{{ item.url }}">
+              <span class="gcs-shot" style="--pc-soft:var({{ tone_soft }})">
+                {%- if item.featured_image -%}
+                  {{ item.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', width: 600, height: 480, alt: item.title }}
+                {%- else -%}
+                  {% render 'gc-gummy', tone: tone, id: 's' | append: forloop.index %}
+                {%- endif -%}
+              </span>
+              <h2 class="gcs-name">{{ item.title }}</h2>
+              <p class="gcs-price" style="color:var({{ tone }})">{% render 'gc-money', price: item.price %}</p>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- elsif search.performed -%}
+      <div class="gcs-none">
+        <p>No chums by that name. We only make three — have a look at all of them.</p>
+        <a class="gc-btn" href="{{ routes.all_products_collection_url }}">Shop the flavours →</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "GummyChums Search", "settings": [] }
+{% endschema %}

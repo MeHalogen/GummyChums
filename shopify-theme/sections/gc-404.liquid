@@ -1,0 +1,62 @@
+{%- comment -%} GummyChums 404 — on-brand, and always offers a way back {%- endcomment -%}
+{%- assign s = section.settings -%}
+<style>
+  .gcn{padding:clamp(var(--sp-8),9vw,var(--sp-10)) var(--gutter);text-align:center}
+  .gcn-in{max-width:var(--container);margin-inline:auto}
+  .gcn-art{width:min(170px,38vw);margin:0 auto var(--sp-5);animation:gcnFloat 6s ease-in-out infinite}
+  @keyframes gcnFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-16px) rotate(4deg)}}
+  .gcn-code{font-size:var(--fs-xs);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);
+    text-transform:uppercase;color:var(--c-accent);margin:0}
+  .gcn h1{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    line-height:var(--lh-tight);color:var(--c-ink);margin:var(--sp-3) auto 0;max-width:18ch}
+  .gcn h1 em{font-style:normal;color:var(--c-accent)}
+  .gcn-sub{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);
+    margin:var(--sp-4) auto var(--sp-6);max-width:38ch;line-height:var(--lh-body)}
+  .gcn-cta{display:flex;gap:var(--sp-3);justify-content:center;flex-wrap:wrap}
+  .gcn-ghost{display:inline-flex;align-items:center;justify-content:center;font-family:inherit;
+    font-weight:var(--fw-black);font-size:var(--fs-base);text-decoration:none;color:var(--c-ink);
+    padding:var(--sp-4) var(--sp-6);border-radius:var(--r-full);box-shadow:inset 0 0 0 2px var(--c-ink);
+    transition:background var(--dur-2) var(--ease),color var(--dur-2) var(--ease)}
+  .gcn-ghost:hover{background:var(--c-ink);color:var(--c-surface)}
+
+  .gcn-links{margin-top:var(--sp-8);display:flex;gap:var(--sp-5);justify-content:center;flex-wrap:wrap}
+  .gcn-links a{font-size:var(--fs-sm);font-weight:var(--fw-black);color:var(--c-ink-2);
+    text-decoration:underline;text-underline-offset:3px}
+  .gcn-links a:hover{color:var(--c-accent)}
+
+  @media (prefers-reduced-motion:reduce){.gcn-art{animation:none}}
+</style>
+
+<section class="gcn">
+  <div class="gcn-in">
+    <div class="gcn-art">{% render 'gc-gummy', tone: '--c-cherry', id: 'nf' %}</div>
+    <p class="gcn-code">Error 404</p>
+    <h1>{{ s.title | replace: '[', '<em>' | replace: ']', '</em>' }}</h1>
+    <p class="gcn-sub">{{ s.sub }}</p>
+    <div class="gcn-cta">
+      <a class="gc-btn" href="{{ routes.all_products_collection_url }}">{{ s.cta }}</a>
+      <a class="gcn-ghost" href="{{ routes.root_url }}">Back home</a>
+    </div>
+    <div class="gcn-links">
+      <a href="{{ routes.root_url }}#gc-story">Our story</a>
+      <a href="{{ routes.root_url }}#gc-faq">FAQ</a>
+      {%- if section.settings.whatsapp != blank -%}
+        <a href="https://wa.me/{{ section.settings.whatsapp }}" target="_blank" rel="noopener">WhatsApp us</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GummyChums 404",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title (use [ ] for pink)", "default": "This chum [wandered off]." },
+    { "type": "textarea", "id": "sub", "label": "Subtitle",
+      "default": "The page you’re after doesn’t exist — or it moved. The gummies, happily, are exactly where you left them." },
+    { "type": "text", "id": "cta", "label": "CTA", "default": "Shop the flavours →" },
+    { "type": "text", "id": "whatsapp", "label": "WhatsApp number (with country code, digits only)",
+      "default": "917300039307" }
+  ]
+}
+{% endschema %}

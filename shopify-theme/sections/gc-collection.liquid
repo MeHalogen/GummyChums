@@ -1,0 +1,172 @@
+{%- comment -%}
+  GummyChums collection / shop page. Deliberately continuous with the homepage
+  flavour grid — same card anatomy, same flavour tinting — so "Shop" doesn't
+  drop the customer onto a page that looks like a different store.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<style>
+  .gcc{padding:var(--sp-8) var(--gutter) var(--sp-9)}
+  .gcc-in{max-width:var(--container);margin-inline:auto}
+
+  .gcc-head{text-align:center;margin-bottom:clamp(var(--sp-6),5vw,var(--sp-8))}
+  .gcc-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
+    font-size:var(--fs-xs);color:var(--c-accent);margin:0}
+  .gcc-title{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    line-height:var(--lh-tight);color:var(--c-ink);margin:var(--sp-3) auto 0;max-width:18ch}
+  .gcc-title em{font-style:normal;color:var(--c-accent)}
+  .gcc-sub{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);
+    margin:var(--sp-4) auto 0;max-width:42ch;line-height:var(--lh-body)}
+
+  /* trust strip — the three claims that matter before someone picks a flavour */
+  .gcc-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--sp-2);margin:var(--sp-5) auto 0}
+  .gcc-trust span{background:var(--c-surface);border-radius:var(--r-full);
+    padding:var(--sp-2) var(--sp-4);font-size:var(--fs-sm);font-weight:var(--fw-black);
+    color:var(--c-ink);box-shadow:var(--sh-1)}
+
+  .gcc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(var(--sp-4),2vw,var(--sp-5))}
+  @media(max-width:900px){.gcc-grid{grid-template-columns:1fr;max-width:430px;margin-inline:auto}}
+
+  .gcc-card{background:var(--c-surface);border-radius:var(--r-lg);padding:var(--sp-5);
+    display:flex;flex-direction:column;gap:var(--sp-3);box-shadow:var(--sh-2);
+    transition:transform var(--dur-2) var(--spring),box-shadow var(--dur-2) var(--ease)}
+  .gcc-card:hover{transform:translateY(-8px);box-shadow:var(--sh-3)}
+
+  .gcc-shot{position:relative;display:block;border-radius:var(--r-md);aspect-ratio:5/4;
+    overflow:hidden;background:var(--pc-soft)}
+  .gcc-shot img{width:100%;height:100%;object-fit:cover;display:block}
+  .gcc-cluster{position:absolute;inset:0}
+  .gcc-g{position:absolute;display:block;animation:gccBob ease-in-out infinite alternate}
+  .gcc-g1{width:44%;left:9%;top:19%;transform:rotate(-9deg);animation-duration:6.5s}
+  .gcc-g2{width:29%;right:9%;top:9%;transform:rotate(13deg);animation-duration:7.8s;animation-delay:-2.4s}
+  .gcc-g3{width:26%;left:36%;bottom:8%;transform:rotate(-15deg);animation-duration:7.1s;animation-delay:-4.2s}
+  @keyframes gccBob{0%{translate:0 0}100%{translate:0 -9px}}
+
+  .gcc-badge{position:absolute;z-index:1;top:var(--sp-3);left:var(--sp-3);background:var(--c-surface);
+    font-size:var(--fs-xs);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);
+    text-transform:uppercase;padding:var(--sp-2) var(--sp-3);border-radius:var(--r-full);box-shadow:var(--sh-1)}
+  .gcc-sold{position:absolute;z-index:1;top:var(--sp-3);right:var(--sp-3);background:var(--c-ink);
+    color:var(--c-surface);font-size:var(--fs-xs);font-weight:var(--fw-black);
+    padding:var(--sp-2) var(--sp-3);border-radius:var(--r-full)}
+
+  .gcc-name{font-size:var(--fs-xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    color:var(--c-ink);text-decoration:none;margin:0}
+  .gcc-name:hover{color:var(--c-accent)}
+  .gcc-line{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-2);margin:0;line-height:var(--lh-snug)}
+  .gcc-meta{font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3);margin:0}
+
+  .gcc-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-2);
+    margin-top:auto;padding-top:var(--sp-2)}
+  .gcc-priced{display:flex;flex-direction:column;gap:var(--sp-1)}
+  .gcc-price{font-size:var(--fs-xl);font-weight:var(--fw-black);line-height:1}
+  .gcc-perday{font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3)}
+  .gcc-add{border:0;cursor:pointer;font-family:inherit;font-weight:var(--fw-black);
+    font-size:var(--fs-sm);color:var(--c-surface);padding:var(--sp-3) var(--sp-5);
+    border-radius:var(--r-full);transition:transform var(--dur-1) var(--spring),filter var(--dur-2) var(--ease)}
+  .gcc-add:hover{filter:brightness(1.08)}
+  .gcc-add:active{transform:scale(.93)}
+  .gcc-add--out{background:var(--c-ink-3);cursor:default}
+
+  .gcc-empty{grid-column:1/-1;text-align:center;color:var(--c-ink-2);
+    font-size:var(--fs-lg);font-weight:var(--fw-body);padding:var(--sp-9) 0}
+
+  /* closing reassurance so the page doesn't just stop */
+  .gcc-end{text-align:center;margin-top:clamp(var(--sp-8),6vw,var(--sp-9))}
+  .gcc-end p{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-ink-2);
+    margin:0 auto;max-width:46ch;line-height:var(--lh-body)}
+
+  @media (prefers-reduced-motion:reduce){.gcc-g{animation:none}}
+  @media (prefers-reduced-motion:reduce){.gcc-card{transition:none}}
+</style>
+
+<section class="gcc">
+  <div class="gcc-in">
+    <header class="gcc-head gc-rise">
+      <p class="gcc-kick">{{ s.kicker }}</p>
+      <h1 class="gcc-title">{{ s.title | replace: '[', '<em>' | replace: ']', '</em>' }}</h1>
+      <p class="gcc-sub">
+        {%- if collection.description != blank -%}{{ collection.description | strip_html }}
+        {%- else -%}{{ s.sub }}{%- endif -%}
+      </p>
+      <div class="gcc-trust">
+        <span>🌱 100% Veg</span>
+        <span>🚫 No Added Sugar</span>
+        <span>🇮🇳 Made in India</span>
+      </div>
+    </header>
+
+    <div class="gcc-grid">
+      {%- for product in collection.products -%}
+        {%- assign t = product.title | downcase -%}
+        {%- if t contains 'melatonin' or t contains 'sleep' -%}
+          {%- assign tone = '--c-cherry' -%}{%- assign tone_soft = '--c-cherry-soft' -%}
+          {%- assign role = 'Sleep' -%}{%- assign benefit = 'Wind down. Sleep tight.' -%}
+        {%- elsif t contains 'eye' -%}
+          {%- assign tone = '--c-orange' -%}{%- assign tone_soft = '--c-orange-soft' -%}
+          {%- assign role = 'Eye care' -%}{%- assign benefit = 'For screen-tired eyes.' -%}
+        {%- else -%}
+          {%- assign tone = '--c-mango' -%}{%- assign tone_soft = '--c-mango-soft' -%}
+          {%- assign role = 'Focus' -%}{%- assign benefit = 'Big brain energy, tiny gummy.' -%}
+        {%- endif -%}
+        {%- assign i = forloop.index -%}
+        <div class="gcc-card gc-rise" style="transition-delay:{{ forloop.index0 | times: 80 }}ms">
+          <a href="{{ product.url }}" class="gcc-shot" style="--pc-soft:var({{ tone_soft }})"
+             aria-label="{{ product.title }}">
+            <span class="gcc-badge" style="color:var({{ tone }})">{{ role }}</span>
+            {%- unless product.available -%}<span class="gcc-sold">Sold out</span>{%- endunless -%}
+            {%- if product.featured_image -%}
+              {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', width: 700, height: 560, alt: product.title }}
+            {%- else -%}
+              <span class="gcc-cluster">
+                <span class="gcc-g gcc-g1">{% render 'gc-gummy', tone: tone, id: 'ca' | append: i %}</span>
+                <span class="gcc-g gcc-g2">{% render 'gc-gummy', tone: tone, id: 'cb' | append: i %}</span>
+                <span class="gcc-g gcc-g3">{% render 'gc-gummy', tone: tone, id: 'cc' | append: i %}</span>
+              </span>
+            {%- endif -%}
+          </a>
+
+          <a href="{{ product.url }}" class="gcc-name">{{ product.title }}</a>
+          <p class="gcc-line">{{ benefit }}</p>
+          <p class="gcc-meta">30 gummies · one a day</p>
+
+          <div class="gcc-foot">
+            <span class="gcc-priced">
+              <span class="gcc-price" style="color:var({{ tone }})">{% render 'gc-money', price: product.price %}</span>
+              {%- assign pd = product.price | divided_by: 3000 | round -%}
+              <span class="gcc-perday">≈ ₹{{ pd }}/day</span>
+            </span>
+            {%- if product.available -%}
+              <form method="post" action="{{ routes.cart_add_url }}">
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="gcc-add" style="background:var({{ tone }})">Add to bag</button>
+              </form>
+            {%- else -%}
+              <span class="gcc-add gcc-add--out">Sold out</span>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- else -%}
+        <p class="gcc-empty">Nothing here yet — new chums on the way.</p>
+      {%- endfor -%}
+    </div>
+
+    <div class="gcc-end gc-rise">
+      <p>{{ s.footnote }}</p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GummyChums Collection",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Three flavours ✦ one happy habit" },
+    { "type": "text", "id": "title", "label": "Title (use [ ] for pink)", "default": "Pick your [chum]." },
+    { "type": "textarea", "id": "sub", "label": "Subtitle (used when the collection has no description)",
+      "default": "Supplements you’ll actually look forward to. One gummy a day, no water, no fuss." },
+    { "type": "textarea", "id": "footnote", "label": "Closing note",
+      "default": "Not sure which one? Most Chums start with the one that matches the thing they’d most like to fix — focus, sleep, or screen-tired eyes." }
+  ],
+  "presets": [{ "name": "GummyChums Collection" }]
+}
+{% endschema %}

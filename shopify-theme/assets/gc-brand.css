@@ -105,8 +105,8 @@ p,li,a,span,div,button,input,label{font-family:'Manrope',system-ui,sans-serif}
 .gc-wa:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 16px 34px -8px rgba(37,211,102,.85)}
 .gc-wa:active{transform:scale(.94)}
 .gc-wa svg{width:29px;height:29px;display:block;fill:#fff}
-/* clear the product page's sticky buy bar on phones */
-@media(max-width:899px){.gc-wa{bottom:88px}}
+/* The product page lifts this clear of its sticky buy bar in gc-product.liquid;
+   everywhere else it sits at the bottom corner. */
 @media(max-width:400px){.gc-wa{width:48px;height:48px}}
 
 /* ---- reveal-on-scroll ---- */
