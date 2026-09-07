@@ -1,0 +1,151 @@
+{%- comment -%}
+  Review wall. Each review is a theme-editor block, so real ones replace the
+  samples without touching code.
+
+  `sample_badge` defaults to ON and stamps a visible "Sample" ribbon on every
+  card. Publishing invented customer reviews as if they were real is deceptive
+  and, for a consumer brand in India, a regulatory problem (BIS IS 19000 on
+  online consumer reviews). The badge makes the placeholder state impossible to
+  miss so it cannot ship unnoticed — turn it off only once these are genuine.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<style>
+  .gcv{padding:clamp(var(--sp-8),6vw,var(--sp-9)) var(--gutter);position:relative}
+  .gcv-in{max-width:var(--container);margin-inline:auto}
+  .gcv-head{text-align:center;margin-bottom:clamp(var(--sp-6),4vw,var(--sp-7))}
+  .gcv-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
+    font-size:var(--fs-xs);color:var(--c-accent);margin:0}
+  .gcv-head h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    line-height:var(--lh-tight);color:var(--c-ink);margin:var(--sp-3) auto 0;max-width:18ch}
+  .gcv-head h2 em{font-style:normal;color:var(--c-accent)}
+  .gcv-sub{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);
+    margin:var(--sp-4) auto 0;max-width:42ch;line-height:var(--lh-body)}
+
+  /* a wall, not a grid — columns let cards keep their natural height */
+  .gcv-wall{columns:3;column-gap:clamp(var(--sp-4),2vw,var(--sp-5))}
+  @media(max-width:1000px){.gcv-wall{columns:2}}
+  @media(max-width:640px){.gcv-wall{columns:1}}
+
+  .gcv-card{break-inside:avoid;background:var(--c-surface);border-radius:var(--r-lg);
+    padding:var(--sp-5);margin-bottom:clamp(var(--sp-4),2vw,var(--sp-5));box-shadow:var(--sh-2);
+    position:relative;transition:transform var(--dur-2) var(--spring),box-shadow var(--dur-2) var(--ease)}
+  .gcv-card:hover{transform:translateY(-6px) rotate(0deg);box-shadow:var(--sh-3)}
+  /* a gentle scatter so it reads as pinned notes rather than a spreadsheet */
+  .gcv-card:nth-child(3n+1){transform:rotate(-1.1deg)}
+  .gcv-card:nth-child(3n+2){transform:rotate(.8deg)}
+  .gcv-card:nth-child(3n+3){transform:rotate(-.5deg)}
+
+  .gcv-stars{font-size:var(--fs-sm);letter-spacing:.14em;color:var(--c-accent);margin:0 0 var(--sp-3)}
+  .gcv-quote{font-size:var(--fs-base);font-weight:var(--fw-bold);color:var(--c-ink);
+    line-height:var(--lh-body);margin:0}
+  .gcv-by{display:flex;align-items:center;gap:var(--sp-3);margin-top:var(--sp-4);
+    padding-top:var(--sp-4);border-top:1px solid var(--c-line)}
+  .gcv-dot{width:34px;height:34px;flex:0 0 auto;border-radius:var(--r-full);display:grid;
+    place-items:center;font-size:var(--fs-sm);font-weight:var(--fw-black);color:var(--c-surface)}
+  .gcv-who b{display:block;font-size:var(--fs-sm);font-weight:var(--fw-black);color:var(--c-ink)}
+  .gcv-who span{display:block;font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3)}
+
+  .gcv-sample{position:absolute;top:var(--sp-3);right:var(--sp-3);background:var(--c-ink);
+    color:var(--c-surface);font-size:var(--fs-xs);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-wide);text-transform:uppercase;padding:var(--sp-1) var(--sp-3);
+    border-radius:var(--r-full)}
+
+  .gcv-warn{margin:var(--sp-6) auto 0;max-width:52ch;text-align:center;
+    font-size:var(--fs-sm);font-weight:var(--fw-bold);color:var(--c-ink-2);
+    background:var(--c-accent-soft);border-radius:var(--r-md);padding:var(--sp-4) var(--sp-5)}
+
+  .gcv-empty{text-align:center;color:var(--c-ink-2);font-size:var(--fs-lg);
+    font-weight:var(--fw-body);padding:var(--sp-8) 0}
+
+  @media (prefers-reduced-motion:reduce){.gcv-card{transition:none}}
+</style>
+
+<section class="gcv">
+  <div class="gcv-in">
+    <header class="gcv-head gc-rise">
+      <p class="gcv-kick">{{ s.kicker }}</p>
+      <h2>{{ s.title | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
+      {%- if s.sub != blank -%}<p class="gcv-sub">{{ s.sub }}</p>{%- endif -%}
+    </header>
+
+    <div class="gcv-wall gc-rise">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- case b.flavour -%}
+          {%- when 'sleep' -%}{%- assign tone = '--c-cherry' -%}{%- assign label = 'Melatonin' -%}
+          {%- when 'eye' -%}{%- assign tone = '--c-orange' -%}{%- assign label = 'Eye Care' -%}
+          {%- else -%}{%- assign tone = '--c-mango' -%}{%- assign label = 'Brain Booster' -%}
+        {%- endcase -%}
+        <article class="gcv-card" {{ block.shopify_attributes }}>
+          {%- if s.sample_badge -%}<span class="gcv-sample">Sample</span>{%- endif -%}
+          <p class="gcv-stars" aria-label="{{ b.stars }} out of 5">
+            {%- for i in (1..5) -%}{% if i <= b.stars %}★{% else %}☆{% endif %}{%- endfor -%}
+          </p>
+          <p class="gcv-quote">“{{ b.quote }}”</p>
+          <div class="gcv-by">
+            <span class="gcv-dot" style="background:var({{ tone }})">{{ b.name | slice: 0 | upcase }}</span>
+            <span class="gcv-who">
+              <b>{{ b.name }}</b>
+              <span>{{ b.city }}{% if b.city != blank and label != blank %} · {% endif %}{{ label }}</span>
+            </span>
+          </div>
+        </article>
+      {%- else -%}
+        <p class="gcv-empty">Add reviews in the theme editor — they’ll appear here.</p>
+      {%- endfor -%}
+    </div>
+
+    {%- if s.sample_badge and section.blocks.size > 0 -%}
+      <p class="gcv-warn">{{ s.sample_note }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GummyChums Reviews",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "✦ The chum chorus" },
+    { "type": "text", "id": "title", "label": "Title (use [ ] for pink)", "default": "What the [Chums] say." },
+    { "type": "textarea", "id": "sub", "label": "Subtitle",
+      "default": "Real people, real habits, real gummies." },
+    { "type": "header", "content": "Placeholder safety" },
+    { "type": "checkbox", "id": "sample_badge",
+      "label": "Mark every review as a sample",
+      "info": "Leave ON while these are placeholder text. Publishing invented reviews as real customer feedback is deceptive and breaches Indian consumer-review rules (BIS IS 19000). Turn OFF only once every review below is genuine.",
+      "default": true },
+    { "type": "textarea", "id": "sample_note", "label": "Sample warning text",
+      "default": "These are placeholder reviews for layout only — not real customer feedback. Replace them with genuine reviews before launch." }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote" },
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "text", "id": "city", "label": "City" },
+        { "type": "range", "id": "stars", "label": "Stars", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "select", "id": "flavour", "label": "Product", "default": "focus",
+          "options": [
+            { "value": "focus", "label": "Brain Booster" },
+            { "value": "sleep", "label": "Melatonin" },
+            { "value": "eye", "label": "Eye Care" }
+          ]}
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "GummyChums Reviews",
+    "blocks": [
+      { "type": "review", "settings": { "quote": "I have never once remembered to take a tablet. This I actually look forward to — it lives next to my coffee and that's that.", "name": "Ananya", "city": "Bengaluru", "stars": 5, "flavour": "focus" }},
+      { "type": "review", "settings": { "quote": "Tastes like a sweet, not like medicine. My only complaint is that I want to eat four.", "name": "Rohan", "city": "Mumbai", "stars": 5, "flavour": "sleep" }},
+      { "type": "review", "settings": { "quote": "Nine hours on a screen every day and my eyes felt it. Three weeks in, evenings are noticeably easier.", "name": "Meera", "city": "Pune", "stars": 4, "flavour": "eye" }},
+      { "type": "review", "settings": { "quote": "Bought it for the packaging, stayed because I actually kept the habit up. First supplement I've finished the pack of.", "name": "Kabir", "city": "Delhi", "stars": 5, "flavour": "focus" }},
+      { "type": "review", "settings": { "quote": "The wind-down one is now part of my night routine. No grogginess in the morning, which was my worry.", "name": "Ishita", "city": "Jaipur", "stars": 5, "flavour": "sleep" }},
+      { "type": "review", "settings": { "quote": "Ordered COD because I wasn't sure. Turned up in four days, no fuss. Reordering.", "name": "Aditya", "city": "Hyderabad", "stars": 4, "flavour": "eye" }}
+    ]
+  }]
+}
+{% endschema %}

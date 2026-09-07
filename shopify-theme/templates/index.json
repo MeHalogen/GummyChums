@@ -8,7 +8,21 @@
         "sub": "We’re making healthy habits feel good."
       }
     },
+    "gc_reel": { "type": "gc-reel", "settings": {} },
+    "gc_reviews": {
+      "type": "gc-reviews",
+      "settings": { "sample_badge": true },
+      "blocks": {
+        "r1": { "type": "review", "settings": { "quote": "I have never once remembered to take a tablet. This I actually look forward to — it lives next to my coffee and that’s that.", "name": "Ananya", "city": "Bengaluru", "stars": 5, "flavour": "focus" }},
+        "r2": { "type": "review", "settings": { "quote": "Tastes like a sweet, not like medicine. My only complaint is that I want to eat four.", "name": "Rohan", "city": "Mumbai", "stars": 5, "flavour": "sleep" }},
+        "r3": { "type": "review", "settings": { "quote": "Nine hours on a screen every day and my eyes felt it. Three weeks in, evenings are noticeably easier.", "name": "Meera", "city": "Pune", "stars": 4, "flavour": "eye" }},
+        "r4": { "type": "review", "settings": { "quote": "Bought it for the packaging, stayed because I actually kept the habit up. First supplement I’ve finished the pack of.", "name": "Kabir", "city": "Delhi", "stars": 5, "flavour": "focus" }},
+        "r5": { "type": "review", "settings": { "quote": "The wind-down one is now part of my night routine. No grogginess in the morning, which was my worry.", "name": "Ishita", "city": "Jaipur", "stars": 5, "flavour": "sleep" }},
+        "r6": { "type": "review", "settings": { "quote": "Ordered COD because I wasn’t sure. Turned up in four days, no fuss. Reordering.", "name": "Aditya", "city": "Hyderabad", "stars": 4, "flavour": "eye" }}
+      },
+      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6"]
+    },
     "gc_quality": { "type": "gc-quality", "settings": {} }
   },
-  "order": ["gc_home", "gc_quality"]
+  "order": ["gc_home", "gc_reel", "gc_reviews", "gc_quality"]
 }

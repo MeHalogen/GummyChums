@@ -1,0 +1,133 @@
+{%- comment -%}
+  Launch reel. The source is a 9:16 Instagram export that already carries its
+  own decorative border, so it sits in a plain rounded container rather than a
+  phone mock — a frame inside a frame reads as a mistake.
+
+  Autoplays muted (the only way browsers permit autoplay), loops, and plays
+  inline on iOS. Honours prefers-reduced-motion by not autoplaying, and only
+  starts once scrolled into view so it costs nothing above the fold.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<style>
+  .gcr{position:relative;overflow:hidden;background:var(--c-ink);color:var(--c-bg-warm);
+    padding:clamp(var(--sp-8),7vw,var(--sp-9)) var(--gutter)}
+  .gcr::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(46vw 46vw at 88% 8%, var(--c-accent-soft), transparent 62%)}
+  .gcr-in{position:relative;z-index:1;max-width:var(--container);margin-inline:auto;
+    display:grid;grid-template-columns:1fr minmax(0,340px);gap:clamp(var(--sp-6),5vw,var(--sp-8));
+    align-items:center}
+  @media(max-width:899px){.gcr-in{grid-template-columns:1fr;justify-items:center;text-align:center}}
+
+  .gcr-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
+    font-size:var(--fs-xs);color:var(--c-accent);margin:0}
+  .gcr-copy h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    line-height:var(--lh-tight);color:var(--c-bg-warm);margin:var(--sp-3) 0 0;max-width:16ch}
+  .gcr-copy h2 em{font-style:normal;color:var(--c-accent)}
+  .gcr-copy p{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-bg-warm);opacity:.8;
+    margin:var(--sp-4) 0 0;max-width:38ch;line-height:var(--lh-body)}
+  @media(max-width:899px){.gcr-copy p{margin-inline:auto}}
+  @media(max-width:899px){.gcr-copy h2{margin-inline:auto}}
+  .gcr-cta{margin-top:var(--sp-6);display:flex;gap:var(--sp-3);flex-wrap:wrap}
+  @media(max-width:899px){.gcr-cta{justify-content:center}}
+
+  /* 9:16 stage — aspect-ratio keeps it from jumping while the video loads */
+  .gcr-stage{position:relative;width:100%;max-width:340px;aspect-ratio:9/16;
+    border-radius:var(--r-lg);overflow:hidden;background:var(--c-ink);box-shadow:var(--sh-3)}
+  .gcr-stage video{width:100%;height:100%;object-fit:cover;display:block}
+  .gcr-stage img{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* sound toggle — a launch reel usually has music worth hearing */
+  .gcr-sound{position:absolute;z-index:2;right:var(--sp-3);bottom:var(--sp-3);
+    width:44px;height:44px;border:0;cursor:pointer;border-radius:var(--r-full);
+    background:var(--c-surface);color:var(--c-ink);font-family:inherit;font-size:var(--fs-base);
+    display:grid;place-items:center;box-shadow:var(--sh-2);
+    transition:transform var(--dur-1) var(--spring)}
+  .gcr-sound:hover{transform:scale(1.08)}
+  .gcr-sound:active{transform:scale(.94)}
+
+  /* shown only when autoplay is refused or motion is reduced */
+  .gcr-play{position:absolute;inset:0;z-index:2;display:none;place-items:center;
+    border:0;cursor:pointer;background:transparent;font-family:inherit}
+  .gcr-play span{background:var(--c-surface);color:var(--c-ink);border-radius:var(--r-full);
+    padding:var(--sp-3) var(--sp-5);font-size:var(--fs-sm);font-weight:var(--fw-black);box-shadow:var(--sh-2)}
+  .gcr-stage.is-paused .gcr-play{display:grid}
+
+  @media (prefers-reduced-motion:reduce){.gcr-sound{transition:none}}
+</style>
+
+<section class="gcr">
+  <div class="gcr-in">
+    <div class="gcr-copy gc-rise">
+      <p class="gcr-kick">{{ s.kicker }}</p>
+      <h2>{{ s.title | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
+      <p>{{ s.body }}</p>
+      <div class="gcr-cta">
+        <a class="gc-btn" href="{{ routes.all_products_collection_url }}">{{ s.cta }}</a>
+      </div>
+    </div>
+
+    <div class="gcr-stage gc-rise" id="gcr-stage">
+      <video id="gcr-video" muted loop playsinline preload="none"
+        poster="{{ 'gc-reel-poster.jpg' | asset_url }}"
+        aria-label="{{ s.alt | escape }}" width="720" height="1280">
+        <source src="{{ 'gc-reel.mp4' | asset_url }}" type="video/mp4">
+      </video>
+      <button type="button" class="gcr-sound" id="gcr-sound" aria-label="Unmute video">🔇</button>
+      <button type="button" class="gcr-play" id="gcr-play" aria-label="Play video"><span>▶ Play</span></button>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var stage=document.getElementById('gcr-stage'),
+      v=document.getElementById('gcr-video'),
+      snd=document.getElementById('gcr-sound'),
+      play=document.getElementById('gcr-play');
+  if(!stage||!v)return;
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  function paused(is){stage.classList.toggle('is-paused',is);}
+
+  /* only load and play once it's actually on screen */
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(en){
+      en.forEach(function(e){
+        if(e.isIntersecting){
+          if(v.preload==='none'){v.preload='auto';v.load();}
+          if(!reduce)v.play().then(function(){paused(false);}).catch(function(){paused(true);});
+        } else { v.pause(); }
+      });
+    },{threshold:.35});
+    io.observe(stage);
+  }
+  if(reduce)paused(true);
+
+  play.addEventListener('click',function(){
+    v.play().then(function(){paused(false);}).catch(function(){});
+  });
+
+  snd.addEventListener('click',function(){
+    v.muted=!v.muted;
+    snd.textContent=v.muted?'🔇':'🔊';
+    snd.setAttribute('aria-label',v.muted?'Unmute video':'Mute video');
+    if(v.paused)v.play().then(function(){paused(false);}).catch(function(){});
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "GummyChums Reel",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "✦ Now launching" },
+    { "type": "text", "id": "title", "label": "Title (use [ ] for pink)", "default": "The chums are [here]." },
+    { "type": "textarea", "id": "body", "label": "Body",
+      "default": "Three flavours, one happy habit, and a whole lot of colour. Press play — then go pick your chum." },
+    { "type": "text", "id": "cta", "label": "CTA", "default": "Shop the flavours →" },
+    { "type": "text", "id": "alt", "label": "Video description (accessibility)",
+      "default": "GummyChums launch reel — puzzle pieces coming together to form the GummyChums logo." }
+  ],
+  "presets": [{ "name": "GummyChums Reel" }]
+}
+{% endschema %}
