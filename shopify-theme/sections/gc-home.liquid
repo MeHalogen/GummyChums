@@ -122,6 +122,18 @@
   .gh-val b{display:block;font-size:var(--fs-base);color:var(--c-accent);margin-bottom:var(--sp-1)}
   .gh-val span{font-size:var(--fs-sm);font-weight:var(--fw-body);opacity:.8}
 
+  /* founder note — a face behind the paragraphs */
+  .gh-founder{margin:var(--sp-7) auto 0;max-width:44ch;display:flex;flex-direction:column;
+    align-items:center;gap:var(--sp-3)}
+  .gh-founder-pic{width:80px;height:80px;border-radius:var(--r-full);object-fit:cover;
+    border:3px solid var(--c-accent)}
+  .gh-founder-q{margin:0;font-size:var(--fs-lg);font-weight:var(--fw-bold);line-height:var(--lh-snug);
+    color:var(--c-bg-warm);font-style:italic}
+  .gh-founder-by{display:flex;flex-direction:column;gap:var(--sp-1)}
+  .gh-founder-by b{font-size:var(--fs-sm);font-weight:var(--fw-black);color:var(--c-accent);
+    letter-spacing:var(--ls-wide);text-transform:uppercase}
+  .gh-founder-by span{font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-bg-warm);opacity:.7}
+
   /* ---------- ACT 4 — FAQ ---------- */
   .gh-faq{max-width:760px;margin:0 auto}
   .gh-q{background:var(--c-surface);border-radius:var(--r-md);margin-bottom:var(--sp-3);overflow:hidden;box-shadow:var(--sh-2)}
@@ -265,6 +277,25 @@
             <div class="gh-val"><b>{{ s.val2_t }}</b><span>{{ s.val2_b }}</span></div>
             <div class="gh-val"><b>{{ s.val3_t }}</b><span>{{ s.val3_b }}</span></div>
           </div>
+
+          {%- comment -%}
+            Founder note — renders only when there's a real quote to show, so the
+            section never displays an empty placeholder before the copy lands.
+          {%- endcomment -%}
+          {%- if s.founder_quote != blank -%}
+            <figure class="gh-founder">
+              {%- if s.founder_photo != blank -%}
+                <img class="gh-founder-pic"
+                  src="{{ s.founder_photo | image_url: width: 160 }}"
+                  alt="{{ s.founder_name | escape }}" width="80" height="80" loading="lazy">
+              {%- endif -%}
+              <blockquote class="gh-founder-q">“{{ s.founder_quote }}”</blockquote>
+              <figcaption class="gh-founder-by">
+                <b>{{ s.founder_name }}</b>
+                {%- if s.founder_role != blank -%}<span>{{ s.founder_role }}</span>{%- endif -%}
+              </figcaption>
+            </figure>
+          {%- endif -%}
         </div>
       </div>
     </div>
@@ -358,6 +389,11 @@
     { "type": "text", "id": "val2_b", "label": "Value 2 body", "default": "The label says everything. Every time." },
     { "type": "text", "id": "val3_t", "label": "Value 3 title", "default": "Within reach" },
     { "type": "text", "id": "val3_b", "label": "Value 3 body", "default": "Premium should never mean pricey." },
+    { "type": "header", "content": "Founder note (leave the quote empty to hide)" },
+    { "type": "image_picker", "id": "founder_photo", "label": "Founder photo" },
+    { "type": "textarea", "id": "founder_quote", "label": "Founder quote" },
+    { "type": "text", "id": "founder_name", "label": "Founder name" },
+    { "type": "text", "id": "founder_role", "label": "Founder role", "default": "Founder, GummyChums" },
     { "type": "header", "content": "Closing" },
     { "type": "text", "id": "end_title", "label": "Title (use [ ] for pink)", "default": "Your daily chums are [waiting]." },
     { "type": "text", "id": "end_sub", "label": "Sub", "default": "Three flavours. One happy habit. Start today." },

@@ -60,7 +60,17 @@
     box-shadow:var(--sh-2)}
   .gp-buy:hover{background:var(--c-accent-hover);transform:translateY(-2px);box-shadow:var(--sh-3)} .gp-buy:active{transform:scale(.96)}
   .gp-buy[disabled]{background:var(--c-ink-3);color:var(--c-surface);box-shadow:none;cursor:default}
+  /* secondary express path — ghost, so it never competes with Add to bag */
+  .gp-now{background:transparent;color:var(--c-ink);border:0;cursor:pointer;font-family:inherit;
+    font-weight:var(--fw-black);font-size:var(--fs-base);padding:var(--sp-4) var(--sp-6);
+    border-radius:var(--r-full);box-shadow:inset 0 0 0 2px var(--c-ink);
+    transition:background var(--dur-2) var(--ease),color var(--dur-2) var(--ease),transform var(--dur-1) var(--spring)}
+  .gp-now:hover{background:var(--c-ink);color:var(--c-surface)}
+  .gp-now:active{transform:scale(.96)}
+  .gp-now[aria-busy="true"]{opacity:.6;cursor:default}
   .gp-note{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-3);text-align:center}
+  .gp-note a{color:var(--c-ink-2);font-weight:var(--fw-bold);text-decoration:underline;text-underline-offset:2px}
+  .gp-note a:hover{color:var(--pc)}
 
   .gp-acc{margin:var(--sp-6) 0 0}
   .gp-acc details{background:var(--c-surface);border-radius:var(--r-md);margin-bottom:var(--sp-3);overflow:hidden;box-shadow:var(--sh-1)}
@@ -193,6 +203,7 @@
 
         {%- if product.available -%}
           <button type="submit" class="gp-buy" id="gp-buy">Add to bag · {% render 'gc-money', price: product.selected_or_first_available_variant.price %}</button>
+          <button type="button" class="gp-now" id="gp-now">Buy it now</button>
           <p class="gp-note">Ships in 3–10 days ·
             <a href="/policies/refund-policy">Easy returns</a>
           </p>
@@ -296,6 +307,24 @@
     b.setAttribute('aria-pressed','true');
     document.getElementById('gp-vid').value=b.dataset.vid;
   });}
+
+  /* Buy it now — add to cart, then straight to checkout. Deterministic across
+     gateways, unlike the dynamic checkout button (which mostly surfaces wallets
+     that are not the norm for Indian UPI/COD shoppers). */
+  var now=document.getElementById('gp-now'),form=document.getElementById('gp-form');
+  if(now&&form)now.addEventListener('click',function(){
+    if(now.getAttribute('aria-busy')==='true')return;
+    now.setAttribute('aria-busy','true');
+    var label=now.textContent; now.textContent='Taking you to checkout…';
+    fetch(window.routes&&window.routes.cart_add_url?window.routes.cart_add_url:'/cart/add.js',{
+      method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({id:document.getElementById('gp-vid').value,
+                           quantity:parseInt(document.getElementById('gp-qty').value,10)||1})
+    }).then(function(r){if(!r.ok)throw new Error('add failed');return r.json();})
+      .then(function(){location.href='/checkout';})
+      .catch(function(){ /* fall back to the normal add-to-cart path */
+        now.removeAttribute('aria-busy'); now.textContent=label; form.submit(); });
+  });
 
   /* sticky bar: show once the real Add button has scrolled out of view */
   var sticky=document.getElementById('gp-sticky'),buy=document.getElementById('gp-buy');
