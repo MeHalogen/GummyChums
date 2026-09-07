@@ -126,7 +126,9 @@
                   {%- if item.image -%}
                     {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', width: 200, height: 200, alt: item.title }}
                   {%- else -%}
-                    {% render 'gc-gummy', tone: tone, id: 'k' | append: forloop.index %}
+                    {%- comment -%} pre-assigned: {% render %} ignores filters in its parameters {%- endcomment -%}
+                    {%- assign kid = 'ci' | append: forloop.index -%}
+                    {% render 'gc-gummy', tone: tone, id: kid %}
                   {%- endif -%}
                 </span>
 

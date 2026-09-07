@@ -81,7 +81,9 @@
                 {%- if item.featured_image -%}
                   {{ item.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', width: 600, height: 480, alt: item.title }}
                 {%- else -%}
-                  {% render 'gc-gummy', tone: tone, id: 's' | append: forloop.index %}
+                  {%- comment -%} pre-assigned: {% render %} ignores filters in its parameters {%- endcomment -%}
+                  {%- assign sid = 'sr' | append: forloop.index -%}
+                  {% render 'gc-gummy', tone: tone, id: sid %}
                 {%- endif -%}
               </span>
               <h2 class="gcs-name">{{ item.title }}</h2>

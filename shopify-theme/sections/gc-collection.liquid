@@ -107,7 +107,16 @@
           {%- assign tone = '--c-mango' -%}{%- assign tone_soft = '--c-mango-soft' -%}
           {%- assign role = 'Focus' -%}{%- assign benefit = 'Big brain energy, tiny gummy.' -%}
         {%- endif -%}
+        {%- comment -%}
+          IDs must be pre-assigned: {% render %} does not evaluate filters in
+          its parameters, so `id: 'ca' | append: i` passes the literal 'ca' and
+          every card ends up sharing one gradient — which renders all flavours
+          in the first product's colour.
+        {%- endcomment -%}
         {%- assign i = forloop.index -%}
+        {%- assign gid_a = 'ca' | append: i -%}
+        {%- assign gid_b = 'cb' | append: i -%}
+        {%- assign gid_c = 'cc' | append: i -%}
         <div class="gcc-card gc-rise" style="transition-delay:{{ forloop.index0 | times: 80 }}ms">
           <a href="{{ product.url }}" class="gcc-shot" style="--pc-soft:var({{ tone_soft }})"
              aria-label="{{ product.title }}">
@@ -117,9 +126,9 @@
               {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', width: 700, height: 560, alt: product.title }}
             {%- else -%}
               <span class="gcc-cluster">
-                <span class="gcc-g gcc-g1">{% render 'gc-gummy', tone: tone, id: 'ca' | append: i %}</span>
-                <span class="gcc-g gcc-g2">{% render 'gc-gummy', tone: tone, id: 'cb' | append: i %}</span>
-                <span class="gcc-g gcc-g3">{% render 'gc-gummy', tone: tone, id: 'cc' | append: i %}</span>
+                <span class="gcc-g gcc-g1">{% render 'gc-gummy', tone: tone, id: gid_a %}</span>
+                <span class="gcc-g gcc-g2">{% render 'gc-gummy', tone: tone, id: gid_b %}</span>
+                <span class="gcc-g gcc-g3">{% render 'gc-gummy', tone: tone, id: gid_c %}</span>
               </span>
             {%- endif -%}
           </a>
