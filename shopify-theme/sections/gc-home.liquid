@@ -93,8 +93,12 @@
     padding:var(--sp-2) var(--sp-3);border-radius:var(--r-full);box-shadow:var(--sh-1)}
   .gh-name{font-size:var(--fs-xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);color:var(--c-ink);text-decoration:none;margin:0}
   .gh-line{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-2);margin:0;line-height:var(--lh-snug)}
+  .gh-meta{font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3);margin:0;
+    letter-spacing:var(--ls-normal)}
   .gh-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-2);margin-top:auto;padding-top:var(--sp-1)}
-  .gh-price{font-size:var(--fs-xl);font-weight:var(--fw-black)}
+  .gh-priced{display:flex;flex-direction:column;gap:var(--sp-1)}
+  .gh-price{font-size:var(--fs-xl);font-weight:var(--fw-black);line-height:1}
+  .gh-perday{font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3)}
   .gh-add{border:0;cursor:pointer;font-family:inherit;font-weight:var(--fw-black);font-size:var(--fs-sm);color:var(--c-surface);
     padding:var(--sp-3) var(--sp-5);border-radius:var(--r-full);transition:transform var(--dur-1) var(--spring),filter var(--dur-2) var(--ease)}
   .gh-add:hover{filter:brightness(1.08)} .gh-add:active{transform:scale(.93)}
@@ -127,6 +131,7 @@
   .gh-q summary::after{content:"+";font-size:var(--fs-xl);color:var(--c-accent);transition:transform var(--dur-3) var(--ease);line-height:1}
   .gh-q[open] summary::after{transform:rotate(45deg)}
   .gh-q p{margin:0;padding:0 var(--sp-5) var(--sp-5);font-weight:var(--fw-body);font-size:var(--fs-base);color:var(--c-ink-2);line-height:var(--lh-body)}
+  .gh-q p a{color:var(--c-accent);font-weight:var(--fw-black);text-decoration:underline;text-underline-offset:2px}
 
   /* ---------- ACT 5 — closing CTA ---------- */
   .gh-end{text-align:center;padding:clamp(var(--sp-8),8vw,var(--sp-10)) var(--sp-5)}
@@ -222,13 +227,18 @@
             </a>
             <a href="{{ product.url }}" class="gh-name">{{ product.title }}</a>
             <p class="gh-line">{{ benefit }}</p>
+            <p class="gh-meta">30 gummies · one a day</p>
             <div class="gh-foot">
-              <span class="gh-price" style="color:var({{ tone }})">{{ product.price | money_without_trailing_zeros | replace: 'Rs.', '₹' }}</span>
+              <span class="gh-priced">
+                <span class="gh-price" style="color:var({{ tone }})">{% render 'gc-money', price: product.price %}</span>
+                {%- assign pd = product.price | divided_by: 3000 | round -%}
+                <span class="gh-perday">≈ ₹{{ pd }}/day</span>
+              </span>
               {%- if product.available -%}
                 <form method="post" action="{{ routes.cart_add_url }}">
                   <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                   <input type="hidden" name="quantity" value="1">
-                  <button type="submit" class="gh-add" style="background:var({{ tone }})">Add</button>
+                  <button type="submit" class="gh-add" style="background:var({{ tone }})">Add to bag</button>
                 </form>
               {%- else -%}
                 <span class="gh-add gh-add--soldout">Sold out</span>
@@ -273,6 +283,10 @@
         <details class="gh-q"><summary>Are they vegetarian?</summary><p>Yes — 100% vegetarian, pectin-based, and made in India in an FSSAI-compliant facility.</p></details>
         <details class="gh-q"><summary>How long until I feel a difference?</summary><p>Wellness is a habit, not a switch. Most Chums take theirs daily for 4–6 weeks to feel the difference. Consistency is the whole point.</p></details>
         <details class="gh-q"><summary>How fast is delivery?</summary><p>We ship pan-India via Shiprocket. Orders are usually delivered in 3–10 working days, and you’ll get tracking as soon as it leaves us. Cash on Delivery is available.</p></details>
+        <details class="gh-q"><summary>Can I take more than one kind?</summary><p>Yes. Brain Booster in the morning and Melatonin at night is a popular combo. Just keep it to one gummy of each per day, and check with your doctor if you’re already on medication.</p></details>
+        <details class="gh-q"><summary>Do you accept Cash on Delivery?</summary><p>Yes — COD is available across India, alongside UPI, cards, net banking and wallets. Pay the way that suits you.</p></details>
+        <details class="gh-q"><summary>What if I don’t like it?</summary><p>Tell us. Write to us within the return window on your order and we’ll sort it out — see our <a href="/policies/refund-policy">refund policy</a> for the full details.</p></details>
+        <details class="gh-q"><summary>How should I store them?</summary><p>Somewhere cool and dry, away from direct sunlight — a shelf, not the fridge. Close the pouch properly and they’ll stay perfectly chewy.</p></details>
       </div>
     </div>
   </section>

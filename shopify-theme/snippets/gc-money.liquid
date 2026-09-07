@@ -1,0 +1,7 @@
+{%- comment -%}
+  Single source of truth for price formatting: ₹399, never "Rs. 399.00".
+  Shopify's store currency format still says "Rs. {{amount}}", so we normalise
+  here rather than depending on an admin setting that can drift.
+  Usage: {% render 'gc-money', price: product.price %}
+{%- endcomment -%}
+{{- price | money_without_trailing_zeros | replace: 'Rs. ', '₹' | replace: 'Rs.', '₹' | replace: '₹ ', '₹' -}}

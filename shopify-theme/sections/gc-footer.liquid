@@ -21,6 +21,25 @@
     font-size:var(--fs-base);font-weight:var(--fw-body);text-decoration:none;
     transition:opacity var(--dur-2) var(--ease),transform var(--dur-2) var(--ease)}
   .gcf-col a:hover,.gcf-col a:focus-visible{opacity:1;transform:translateX(var(--sp-1))}
+  /* newsletter band */
+  .gcf-news{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--sp-5);
+    margin-top:var(--sp-8);padding-top:var(--sp-6);border-top:1px solid rgba(255,255,255,.14)}
+  .gcf-news-copy b{display:block;font-size:var(--fs-lg);font-weight:var(--fw-black);color:var(--c-bg)}
+  .gcf-news-copy span{display:block;font-size:var(--fs-sm);font-weight:var(--fw-body);
+    color:var(--c-bg);opacity:.7;margin-top:var(--sp-1)}
+  .gcf-form{display:flex;gap:var(--sp-2);flex-wrap:wrap;align-items:center}
+  .gcf-input{font-family:inherit;font-size:var(--fs-base);font-weight:var(--fw-body);
+    background:rgba(255,255,255,.08);color:var(--c-bg);border:1px solid rgba(255,255,255,.2);
+    border-radius:var(--r-full);padding:var(--sp-3) var(--sp-5);min-width:230px;outline:none;
+    transition:border-color var(--dur-2) var(--ease)}
+  .gcf-input::placeholder{color:var(--c-bg);opacity:.45}
+  .gcf-input:focus{border-color:var(--c-accent)}
+  .gcf-sub{border:0;cursor:pointer;font-family:inherit;background:var(--c-accent);color:var(--c-accent-ink);
+    font-weight:var(--fw-black);font-size:var(--fs-base);padding:var(--sp-3) var(--sp-6);
+    border-radius:var(--r-full);transition:transform var(--dur-1) var(--spring)}
+  .gcf-sub:active{transform:scale(.95)}
+  .gcf-ok{flex-basis:100%;margin:var(--sp-2) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-bold);color:var(--c-accent)}
+
   .gcf-hr{height:1px;background:var(--c-bg);opacity:.14;margin:var(--sp-8) 0 var(--sp-5)}
   .gcf-bot{display:flex;flex-wrap:wrap;gap:var(--sp-3);justify-content:space-between;align-items:center}
   .gcf-bot span{font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-bg);opacity:.6}
@@ -58,17 +77,38 @@
           {%- if section.settings.instagram != blank -%}
             <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener">Instagram</a>
           {%- endif -%}
+          {%- if section.settings.whatsapp != blank -%}
+            <a href="https://wa.me/{{ section.settings.whatsapp }}" target="_blank" rel="noopener">WhatsApp us</a>
+          {%- endif -%}
         </div>
         <div class="gcf-col">
           <h4>Help</h4>
-          {%- for link in linklists.footer.links -%}
-            <a href="{{ link.url }}">{{ link.title }}</a>
-          {%- endfor -%}
+          <a href="/policies/shipping-policy">Shipping</a>
+          <a href="/policies/refund-policy">Returns &amp; refunds</a>
+          <a href="/policies/privacy-policy">Privacy</a>
+          <a href="/policies/terms-of-service">Terms</a>
           {%- if section.settings.email != blank -%}
             <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
           {%- endif -%}
         </div>
       </div>
+    </div>
+
+    {%- comment -%} email capture — the storefront had none; Klaviyo picks these up {%- endcomment -%}
+    <div class="gcf-news">
+      <div class="gcf-news-copy">
+        <b>Get the good stuff first</b>
+        <span>{{ section.settings.news_sub }}</span>
+      </div>
+      {%- form 'customer', class: 'gcf-form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input class="gcf-input" type="email" name="contact[email]" required
+          placeholder="you@email.com" aria-label="Email address" autocomplete="email">
+        <button class="gcf-sub" type="submit">Join</button>
+        {%- if form.posted_successfully? -%}
+          <p class="gcf-ok">You’re in. Welcome to the Chums 🎉</p>
+        {%- endif -%}
+      {%- endform -%}
     </div>
 
     <div class="gcf-hr" aria-hidden="true"></div>
@@ -89,7 +129,11 @@
       "default": "Not another supplement brand. We’re making healthy habits feel good." },
     { "type": "text", "id": "instagram", "label": "Instagram URL",
       "default": "https://www.instagram.com/gummy.chums/" },
+    { "type": "text", "id": "whatsapp", "label": "WhatsApp number (with country code, digits only)",
+      "default": "917300039307" },
     { "type": "text", "id": "email", "label": "Support email" },
+    { "type": "text", "id": "news_sub", "label": "Newsletter subline",
+      "default": "New flavours, restocks and the occasional discount. No spam, promise." },
     { "type": "text", "id": "legal", "label": "Legal line",
       "default": "These statements have not been evaluated by the FSSAI. Not intended to diagnose or treat." },
     { "type": "text", "id": "manufacturer_line", "label": "Manufacturer / FSSAI line",

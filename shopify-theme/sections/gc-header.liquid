@@ -43,11 +43,33 @@
     min-width:23px;height:23px;display:inline-flex;align-items:center;justify-content:center;
     font-size:var(--fs-sm);font-weight:var(--fw-black);padding:0 var(--sp-2);line-height:1;box-sizing:border-box}
 
+  /* mobile menu — a <details> disclosure, so it works with zero JS */
+  .gch-m{display:none;justify-self:start;position:relative}
+  .gch-m summary{list-style:none;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;
+    border-radius:var(--r-full);margin-left:calc(var(--sp-3) * -1)}
+  .gch-m summary::-webkit-details-marker{display:none}
+  .gch-m-ico{display:block;width:20px;height:2px;background:var(--c-ink);border-radius:var(--r-full);position:relative}
+  .gch-m-ico::before,.gch-m-ico::after{content:"";position:absolute;left:0;width:20px;height:2px;
+    background:var(--c-ink);border-radius:var(--r-full);transition:transform var(--dur-2) var(--ease)}
+  .gch-m-ico::before{top:-6px}
+  .gch-m-ico::after{top:6px}
+  .gch-m[open] .gch-m-ico{background:transparent}
+  .gch-m[open] .gch-m-ico::before{transform:translateY(6px) rotate(45deg)}
+  .gch-m[open] .gch-m-ico::after{transform:translateY(-6px) rotate(-45deg)}
+  .gch-m-panel{position:absolute;top:calc(100% + var(--sp-3));left:0;min-width:210px;
+    background:var(--c-surface);border-radius:var(--r-md);box-shadow:var(--sh-3);
+    padding:var(--sp-3);display:flex;flex-direction:column;z-index:80}
+  .gch-m-panel a{color:var(--c-ink);text-decoration:none;font-weight:var(--fw-black);
+    font-size:var(--fs-base);padding:var(--sp-3) var(--sp-4);border-radius:var(--r-sm)}
+  .gch-m-panel a:hover{background:var(--c-accent-soft);color:var(--c-accent)}
+
   /* each responsive/reduced-motion tweak lives in its own @media block —
      keeps every selector declared exactly once for the design-system linter */
-  @media(max-width:749px){.gch-nav{gap:var(--sp-4)}}
-  @media(max-width:749px){.gch-nav a.gch-hide{display:none}}
+  @media(max-width:749px){.gch-nav{display:none}}
+  @media(max-width:749px){.gch-m{display:block}}
+  @media(max-width:749px){.gch-logo{justify-self:center}}
   @media(max-width:749px){.gch .gch-cart{padding:var(--sp-3) var(--sp-4)}}
+  @media(max-width:749px){.gch-in{grid-template-columns:auto 1fr auto;column-gap:var(--sp-3)}}
 
   @media (prefers-reduced-motion:reduce){.gch-bar .trk{animation:none}}
   @media (prefers-reduced-motion:reduce){.gch-nav a::after{transition:none}}
@@ -62,13 +84,25 @@
 
 <header class="gch">
   <div class="gch-in">
+    <details class="gch-m" id="gch-m">
+      <summary aria-label="Menu"><span class="gch-m-ico"></span></summary>
+      <nav class="gch-m-panel">
+        <a href="{{ routes.all_products_collection_url }}">Shop</a>
+        <a href="{{ routes.root_url }}#gc-story">Our story</a>
+        <a href="{{ routes.root_url }}#gc-faq">FAQ</a>
+        {%- if section.settings.whatsapp != blank -%}
+          <a href="https://wa.me/{{ section.settings.whatsapp }}" target="_blank" rel="noopener">WhatsApp us</a>
+        {%- endif -%}
+      </nav>
+    </details>
+
     <a href="{{ routes.root_url }}" class="gch-logo" aria-label="{{ shop.name }}">
       <img src="{{ 'gc-wordmark-stack.png' | asset_url }}" alt="{{ shop.name }}" width="4146" height="1550" draggable="false" oncontextmenu="return false">
     </a>
     <nav class="gch-nav">
       <a href="{{ routes.all_products_collection_url }}">Shop</a>
-      <a href="{{ routes.root_url }}#gc-story" class="gch-hide">Story</a>
-      <a href="{{ routes.root_url }}#gc-faq" class="gch-hide">FAQ</a>
+      <a href="{{ routes.root_url }}#gc-story">Story</a>
+      <a href="{{ routes.root_url }}#gc-faq">FAQ</a>
     </nav>
     <a href="{{ routes.cart_url }}" class="gch-cart">
       <span class="gch-cart-label">BAG</span>
@@ -83,7 +117,9 @@
   "settings": [
     { "type": "checkbox", "id": "show_bar", "label": "Show top marquee bar", "default": true },
     { "type": "text", "id": "bar_text", "label": "Marquee text",
-      "default": "PAN-INDIA SHIPPING ✦ COD AVAILABLE ✦ NO ADDED SUGAR ✦ 100% VEG ✦ MADE IN INDIA ✦" }
+      "default": "PAN-INDIA SHIPPING ✦ COD AVAILABLE ✦ NO ADDED SUGAR ✦ 100% VEG ✦ MADE IN INDIA ✦" },
+    { "type": "text", "id": "whatsapp", "label": "WhatsApp number (with country code, digits only)",
+      "default": "917300039307" }
   ]
 }
 {% endschema %}

@@ -71,6 +71,56 @@
   .gp-acc details[open] summary::after{transform:rotate(45deg)}
   .gp-acc .body{padding:0 var(--sp-5) var(--sp-4);font-weight:var(--fw-body);font-size:var(--fs-sm);color:var(--c-ink-2);line-height:var(--lh-body)}
 
+  /* per-day value anchor — ₹399/30 reframes the price as a daily habit cost */
+  .gp-perday{font-size:var(--fs-sm);font-weight:var(--fw-bold);color:var(--c-ink-3);white-space:nowrap}
+
+  /* rich text from the Shopify description — real paragraphs, not a stripped blob */
+  .gp-rte p{margin:0 0 var(--sp-3)}
+  .gp-rte p:last-child{margin-bottom:0}
+  .gp-rte b{color:var(--c-ink);font-weight:var(--fw-black)}
+  .gp-rte i{color:var(--c-ink-3);font-size:var(--fs-xs);display:block;margin-top:var(--sp-3);line-height:var(--lh-body)}
+
+  /* payment reassurance */
+  .gp-pay{margin:var(--sp-5) 0 0}
+  .gp-pay-t{display:block;font-size:var(--fs-xs);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);
+    text-transform:uppercase;color:var(--c-ink-3);margin-bottom:var(--sp-3)}
+  .gp-pay-row{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
+  .gp-chip{background:var(--c-surface);color:var(--c-ink-2);border-radius:var(--r-sm);
+    padding:var(--sp-2) var(--sp-3);font-size:var(--fs-xs);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-normal);box-shadow:inset 0 0 0 1px var(--c-line)}
+  .gp-chip--cod{color:var(--pc);box-shadow:inset 0 0 0 1.5px var(--pc)}
+
+  /* share row */
+  .gp-share{margin:var(--sp-5) 0 0;display:flex;align-items:center;gap:var(--sp-3);flex-wrap:wrap}
+  .gp-share-t{font-size:var(--fs-xs);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);
+    text-transform:uppercase;color:var(--c-ink-3)}
+  .gp-share-b{border:0;cursor:pointer;font-family:inherit;background:var(--c-surface);color:var(--c-ink);
+    text-decoration:none;font-size:var(--fs-sm);font-weight:var(--fw-black);padding:var(--sp-2) var(--sp-4);
+    border-radius:var(--r-full);box-shadow:inset 0 0 0 1px var(--c-line);
+    transition:box-shadow var(--dur-1) var(--ease),color var(--dur-1) var(--ease)}
+  .gp-share-b:hover{color:var(--pc);box-shadow:inset 0 0 0 1.5px var(--pc)}
+
+  /* sticky mobile buy bar — the single biggest mobile conversion lever */
+  .gp-sticky{position:fixed;left:0;right:0;bottom:0;z-index:70;display:none;
+    background:var(--c-surface);border-top:1px solid var(--c-line);
+    padding:var(--sp-3) var(--gutter);padding-bottom:calc(var(--sp-3) + env(safe-area-inset-bottom));
+    box-shadow:var(--sh-3);transform:translateY(110%);transition:transform var(--dur-3) var(--ease)}
+  .gp-sticky.on{transform:translateY(0)}
+  .gp-sticky-in{max-width:var(--container);margin-inline:auto;display:flex;align-items:center;
+    justify-content:space-between;gap:var(--sp-4)}
+  .gp-sticky-info{display:flex;flex-direction:column;min-width:0}
+  .gp-sticky-info b{font-size:var(--fs-sm);font-weight:var(--fw-black);color:var(--c-ink);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .gp-sticky-info span{font-size:var(--fs-base);font-weight:var(--fw-black);color:var(--pc)}
+  .gp-sticky-buy{flex:0 0 auto;border:0;cursor:pointer;font-family:inherit;background:var(--c-accent);
+    color:var(--c-accent-ink);font-weight:var(--fw-black);font-size:var(--fs-sm);
+    padding:var(--sp-4) var(--sp-6);border-radius:var(--r-full);
+    transition:transform var(--dur-1) var(--spring)}
+  .gp-sticky-buy:active{transform:scale(.96)}
+  @media(max-width:899px){.gp-sticky{display:block}}
+  @media(max-width:899px){.gp{padding-bottom:var(--sp-10)}}
+  @media (prefers-reduced-motion:reduce){.gp-sticky{transition:none}}
+
   .gp-more{margin-top:var(--sp-9)}
   .gp-more h2{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);text-align:center;color:var(--c-ink);margin:0 0 var(--sp-5)}
   .gp-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-4);max-width:760px;margin:0 auto}
@@ -109,10 +159,13 @@
       <p class="gp-line">{{ line }}</p>
 
       <div class="gp-price">
-        <b>{{ product.selected_or_first_available_variant.price | money }}</b>
-        {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+        <b>{% render 'gc-money', price: product.selected_or_first_available_variant.price %}</b>
+        {%- if product.compare_at_price > product.price -%}<s>{% render 'gc-money', price: product.compare_at_price %}</s>{%- endif -%}
+        {%- comment -%} round to whole rupees — "₹13/day" reads better than "₹13.30/day" {%- endcomment -%}
+        {%- assign per_day = product.selected_or_first_available_variant.price | divided_by: 3000 | round -%}
+        <span class="gp-perday">≈ ₹{{ per_day }}/day</span>
       </div>
-      <p class="gp-tax">Inclusive of all taxes · Cash on Delivery available</p>
+      <p class="gp-tax">Inclusive of all taxes · 30 gummies · Cash on Delivery available</p>
 
       <div class="gp-facts">
         <span class="gp-fact">🌱 100% Veg</span>
@@ -139,16 +192,40 @@
         <input type="hidden" name="quantity" id="gp-qty" value="1">
 
         {%- if product.available -%}
-          <button type="submit" class="gp-buy">Add to bag · {{ product.selected_or_first_available_variant.price | money }}</button>
-          <p class="gp-note">Ships in 3–10 days · Easy returns</p>
+          <button type="submit" class="gp-buy" id="gp-buy">Add to bag · {% render 'gc-money', price: product.selected_or_first_available_variant.price %}</button>
+          <p class="gp-note">Ships in 3–10 days ·
+            <a href="/policies/refund-policy">Easy returns</a>
+          </p>
         {%- else -%}
           <button type="button" class="gp-buy" disabled>Sold out</button>
         {%- endif -%}
       </form>
 
+      {%- comment -%} payment reassurance — COD/UPI are the two questions every Indian first-time buyer has {%- endcomment -%}
+      <div class="gp-pay">
+        <span class="gp-pay-t">Secure checkout</span>
+        <div class="gp-pay-row">
+          <span class="gp-chip">UPI</span>
+          <span class="gp-chip">Cards</span>
+          <span class="gp-chip">Net banking</span>
+          <span class="gp-chip">Wallets</span>
+          <span class="gp-chip gp-chip--cod">Cash on Delivery</span>
+        </div>
+      </div>
+
+      {%- comment -%} share — Gen Z sends the link before they buy {%- endcomment -%}
+      <div class="gp-share">
+        <span class="gp-share-t">Send to a chum</span>
+        <a class="gp-share-b" id="gp-wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
+        <button type="button" class="gp-share-b" id="gp-copy">Copy link</button>
+      </div>
+
       <div class="gp-acc">
         <details open><summary>What’s inside</summary>
-          <div class="body">{{ product.description | strip_html | default: 'Full ingredient list coming soon.' }}</div>
+          <div class="body gp-rte">
+            {%- if product.description != blank -%}{{ product.description }}
+            {%- else -%}Full ingredient list coming soon.{%- endif -%}
+          </div>
         </details>
         <details><summary>How to take it</summary>
           <div class="body">One gummy a day, whenever suits you. No water, no pills, no fuss — your daily chum is waiting.</div>
@@ -159,6 +236,22 @@
       </div>
     </div>
   </div>
+
+  {%- comment -%}
+    Sticky mobile buy bar. Submits the SAME form as the main button (form=
+    attribute), so quantity + variant selection stay in one place.
+  {%- endcomment -%}
+  {%- if product.available -%}
+    <div class="gp-sticky" id="gp-sticky" aria-hidden="true">
+      <div class="gp-sticky-in">
+        <span class="gp-sticky-info">
+          <b>{{ product.title }}</b>
+          <span>{% render 'gc-money', price: product.selected_or_first_available_variant.price %}</span>
+        </span>
+        <button type="submit" form="gp-form" class="gp-sticky-buy">Add to bag</button>
+      </div>
+    </div>
+  {%- endif -%}
 
   <!-- other flavours -->
   <div class="gp-more">
@@ -181,7 +274,7 @@
                 </svg>
               {%- endif -%}
             </span>
-            <span><b>{{ p.title }}</b><span>{{ p.price | money }}</span></span>
+            <span><b>{{ p.title }}</b><span>{% render 'gc-money', price: p.price %}</span></span>
           </a>
         {%- endunless -%}
       {%- endfor -%}
@@ -203,6 +296,28 @@
     b.setAttribute('aria-pressed','true');
     document.getElementById('gp-vid').value=b.dataset.vid;
   });}
+
+  /* sticky bar: show once the real Add button has scrolled out of view */
+  var sticky=document.getElementById('gp-sticky'),buy=document.getElementById('gp-buy');
+  if(sticky&&buy&&'IntersectionObserver' in window){
+    new IntersectionObserver(function(en){
+      var gone=!en[0].isIntersecting;
+      sticky.classList.toggle('on',gone);
+      sticky.setAttribute('aria-hidden',gone?'false':'true');
+    },{rootMargin:'0px 0px -10% 0px'}).observe(buy);
+  }
+
+  /* share — WhatsApp is the default share channel here, not email */
+  var url=location.href.split('?')[0];
+  var wa=document.getElementById('gp-wa');
+  if(wa)wa.href='https://wa.me/?text='+encodeURIComponent({{ product.title | json }}+' — '+url);
+  var copy=document.getElementById('gp-copy');
+  if(copy)copy.addEventListener('click',function(){
+    var done=function(){var t=copy.textContent;copy.textContent='Copied ✓';
+      setTimeout(function(){copy.textContent=t;},1600);};
+    if(navigator.clipboard)navigator.clipboard.writeText(url).then(done).catch(function(){});
+    else done();
+  });
 })();
 </script>
 

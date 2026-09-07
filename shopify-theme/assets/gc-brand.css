@@ -97,6 +97,18 @@ p,li,a,span,div,button,input,label{font-family:'Manrope',system-ui,sans-serif}
   border-radius:46% 54% 52% 48%/48% 46% 54% 52%;will-change:transform,opacity}
 .gc-flash{position:fixed;inset:0;pointer-events:none;z-index:9996;opacity:0;transition:opacity .45s ease}
 
+/* ---- floating WhatsApp — the default support channel for Indian shoppers ---- */
+.gc-wa{position:fixed;right:18px;bottom:18px;z-index:65;width:54px;height:54px;border-radius:999px;
+  display:grid;place-items:center;background:#25D366;color:#fff;text-decoration:none;
+  box-shadow:0 10px 26px -8px rgba(37,211,102,.75);
+  transition:transform .18s var(--gc-spring),box-shadow .25s}
+.gc-wa:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 16px 34px -8px rgba(37,211,102,.85)}
+.gc-wa:active{transform:scale(.94)}
+.gc-wa svg{width:29px;height:29px;display:block;fill:#fff}
+/* clear the product page's sticky buy bar on phones */
+@media(max-width:899px){.gc-wa{bottom:88px}}
+@media(max-width:400px){.gc-wa{width:48px;height:48px}}
+
 /* ---- reveal-on-scroll ---- */
 .gc-rise{opacity:0;transform:translateY(26px);transition:opacity .7s var(--gc-ease),transform .7s var(--gc-ease)}
 .gc-rise.in{opacity:1;transform:none}
