@@ -8,15 +8,21 @@
   --sp-1:4px;   --sp-2:8px;   --sp-3:12px;  --sp-4:16px;  --sp-5:24px;
   --sp-6:32px;  --sp-7:48px;  --sp-8:64px;  --sp-9:96px;  --sp-10:128px;
 
-  /* ---- type · exactly 8 sizes, nothing else permitted ---- */
-  --fs-xs:0.75rem;                          /* labels, legal        */
-  --fs-sm:0.875rem;                         /* meta, captions       */
-  --fs-base:1.0625rem;                      /* body (17px)          */
-  --fs-lg:clamp(1.15rem,1.6vw,1.3rem);      /* lede                 */
-  --fs-xl:clamp(1.35rem,2.2vw,1.6rem);      /* card titles          */
-  --fs-2xl:clamp(1.8rem,3.4vw,2.4rem);      /* section headings     */
-  --fs-3xl:clamp(2.4rem,5vw,3.5rem);        /* page headings        */
-  --fs-4xl:clamp(3rem,7vw,5rem);            /* hero                 */
+  /* ---- type · exactly 8 sizes, nothing else permitted ----
+     Declared in px, NOT rem, and this is deliberate: Dawn sets
+     html{font-size:calc(var(--font-body-scale) * 62.5%)} — a 10px root.
+     rem values authored against the usual 16px root therefore rendered at
+     ~62% (body 17px -> 10.6px, legal 12px -> 7.5px). px is immune to the
+     root, so the scale means what it says wherever it's used.
+     Do not convert these back to rem. */
+  --fs-xs:12px;                             /* labels, legal        */
+  --fs-sm:14px;                             /* meta, captions       */
+  --fs-base:17px;                           /* body                 */
+  --fs-lg:clamp(18px,1.6vw,21px);           /* lede                 */
+  --fs-xl:clamp(22px,2.2vw,26px);           /* card titles          */
+  --fs-2xl:clamp(29px,3.4vw,38px);          /* section headings     */
+  --fs-3xl:clamp(38px,5vw,56px);            /* page headings        */
+  --fs-4xl:clamp(48px,7vw,80px);            /* hero                 */
 
   --lh-tight:1.04; --lh-snug:1.25; --lh-body:1.55;
   --ls-tight:-0.03em; --ls-normal:-0.01em; --ls-wide:0.18em;

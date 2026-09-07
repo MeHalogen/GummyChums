@@ -6,23 +6,6 @@ _The single place where every decision that needs Priyal lives. Add to the top o
 
 ---
 
-## Where things stand
-
-The store is **built and working**. All three products are live with real ingredient and nutrition information from your labels, the certifications are on the site, the policies are drafted, and — as of today — **checkout works for Indian customers**.
-
-What's left is mostly **information from you** rather than build work. The three things below marked 🔴 are what we genuinely can't finish without you.
-
-**Done and working:**
-
-- Homepage, product pages, story, FAQ, footer — full site, mobile and desktop
-- All 3 products live: real ingredients, nutrition per gummy, 30-gummy pack size
-- Certifications section built from your GMP / FSSC 22000 / FSSAI documents
-- Cash on Delivery, WhatsApp support, shipping and returns information
-- Privacy, Terms, Returns & Refunds and Shipping policies — drafted, pending legal review
-- Store configured for India: currency, timezone, weights, shipping zone, tax region
-
----
-
 ## 🔴 Blockers — needed before launch
 
 ### 1. Shipping rates — provisional, needs your rate card
@@ -158,30 +141,3 @@ Better to launch on time with four things working well than to risk the date on 
 | 8 Sep 2026 | India shipping zone created, US zone/market/location removed — **checkout unblocked and verified** (₹49/₹69/₹99 by weight) | Mehal |
 
 ---
-
-## 📋 Work log
-
-### 8 Sep 2026 — Store set up for India (checkout fixed)
-
-**We found and fixed a problem that would have stopped the store taking orders on launch day.**
-
-The Shopify store was originally created from a template configured for the United States, and several of those settings were still in place. Most seriously, **India had never been added as a place the store ships to** — so when an Indian customer reached checkout and entered their address, Shopify rejected it outright. No order could have been completed.
-
-This wasn't visible from browsing the site; everything looked normal until you actually tried to pay. We caught it while setting up shipping.
-
-Fixed today:
-
-| What | Was | Now |
-|---|---|---|
-| Ships to | United States only | **India** |
-| Shipping rates | US dollars | **₹49 / ₹69 / ₹99** by weight |
-| Ships from | A US address | **Your Jaipur address** |
-| Order timestamps | New York time | **India time (IST)** |
-| Product weights | Pounds | **Kilograms** |
-| Store phone | Missing | **+91 73000 39307** |
-
-**Tested and confirmed working** — a Jaipur delivery address now returns a correct shipping charge at every order size, from a single pouch to a bulk order.
-
-Also completed this week: fixed the dosage information to match your labels (one gummy per day), removed shipping claims that weren't accurate, added the certifications section from your GMP/FSSC/FSSAI documents, added WhatsApp support, and drafted all four store policies.
-
-**What we need from you next** — the three 🔴 items at the top of this document, plus starting the two KYC processes (payment gateway and Shiprocket), which take several days to approve and are the most likely thing to delay the launch date.
