@@ -6,7 +6,9 @@ _Your calm, step-by-step plan. Client launch target = **19 Sep 2026** (moved fro
 >
 > **Shiprocket setup: [`SHIPROCKET-SETUP.md`](SHIPROCKET-SETUP.md)** — full beginner walkthrough.
 >
-> 🔴 **Current launch blocker:** no India shipping zone, so Indian addresses are rejected at checkout. Needs a rate decision from Priyal (item 1 in the notes), then one command to apply.
+> **India store settings: [`INDIA-STORE-SETTINGS.md`](INDIA-STORE-SETTINGS.md)** — the store still carries six US defaults from the dev-store template. Exact click-by-click fixes, ~15 minutes.
+>
+> 🔴 **Current launch blocker:** no India shipping zone, so Indian addresses are rejected at checkout (`Country/region not supported`, verified live). Fix is step 1 of the settings doc.
 
 ## Founder response received (7 Sep 2026) — what's now confirmed
 Priyal replied to the "everything we need" mail with real data + attachments (nutrition labels, COAs, GMP/FSSC certs, FSSAI license). Confirmed:
