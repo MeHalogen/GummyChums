@@ -112,7 +112,7 @@
         <b>{{ product.selected_or_first_available_variant.price | money }}</b>
         {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
       </div>
-      <p class="gp-tax">Inclusive of all taxes · Free shipping over ₹699</p>
+      <p class="gp-tax">Inclusive of all taxes · Cash on Delivery available</p>
 
       <div class="gp-facts">
         <span class="gp-fact">🌱 100% Veg</span>
@@ -140,7 +140,7 @@
 
         {%- if product.available -%}
           <button type="submit" class="gp-buy">Add to bag · {{ product.selected_or_first_available_variant.price | money }}</button>
-          <p class="gp-note">Ships in 3–7 days · Easy returns</p>
+          <p class="gp-note">Ships in 3–10 days · Easy returns</p>
         {%- else -%}
           <button type="button" class="gp-buy" disabled>Sold out</button>
         {%- endif -%}
@@ -154,7 +154,7 @@
           <div class="body">One gummy a day, whenever suits you. No water, no pills, no fuss — your daily chum is waiting.</div>
         </details>
         <details><summary>Shipping &amp; returns</summary>
-          <div class="body">We ship pan-India, usually delivered in 3–7 working days with tracking. Free shipping over ₹699. Unopened packs can be returned within 7 days.</div>
+          <div class="body">We ship pan-India via Shiprocket, usually delivered in 3–10 working days with tracking. Cash on Delivery available. See our Returns policy for details.</div>
         </details>
       </div>
     </div>

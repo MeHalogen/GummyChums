@@ -1,0 +1,84 @@
+{%- comment -%} GummyChums quality/certifications trust band — real cert data, no invented claims {%- endcomment -%}
+<style>
+  .gcq{background:var(--c-surface);padding:var(--sp-9) var(--gutter)}
+  .gcq-in{max-width:var(--container);margin-inline:auto;text-align:center}
+  .gcq-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;font-size:var(--fs-xs);color:var(--c-accent);margin:0}
+  .gcq-title{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);color:var(--c-ink);margin:var(--sp-3) auto 0;max-width:26ch}
+  .gcq-sub{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-4) auto var(--sp-7);max-width:44ch}
+
+  .gcq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-4);text-align:left}
+  @media(max-width:899px){.gcq-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:599px){.gcq-grid{grid-template-columns:1fr}}
+
+  .gcq-card{background:var(--c-bg);border-radius:var(--r-md);padding:var(--sp-5);box-shadow:var(--sh-1);
+    transition:transform var(--dur-2) var(--spring),box-shadow var(--dur-2) var(--ease)}
+  .gcq-card:hover{transform:translateY(-5px);box-shadow:var(--sh-2)}
+  .gcq-icon{font-size:var(--fs-2xl);line-height:1;display:block;margin-bottom:var(--sp-3)}
+  .gcq-card b{display:block;font-size:var(--fs-base);font-weight:var(--fw-black);color:var(--c-ink);margin-bottom:var(--sp-2)}
+  .gcq-card p{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-2);line-height:var(--lh-body);margin:0}
+  .gcq-card span.gcq-ref{display:block;font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3);margin-top:var(--sp-2)}
+
+  .gcq-note{font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-ink-3);margin:var(--sp-7) auto 0;max-width:52ch}
+
+  @media (prefers-reduced-motion:reduce){.gcq-card{transition:none}}
+</style>
+
+<section class="gcq">
+  <div class="gcq-in">
+    <p class="gcq-kick">{{ section.settings.kicker }}</p>
+    <h2 class="gcq-title">{{ section.settings.title }}</h2>
+    <p class="gcq-sub">{{ section.settings.sub }}</p>
+
+    <div class="gcq-grid">
+      <div class="gcq-card">
+        <span class="gcq-icon" aria-hidden="true">🛡️</span>
+        <b>FSSAI licensed manufacturing</b>
+        <p>Made in a facility holding a Central FSSAI license under the Food Safety &amp; Standards Act, 2006.</p>
+        <span class="gcq-ref">Mfg. Lic. No. 10017051002083</span>
+      </div>
+      <div class="gcq-card">
+        <span class="gcq-icon" aria-hidden="true">✅</span>
+        <b>GMP certified</b>
+        <p>Independently audited and certified to Good Manufacturing Practice by Eurofins Assurance India.</p>
+        <span class="gcq-ref">Certificate EI_FA_UC_056 · valid to Nov 2028</span>
+      </div>
+      <div class="gcq-card">
+        <span class="gcq-icon" aria-hidden="true">📄</span>
+        <b>FSSC 22000 certified</b>
+        <p>Our manufacturer's food safety management system is certified to FSSC 22000 (ISO 22000:2018 based).</p>
+        <span class="gcq-ref">Certificate EI_FA_SC_408 · valid to Nov 2028</span>
+      </div>
+      <div class="gcq-card">
+        <span class="gcq-icon" aria-hidden="true">🧪</span>
+        <b>Every batch, lab-tested</b>
+        <p>Each batch is checked for microbial load, yeast &amp; mould and heavy metals before it ships — every result on file.</p>
+      </div>
+      <div class="gcq-card">
+        <span class="gcq-icon" aria-hidden="true">🌱</span>
+        <b>100% vegetarian</b>
+        <p>Pectin-based gummies — no gelatin, no animal-derived ingredients, ever.</p>
+      </div>
+      <div class="gcq-card">
+        <span class="gcq-icon" aria-hidden="true">🇮🇳</span>
+        <b>Proudly made in India</b>
+        <p>Formulated and manufactured in Greater Noida, Uttar Pradesh — no importing, no middlemen.</p>
+      </div>
+    </div>
+
+    <p class="gcq-note">{{ section.settings.disclaimer }}</p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GummyChums Quality",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "✦ The boring but important bit" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Real labs. Real certificates. Real gummies." },
+    { "type": "textarea", "id": "sub", "label": "Subtitle",
+      "default": "We're not just cute — every claim on this page is backed by paperwork, not vibes." },
+    { "type": "textarea", "id": "disclaimer", "label": "Disclaimer",
+      "default": "Nutraceutical products. These statements have not been evaluated by the FSSAI. Not intended to diagnose, treat, cure, or prevent any disease. Certificates issued to our manufacturer, Biovencer Healthcare Private Limited." }
+  ]
+}
+{% endschema %}

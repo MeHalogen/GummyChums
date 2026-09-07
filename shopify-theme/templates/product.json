@@ -1,6 +1,7 @@
 {
   "sections": {
-    "gc_product": { "type": "gc-product", "settings": {} }
+    "gc_product": { "type": "gc-product", "settings": {} },
+    "gc_quality": { "type": "gc-quality", "settings": {} }
   },
-  "order": ["gc_product"]
+  "order": ["gc_product", "gc_quality"]
 }

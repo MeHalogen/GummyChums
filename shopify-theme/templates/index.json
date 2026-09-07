@@ -7,7 +7,8 @@
         "headline": "Not another [supplement] brand.",
         "sub": "We’re making healthy habits feel good."
       }
-    }
+    },
+    "gc_quality": { "type": "gc-quality", "settings": {} }
   },
-  "order": ["gc_home"]
+  "order": ["gc_home", "gc_quality"]
 }
