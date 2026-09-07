@@ -5,11 +5,11 @@ _Your calm, step-by-step plan. Today = 7 Sep 2026. Client launch target = **19 S
 ## Founder response received (7 Sep 2026) — what's now confirmed
 Priyal replied to the "everything we need" mail with real data + attachments (nutrition labels, COAs, GMP/FSSC certs, FSSAI license). Confirmed:
 - **Launch date: 19 Sep** (not 14th — this buys 5 real days).
-- **Pack size: 15 gummies per pack** for all 3 SKUs — ⚠️ this *conflicts* with the Melatonin nutrition PDF which says "Serving Per Container: 30 Gummies." Flagged to Priyal for confirmation before it goes on any label/description.
+- **Pack size: 30 gummies per pack** for all 3 SKUs — resolved 2026-09-07 (matches the Melatonin nutrition PDF's "Serving Per Container: 30"; overrides the "15" in Priyal's email). Worth a confirm-back to her before packaging print is finalized, since it's her manufacturing spec.
 - **Prices**: not yet — packaging isn't finalized, discussing separately. Do not invent numbers.
 - **Photos**: pending, sent once ready. Theme falls back to an illustrated gummy icon per flavour until then.
 - **Shipping**: via **Shiprocket**, charged by weight/location (not free-over-threshold — removed all "Free shipping over ₹699" copy from the theme). Delivery **3–10 days**, pan-India only for now. **COD confirmed yes.**
-- **Returns/refunds**: window still pending ("let me get back to you"). Refund mechanics given: UPI refunds within 24h via Shiprocket return; **COD refunds need the customer's bank details, targeting a 72h payout** — needs a safe collection method (see open decisions below), not a plain on-site form storing account numbers.
+- **Returns/refunds**: window still pending ("let me get back to you"). Refund mechanics: UPI refunds within 24h; COD refunds targeting 72h payout. **Decision (2026-09-07): route entirely through Shiprocket's own returns/refund workflow — no custom on-site bank-detail collection form.**
 - **FSSAI**: Nirmay's own license is still pending; using manufacturer Biovencer's license (10017051002083) as an interim compliance line in the footer.
 - **Legal entity**: "Nirmay", proprietor Priyal Ojha, registered in Jaipur. GST, PAN, and bank account details were sent for **Shopify Payments/Razorpay KYC and admin tax settings only** — entered directly into Shopify Admin, never into theme code or this repo.
 - **Font**: NaN Jaune — confirmed, buying the real web license (not swapping to a free alternative).
