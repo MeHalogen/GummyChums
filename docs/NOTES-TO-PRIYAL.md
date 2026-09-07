@@ -6,25 +6,23 @@ _The single place where every decision that needs Priyal lives. Add to the top o
 
 ---
 
-## 🔴 Blockers — the site cannot launch without these
+## 🔴 Blockers — needed before launch
 
-### 1. Shipping rates — what should the customer pay?
+### 1. Shipping rates — provisional, needs your rate card
 
-**This is currently blocking checkout entirely.** The store has no India shipping zone, so Shopify refuses any Indian address at checkout (`Country/region not supported`). Until a rate is set, **nobody in India can place an order**. The fix is ready to apply in one command — it just needs a number.
+**Checkout is now working.** The store had no India shipping zone at all, so Shopify was rejecting every Indian address. That's fixed and verified.
 
-You said shipping is charged by weight and location via Shiprocket. That's what Shiprocket charges *you*. Shopify needs a separate number for what the *customer* pays at checkout — Shiprocket doesn't set that automatically.
+Customers currently pay, by cart weight (each pouch is 0.15 kg):
 
-Each pouch is 0.15 kg. Three options:
-
-| Option | What it looks like | Trade-off |
+| Cart weight | Customer pays | Roughly |
 |---|---|---|
-| **A. Weight tiers** | ₹49 up to 0.5kg (1–3 packs) · ₹69 to 1kg · ₹99 above | Closest to real courier cost — protects margin |
-| **B. Flat rate** | ₹59 on every order | Simplest to explain; you lose on big orders |
-| **C. Free over a threshold** | ₹49 under ₹699, free above | Pushes basket size up; you absorb the courier cost |
+| 0 – 0.5 kg | ₹49 | 1–3 packs |
+| 0.5 – 1 kg | ₹69 | 4–6 packs |
+| 1 kg + | ₹99 | 7+ packs |
 
-**What we need:** a choice, or your actual Shiprocket rate card and we'll build tiers from it.
+**These numbers are our estimate, not yours.** They approximate Shiprocket's surface pricing so margin roughly holds. **What we need:** your actual Shiprocket rate card, or a decision to keep these. Changing them takes about a minute.
 
----
+Also worth deciding: a **free-shipping threshold** (e.g. free over ₹699) lifts average order value, but you'd absorb the courier cost on those orders. Currently not offered.
 
 ### 2. GST rate for the products
 
@@ -68,7 +66,7 @@ Nirmay's own FSSAI licence is still pending, so the footer currently cites Biove
 
 ### 8. Shipping claims removed
 
-The site previously said "Free shipping over ₹699" in five places. That was never confirmed and contradicts weight-based pricing, so it's gone. If you *do* want a free-shipping threshold, that's option C in item 1.
+The site previously said "Free shipping over ₹699" in five places. That was never confirmed and contradicts weight-based pricing, so it's gone. If you *do* want a free-shipping threshold, that's the second question in item 1.
 
 ---
 
@@ -140,4 +138,4 @@ Better to launch on time with four things working well than to risk the date on 
 | 7 Sep 2026 | Analytics: fresh **GA4 + Meta Pixel** | Priyal |
 | 7 Sep 2026 | Add **WhatsApp** (7300039307) alongside Instagram | Priyal |
 | 8 Sep 2026 | Return window **7 days** — publish now, confirm later | Mehal |
-| 8 Sep 2026 | Shipping rates **on hold** pending Priyal (item 1) | Mehal |
+| 8 Sep 2026 | India shipping zone created, US zone/market/location removed — **checkout unblocked and verified** (₹49/₹69/₹99 by weight) | Mehal |
