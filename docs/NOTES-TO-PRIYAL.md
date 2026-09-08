@@ -8,6 +8,38 @@ _The single parked list. Everything not-yet-done lives here: questions for Priya
 
 # PART 1 — For Priyal
 
+## 📮 Round 2 — asked after the 8 Sep email
+
+### R1. Do we actually want Cash on Delivery at launch? 🔴
+
+You confirmed COD earlier and the site currently advertises it — marquee, product pages, cart, FAQ. **But it has never been switched on in Shopify**, so it wouldn't appear at checkout anyway. Before enabling it, worth a genuine second look, because COD is not free:
+
+**What it costs you**
+
+- Shiprocket charges roughly **₹35–40 per COD order** on top of shipping
+- COD orders are **returned undelivered far more often** than prepaid — and on an RTO you pay shipping *both ways* and get the stock back, often unsellable
+- Cash is remitted on a **weekly cycle**, so your money is tied up longer than a prepaid order
+- Refunds are slower and messier — bank transfer via Shiprocket rather than a straight reversal
+
+**What it buys you**
+
+- A large share of first-time Indian shoppers simply **will not prepay** an unfamiliar brand. For a launch with no reviews and no track record, COD is often the difference between a first order and no order.
+- Removing it will cost conversions; the question is whether it costs more than the returns do.
+
+**Three sensible options:**
+
+| | What it means |
+|---|---|
+| **A. COD on, free** | Maximum conversion, you absorb ~₹35–40 plus the RTO risk on every COD order |
+| **B. COD on, with a ₹30–50 fee** | Covers the cost and gently nudges people toward prepaying. Common for Indian D2C |
+| **C. Prepaid only at launch** | Cleanest cash flow and no RTO losses, but loses first-time buyers who don't trust a new brand yet |
+
+A fourth combination worth considering: **COD on, plus a small discount for prepaid** (e.g. ₹25 off) — that shifts behaviour without punishing anyone.
+
+**Need:** which of these? It's a one-setting change either way, so it can wait for a proper answer rather than a quick one.
+
+---
+
 ## 🔴 Blockers — needed before launch
 
 ### 1. Prices and GST — one decision, not two
@@ -93,7 +125,7 @@ The "Why we exist" section is text only. There's a slot ready for a **photo + on
 
 ### 8. Legal review of the policies
 
-Four policies are drafted from your real business details (Privacy, Terms, Returns & Refunds, Shipping). Written specifically for Nirmay, not templates — **but no lawyer has read them.** For a consumables business taking COD across India, that review is worth doing before launch.
+Three are now **live on the site** (Terms, Returns & Refunds, Shipping); Privacy is currently Shopify's auto-managed version. All written specifically for Nirmay, not templates — **but no lawyer has read them.** For a consumables business taking COD across India, that review is worth doing before launch.
 
 ### 9. NaN Jaune font licence
 
@@ -120,7 +152,7 @@ Each was needed to keep building, and each is easy to change.
 
 ### 16. COD handling fee
 
-Shiprocket charges ~₹35–40 per COD order, and COD orders are returned undelivered far more often than prepaid. Both costs land on your margin. Many Indian D2C brands add a ₹30–50 COD fee, or offer a small prepaid discount instead. Currently COD is free to the customer — fine to launch that way, just know it's a real cost.
+*(Superseded by R1 above — kept for the numbers.)* Shiprocket charges ~₹35–40 per COD order, and COD orders are returned undelivered far more often than prepaid. Both costs land on your margin. Many Indian D2C brands add a ₹30–50 COD fee, or offer a small prepaid discount instead. Currently COD is free to the customer — fine to launch that way, just know it's a real cost.
 
 ### 17. Post-launch feature wishlist
 
@@ -141,8 +173,8 @@ Things still to do, or that need doing in the Shopify admin.
 
 | # | Task | Where | Note |
 |---|---|---|---|
-| M1 | **Enable Cash on Delivery** | Settings → Payments → Manual payment methods | ⚠️ The site advertises COD in four places but it **will not appear at checkout** until switched on |
-| M2 | **Publish the policies** | Admin → Policies, or add `write_legal_policies` to the API app | Drafts ready in `docs/policies/`. Footer links stay hidden until published |
+| M1 | **COD — decide, then act** | Settings → Payments → Manual payment methods | ⏸ On hold pending Priyal (R1). The site advertises COD in four places; if the answer is no, that copy has to come out too |
+| M2 | **Privacy policy** — decide auto vs ours | Admin → Policies → Privacy | Terms, Refund and Shipping are **published and live**. Privacy is still Shopify's auto-managed one; ours names the actual processors (Shiprocket, Klaviyo, analytics) |
 | M3 | **Publish the theme** | Online Store → Themes → GummyChums Build → Publish | Still a draft, so "View Online Store" shows Dawn's Horizon theme |
 | M4 | **Payment gateway setup** | Settings → Payments | Follows Priyal's KYC (item 3) |
 
@@ -246,6 +278,7 @@ On the real store while it's still password-protected:
 | 7 Sep 2026 | Returns route entirely through **Shiprocket** — no bank-detail form on the site | Mehal |
 | 7 Sep 2026 | Pack size **30** (pending confirm — item 10) | Mehal |
 | 7 Sep 2026 | COD **enabled** pan-India | Priyal |
+| 8 Sep 2026 | COD **re-opened as a question** (R1) — never switched on in Shopify; Mehal wants the cost weighed first | Mehal |
 | 7 Sep 2026 | Delivery **3–10 working days**, pan-India only | Priyal |
 | 7 Sep 2026 | Buying the real **NaN Jaune** licence | Priyal |
 | 7 Sep 2026 | Analytics: fresh **GA4 + Meta Pixel** | Priyal |
