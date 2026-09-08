@@ -8,6 +8,7 @@
         "sub": "We’re making healthy habits feel good."
       }
     },
+    "gc_story": { "type": "gc-story", "settings": {} },
     "gc_reel": { "type": "gc-reel", "settings": {} },
     "gc_reviews": {
       "type": "gc-reviews",
@@ -24,5 +25,5 @@
     },
     "gc_quality": { "type": "gc-quality", "settings": {} }
   },
-  "order": ["gc_home", "gc_reel", "gc_reviews", "gc_quality"]
+  "order": ["gc_home", "gc_story", "gc_reel", "gc_reviews", "gc_quality"]
 }

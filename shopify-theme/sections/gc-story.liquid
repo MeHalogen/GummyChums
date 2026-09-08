@@ -1,0 +1,183 @@
+{%- comment -%}
+  The brand story, from Brand Book v1.0. Keeps id="gc-story" because the header
+  nav and footer both anchor to it.
+
+  Six beats: the question that started it · why "Chums" · what we're not ·
+  the five values · who the Chums are · the manifesto line.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<style>
+  .gcst{position:relative;overflow:hidden;background:var(--c-ink);color:var(--c-bg-warm);
+    padding:clamp(var(--sp-8),7vw,var(--sp-10)) var(--gutter)}
+  .gcst::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(52vw 52vw at 8% 0%, var(--c-accent-soft), transparent 60%)}
+  .gcst::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(44vw 44vw at 96% 92%, var(--c-accent-soft), transparent 62%)}
+  .gcst-in{position:relative;z-index:1;max-width:var(--container);margin-inline:auto}
+
+  .gcst-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
+    font-size:var(--fs-xs);color:var(--c-accent);margin:0;text-align:center}
+
+  /* ---- beat 1 · the question ---- */
+  .gcst-q{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    line-height:var(--lh-snug);color:var(--c-bg-warm);margin:var(--sp-4) auto 0;
+    max-width:20ch;text-align:center}
+  .gcst-q em{font-style:normal;color:var(--c-accent)}
+  .gcst-lede{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-bg-warm);opacity:.82;
+    margin:var(--sp-5) auto 0;max-width:52ch;text-align:center;line-height:var(--lh-body)}
+
+  /* ---- beat 2 · why "chums" ---- */
+  .gcst-name{margin:clamp(var(--sp-7),6vw,var(--sp-9)) auto 0;max-width:44ch;text-align:center;
+    padding:clamp(var(--sp-5),4vw,var(--sp-7));border-radius:var(--r-lg);
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+  .gcst-name h3{font-size:var(--fs-xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    color:var(--c-accent);margin:0 0 var(--sp-4)}
+  .gcst-name p{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-bg-warm);
+    opacity:.85;margin:0;line-height:var(--lh-body)}
+  .gcst-name b{display:block;margin-top:var(--sp-4);font-size:var(--fs-lg);font-weight:var(--fw-black);
+    color:var(--c-bg-warm);opacity:1}
+
+  /* ---- beat 3 · what we're not ---- */
+  .gcst-diff{margin:clamp(var(--sp-8),6vw,var(--sp-9)) auto 0;max-width:760px}
+  .gcst-diff h3{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    color:var(--c-bg-warm);margin:0 0 var(--sp-6);text-align:center}
+  .gcst-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:var(--sp-4);
+    padding:var(--sp-4) 0;border-bottom:1px solid rgba(255,255,255,.1)}
+  .gcst-row:last-child{border-bottom:0}
+  @media(max-width:599px){.gcst-row{grid-template-columns:1fr;gap:var(--sp-2);text-align:center}}
+  .gcst-not{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-bg-warm);
+    opacity:.45;text-align:right;margin:0}
+  @media(max-width:599px){.gcst-not{text-align:center}}
+  .gcst-arrow{color:var(--c-accent);font-weight:var(--fw-black);font-size:var(--fs-base)}
+  .gcst-is{font-size:var(--fs-base);font-weight:var(--fw-black);color:var(--c-bg-warm);margin:0}
+
+  /* ---- beat 4 · values ---- */
+  .gcst-vals{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--sp-3);
+    margin:clamp(var(--sp-8),6vw,var(--sp-9)) auto 0}
+  @media(max-width:900px){.gcst-vals{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:479px){.gcst-vals{grid-template-columns:1fr}}
+  .gcst-val{background:rgba(255,255,255,.06);border-radius:var(--r-md);padding:var(--sp-5);
+    text-align:center}
+  .gcst-val b{display:block;font-size:var(--fs-base);font-weight:var(--fw-black);
+    color:var(--c-accent);margin-bottom:var(--sp-2)}
+  .gcst-val span{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-bg-warm);
+    opacity:.78;line-height:var(--lh-snug)}
+
+  /* ---- beat 5 · who the chums are ---- */
+  .gcst-who{margin:clamp(var(--sp-8),6vw,var(--sp-9)) auto 0;text-align:center;max-width:60ch}
+  .gcst-who h3{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    color:var(--c-bg-warm);margin:0 0 var(--sp-5)}
+  .gcst-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2);justify-content:center}
+  .gcst-chips span{background:rgba(255,255,255,.08);border-radius:var(--r-full);
+    padding:var(--sp-2) var(--sp-4);font-size:var(--fs-sm);font-weight:var(--fw-bold);
+    color:var(--c-bg-warm);border:1px solid rgba(255,255,255,.12)}
+
+  /* ---- beat 6 · manifesto ---- */
+  .gcst-end{margin:clamp(var(--sp-8),7vw,var(--sp-10)) auto 0;text-align:center;max-width:34ch}
+  .gcst-end p{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    line-height:var(--lh-snug);color:var(--c-bg-warm);margin:0}
+  .gcst-end p em{font-style:normal;color:var(--c-accent)}
+  .gcst-end small{display:block;font-size:var(--fs-base);font-weight:var(--fw-body);
+    color:var(--c-bg-warm);opacity:.7;margin-top:var(--sp-5);line-height:var(--lh-body)}
+</style>
+
+<section class="gcst" id="gc-story">
+  <div class="gcst-in">
+
+    <p class="gcst-kick gc-rise">{{ s.kicker }}</p>
+    <h2 class="gcst-q gc-rise">{{ s.question | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
+    <p class="gcst-lede gc-rise">{{ s.lede }}</p>
+
+    {%- if s.name_body != blank -%}
+      <div class="gcst-name gc-rise">
+        <h3>{{ s.name_title }}</h3>
+        <p>{{ s.name_body }}</p>
+        <b>{{ s.name_punch }}</b>
+      </div>
+    {%- endif -%}
+
+    <div class="gcst-diff gc-rise">
+      <h3>{{ s.diff_title }}</h3>
+      {%- assign nots = s.diff_not | split: '|' -%}
+      {%- assign iss = s.diff_is | split: '|' -%}
+      {%- for n in nots -%}
+        <div class="gcst-row">
+          <p class="gcst-not">{{ n | strip }}</p>
+          <span class="gcst-arrow" aria-hidden="true">→</span>
+          <p class="gcst-is">{{ iss[forloop.index0] | strip }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="gcst-vals gc-rise">
+      {%- assign vt = s.values_titles | split: '|' -%}
+      {%- assign vb = s.values_bodies | split: '|' -%}
+      {%- for t in vt -%}
+        <div class="gcst-val">
+          <b>{{ t | strip }}</b>
+          <span>{{ vb[forloop.index0] | strip }}</span>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="gcst-who gc-rise">
+      <h3>{{ s.who_title }}</h3>
+      <div class="gcst-chips">
+        {%- assign who = s.who_list | split: ',' -%}
+        {%- for w in who -%}<span>{{ w | strip }}</span>{%- endfor -%}
+      </div>
+    </div>
+
+    <div class="gcst-end gc-rise">
+      <p>{{ s.manifesto | replace: '[', '<em>' | replace: ']', '</em>' }}</p>
+      <small>{{ s.manifesto_sub }}</small>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GummyChums Story",
+  "settings": [
+    { "type": "header", "content": "The question that started it" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Why we exist" },
+    { "type": "textarea", "id": "question", "label": "Question (use [ ] for pink)",
+      "default": "What if wellness felt like something you [looked forward to] — instead of something you had to remember?" },
+    { "type": "textarea", "id": "lede", "label": "Lede",
+      "default": "Wellness became a checklist. Vitamins, protein, water, sleep, steps. People don’t quit because they don’t care — they quit because it feels like work. So we made the healthiest thing you do all day the tastiest thing you do all day." },
+
+    { "type": "header", "content": "Why “Chums”" },
+    { "type": "text", "id": "name_title", "label": "Title", "default": "Why we’re called Chums" },
+    { "type": "textarea", "id": "name_body", "label": "Body",
+      "default": "A chum is the friend who reminded you. Who shared their lunch. Who called after a bad day. Who never forced you into anything — just quietly made life better by being around." },
+    { "type": "text", "id": "name_punch", "label": "Punchline",
+      "default": "That’s the job. Not another supplement — your daily chum." },
+
+    { "type": "header", "content": "What we’re not" },
+    { "type": "text", "id": "diff_title", "label": "Title", "default": "What makes us different" },
+    { "type": "textarea", "id": "diff_not", "label": "“We don’t…” (separate with | )",
+      "default": "We don’t sell guilt | We don’t sell perfection | We don’t scare you | We don’t speak like doctors | We don’t chase trends" },
+    { "type": "textarea", "id": "diff_is", "label": "“We do…” (separate with | , same order)",
+      "default": "We sell joy | We celebrate consistency | We invite you | We speak like friends | We build habits" },
+
+    { "type": "header", "content": "Values" },
+    { "type": "textarea", "id": "values_titles", "label": "Value titles (separate with | )",
+      "default": "Friendship | Transparency | Accessibility | Playfulness | Quality" },
+    { "type": "textarea", "id": "values_bodies", "label": "Value bodies (separate with | , same order)",
+      "default": "We show up like a friend does | The label says everything, every time | Premium should never mean pricey | If it doesn’t make you smile, it doesn’t ship | Would we take this every single day?" },
+
+    { "type": "header", "content": "Who the Chums are" },
+    { "type": "text", "id": "who_title", "label": "Title", "default": "Who’s a Chum?" },
+    { "type": "textarea", "id": "who_list", "label": "The list (comma separated)",
+      "default": "Students, Professionals, Creators, Gamers, Gym-lovers, Night-shift workers, Parents, Travellers, Dreamers" },
+
+    { "type": "header", "content": "Manifesto" },
+    { "type": "textarea", "id": "manifesto", "label": "Manifesto line (use [ ] for pink)",
+      "default": "Wellness is better with your [Chums]." },
+    { "type": "textarea", "id": "manifesto_sub", "label": "Manifesto sub",
+      "default": "Take care of yourself. Cheer for your friends. Celebrate the little wins. Share your gummies. Show up — one small habit, one smile, one Chum at a time." }
+  ],
+  "presets": [{ "name": "GummyChums Story" }]
+}
+{% endschema %}

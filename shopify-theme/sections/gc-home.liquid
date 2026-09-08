@@ -117,37 +117,6 @@
   .gh-add--soldout{background:var(--c-ink-3);cursor:default}
   .gh-empty{grid-column:1/-1;text-align:center;color:var(--c-ink-2)}
 
-  /* ---------- ACT 3 — story ---------- */
-  .gh-story{background:var(--c-ink);color:var(--c-bg-warm);border-radius:var(--r-lg);
-    padding:clamp(var(--sp-7),6vw,var(--sp-8)) clamp(var(--sp-5),4vw,var(--sp-8));
-    position:relative;overflow:hidden;text-align:center}
-  .gh-story::before{content:"";position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(48vw 48vw at 10% 0%, var(--c-accent-soft), transparent 62%)}
-  .gh-story-in{position:relative;z-index:1}
-  /* same Dawn heading-colour override as .gh-reveal h2 — without this the
-     headline renders near-black on the near-black story panel, i.e. invisible */
-  .gh-story h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-snug);margin:0 auto;max-width:22ch;color:var(--c-bg-warm)}
-  .gh-story h2 em{font-style:normal;color:var(--c-accent)}
-  .gh-story p{font-size:var(--fs-lg);font-weight:var(--fw-body);opacity:.82;
-    margin:var(--sp-4) auto 0;max-width:46ch;line-height:var(--lh-body)}
-  .gh-vals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-3);margin-top:var(--sp-6)}
-  @media(max-width:749px){.gh-vals{grid-template-columns:1fr}}
-  .gh-val{background:rgba(255,255,255,.06);border-radius:var(--r-md);padding:var(--sp-5)}
-  .gh-val b{display:block;font-size:var(--fs-base);color:var(--c-accent);margin-bottom:var(--sp-1)}
-  .gh-val span{font-size:var(--fs-sm);font-weight:var(--fw-body);opacity:.8}
-
-  /* founder note — a face behind the paragraphs */
-  .gh-founder{margin:var(--sp-7) auto 0;max-width:44ch;display:flex;flex-direction:column;
-    align-items:center;gap:var(--sp-3)}
-  .gh-founder-pic{width:80px;height:80px;border-radius:var(--r-full);object-fit:cover;
-    border:3px solid var(--c-accent)}
-  .gh-founder-q{margin:0;font-size:var(--fs-lg);font-weight:var(--fw-bold);line-height:var(--lh-snug);
-    color:var(--c-bg-warm);font-style:italic}
-  .gh-founder-by{display:flex;flex-direction:column;gap:var(--sp-1)}
-  .gh-founder-by b{font-size:var(--fs-sm);font-weight:var(--fw-black);color:var(--c-accent);
-    letter-spacing:var(--ls-wide);text-transform:uppercase}
-  .gh-founder-by span{font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-bg-warm);opacity:.7}
-
   /* ---------- ACT 4 — FAQ ---------- */
   .gh-faq{max-width:760px;margin:0 auto}
   .gh-q{background:var(--c-surface);border-radius:var(--r-md);margin-bottom:var(--sp-3);overflow:hidden;box-shadow:var(--sh-2)}
@@ -278,43 +247,6 @@
     </div>
   </section>
 
-  <!-- ACT 3 — story -->
-  <section class="gh-sec" id="gc-story" style="padding-top:0">
-    <div class="gc-wrap">
-      <div class="gh-story gc-rise">
-        <div class="gh-story-in">
-          <p class="gc-kick" style="color:var(--c-bg-warm);opacity:.75">{{ s.story_kicker }}</p>
-          <h2>{{ s.story_title | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
-          <p>{{ s.story_body }}</p>
-          <div class="gh-vals">
-            <div class="gh-val"><b>{{ s.val1_t }}</b><span>{{ s.val1_b }}</span></div>
-            <div class="gh-val"><b>{{ s.val2_t }}</b><span>{{ s.val2_b }}</span></div>
-            <div class="gh-val"><b>{{ s.val3_t }}</b><span>{{ s.val3_b }}</span></div>
-          </div>
-
-          {%- comment -%}
-            Founder note — renders only when there's a real quote to show, so the
-            section never displays an empty placeholder before the copy lands.
-          {%- endcomment -%}
-          {%- if s.founder_quote != blank -%}
-            <figure class="gh-founder">
-              {%- if s.founder_photo != blank -%}
-                <img class="gh-founder-pic"
-                  src="{{ s.founder_photo | image_url: width: 160 }}"
-                  alt="{{ s.founder_name | escape }}" width="80" height="80" loading="lazy">
-              {%- endif -%}
-              <blockquote class="gh-founder-q">“{{ s.founder_quote }}”</blockquote>
-              <figcaption class="gh-founder-by">
-                <b>{{ s.founder_name }}</b>
-                {%- if s.founder_role != blank -%}<span>{{ s.founder_role }}</span>{%- endif -%}
-              </figcaption>
-            </figure>
-          {%- endif -%}
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ACT 4 — FAQ -->
   <section class="gh-sec" id="gc-faq" style="padding-top:0">
     <div class="gc-wrap">
@@ -393,21 +325,6 @@
     { "type": "text", "id": "shop_kicker", "label": "Kicker", "default": "Three flavours ✦ one happy habit" },
     { "type": "text", "id": "shop_title", "label": "Title", "default": "Meet the three." },
     { "type": "text", "id": "shop_sub", "label": "Sub", "default": "Supplements you’ll actually look forward to." },
-    { "type": "header", "content": "Story" },
-    { "type": "text", "id": "story_kicker", "label": "Kicker", "default": "Why we exist" },
-    { "type": "text", "id": "story_title", "label": "Title (use [ ] for pink)", "default": "Wellness became a [checklist]. We made it a treat." },
-    { "type": "textarea", "id": "story_body", "label": "Body", "default": "People don’t quit because they don’t care — they quit because it feels like work. So we made the healthiest thing you do all day the tastiest. A chum is the friend who reminds you. That’s the whole plan." },
-    { "type": "text", "id": "val1_t", "label": "Value 1 title", "default": "Joy, non-negotiable" },
-    { "type": "text", "id": "val1_b", "label": "Value 1 body", "default": "If it doesn’t make you smile, it doesn’t ship." },
-    { "type": "text", "id": "val2_t", "label": "Value 2 title", "default": "Trust you can read" },
-    { "type": "text", "id": "val2_b", "label": "Value 2 body", "default": "The label says everything. Every time." },
-    { "type": "text", "id": "val3_t", "label": "Value 3 title", "default": "Within reach" },
-    { "type": "text", "id": "val3_b", "label": "Value 3 body", "default": "Premium should never mean pricey." },
-    { "type": "header", "content": "Founder note (leave the quote empty to hide)" },
-    { "type": "image_picker", "id": "founder_photo", "label": "Founder photo" },
-    { "type": "textarea", "id": "founder_quote", "label": "Founder quote" },
-    { "type": "text", "id": "founder_name", "label": "Founder name" },
-    { "type": "text", "id": "founder_role", "label": "Founder role", "default": "Founder, GummyChums" },
     { "type": "header", "content": "Closing" },
     { "type": "text", "id": "end_title", "label": "Title (use [ ] for pink)", "default": "Your daily chums are [waiting]." },
     { "type": "text", "id": "end_sub", "label": "Sub", "default": "Three flavours. One happy habit. Start today." },
