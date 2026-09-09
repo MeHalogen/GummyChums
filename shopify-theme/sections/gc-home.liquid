@@ -12,7 +12,15 @@
   /* Shorter pin on phones. With no scrollbar there is no feedback that the page
      is still scrolling, so a long pin reads as a frozen page. 120vh leaves
      ~160px of pinned scroll — enough for the effect, short enough not to alarm. */
-  @media(max-width:749px){.gh-stage{height:120vh}}
+  /* 160vh, not 120. The pin is 100svh, so the stage height MINUS one viewport is
+     the entire scroll budget the zoom and the reveal have to share. At 120vh
+     that was 20vh — about 160px, one flick — and with the reveal only starting
+     at z=0.60 the words "WHAT'S INSIDE?" were legible for the last ~22px of it.
+     Unreadable, which is exactly the complaint.
+     160vh gives 60vh (~490px) instead. Still well short of the 200vh that once
+     read as a frozen page, and unlike that version something is moving the
+     whole way down: the gummy grows, then the words arrive and HOLD. */
+  @media(max-width:749px){.gh-stage{height:160vh}}
   /* transparent so the global fixed flavour background shows through — nothing to repaint */
   .gh-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
     background:transparent;contain:paint;padding-bottom:4vh}
@@ -103,7 +111,7 @@
     animation:ghBounce 1.7s ease-in-out infinite}
   @keyframes ghBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
   .gh-reveal{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;padding:0 var(--sp-5);
-    color:var(--c-surface);opacity:calc((var(--z,0) - .60) * 3.8);pointer-events:none}
+    color:var(--c-surface);opacity:calc((var(--z,0) - .42) * 4.2);pointer-events:none}
   /* Dawn's base.css sets an explicit colour on h1-h6, and a direct rule beats
      the colour inherited from .gh-reveal — so headings on dark/coloured
      backgrounds must restate it or they render near-black. */
@@ -355,7 +363,7 @@
     { "type": "text", "id": "sub", "label": "Subline", "default": "We’re making healthy habits feel good." },
     { "type": "text", "id": "cta", "label": "CTA label", "default": "Shop the flavours →" },
     { "type": "text", "id": "reveal_title", "label": "Scroll reveal title", "default": "WHAT’S INSIDE?" },
-    { "type": "text", "id": "reveal_sub", "label": "Scroll reveal sub", "default": "Bacopa · Melatonin · Lutein. Zero junk — just real wellness." },
+    { "type": "text", "id": "reveal_sub", "label": "Scroll reveal sub", "default": "Bacopa · Melatonin · Lutein. Zero junk." },
     { "type": "header", "content": "Flavours" },
     { "type": "text", "id": "shop_kicker", "label": "Kicker", "default": "Three flavours ✦ one happy habit" },
     { "type": "text", "id": "shop_title", "label": "Title", "default": "Meet the three." },
