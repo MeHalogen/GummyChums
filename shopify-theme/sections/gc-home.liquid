@@ -69,14 +69,14 @@
      BIGGER and bleed further out: about a third of each figure is visible, which
      still reads unmistakably as a person. Where the subline crosses them it
      gets a cream halo, so the overlap looks composed instead of accidental. */
-  @media(max-width:749px){.gh-chum--l{height:40vh;left:-14%}}
-  @media(max-width:749px){.gh-chum--r{height:38vh;right:-14%}}
+  @media(max-width:749px){.gh-chum--l{height:33vh;left:-15%}}
+  @media(max-width:749px){.gh-chum--r{height:31vh;right:-15%}}
   /* Narrowed so it wraps INSIDE the gap between the two figures rather than
      running under their arms. In px, not ch: this typeface's "0" is ~19.6px
      wide at this size, so 20ch computed to 393px — wider than the phone. The
      measured gap between the figures is 228px. The halo stays as insurance
      for 320px screens, where the gap closes further. */
-  @media(max-width:749px){.gh-mid .gh-sub{max-width:215px;text-shadow:0 0 10px var(--c-bg),0 0 22px var(--c-bg)}}
+  @media(max-width:749px){.gh-mid .gh-sub{max-width:280px}}
   @media(max-width:749px){.gh-mid .gh-cta2{text-shadow:0 0 10px var(--c-bg),0 0 22px var(--c-bg)}}
 
 
@@ -168,14 +168,29 @@
   .gh-end h2 em{font-style:normal;color:var(--c-accent)}
   .gh-end p{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-4) auto var(--sp-6);max-width:36ch}
 
-  /* ---------- phone compaction ----------
-     Deliberately last in this stylesheet. These are overrides of base rules
-     declared above; at equal specificity the later rule wins, so putting them
-     anywhere earlier silently does nothing. */
-  @media(max-width:749px){.gh-shot{aspect-ratio:16/10}}
-  @media(max-width:749px){.gh-card{padding:var(--sp-4);gap:var(--sp-2)}}
-  @media(max-width:749px){.gh-sec{padding:var(--sp-7) 0}}
-  @media(max-width:749px){.gh-end{padding:var(--sp-8) var(--sp-5)}}
+  /* ---------- phone: room to breathe ----------
+     Deliberately last in this stylesheet. These override base rules declared
+     above, and at equal specificity the later rule wins — anywhere earlier and
+     they silently do nothing.
+
+     An earlier pass shrank padding and squeezed the product images to make the
+     page shorter. Wrong lever: a shorter page made of tighter boxes is a worse
+     page. Height comes off by removing things instead — the hero loses its
+     chip and its secondary link, the certifications became a badge row — and
+     what's left gets MORE space, not less. */
+  @media(max-width:749px){.gh-sec{padding:var(--sp-8) 0}}
+  @media(max-width:749px){.gh-grid{gap:var(--sp-6)}}
+  @media(max-width:749px){.gh-card{padding:var(--sp-5);gap:var(--sp-4)}}
+  @media(max-width:749px){.gh-head{margin-bottom:var(--sp-7)}}
+  @media(max-width:749px){.gh-q summary{padding:var(--sp-5)}}
+
+  /* One clear action in the hero. The chip repeated the marquee above it and
+     the second link competed with the button for the same glance — the whole
+     complaint was not knowing where to go. */
+  @media(max-width:749px){.gh-eyebrow{display:none}}
+  @media(max-width:749px){.gh-mid .gh-cta2{display:none}}
+  @media(max-width:749px){.gh-mid{padding-bottom:var(--sp-9)}}
+  @media(max-width:749px){.gh-logo{width:min(360px,66vw)}}
 
   @media (prefers-reduced-motion:reduce){
     .gh-stage{height:auto}.gh-pin{position:relative;height:auto;padding:70px 0}
@@ -298,13 +313,10 @@
       <div class="gh-faq gc-rise">
         <details class="gh-q"><summary>How many do I take a day?</summary><p>One gummy a day, any time that suits you. Your daily chum is waiting — no water, no pills, no fuss.</p></details>
         <details class="gh-q"><summary>Is there added sugar?</summary><p>No added sugar. Just the good stuff, in a gummy you’ll actually look forward to.</p></details>
-        <details class="gh-q"><summary>Are they vegetarian?</summary><p>Yes — 100% vegetarian, pectin-based, and made in India in an FSSAI-compliant facility.</p></details>
         <details class="gh-q"><summary>How long until I feel a difference?</summary><p>Wellness is a habit, not a switch. Most Chums take theirs daily for 4–6 weeks to feel the difference. Consistency is the whole point.</p></details>
         <details class="gh-q"><summary>How fast is delivery?</summary><p>We ship pan-India via Shiprocket. Orders are usually delivered in 3–10 working days, and you’ll get tracking as soon as it leaves us. Cash on Delivery is available.</p></details>
-        <details class="gh-q"><summary>Can I take more than one kind?</summary><p>Yes. Brain Booster in the morning and Melatonin at night is a popular combo. Just keep it to one gummy of each per day, and check with your doctor if you’re already on medication.</p></details>
         <details class="gh-q"><summary>Do you accept Cash on Delivery?</summary><p>Yes — COD is available across India, alongside UPI, cards, net banking and wallets. Pay the way that suits you.</p></details>
         <details class="gh-q"><summary>What if I don’t like it?</summary><p>Tell us. Write to us within the return window on your order and we’ll sort it out — see our {% if shop.refund_policy != blank %}<a href="{{ shop.refund_policy.url }}">refund policy</a>{% else %}refund policy{% endif %} for the full details.</p></details>
-        <details class="gh-q"><summary>How should I store them?</summary><p>Somewhere cool and dry, away from direct sunlight — a shelf, not the fridge. Close the pouch properly and they’ll stay perfectly chewy.</p></details>
       </div>
     </div>
   </section>

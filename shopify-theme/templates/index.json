@@ -95,7 +95,10 @@
     },
     "gc_quality": {
       "type": "gc-quality",
-      "settings": {}
+      "settings": {
+        "layout": "badges",
+        "title": "Certified, tested, and made in India."
+      }
     }
   },
   "order": [
