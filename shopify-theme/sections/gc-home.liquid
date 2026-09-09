@@ -9,8 +9,10 @@
 
   /* ---------- ACT 1 — hero + scroll fall-in ---------- */
   .gh-stage{position:relative;height:200vh}
-  /* shorter pin on phones — 200vh of nothing moving reads as a frozen page */
-  @media(max-width:749px){.gh-stage{height:150vh}}
+  /* Shorter pin on phones. With no scrollbar there is no feedback that the page
+     is still scrolling, so a long pin reads as a frozen page. 120vh leaves
+     ~160px of pinned scroll — enough for the effect, short enough not to alarm. */
+  @media(max-width:749px){.gh-stage{height:120vh}}
   /* transparent so the global fixed flavour background shows through — nothing to repaint */
   .gh-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
     background:transparent;contain:paint;padding-bottom:4vh}
@@ -25,7 +27,7 @@
      since the circle rises faster than it grows. */
   .gh-gummy{position:absolute;left:50%;top:50%;width:min(22vw,150px);z-index:1;
     will-change:transform,opacity;backface-visibility:hidden;transform-origin:50% 48.333%;
-    opacity:calc(var(--z,0) * 5);
+    opacity:calc(var(--z,0) * 14);
     transform:translate3d(-50%, calc(-48.333% + (1 - var(--z,0)) * 55vh), 0)
               scale(calc(1 + var(--z,0) * var(--z,0) * 20))}
   /* ---- gummy characters ---- */
