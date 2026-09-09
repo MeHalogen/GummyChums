@@ -21,6 +21,23 @@
     background:radial-gradient(46vw 46vw at 12% 0%, var(--c-accent-soft), transparent 62%)}
   .gcts-in{position:relative;z-index:1;max-width:var(--container);margin-inline:auto;text-align:center}
 
+  /* One of the Chums stands on the panel's bottom edge, so the stepped border
+     below reads as ground rather than as a stray graphic. Desktop only: the
+     homepage is already too tall on a phone, and this is the block that was
+     just cut from four screens to half of one — it doesn't get to grow back. */
+  .gcts-chum{display:none}
+  @media(min-width:900px){
+    .gcts{min-height:380px;display:grid;align-items:center}
+    .gcts-in{text-align:left;padding-right:290px}
+    .gcts h2,.gcts-body{margin-inline:0}
+    .gcts-chum{display:block;position:absolute;right:4%;bottom:0;z-index:1;line-height:0;
+      height:330px;pointer-events:none;transform-origin:50% 100%;
+      animation:gctsSway 7.5s ease-in-out infinite alternate}
+    .gcts-chum img{display:block;height:100%;width:auto;
+      -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+  }
+  @keyframes gctsSway{from{transform:rotate(-1.2deg)}to{transform:translateY(-7px) rotate(1.2deg)}}
+
   .gcts-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
     font-size:var(--fs-xs);color:var(--c-accent);margin:0}
   .gcts h2{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
@@ -39,6 +56,7 @@
   .gcts-cta:hover span{transform:translateX(4px)}
 
   @media (prefers-reduced-motion:reduce){.gcts-cta,.gcts-cta span{transition:none}}
+  @media (prefers-reduced-motion:reduce){.gcts-chum{animation:none}}
 </style>
 
 <div class="gcts-edge gcts-edge--in">{% render 'gc2-edge', id: edge_in, tone: '--c-purple', side: 'bottom' %}</div>
@@ -48,6 +66,9 @@
     <h2>{{ s.headline | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
     <p class="gcts-body">{{ s.body }}</p>
     <a class="gcts-cta" href="{{ s.link }}">{{ s.cta }} <span>→</span></a>
+  </div>
+  <div class="gcts-chum" aria-hidden="true">
+    <img src="{{ 'gc2-chum-eye.svg' | asset_url }}" alt="" width="371" height="984" loading="lazy" decoding="async" draggable="false">
   </div>
 </section>
 <div class="gcts-edge gcts-edge--out">{% render 'gc2-edge', id: edge_out, tone: '--c-purple', side: 'top' %}</div>

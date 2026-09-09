@@ -30,35 +30,55 @@
     opacity:calc(var(--z,0) * 14);
     transform:translate3d(-50%, calc(-48.333% + (1 - var(--z,0)) * 55vh), 0)
               scale(calc(1 + var(--z,0) * var(--z,0) * 20))}
-  /* ---- gummy characters ---- */
-  .gcg{width:100%;height:auto;display:block}
-  .gh-char{position:absolute;z-index:1;will-change:transform;pointer-events:none;
-    translate:var(--px,0) var(--py,0);
-    animation:ghDrift ease-in-out infinite alternate}
-  .gh-c1{width:clamp(120px,15vw,215px);left:4%;top:14%;animation-duration:7s}
-  .gh-c2{width:clamp(88px,11vw,158px);right:7%;top:9%;animation-duration:9s;animation-delay:-2s}
-  .gh-c3{width:clamp(105px,13vw,190px);right:3%;bottom:14%;animation-duration:8s;animation-delay:-4s}
-  .gh-c4{width:clamp(70px,8vw,118px);left:11%;bottom:12%;animation-duration:10s;animation-delay:-6s}
-  @keyframes ghDrift{from{transform:translate3d(0,0,0) rotate(-6deg)}to{transform:translate3d(0,-24px,0) rotate(6deg)}}
-  @media(max-width:900px){.gh-c2,.gh-c4{display:none}}
-  /* bled off the edges — on a narrow screen they were landing on the eyebrow
-     chip and the CTA row */
-  @media(max-width:900px){.gh-c1{width:96px;left:-9%;top:6%}}
-  @media(max-width:900px){.gh-c3{width:88px;right:-9%;bottom:9%}}
+  /* ---- THE CHUMS · the real characters from Brand Book v2 ----
+     They stand on the hero's bottom edge and flank the centre column, which is
+     how the book's own cover is composed. Anchored bottom-left / bottom-right
+     rather than centred, so they stay planted while the viewport changes shape.
 
-  /* ---- rotated sticker badges ---- */
-  .gh-stick{position:absolute;z-index:3;opacity:calc(1 - var(--z,0) * 2.7);font-weight:var(--fw-black);font-size:var(--fs-xs);letter-spacing:var(--ls-wide);
-    background:var(--c-surface);color:var(--c-ink);padding:var(--sp-2) var(--sp-4);border-radius:var(--r-full);white-space:nowrap;
-    box-shadow:0 4px 0 var(--c-ink);border:2px solid var(--c-ink)}
-  .gh-s1{left:7%;top:38%;transform:rotate(-9deg);background:var(--c-mango-soft)}
-  .gh-s2{right:8%;top:44%;transform:rotate(8deg);background:var(--c-orange-soft)}
-  .gh-s3{left:14%;bottom:26%;transform:rotate(5deg);background:var(--c-cherry-soft)}
-  /* Hidden on phones, not repositioned. There is no clear space left: the hero
-     already carries an eyebrow chip, wordmark, headline, subline, two CTAs and a
-     scroll hint, and every position tried collided with one of them or with a
-     floating gummy. Nothing is lost — the marquee above states all three claims
-     on every page. */
-  @media(max-width:749px){.gh-stick{display:none}}
+     They fade on the same --z curve as .gh-mid, so the scroll-zoom hands over
+     to the reveal with nothing left floating over it.
+
+     The sway rotates about 50% 100% — the feet. Rotating about the centre made
+     them look like they were hovering rather than shifting their weight.
+
+     --gh-ground, not bottom:0. The pin is 100svh tall but starts BELOW the
+     marquee and header, so at scroll 0 its bottom edge sits ~129px under the
+     fold and the figures were cut off at the knees — which is the only moment
+     they're at full opacity, since they fade out within 60px of scrolling.
+     The script keeps --gh-ground equal to however far the pin overhangs the
+     fold, so their feet stay on the fold at rest and settle onto the pin's own
+     bottom edge once it's pinned. */
+  .gcg{width:100%;height:auto;display:block}
+  .gh-chum{position:absolute;bottom:var(--gh-ground,0px);z-index:1;pointer-events:none;line-height:0;
+    opacity:calc(1 - var(--z,0) * 2.7);transform-origin:50% 100%;
+    animation:ghSway ease-in-out infinite alternate}
+  .gh-chum img{display:block;width:auto;height:100%;
+    -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+  .gh-chum--l{left:0;height:min(56vh,500px);animation-duration:6.5s}
+  .gh-chum--r{right:0;height:min(52vh,466px);animation-duration:8.2s;animation-delay:-3s}
+  @keyframes ghSway{from{transform:translate3d(0,0,0) rotate(-1.2deg)}to{transform:translate3d(0,-8px,0) rotate(1.2deg)}}
+
+  /* Below ~1100px the centre column and the figures start sharing horizontal
+     space, so the figures move outward and shrink rather than overlap the copy.
+     On phones they bleed roughly half off each edge: enough that you read them
+     as two people standing there, not enough to crowd the headline. */
+  @media(max-width:1100px){.gh-chum--l{height:min(42vh,360px);left:-5%}}
+  @media(max-width:1100px){.gh-chum--r{height:min(39vh,340px);right:-5%}}
+  /* On a 375px screen the copy column and two standing figures cannot both
+     have the width they want. Rather than shrink the Chums to slivers, they go
+     BIGGER and bleed further out: about a third of each figure is visible, which
+     still reads unmistakably as a person. Where the subline crosses them it
+     gets a cream halo, so the overlap looks composed instead of accidental. */
+  @media(max-width:749px){.gh-chum--l{height:40vh;left:-14%}}
+  @media(max-width:749px){.gh-chum--r{height:38vh;right:-14%}}
+  /* Narrowed so it wraps INSIDE the gap between the two figures rather than
+     running under their arms. In px, not ch: this typeface's "0" is ~19.6px
+     wide at this size, so 20ch computed to 393px — wider than the phone. The
+     measured gap between the figures is 228px. The halo stays as insurance
+     for 320px screens, where the gap closes further. */
+  @media(max-width:749px){.gh-mid .gh-sub{max-width:215px;text-shadow:0 0 10px var(--c-bg),0 0 22px var(--c-bg)}}
+  @media(max-width:749px){.gh-mid .gh-cta2{text-shadow:0 0 10px var(--c-bg),0 0 22px var(--c-bg)}}
+
 
   .gh-mid{position:relative;z-index:2;text-align:center;padding:0 var(--sp-5);
     opacity:calc(1 - var(--z,0) * 2.7);will-change:opacity}
@@ -148,9 +168,19 @@
   .gh-end h2 em{font-style:normal;color:var(--c-accent)}
   .gh-end p{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-4) auto var(--sp-6);max-width:36ch}
 
+  /* ---------- phone compaction ----------
+     Deliberately last in this stylesheet. These are overrides of base rules
+     declared above; at equal specificity the later rule wins, so putting them
+     anywhere earlier silently does nothing. */
+  @media(max-width:749px){.gh-shot{aspect-ratio:16/10}}
+  @media(max-width:749px){.gh-card{padding:var(--sp-4);gap:var(--sp-2)}}
+  @media(max-width:749px){.gh-sec{padding:var(--sp-7) 0}}
+  @media(max-width:749px){.gh-end{padding:var(--sp-8) var(--sp-5)}}
+
   @media (prefers-reduced-motion:reduce){
     .gh-stage{height:auto}.gh-pin{position:relative;height:auto;padding:70px 0}
     .gh-gummy{display:none}.gh-mid{opacity:1!important}.gh-reveal{display:none}
+    .gh-chum{animation:none;opacity:1}
     .gh-g{animation:none}
   }
 </style>
@@ -161,11 +191,13 @@
   <header class="gh-stage" id="gh-stage">
     <div class="gh-pin" id="gh-pin">
 
-      {%- comment -%} gummy characters — parallax to cursor {%- endcomment -%}
-      <div class="gh-char gh-c1" data-depth="26">{% render 'gc-gummy', tone: '--c-cherry', id: 'h1' %}</div>
-      <div class="gh-char gh-c2" data-depth="-34">{% render 'gc-gummy', tone: '--c-mango', id: 'h2' %}</div>
-      <div class="gh-char gh-c3" data-depth="20">{% render 'gc-gummy', tone: '--c-orange', id: 'h3' %}</div>
-      <div class="gh-char gh-c4" data-depth="-16">{% render 'gc-gummy', tone: '--c-cherry', id: 'h4' %}</div>
+      {%- comment -%} the Chums, flanking the wordmark — brand book v2 {%- endcomment -%}
+      <div class="gh-chum gh-chum--l" aria-hidden="true">
+        <img src="{{ 'gc2-chum-brain.svg' | asset_url }}" alt="" width="340" height="894" fetchpriority="high" decoding="async" draggable="false">
+      </div>
+      <div class="gh-chum gh-chum--r" aria-hidden="true">
+        <img src="{{ 'gc2-chum-sleep.svg' | asset_url }}" alt="" width="407" height="1031" fetchpriority="high" decoding="async" draggable="false">
+      </div>
 
       {%- comment -%} the one that zooms on scroll {%- endcomment -%}
       <div class="gh-gummy">{% render 'gc-gummy', tone: '--c-cherry', id: 'hz' %}</div>
@@ -181,11 +213,6 @@
         </div>
         <div class="gh-scroll">SCROLL ↓</div>
       </div>
-
-      {%- comment -%} rotated sticker badges {%- endcomment -%}
-      <span class="gh-stick gh-s1">100% VEG</span>
-      <span class="gh-stick gh-s2">NO ADDED SUGAR</span>
-      <span class="gh-stick gh-s3">MADE IN INDIA</span>
 
       <div class="gh-reveal">
         <div>
@@ -294,31 +321,13 @@
 
 <script>
 (function(){
-  /* gummy characters drift toward the cursor — subtle depth */
-  var pin=document.getElementById('gh-pin');
-  if(pin && matchMedia('(hover:hover) and (pointer:fine)').matches
-     && !matchMedia('(prefers-reduced-motion:reduce)').matches){
-    var chars=[].slice.call(pin.querySelectorAll('.gh-char'));
-    var tx=0,ty=0,cx=0,cy=0,raf=null;
-    addEventListener('pointermove',function(e){
-      tx=(e.clientX/innerWidth-.5); ty=(e.clientY/innerHeight-.5);
-      if(!raf)raf=requestAnimationFrame(run);
-    },{passive:true});
-    function run(){
-      cx+=(tx-cx)*.06; cy+=(ty-cy)*.06;
-      chars.forEach(function(el){
-        var d=parseFloat(el.dataset.depth)||14;
-        el.style.setProperty('--px',(cx*d).toFixed(2)+'px');
-        el.style.setProperty('--py',(cy*d).toFixed(2)+'px');
-      });
-      raf=(Math.abs(tx-cx)>.001||Math.abs(ty-cy)>.001)?requestAnimationFrame(run):null;
-    }
-  }
-
   var stage=document.getElementById('gh-stage'); if(!stage)return;
   var tk=false;
+  var pin=document.getElementById('gh-pin');
   function upd(){var r=stage.getBoundingClientRect();var d=r.height-innerHeight;
-    var z=d>0?Math.min(Math.max(-r.top/d,0),1):0;stage.style.setProperty('--z',z.toFixed(4));}
+    var z=d>0?Math.min(Math.max(-r.top/d,0),1):0;stage.style.setProperty('--z',z.toFixed(4));
+    if(pin){var p=pin.getBoundingClientRect();
+      stage.style.setProperty('--gh-ground',Math.max(0,p.bottom-innerHeight).toFixed(1)+'px');}}
   addEventListener('scroll',function(){if(!tk){requestAnimationFrame(function(){upd();tk=false;});tk=true;}},{passive:true});
   addEventListener('resize',upd);upd();
 })();

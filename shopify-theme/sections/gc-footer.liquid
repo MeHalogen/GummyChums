@@ -1,38 +1,39 @@
 {%- comment -%} GummyChums footer — brand, not Dawn's newsletter block {%- endcomment -%}
 <style>
-  .gcf{position:relative;overflow:hidden;background:var(--c-ink);color:var(--c-bg);
+  .gcf-edge{line-height:0;background:transparent;margin-bottom:-1px}
+  .gcf{position:relative;overflow:hidden;background:var(--c-purple);color:var(--c-purple-ink);
     padding:var(--sp-8) var(--gutter) var(--sp-5)}
   /* subtle neutral glow — gradient, not blur() — same closing-anchor warmth, no repaint cost */
   .gcf::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.08;
-    background:radial-gradient(60% 60% at 15% 0%, var(--c-bg), transparent 70%)}
+    background:radial-gradient(60% 60% at 15% 0%, var(--c-purple-ink), transparent 70%)}
   .gcf-in{position:relative;z-index:1;max-width:var(--container);margin-inline:auto}
   .gcf-top{display:flex;flex-wrap:wrap;gap:var(--sp-7);justify-content:space-between;align-items:flex-start}
   .gcf-brand{max-width:24rem}
-  .gcf-logo{display:block;width:min(210px,56vw);height:auto;filter:invert(1);
+  .gcf-logo{display:block;width:min(210px,56vw);height:auto;
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
   .gcf-tag{margin:var(--sp-4) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-body);
-    line-height:var(--lh-body);color:var(--c-bg);opacity:.72}
+    line-height:var(--lh-body);color:var(--c-purple-ink);opacity:.72}
   .gcf-cols{display:flex;flex-wrap:wrap;gap:var(--sp-8)}
   /* single accent element for the whole footer: the column headings. everything
-     else stays on neutral --c-bg/opacity steps — no cherry/mango/orange chrome */
+     else stays on neutral --c-purple-ink/opacity steps — no cherry/mango/orange chrome */
   .gcf-col h4{margin:0 0 var(--sp-4);font-size:var(--fs-xs);font-weight:var(--fw-black);
     letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--c-accent)}
-  .gcf-col a,.gcf-col span{display:block;margin-bottom:var(--sp-3);color:var(--c-bg);opacity:.78;
+  .gcf-col a,.gcf-col span{display:block;margin-bottom:var(--sp-3);color:var(--c-purple-ink);opacity:.78;
     font-size:var(--fs-base);font-weight:var(--fw-body);text-decoration:none;
     transition:opacity var(--dur-2) var(--ease),transform var(--dur-2) var(--ease)}
   .gcf-col a:hover,.gcf-col a:focus-visible{opacity:1;transform:translateX(var(--sp-1))}
   /* newsletter band */
   .gcf-news{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--sp-5);
     margin-top:var(--sp-8);padding-top:var(--sp-6);border-top:1px solid rgba(255,255,255,.14)}
-  .gcf-news-copy b{display:block;font-size:var(--fs-lg);font-weight:var(--fw-black);color:var(--c-bg)}
+  .gcf-news-copy b{display:block;font-size:var(--fs-lg);font-weight:var(--fw-black);color:var(--c-purple-ink)}
   .gcf-news-copy span{display:block;font-size:var(--fs-sm);font-weight:var(--fw-body);
-    color:var(--c-bg);opacity:.7;margin-top:var(--sp-1)}
+    color:var(--c-purple-ink);opacity:.7;margin-top:var(--sp-1)}
   .gcf-form{display:flex;gap:var(--sp-2);flex-wrap:wrap;align-items:center}
   .gcf-input{font-family:inherit;font-size:var(--fs-base);font-weight:var(--fw-body);
-    background:rgba(255,255,255,.08);color:var(--c-bg);border:1px solid rgba(255,255,255,.2);
+    background:rgba(255,255,255,.10);color:var(--c-purple-ink);border:1px solid rgba(255,255,255,.2);
     border-radius:var(--r-full);padding:var(--sp-3) var(--sp-5);min-width:230px;outline:none;
     transition:border-color var(--dur-2) var(--ease)}
-  .gcf-input::placeholder{color:var(--c-bg);opacity:.45}
+  .gcf-input::placeholder{color:var(--c-purple-ink);opacity:.45}
   .gcf-input:focus{border-color:var(--c-accent)}
   .gcf-sub{border:0;cursor:pointer;font-family:inherit;background:var(--c-accent);color:var(--c-accent-ink);
     font-weight:var(--fw-black);font-size:var(--fs-base);padding:var(--sp-3) var(--sp-6);
@@ -40,25 +41,33 @@
   .gcf-sub:active{transform:scale(.95)}
   .gcf-ok{flex-basis:100%;margin:var(--sp-2) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-bold);color:var(--c-accent)}
 
-  .gcf-hr{height:1px;background:var(--c-bg);opacity:.14;margin:var(--sp-8) 0 var(--sp-5)}
+  .gcf-hr{height:1px;background:var(--c-purple-ink);opacity:.14;margin:var(--sp-8) 0 var(--sp-5)}
   .gcf-bot{display:flex;flex-wrap:wrap;gap:var(--sp-3);justify-content:space-between;align-items:center}
-  .gcf-bot span{font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-bg);opacity:.6}
+  .gcf-bot span{font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-purple-ink);opacity:.6}
   .gcf-dot{display:inline-block;width:var(--sp-3);height:var(--sp-3);margin:0 var(--sp-2);
-    vertical-align:-1px;border-radius:var(--r-full);background:var(--c-bg);opacity:.4}
-  .gcf-mfg{margin:var(--sp-4) 0 0;font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-bg);opacity:.5;line-height:var(--lh-body)}
+    vertical-align:-1px;border-radius:var(--r-full);background:var(--c-purple-ink);opacity:.4}
+  .gcf-mfg{margin:var(--sp-4) 0 0;font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-purple-ink);opacity:.5;line-height:var(--lh-body)}
   @media(max-width:749px){
     .gcf-top{flex-direction:column;gap:var(--sp-6)}
+  }
+  @media(max-width:749px){
+    .gcf-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-6) var(--sp-5)}
+  }
+  @media(max-width:749px){
+    .gcf{padding:var(--sp-7) var(--gutter) var(--sp-5)}
   }
   @media (prefers-reduced-motion:reduce){
     .gcf-col a{transition:none}
   }
 </style>
 
+{%- assign gcf_edge = 'footer-in' -%}
+<div class="gcf-edge">{% render 'gc2-edge', id: gcf_edge, tone: '--c-purple', side: 'bottom' %}</div>
 <footer class="gcf">
   <div class="gcf-in">
     <div class="gcf-top">
       <div class="gcf-brand">
-        <img class="gcf-logo" src="{{ 'gc-wordmark-stack.png' | asset_url }}" alt="{{ shop.name }}" width="230" height="86" draggable="false" oncontextmenu="return false">
+        <img class="gcf-logo" src="{{ 'gc2-wordmark-white.png' | asset_url }}" alt="{{ shop.name }}" width="1200" height="520" draggable="false" oncontextmenu="return false">
         <p class="gcf-tag">{{ section.settings.tagline }}</p>
       </div>
 
