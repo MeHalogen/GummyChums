@@ -1,16 +1,17 @@
 /* ============ GummyChums brand layer — coming-soon vibe, pink-forward ============ */
 @font-face{font-family:'Manrope';src:url('Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
-html{background:#FDF7F4}
+html{background:#F8EBDF}
 
 :root{
-  --gc-ink:#191316;
-  --gc-cream:#FDF7F4;          /* warm pink-cream page ground */
+  --gc-ink:#000000;
+  --gc-cream:#F8EBDF;          /* warm cream ground — Brand Book v2 */
   --gc-white:#ffffff;
-  --gc-cherry:#DE1D61;         /* PRIMARY — pink */
+  --gc-cherry:#DE1D62;         /* PRIMARY — pink */
   --gc-cherry-dk:#b4144d;
-  --gc-cherry-soft:#FFE6EF;
-  --gc-mango:#8DAA31;
-  --gc-orange:#F9740D;
+  --gc-cherry-soft:#FBE3EC;
+  --gc-mango:#8DAA3D;
+  --gc-orange:#F47421;
+  --gc-purple:#592354;         /* NEW in v2 — structural, not decorative */
   --gc-radius:26px;
   --gc-ease:cubic-bezier(.22,.8,.26,1);
   --gc-spring:cubic-bezier(.34,1.56,.64,1);
@@ -19,11 +20,11 @@ html{background:#FDF7F4}
 /* ---- coming-soon flavour background: colour wash + floating blurred gummies ---- */
 .gc-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
   background:
-    radial-gradient(58vw 58vw at 0% 0%,   rgba(222,29,97,.30), transparent 60%),
-    radial-gradient(48vw 48vw at 100% 6%, rgba(141,170,49,.22), transparent 60%),
-    radial-gradient(54vw 54vw at 96% 100%,rgba(249,116,13,.28), transparent 60%),
-    radial-gradient(46vw 46vw at 2% 100%, rgba(222,29,97,.24), transparent 60%),
-    linear-gradient(180deg,#FFF4F8 0%,#FFF7F2 50%,#FFF3F7 100%)}
+    radial-gradient(58vw 58vw at 0% 0%,   rgba(222,29,98,.26), transparent 60%),
+    radial-gradient(48vw 48vw at 100% 6%, rgba(141,170,61,.22), transparent 60%),
+    radial-gradient(54vw 54vw at 96% 100%,rgba(244,116,33,.26), transparent 60%),
+    radial-gradient(46vw 46vw at 2% 100%, rgba(89,35,84,.20),   transparent 60%),
+    linear-gradient(180deg,#FBF0E6 0%,#F8EBDF 50%,#FAEEE6 100%)}
 /* Soft ambient gummies — heavily diffused so they never fight the content.
    Deliberately NOT animated: a blur this large has to be re-rasterised on every
    frame it moves, and four of them animating was the single biggest cause of
@@ -31,6 +32,18 @@ html{background:#FDF7F4}
 .gc-bg i{position:absolute;display:block;
   border-radius:46% 54% 52% 48%/48% 46% 54% 52%;
   filter:blur(44px);opacity:.34}
+
+/* Grain over the whole ground — the book calls for "grainy gradients and
+   tactile textures", and the smooth washes we had read as polished rather
+   than expressive. Tiled from a pre-rasterised asset; multiply keeps it
+   sitting in the colour rather than fogging it. */
+.gc-bg::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:var(--gc-grain);background-repeat:repeat;background-size:180px 180px;
+  opacity:.42;mix-blend-mode:multiply}
+
+/* The stepped edge motif — see snippets/gc2-edge.liquid */
+.gc2-edge{display:block;width:100%}
+.gc2-edge--top{transform:scaleY(-1)}
 /* light pool behind the type — subtle, keeps colour visible */
 .gc-bg::after{content:"";position:absolute;inset:0;
   background:radial-gradient(40vw 30vw at 50% 46%, rgba(255,248,251,.42), transparent 72%)}

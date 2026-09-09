@@ -28,26 +28,35 @@
   --ls-tight:-0.03em; --ls-normal:-0.01em; --ls-wide:0.18em;
   --fw-body:600; --fw-bold:700; --fw-black:800;
 
-  /* ---- colour BY ROLE ---- */
-  --c-bg:#FDFBF9;                 /* calm canvas                     */
-  --c-bg-warm:#FFF6F3;            /* subtle warm band                */
-  --c-surface:#FFFFFF;            /* cards, panels                   */
-  --c-ink:#191316;                /* primary text                    */
-  --c-ink-2:rgba(25,19,22,0.66);  /* secondary text                  */
-  --c-ink-3:rgba(25,19,22,0.42);  /* tertiary / meta                 */
-  --c-line:rgba(25,19,22,0.10);   /* hairlines                       */
+  /* ---- colour BY ROLE · Brand Book v2 (Sep 2026) ----
+     Exact values from the book's primary palette. The pink, olive and orange
+     moved by a hex digit or two; the real additions are PURPLE as a structural
+     colour and a warmer cream ground. */
+  --c-bg:#F8EBDF;                 /* warm cream ground — the book's neutral */
+  --c-bg-warm:#FDF4EC;            /* a half-step lighter, for banding       */
+  --c-surface:#FFFFFF;            /* cards, panels                          */
+  --c-ink:#000000;                /* primary text — true black per the book */
+  --c-ink-2:rgba(0,0,0,0.66);     /* secondary text                         */
+  --c-ink-3:rgba(0,0,0,0.42);     /* tertiary / meta                        */
+  --c-line:rgba(89,35,84,0.14);   /* hairlines — tinted purple, not grey    */
+
+  /* PURPLE — new in v2 and structural, not decorative. Carries dark panels,
+     the stepped edge motif, and headings that need weight without shouting. */
+  --c-purple:#592354;
+  --c-purple-soft:rgba(89,35,84,0.10);
+  --c-purple-ink:#F8EBDF;         /* cream reads better than white on it    */
 
   /* ACCENT — interactive & primary actions ONLY.
      Max one accent element per viewport region. */
-  --c-accent:#DE1D61;
+  --c-accent:#DE1D62;
   --c-accent-hover:#B4144D;
   --c-accent-ink:#FFFFFF;
-  --c-accent-soft:rgba(222,29,97,0.10);
+  --c-accent-soft:rgba(222,29,98,0.10);
 
   /* FLAVOUR — product identity ONLY, never chrome */
-  --c-cherry:#DE1D61; --c-cherry-soft:rgba(222,29,97,0.12);
-  --c-mango:#8DAA31;  --c-mango-soft:rgba(141,170,49,0.12);
-  --c-orange:#F9740D; --c-orange-soft:rgba(249,116,13,0.12);
+  --c-cherry:#DE1D62; --c-cherry-soft:rgba(222,29,98,0.12);
+  --c-mango:#8DAA3D;  --c-mango-soft:rgba(141,170,61,0.12);
+  --c-orange:#F47421; --c-orange-soft:rgba(244,116,33,0.12);
 
   /* ---- radii ---- */
   --r-sm:12px; --r-md:20px; --r-lg:28px; --r-full:999px;

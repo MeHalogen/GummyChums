@@ -7,23 +7,27 @@
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 <style>
-  .gcst{position:relative;overflow:hidden;background:var(--c-ink);color:var(--c-bg-warm);
+  .gcst{position:relative;overflow:hidden;background:var(--c-purple);color:var(--c-purple-ink);
     padding:clamp(var(--sp-8),7vw,var(--sp-10)) var(--gutter)}
   .gcst::before{content:"";position:absolute;inset:0;pointer-events:none;
     background:radial-gradient(52vw 52vw at 8% 0%, var(--c-accent-soft), transparent 60%)}
   .gcst::after{content:"";position:absolute;inset:0;pointer-events:none;
     background:radial-gradient(44vw 44vw at 96% 92%, var(--c-accent-soft), transparent 62%)}
   .gcst-in{position:relative;z-index:1;max-width:var(--container);margin-inline:auto}
+  /* stepped bands sit flush against the panel, peaks biting into the cream */
+  .gcst-edge{line-height:0;background:transparent}
+  .gcst-edge--in{margin-bottom:-1px}
+  .gcst-edge--out{margin-top:-1px}
 
   .gcst-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
     font-size:var(--fs-xs);color:var(--c-accent);margin:0;text-align:center}
 
   /* ---- beat 1 · the question ---- */
   .gcst-q{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
-    line-height:var(--lh-snug);color:var(--c-bg-warm);margin:var(--sp-4) auto 0;
+    line-height:var(--lh-snug);color:var(--c-purple-ink);margin:var(--sp-4) auto 0;
     max-width:20ch;text-align:center}
   .gcst-q em{font-style:normal;color:var(--c-accent)}
-  .gcst-lede{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-bg-warm);opacity:.82;
+  .gcst-lede{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-purple-ink);opacity:.82;
     margin:var(--sp-5) auto 0;max-width:52ch;text-align:center;line-height:var(--lh-body)}
 
   /* ---- beat 2 · why "chums" ---- */
@@ -32,24 +36,24 @@
     background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
   .gcst-name h3{font-size:var(--fs-xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
     color:var(--c-accent);margin:0 0 var(--sp-4)}
-  .gcst-name p{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-bg-warm);
+  .gcst-name p{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-purple-ink);
     opacity:.85;margin:0;line-height:var(--lh-body)}
   .gcst-name b{display:block;margin-top:var(--sp-4);font-size:var(--fs-lg);font-weight:var(--fw-black);
-    color:var(--c-bg-warm);opacity:1}
+    color:var(--c-purple-ink);opacity:1}
 
   /* ---- beat 3 · what we're not ---- */
   .gcst-diff{margin:clamp(var(--sp-8),6vw,var(--sp-9)) auto 0;max-width:760px}
   .gcst-diff h3{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
-    color:var(--c-bg-warm);margin:0 0 var(--sp-6);text-align:center}
+    color:var(--c-purple-ink);margin:0 0 var(--sp-6);text-align:center}
   .gcst-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:var(--sp-4);
     padding:var(--sp-4) 0;border-bottom:1px solid rgba(255,255,255,.1)}
   .gcst-row:last-child{border-bottom:0}
   @media(max-width:599px){.gcst-row{grid-template-columns:1fr;gap:var(--sp-2);text-align:center}}
-  .gcst-not{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-bg-warm);
+  .gcst-not{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-purple-ink);
     opacity:.45;text-align:right;margin:0}
   @media(max-width:599px){.gcst-not{text-align:center}}
   .gcst-arrow{color:var(--c-accent);font-weight:var(--fw-black);font-size:var(--fs-base)}
-  .gcst-is{font-size:var(--fs-base);font-weight:var(--fw-black);color:var(--c-bg-warm);margin:0}
+  .gcst-is{font-size:var(--fs-base);font-weight:var(--fw-black);color:var(--c-purple-ink);margin:0}
 
   /* ---- beat 4 · values ---- */
   .gcst-vals{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--sp-3);
@@ -60,27 +64,32 @@
     text-align:center}
   .gcst-val b{display:block;font-size:var(--fs-base);font-weight:var(--fw-black);
     color:var(--c-accent);margin-bottom:var(--sp-2)}
-  .gcst-val span{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-bg-warm);
+  .gcst-val span{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-purple-ink);
     opacity:.78;line-height:var(--lh-snug)}
 
   /* ---- beat 5 · who the chums are ---- */
   .gcst-who{margin:clamp(var(--sp-8),6vw,var(--sp-9)) auto 0;text-align:center;max-width:60ch}
   .gcst-who h3{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
-    color:var(--c-bg-warm);margin:0 0 var(--sp-5)}
+    color:var(--c-purple-ink);margin:0 0 var(--sp-5)}
   .gcst-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2);justify-content:center}
   .gcst-chips span{background:rgba(255,255,255,.08);border-radius:var(--r-full);
     padding:var(--sp-2) var(--sp-4);font-size:var(--fs-sm);font-weight:var(--fw-bold);
-    color:var(--c-bg-warm);border:1px solid rgba(255,255,255,.12)}
+    color:var(--c-purple-ink);border:1px solid rgba(255,255,255,.12)}
 
   /* ---- beat 6 · manifesto ---- */
   .gcst-end{margin:clamp(var(--sp-8),7vw,var(--sp-10)) auto 0;text-align:center;max-width:34ch}
   .gcst-end p{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
-    line-height:var(--lh-snug);color:var(--c-bg-warm);margin:0}
+    line-height:var(--lh-snug);color:var(--c-purple-ink);margin:0}
   .gcst-end p em{font-style:normal;color:var(--c-accent)}
   .gcst-end small{display:block;font-size:var(--fs-base);font-weight:var(--fw-body);
-    color:var(--c-bg-warm);opacity:.7;margin-top:var(--sp-5);line-height:var(--lh-body)}
+    color:var(--c-purple-ink);opacity:.7;margin-top:var(--sp-5);line-height:var(--lh-body)}
 </style>
 
+{%- comment -%} pre-assigned ids: {% render %} does not evaluate filters {%- endcomment -%}
+{%- assign edge_top = 'story-top' -%}
+{%- assign edge_bot = 'story-bot' -%}
+
+<div class="gcst-edge gcst-edge--in">{% render 'gc2-edge', id: edge_top, tone: '--c-purple', side: 'bottom' %}</div>
 <section class="gcst" id="gc-story">
   <div class="gcst-in">
 
@@ -135,6 +144,7 @@
 
   </div>
 </section>
+<div class="gcst-edge gcst-edge--out">{% render 'gc2-edge', id: edge_bot, tone: '--c-purple', side: 'top' %}</div>
 
 {% schema %}
 {

@@ -1,0 +1,52 @@
+{%- comment -%}
+  The stepped-edge motif from Brand Book v2 — the zigzag that runs along page
+  edges throughout the book. A traditional textile/temple border redrawn in
+  pixel steps, and the strongest single device in the new identity.
+
+  Drawn as an SVG <pattern> so it TILES rather than stretching: one peak repeats
+  across whatever width the element is. No viewBox and no preserveAspectRatio —
+  stretching would round off the steps and lose the whole point of the motif.
+
+  The band's height is derived from the pattern height rather than passed in.
+  They have to match exactly: if the band is taller than one pattern unit a
+  second row of peaks bleeds in underneath, which reads as a dense zigzag
+  texture instead of a single clean edge.
+
+  Params:
+    id     (required) unique per instance. SVG ids collide otherwise, and a
+           duplicate silently makes every later band reuse the first colour.
+           MUST be pre-assigned — {% render %} does not evaluate filters.
+    tone   colour token name, default '--c-purple'
+    side   'bottom' (peaks point down into the page, the book's usual) or 'top'
+    scale  size of one peak. 1 = 40x20px. Default 3 (120x60), which is roughly
+           the proportion the book uses across a slide.
+
+  Usage:
+    {%- assign eid = 'hero-top' -%}
+    {% render 'gc2-edge', id: eid, tone: '--c-orange', side: 'bottom' %}
+{%- endcomment -%}
+
+{%- assign tone  = tone  | default: '--c-purple' -%}
+{%- assign side  = side  | default: 'bottom' -%}
+{%- assign scale = scale | default: 3 -%}
+
+{%- assign unit_w = 40 | times: scale -%}
+{%- assign unit_h = 20 | times: scale -%}
+
+{%- comment -%}
+  One peak: rises in five 4-unit steps to a point, falls in five. Kept on a
+  whole-number grid so the steps stay crisp at any scale.
+{%- endcomment -%}
+{%- assign step_path = 'M0 20 L0 16 L4 16 L4 12 L8 12 L8 8 L12 8 L12 4 L16 4 L16 0 L20 0 L20 4 L24 4 L24 8 L28 8 L28 12 L32 12 L32 16 L36 16 L36 20 Z' -%}
+
+<svg class="gc2-edge gc2-edge--{{ side }}" width="100%" height="{{ unit_h }}"
+     aria-hidden="true" focusable="false" role="presentation">
+  <defs>
+    <pattern id="gc2step-{{ id }}" width="{{ unit_w }}" height="{{ unit_h }}" patternUnits="userSpaceOnUse">
+      <g transform="scale({{ scale }})">
+        <path d="{{ step_path }}" fill="var({{ tone }})"></path>
+      </g>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#gc2step-{{ id }})"></rect>
+</svg>

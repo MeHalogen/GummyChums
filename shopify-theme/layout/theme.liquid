@@ -333,6 +333,8 @@
 
     {%- comment -%} GummyChums design system: tokens must load first {%- endcomment -%}
     {{ 'gc-tokens.css' | asset_url | stylesheet_tag }}
+    {%- comment -%} grain tile lives as an asset; CSS can't resolve asset_url itself {%- endcomment -%}
+    <style>:root{--gc-grain:url("{{ 'gc2-grain.svg' | asset_url }}")}</style>
     {{ 'gc-brand.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'gc-brand.js' | asset_url }}" defer></script>
   </head>
