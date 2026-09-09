@@ -36,7 +36,10 @@ html{background:#FDF7F4}
   background:radial-gradient(40vw 30vw at 50% 46%, rgba(255,248,251,.42), transparent 72%)}
 
 /* smooth anchor scrolling + stop scroll-anchoring jumps */
-html{scroll-behavior:smooth;overflow-anchor:none}
+/* Belt and braces: nothing should ever scroll the page sideways. iOS is more
+   willing than desktop to expose a few px of overflow as a real scroll. */
+html{scroll-behavior:smooth;overflow-anchor:none;overflow-x:clip}
+body{overflow-x:clip;max-width:100%}
 
 /* ---- typography: bigger, tighter ---- */
 body{

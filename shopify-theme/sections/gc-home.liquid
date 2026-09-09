@@ -1,12 +1,16 @@
 {%- comment -%} GummyChums homepage — coming-soon vibe, pink-forward, scroll fall-in kept {%- endcomment -%}
 {%- assign s = section.settings -%}
 <style>
-  .gc-home{margin:0 calc(var(--gutter) * -1);overflow-x:clip;color:var(--c-ink)}
+  /* No negative margin: it made this element wider than the viewport, which iOS
+     turns into a horizontal scroll. Sections handle their own gutters. */
+  .gc-home{overflow-x:clip;color:var(--c-ink)}
   .gc-home *{box-sizing:border-box}
   .gc-wrap{max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter)}
 
   /* ---------- ACT 1 — hero + scroll fall-in ---------- */
   .gh-stage{position:relative;height:200vh}
+  /* shorter pin on phones — 200vh of nothing moving reads as a frozen page */
+  @media(max-width:749px){.gh-stage{height:150vh}}
   /* transparent so the global fixed flavour background shows through — nothing to repaint */
   .gh-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
     background:transparent;contain:paint;padding-bottom:4vh}
@@ -34,17 +38,25 @@
   .gh-c3{width:clamp(105px,13vw,190px);right:3%;bottom:14%;animation-duration:8s;animation-delay:-4s}
   .gh-c4{width:clamp(70px,8vw,118px);left:11%;bottom:12%;animation-duration:10s;animation-delay:-6s}
   @keyframes ghDrift{from{transform:translate3d(0,0,0) rotate(-6deg)}to{transform:translate3d(0,-24px,0) rotate(6deg)}}
-  @media(max-width:900px){.gh-c2,.gh-c4{display:none}
-    .gh-c1{width:110px;left:-2%;top:11%}.gh-c3{width:100px;right:-2%;bottom:17%}}
+  @media(max-width:900px){.gh-c2,.gh-c4{display:none}}
+  /* bled off the edges — on a narrow screen they were landing on the eyebrow
+     chip and the CTA row */
+  @media(max-width:900px){.gh-c1{width:96px;left:-9%;top:6%}}
+  @media(max-width:900px){.gh-c3{width:88px;right:-9%;bottom:9%}}
 
   /* ---- rotated sticker badges ---- */
-  .gh-stick{position:absolute;z-index:3;font-weight:var(--fw-black);font-size:var(--fs-xs);letter-spacing:var(--ls-wide);
+  .gh-stick{position:absolute;z-index:3;opacity:calc(1 - var(--z,0) * 2.7);font-weight:var(--fw-black);font-size:var(--fs-xs);letter-spacing:var(--ls-wide);
     background:var(--c-surface);color:var(--c-ink);padding:var(--sp-2) var(--sp-4);border-radius:var(--r-full);white-space:nowrap;
     box-shadow:0 4px 0 var(--c-ink);border:2px solid var(--c-ink)}
   .gh-s1{left:7%;top:38%;transform:rotate(-9deg);background:var(--c-mango-soft)}
   .gh-s2{right:8%;top:44%;transform:rotate(8deg);background:var(--c-orange-soft)}
   .gh-s3{left:14%;bottom:26%;transform:rotate(5deg);background:var(--c-cherry-soft)}
-  @media(max-width:900px){.gh-s1{left:2%;top:30%}.gh-s2{right:2%;top:auto;bottom:30%}.gh-s3{display:none}}
+  /* Hidden on phones, not repositioned. There is no clear space left: the hero
+     already carries an eyebrow chip, wordmark, headline, subline, two CTAs and a
+     scroll hint, and every position tried collided with one of them or with a
+     floating gummy. Nothing is lost — the marquee above states all three claims
+     on every page. */
+  @media(max-width:749px){.gh-stick{display:none}}
 
   .gh-mid{position:relative;z-index:2;text-align:center;padding:0 var(--sp-5);
     opacity:calc(1 - var(--z,0) * 2.7);will-change:opacity}
@@ -158,7 +170,7 @@
 
       <div class="gh-mid">
         <span class="gh-eyebrow">{{ s.eyebrow }}</span>
-        <img class="gh-logo" src="{{ 'gc-wordmark-stack.png' | asset_url }}" alt="{{ shop.name }}" width="680" height="254" draggable="false" oncontextmenu="return false">
+        <img class="gh-logo" fetchpriority="high" decoding="async" src="{{ 'gc-wordmark-stack.png' | asset_url }}" alt="{{ shop.name }}" width="680" height="254" draggable="false" oncontextmenu="return false">
         <h1 class="gh-tag">{{ s.headline | replace: '[', '<mark>' | replace: ']', '</mark>' }}</h1>
         <p class="gh-sub">{{ s.sub }}</p>
         <div class="gh-cta">

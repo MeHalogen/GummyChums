@@ -3,7 +3,7 @@
   /* quiet marquee — a detail, not a shouting band */
   .gch-bar{background:var(--c-ink);color:var(--c-bg);overflow:hidden;padding:var(--sp-2) 0}
   .gch-bar .trk{display:inline-flex;white-space:nowrap;font-weight:var(--fw-bold);text-transform:uppercase;
-    font-size:var(--fs-sm);letter-spacing:var(--ls-wide);opacity:.92;animation:gchScroll 70s linear infinite}
+    font-size:var(--fs-sm);letter-spacing:var(--ls-wide);opacity:.92;animation:gchScroll 40s linear infinite}
   .gch-bar .trk span{padding:0 var(--sp-4)}
   @keyframes gchScroll{to{transform:translateX(-50%)}}
 
@@ -78,7 +78,7 @@
 
 {%- if section.settings.show_bar -%}
 <div class="gch-bar" aria-hidden="true"><div class="trk">
-  {%- for i in (1..8) -%}<span>{{ section.settings.bar_text }}</span>{%- endfor -%}
+  {%- for i in (1..4) -%}<span>{{ section.settings.bar_text }}</span>{%- endfor -%}
 </div></div>
 {%- endif -%}
 
