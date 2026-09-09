@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "gc_story": { "type": "gc-story", "settings": {} },
+    "gc_quality": { "type": "gc-quality", "settings": {} }
+  },
+  "order": ["gc_story", "gc_quality"]
+}

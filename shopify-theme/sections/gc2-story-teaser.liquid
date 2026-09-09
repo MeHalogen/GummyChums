@@ -1,0 +1,69 @@
+{%- comment -%}
+  Compact story block for the homepage.
+
+  The full story ran 3,238px — four phone screens, 27% of the entire page — and
+  made reaching the footer a chore. This keeps the hook (the founding question
+  and why the name) and sends people to /pages/story for the rest.
+
+  Keeps id="gc-story" so any older anchor links still land somewhere sensible.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+{%- assign edge_in = 'teaser-in' -%}
+{%- assign edge_out = 'teaser-out' -%}
+<style>
+  .gcts-edge{line-height:0;background:transparent}
+  .gcts-edge--in{margin-bottom:-1px}
+  .gcts-edge--out{margin-top:-1px}
+
+  .gcts{position:relative;overflow:hidden;background:var(--c-purple);color:var(--c-purple-ink);
+    padding:clamp(var(--sp-7),5vw,var(--sp-8)) var(--gutter)}
+  .gcts::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(46vw 46vw at 12% 0%, var(--c-accent-soft), transparent 62%)}
+  .gcts-in{position:relative;z-index:1;max-width:var(--container);margin-inline:auto;text-align:center}
+
+  .gcts-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
+    font-size:var(--fs-xs);color:var(--c-accent);margin:0}
+  .gcts h2{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    line-height:var(--lh-snug);color:var(--c-purple-ink);margin:var(--sp-4) auto 0;max-width:22ch}
+  .gcts h2 em{font-style:normal;color:var(--c-accent)}
+  .gcts-body{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-purple-ink);
+    opacity:.82;margin:var(--sp-4) auto 0;max-width:48ch;line-height:var(--lh-body)}
+
+  .gcts-cta{display:inline-flex;align-items:center;gap:var(--sp-2);margin-top:var(--sp-6);
+    font-family:inherit;font-weight:var(--fw-black);font-size:var(--fs-base);text-decoration:none;
+    color:var(--c-purple-ink);padding:var(--sp-3) var(--sp-6);border-radius:var(--r-full);
+    box-shadow:inset 0 0 0 2px var(--c-purple-ink);
+    transition:background var(--dur-2) var(--ease),color var(--dur-2) var(--ease)}
+  .gcts-cta:hover{background:var(--c-purple-ink);color:var(--c-purple)}
+  .gcts-cta span{transition:transform var(--dur-2) var(--ease);display:inline-block}
+  .gcts-cta:hover span{transform:translateX(4px)}
+
+  @media (prefers-reduced-motion:reduce){.gcts-cta,.gcts-cta span{transition:none}}
+</style>
+
+<div class="gcts-edge gcts-edge--in">{% render 'gc2-edge', id: edge_in, tone: '--c-purple', side: 'bottom' %}</div>
+<section class="gcts" id="gc-story">
+  <div class="gcts-in gc-rise">
+    <p class="gcts-kick">{{ s.kicker }}</p>
+    <h2>{{ s.headline | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
+    <p class="gcts-body">{{ s.body }}</p>
+    <a class="gcts-cta" href="{{ s.link }}">{{ s.cta }} <span>→</span></a>
+  </div>
+</section>
+<div class="gcts-edge gcts-edge--out">{% render 'gc2-edge', id: edge_out, tone: '--c-purple', side: 'top' %}</div>
+
+{% schema %}
+{
+  "name": "GummyChums Story Teaser",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Why we exist" },
+    { "type": "textarea", "id": "headline", "label": "Headline (use [ ] for pink)",
+      "default": "Wellness became a [checklist]. We made it a treat." },
+    { "type": "textarea", "id": "body", "label": "Body",
+      "default": "A chum is the friend who reminded you, shared their lunch, called after a bad day — and never made it feel like work. That’s the job we gave ourselves." },
+    { "type": "text", "id": "cta", "label": "CTA label", "default": "Read our story" },
+    { "type": "text", "id": "link", "label": "CTA link", "info": "Type \"url\" is not used here because Shopify rejects a default on url settings.", "default": "/pages/story" }
+  ],
+  "presets": [{ "name": "GummyChums Story Teaser" }]
+}
+{% endschema %}

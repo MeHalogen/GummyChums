@@ -9,7 +9,7 @@
       }
     },
     "gc_story": {
-      "type": "gc-story",
+      "type": "gc2-story-teaser",
       "settings": {}
     },
     "gc_reel": {
