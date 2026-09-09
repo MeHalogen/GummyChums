@@ -30,16 +30,18 @@ Verified end to end on a real checkout: one Melatonin totals **₹748.00** (₹6
 
 ---
 
-### R6. New brand book — character assets & timing 🔴
+### R6. New brand book — character assets & timing 🟢 mostly resolved
 
-Priyal sent a new brand book on 9 Sep. It's a **visual** pivot, not a strategic one — the story, voice and values match the site exactly. What's new: two illustrated characters, purple `#592354`, a pixel-stepped border motif, grain texture, and NaN Jaune as the display face. Three of the four primary colours are already on the site to within a hex digit.
+Priyal sent a new brand book on 9 Sep. It's a **visual** pivot, not a strategic one — the story, voice and values match the site exactly. What's new: three illustrated characters, purple `#592354`, a pixel-stepped border motif, grain texture, and NaN Jaune as the display face. Three of the four primary colours were already on the site to within a hex digit.
 
 Full spec in [`REBRAND-PLAN.md`](REBRAND-PLAN.md).
 
-**Need from her / the designer:**
-1. **Character source files** — transparent PNG at 2x, or SVG. The PDF has them flattened into full-page images, so they can't be extracted.
-2. **NaN Jaune woff2** once the licence is bought.
-3. **A decision on timing** — a full rebrand is 5–7 days *with assets in hand*, and none are. Launch is 10 days away with the payment gateway still blocking. Recommendation: launch on the current design, land the rebrand straight after.
+**✅ Character source files — received 9 Sep** (`gc/Characters`). Three figures, true vector SVG, no embedded images, ~21 KB each over the wire. They are now the hero of the rebrand theme: two flanking the wordmark on the homepage, the third standing on the purple story panel. Also received: the wordmark in all six brand colours, which replaced a CSS filter that had been tinting the logo rather than recolouring it.
+
+**Still open:**
+1. **NaN Jaune woff2 once the licence is bought.** The folder contains `NaNJauneTRIAL-MaxiMedium…ttf`. **We have not put it on the site**, and shouldn't: NaN's trial fonts are licensed for testing and mockups, not for web embedding on a live commercial store — the file is served publicly, so it is a real licence breach rather than a technicality. The site stays on Manrope until the paid web licence lands. See item 9.
+2. **A decision on timing** — the rebrand now has its assets, so it's no longer blocked. It lives on an unpublished theme and can be published whenever Priyal approves the look. Recommendation is unchanged: launch on whichever design she's happy with, and don't let the rebrand hold the launch date.
+3. **Which character belongs to which product**, if she wants them used on the product pages. Our read: the girl with the "Brain Boosting" book → Brain Booster, the boy on his phone → Eye Care (screen time), the woman with the iced coffee → Melatonin. Worth her confirming rather than us guessing.
 
 ---
 
@@ -213,6 +215,8 @@ Three are now **live on the site** (Terms, Returns & Refunds, Shipping); Privacy
 ### 9. NaN Jaune font licence
 
 You confirmed you're buying the web licence. Send the files when you have them and we'll swap from the current Manrope fallback to the real brand typeface.
+
+The asset folder sent on 9 Sep contains the **trial** cut of NaN Jaune. Trial fonts are for testing and mockups — putting one on a live store publishes the font file to anyone who visits, which the trial licence doesn't allow. So we've left it out entirely rather than ship it and take it down later. Nothing is blocked; the site reads correctly on Manrope in the meantime.
 
 ---
 
