@@ -56,7 +56,18 @@ So "free over ₹999 but only under 1kg" cannot be built. The mutation failed cl
 
 **Priyal's absorbed cost per free order** (estimates until her rate card arrives): 2–3 packs ≈ ₹45–70 · 6 packs ≈ ₹65–95 · 9–10 packs ≈ ₹90–120.
 
-**Four options put to her:** (1) leave as-is · (2) same outcome, remove the dead ₹69/₹99 rates so checkout shows one option not two · (3) raise the threshold to ₹1,999 so weight tiers become live again · (4) drop free shipping entirely. **Recommended: 2** — at launch a second pouch is worth more than ₹50 of absorbed delivery.
+**Four options were put to her:** (1) leave as-is · (2) same outcome, remove the dead ₹69/₹99 rates so checkout shows one option not two · (3) raise the threshold to ₹1,999 · (4) drop free shipping entirely.
+
+**✅ Mehal chose Option 2 (9 Sep) and it is applied.** Nothing changed for the customer — only that checkout no longer shows two delivery options side by side.
+
+Implemented as a **price-based** Standard rate rather than by deleting the ₹69/₹99 rows. Deleting the rows would have left the ₹49 rate covering only 0–0.5 kg, so anything heavier than that but under ₹999 would have matched no rate at all and failed at checkout. Impossible at today's prices, but a cheaper future SKU or a bundle would open the hole. Both rates now key off order value, so coverage is complete by construction:
+
+| | Condition | Price |
+|---|---|---|
+| Standard Delivery | order ≤ ₹998.99 | ₹49 |
+| Free Delivery | order ≥ ₹999 | ₹0 |
+
+Verified across six baskets from ₹599 to ₹6,990 — **exactly one option shown every time**.
 
 
 ### R2. GST rate — needed from the CA 🔴
