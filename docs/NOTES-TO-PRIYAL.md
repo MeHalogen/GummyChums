@@ -2,11 +2,42 @@
 
 _The single parked list. Everything not-yet-done lives here: questions for Priyal, decisions taken on her behalf, and the tasks still on Mehal's plate. Nothing else should hold a to-do list._
 
-**Launch: 19 Sep 2026** · Last updated: 8 Sep 2026
+**Launch: 19 Sep 2026** · Last updated: 9 Sep 2026
 
 ---
 
 # PART 1 — For Priyal
+
+## ⚡ Priyal replied 9 Sep — what's settled, what's still open
+
+**Settled and actioned:**
+
+| Answer | Status |
+|---|---|
+| Prices **₹699 Melatonin · ₹599 Brain Booster · ₹599 Eye Care**, GST-inclusive | ✅ live on the store |
+| Shipping tiers ₹49 / ₹69 / ₹99 confirmed | ✅ already live |
+| Free shipping threshold **₹999** (not ₹699 — a single Melatonin shouldn't qualify) | ⬜ to add |
+| Reviews: **hide until genuine ones exist** | ✅ section disabled, content kept |
+| FSSAI: keep manufacturer's licence for now | ✅ unchanged |
+| Both KYCs started 9 Sep | ⏳ with her |
+| Photos + founder note coming | ⏳ with her |
+
+**Still open:** GST **rate** — her CA is confirming the slab, expected 10 Sep.
+
+### 🔴 One thing that can't wait for the CA
+
+Priyal settled *"we should definitely display the GST-inclusive price on the website"* — that's the **inclusive/exclusive** decision, and it's independent of what **rate** the CA lands on.
+
+The store is still set to **add** tax on top, so right now checkout shows:
+
+| Listed | Checkout charges |
+|---|---|
+| ₹699 | **₹824.82** |
+| ₹599 | **₹706.82** |
+
+**Fix now:** Settings → Taxes and duties → tick **"All prices include tax"**. That makes ₹699 mean ₹699. If the CA later says 12% instead of 18%, only the rate changes — the toggle stays on either way.
+
+---
 
 ## 📮 Round 2 — asked after the 8 Sep email
 
@@ -42,50 +73,19 @@ A fourth combination worth considering: **COD on, plus a small discount for prep
 
 ## 🔴 Blockers — needed before launch
 
-### 1. Prices and GST — one decision, not two
+### 1. GST rate — the only pricing item left
 
-All three products sit at **₹399**, which was placeholder test data from the original store setup — not a price anyone chose.
+Prices are set and live: **₹699 / ₹599 / ₹599, GST-inclusive** (her 9 Sep decision).
 
-**The real question isn't "what's the price", it's "is that what the customer pays, or what you keep?"** Those give very different numbers, because GST has to come from somewhere.
+**Still needed:** the GST **slab** her CA confirms — expected 10 Sep. Shopify currently assumes 18% (CGST 9% + SGST 9%). Also worth confirming whether **shipping charges** should carry GST; they currently don't.
 
-Shopify has GST at **18%** (CGST 9% + SGST 9%), applied automatically when the India market was created. Right now it's set to **add** tax on top of the listed price, so a live checkout today looks like this:
+Note the *inclusive* half of this is already decided and shouldn't wait on the CA — see the banner at the top of this file.
 
-> Melatonin Gummies ₹399 · Shipping ₹49 · **Estimated taxes ₹71.82** · **Total ₹519.82**
+### 2. Shipping — confirmed, one thing to build
 
-That contradicts the product page, which says **"Inclusive of all taxes"** — the customer sees ₹399 and is charged ₹470.82 for the gummies. That has to change before launch.
+Priyal confirmed the tiers on 9 Sep: **₹49** (1–3 packs) · **₹69** (4–6) · **₹99** (7+). She'll still send the real Shiprocket rate card to cross-check.
 
-**Three ways it can work.** One pouch, delivered, at the ₹49 shipping tier:
-
-| | Listed | GST | Shipping | **Customer pays** | **You keep** (per pouch) |
-|---|---|---|---|---|---|
-| **A. Price includes GST** *(recommended)* | ₹399 | ₹60.86 *(inside)* | ₹49 | **₹448** | **₹338.14** |
-| **B. GST added on top** *(current — contradicts the site)* | ₹399 | ₹71.82 *(added)* | ₹49 | **₹519.82** | ₹399.00 |
-| **C. Includes GST, priced to keep ~₹399** | ₹470 | ₹71.69 *(inside)* | ₹49 | **₹519** | ₹398.31 |
-
-**A** is the Indian norm — MRP on packaged goods is tax-inclusive, and it's what the site already promises. But note it takes **₹60.86 per pouch** out of what you keep versus the ₹399 you may have had in mind.
-
-**C** is A with the maths done backwards: if ₹399 is what you want to *keep*, the listed price needs to be about **₹470** (₹499 would keep ₹422.88).
-
-**B** is where the store sits today. It's legal, but showing ₹399 and charging ₹470.82 reads as a bait-and-switch and will cost you conversions.
-
-**Need from you:**
-1. **Should the listed price include GST, or be added at checkout?** (We recommend included.)
-2. **What should each of the three products be listed at** — and is that number what the customer pays, or what you keep?
-3. **Is 18% the right GST slab?** Please confirm with your CA — Shopify assumed it. Nutraceuticals and food supplements fall into different slabs by classification, and a wrong rate is a filing problem, not just a display one. Also worth asking whether **shipping charges** should be taxed (currently they aren't).
-
-### 2. Shipping rates — provisional
-
-Checkout now works. Customers currently pay, by cart weight (each pouch is 0.15 kg):
-
-| Cart weight | Customer pays | Roughly |
-|---|---|---|
-| 0 – 0.5 kg | ₹49 | 1–3 packs |
-| 0.5 – 1 kg | ₹69 | 4–6 packs |
-| 1 kg + | ₹99 | 7+ packs |
-
-**These are our estimates, not yours** — they approximate Shiprocket's surface pricing so margin roughly holds.
-
-**Need:** your actual Shiprocket rate card, or a decision to keep these. Also worth deciding: a **free-shipping threshold** (e.g. free over ₹699) lifts average order value, but you'd absorb the courier cost on those orders. Currently not offered.
+**To add: free shipping over ₹999.** Her reasoning is sound — at a ₹699 top price, a ₹699 threshold would make a single Melatonin qualify and do nothing for basket size. ₹999 requires a second item.
 
 ---
 
@@ -105,23 +105,21 @@ Same shape of risk — **24–72 hours** to approve. Only you can do these:
 
 *(Full walkthrough in Part 3 below.)*
 
-### 5. Product photography
+### 5. Product photography ⏳ shoot being arranged
 
-Still using illustrated gummy graphics. They look good, but real photos convert better and are the biggest visual upgrade left. Ideally per flavour: pouch on a clean background, a loose-gummy shot, and one lifestyle/in-hand shot.
+Confirmed 9 Sep — pouch on a clean background, loose gummies, and a lifestyle shot per flavour. Send them over and we'll replace the illustrated placeholders and the social-share fallback in one pass.
 
-This also fixes social sharing — with no product photos, WhatsApp and Instagram shares currently fall back to the wordmark.
+### 6. Real customer reviews ✅ resolved — hidden until genuine
 
-### 6. Real customer reviews
+Priyal agreed on 9 Sep: no invented reviews. The section is **disabled** on the homepage; the sample content stays in the file so it can be switched back on in one line.
 
-The homepage now has a review wall, currently filled with **placeholder text, every card stamped "SAMPLE"**.
+**To re-enable:** collect 5–10 genuine reviews from early testers, replace the sample blocks in the theme editor, turn off the "Sample" badge, and set `disabled` to false in `templates/index.json`.
 
-⚠️ **These cannot go live as-is.** Publishing invented reviews as real customer feedback is deceptive and breaches Indian consumer-review rules (BIS IS 19000). The badges are deliberately loud so this can't ship unnoticed.
+### 7. Founder note ⏳ she's writing it
 
-**Options:** collect genuine reviews from early testers before launch; or launch with the section removed and add it once real reviews arrive. Either is fine — inventing them is not.
+Confirmed 9 Sep — photo, name and a short personal line. The slot is built and stays hidden until filled.
 
-### 7. Founder note
-
-The "Why we exist" section is text only. There's a slot ready for a **photo + one-line quote + your name** — it stays hidden until filled. Readers trust a face. Something in your own words about why you started Nirmay is all it needs.
+Worth knowing: the brand book names her personal arc (lactose intolerance, becoming vegetarian, a period of anxiety and medication) as the emotional root of "wellness shouldn't feel clinical". **We deliberately did not publish any of that** — it's her medical history and hers to share or not. If she wants it in, this is the place.
 
 ### 8. Legal review of the policies
 
@@ -176,7 +174,9 @@ Things still to do, or that need doing in the Shopify admin.
 | M1 | **COD — decide, then act** | Settings → Payments → Manual payment methods | ⏸ On hold pending Priyal (R1). The site advertises COD in four places; if the answer is no, that copy has to come out too |
 | M2 | **Privacy policy** — decide auto vs ours | Admin → Policies → Privacy | Terms, Refund and Shipping are **published and live**. Privacy is still Shopify's auto-managed one; ours names the actual processors (Shiprocket, Klaviyo, analytics) |
 | M3 | **Publish the theme** | Online Store → Themes → GummyChums Build → Publish | Still a draft, so "View Online Store" shows Dawn's Horizon theme |
-| M4 | **Payment gateway setup** | Settings → Payments | Follows Priyal's KYC (item 3) |
+| M4 | **Payment gateway setup** | Settings → Payments | Follows Priyal's KYC — she started it 9 Sep |
+| M14 | 🔴 **Turn on "All prices include tax"** | Settings → Taxes and duties | Prices are set as GST-inclusive but the store still adds 18% on top — ₹699 charges ₹824.82. Independent of the CA's rate answer |
+| M15 | **Free shipping over ₹999** | Settings → Shipping → India zone | Add a price-based rate: ₹0 when order ≥ ₹999 |
 
 ## 🟡 Before launch
 
@@ -288,3 +288,8 @@ On the real store while it's still password-protected:
 | 8 Sep 2026 | Checkout transit time **5–8 business days** (only 3–5 or 5–8 offered; 5–8 sits inside the site's 3–10) | Mehal |
 | 8 Sep 2026 | Launch reel added to the homepage as a video section | Mehal |
 | 8 Sep 2026 | Review wall built with **sample content, badged** until real reviews exist | Mehal |
+| 9 Sep 2026 | Prices **₹699 Melatonin · ₹599 Brain Booster · ₹599 Eye Care**, GST-inclusive | Priyal |
+| 9 Sep 2026 | Shipping tiers **₹49/₹69/₹99 confirmed**; free shipping at **₹999** (not ₹699 — a single Melatonin shouldn't qualify) | Priyal |
+| 9 Sep 2026 | Reviews **hidden until genuine** — no invented testimonials | Priyal |
+| 9 Sep 2026 | Both KYCs started | Priyal |
+| 9 Sep 2026 | Planned promos: 10% launch · up to 15% campaigns · 5% first-time welcome · bundles later | Priyal |
