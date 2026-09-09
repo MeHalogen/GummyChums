@@ -234,7 +234,7 @@ Things still to do, or that need doing in the Shopify admin.
 |---|---|---|---|
 | M1 | **COD — decide, then act** | Settings → Payments → Manual payment methods | ⏸ On hold pending Priyal (R1). The site advertises COD in four places; if the answer is no, that copy has to come out too |
 | M2 | **Privacy policy** — decide auto vs ours | Admin → Policies → Privacy | Terms, Refund and Shipping are **published and live**. Privacy is still Shopify's auto-managed one; ours names the actual processors (Shiprocket, Klaviyo, analytics) |
-| M3 | ~~Publish the theme~~ | — | ✅ done 9 Sep — store password also removed, site loads on the plain URL |
+| M3 | 🔴 **Publish the theme** | Online Store → Themes → GummyChums Build → ⋯ → Publish | Still `role: unpublished` — verified via `Shopify.theme`. The plain URL serves Horizon. Separately, the store password is still on (Online Store → Preferences → Restrict store access) |
 | M4 | **Payment gateway setup** | Settings → Payments | Follows Priyal's KYC — she started it 9 Sep |
 | M15 | **Discount codes** | Discounts | Drafted in R4 — awaiting Priyal's approval before creating |
 
