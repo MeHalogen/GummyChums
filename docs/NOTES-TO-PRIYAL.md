@@ -16,7 +16,7 @@ _The single parked list. Everything not-yet-done lives here: questions for Priya
 |---|---|
 | Prices **₹699 Melatonin · ₹599 Brain Booster · ₹599 Eye Care**, GST-inclusive | ✅ live on the store |
 | Shipping tiers ₹49 / ₹69 / ₹99 confirmed | ✅ already live |
-| Free shipping threshold **₹999** (not ₹699 — a single Melatonin shouldn't qualify) | ⬜ to add |
+| Free shipping threshold **₹999** (not ₹699 — a single Melatonin shouldn't qualify) | ✅ live & verified |
 | Reviews: **hide until genuine ones exist** | ✅ section disabled, content kept |
 | FSSAI: keep manufacturer's licence for now | ✅ unchanged |
 | Both KYCs started 9 Sep | ⏳ with her |
@@ -24,18 +24,52 @@ _The single parked list. Everything not-yet-done lives here: questions for Priya
 
 **Still open:** GST **rate** — her CA is confirming the slab, expected 10 Sep.
 
-### 🔴 One thing that can't wait for the CA
+### ✅ Tax-inclusive pricing is on and verified
 
-Priyal settled *"we should definitely display the GST-inclusive price on the website"* — that's the **inclusive/exclusive** decision, and it's independent of what **rate** the CA lands on.
+Verified end to end on a real checkout: one Melatonin totals **₹748.00** (₹699 + ₹49 shipping), with GST inside the price rather than added on top. The store no longer charges ₹824.82 for a ₹699 product.
 
-The store is still set to **add** tax on top, so right now checkout shows:
+---
 
-| Listed | Checkout charges |
-|---|---|
-| ₹699 | **₹824.82** |
-| ₹599 | **₹706.82** |
+## 📮 Round 3 — sent 9 Sep, awaiting reply
 
-**Fix now:** Settings → Taxes and duties → tick **"All prices include tax"**. That makes ₹699 mean ₹699. If the CA later says 12% instead of 18%, only the rate changes — the toggle stays on either way.
+### R2. GST rate — needed from the CA 🔴
+
+Prices are live and GST-inclusive. Shopify currently assumes **18%** (CGST 9% + SGST 9%), which it applied automatically. Nothing else is blocked by this, but the wrong rate is a filing problem rather than a display one, so it needs confirming before the first real order.
+
+**Need:** the slab the CA confirms for nutraceutical gummies.
+
+### R3. Should shipping charges carry GST? 🔴
+
+Separate setting, currently **off** — shipping is being charged with no GST on it. In India, shipping usually attracts GST at the same rate as the goods being shipped.
+
+**Need:** the CA's answer on this too. One checkbox either way.
+
+### R4. Discount codes — for approval before we create them
+
+Priyal mentioned a 10% launch discount, up to 15% for campaigns, a 5% first-time welcome code, and bundles later. Proposed setup below. **Nothing has been created yet.**
+
+| Code | What | When | Limits |
+|---|---|---|---|
+| `LAUNCH10` | 10% off everything | 19–30 Sep | One per customer, no minimum |
+| `WELCOME5` | 5% off first order | ongoing | One per customer, first order only |
+| *(campaign 15%)* | 15% off | per campaign | Held until a campaign is defined |
+
+**What each does to the margin** (GST-inclusive, at 18%):
+
+| | List | After discount | GST inside | **Priyal keeps** |
+|---|---|---|---|---|
+| Melatonin, no code | ₹699 | ₹699 | ₹106.63 | ₹592.37 |
+| Melatonin, `LAUNCH10` | ₹699 | ₹629.10 | ₹95.97 | **₹533.13** |
+| Melatonin, 15% campaign | ₹699 | ₹594.15 | ₹90.63 | **₹503.52** |
+| Brain/Eye, no code | ₹599 | ₹599 | ₹91.37 | ₹507.63 |
+| Brain/Eye, `LAUNCH10` | ₹599 | ₹539.10 | ₹82.24 | **₹456.86** |
+| Brain/Eye, 15% campaign | ₹599 | ₹509.15 | ₹77.67 | **₹431.48** |
+
+**Three things to decide:**
+
+1. **Should codes stack?** Recommend **no** — `LAUNCH10` + `WELCOME5` together would be ~15% off, which is campaign-level discounting given away by accident. Shopify lets us block combining.
+2. **Do codes stack with free shipping over ₹999?** Free shipping is a shipping rate rather than a discount, so it applies independently — a ₹1398 order with `LAUNCH10` pays ₹1258.20 and still ships free. Worth being deliberate about, since that's ~₹189 of discount plus ₹49 of absorbed shipping on one order.
+3. **Exact dates for `LAUNCH10`** — 19–30 Sep assumed.
 
 ---
 
@@ -173,10 +207,9 @@ Things still to do, or that need doing in the Shopify admin.
 |---|---|---|---|
 | M1 | **COD — decide, then act** | Settings → Payments → Manual payment methods | ⏸ On hold pending Priyal (R1). The site advertises COD in four places; if the answer is no, that copy has to come out too |
 | M2 | **Privacy policy** — decide auto vs ours | Admin → Policies → Privacy | Terms, Refund and Shipping are **published and live**. Privacy is still Shopify's auto-managed one; ours names the actual processors (Shiprocket, Klaviyo, analytics) |
-| M3 | **Publish the theme** | Online Store → Themes → GummyChums Build → Publish | Still a draft, so "View Online Store" shows Dawn's Horizon theme |
+| M3 | ~~Publish the theme~~ | — | ✅ done 9 Sep — store password also removed, site loads on the plain URL |
 | M4 | **Payment gateway setup** | Settings → Payments | Follows Priyal's KYC — she started it 9 Sep |
-| M14 | 🔴 **Turn on "All prices include tax"** | Settings → Taxes and duties | Prices are set as GST-inclusive but the store still adds 18% on top — ₹699 charges ₹824.82. Independent of the CA's rate answer |
-| M15 | **Free shipping over ₹999** | Settings → Shipping → India zone | Add a price-based rate: ₹0 when order ≥ ₹999 |
+| M15 | **Discount codes** | Discounts | Drafted in R4 — awaiting Priyal's approval before creating |
 
 ## 🟡 Before launch
 
