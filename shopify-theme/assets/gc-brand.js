@@ -15,18 +15,16 @@
     // kept to the edges — the centre column stays clean for type
     // 4 (was 7) — each blurred layer costs compositor memory
     var gummies = [
-      { l: '-4%', t: '10%', s: 230, c: '#DE1D61', o: .34, d: 20, dx: '26px',  dy: '-24px' },
-      { l: '86%', t: '4%',  s: 200, c: '#8DAA31', o: .26, d: 24, dx: '-22px', dy: '26px'  },
-      { l: '88%', t: '56%', s: 240, c: '#F9740D', o: .30, d: 22, dx: '-26px', dy: '-22px' },
-      { l: '-6%', t: '64%', s: 250, c: '#F9740D', o: .24, d: 26, dx: '24px',  dy: '22px'  }
+      { l: '-4%', t: '10%', s: 230, c: '#DE1D61', o: .34 },
+      { l: '86%', t: '4%',  s: 200, c: '#8DAA31', o: .26 },
+      { l: '88%', t: '56%', s: 240, c: '#F9740D', o: .30 },
+      { l: '-6%', t: '64%', s: 250, c: '#F9740D', o: .24 }
     ];
-    gummies.forEach(function (g, i) {
+    gummies.forEach(function (g) {
       var el = document.createElement('i');
       el.style.cssText =
         'left:' + g.l + ';top:' + g.t + ';width:' + g.s + 'px;height:' + g.s + 'px;' +
-        'background:' + g.c + ';opacity:' + g.o + ';' +
-        'animation-duration:' + g.d + 's;animation-delay:' + (-i * 2.5) + 's;' +
-        '--dx:' + g.dx + ';--dy:' + g.dy + ';';
+        'background:' + g.c + ';opacity:' + g.o + ';';
       bg.appendChild(el);
     });
 
@@ -49,9 +47,18 @@
     // Set the transform directly in the handler. Browsers already coalesce
     // pointermove to one event per frame, so a rAF loop only adds latency and
     // burns the main thread while idle.
+    //
+    // The hover test is throttled separately: closest() walks every ancestor of
+    // the target, and running that on each of 60-120 events per second was
+    // making the cursor itself feel laggy. Position stays per-frame smooth;
+    // only the grow-on-hover check is sampled.
+    var lastHotCheck = 0, HOT_MS = 100;
     addEventListener('pointermove', function (e) {
       c.style.transform = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0) translate(-50%,-50%)';
       if (!c.classList.contains('on')) c.classList.add('on');
+      var now = e.timeStamp || performance.now();
+      if (now - lastHotCheck < HOT_MS) return;
+      lastHotCheck = now;
       var hot = e.target.closest && e.target.closest('a,button,input,summary,[role="button"],.gc-card');
       c.classList.toggle('big', !!hot);
     }, { passive: true });
@@ -126,7 +133,7 @@
       entries.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
       });
-    }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px 18% 0px' });
     els.forEach(function (el) { io.observe(el); });
     // failsafe: never leave content hidden
     addEventListener('load', function () {
