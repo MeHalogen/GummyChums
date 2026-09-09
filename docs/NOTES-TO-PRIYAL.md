@@ -30,6 +30,19 @@ Verified end to end on a real checkout: one Melatonin totals **₹748.00** (₹6
 
 ---
 
+### R6. New brand book — character assets & timing 🔴
+
+Priyal sent a new brand book on 9 Sep. It's a **visual** pivot, not a strategic one — the story, voice and values match the site exactly. What's new: two illustrated characters, purple `#592354`, a pixel-stepped border motif, grain texture, and NaN Jaune as the display face. Three of the four primary colours are already on the site to within a hex digit.
+
+Full spec in [`REBRAND-PLAN.md`](REBRAND-PLAN.md).
+
+**Need from her / the designer:**
+1. **Character source files** — transparent PNG at 2x, or SVG. The PDF has them flattened into full-page images, so they can't be extracted.
+2. **NaN Jaune woff2** once the licence is bought.
+3. **A decision on timing** — a full rebrand is 5–7 days *with assets in hand*, and none are. Launch is 10 days away with the payment gateway still blocking. Recommendation: launch on the current design, land the rebrand straight after.
+
+---
+
 ## 📮 Round 3 — sent 9 Sep, awaiting reply
 
 ### R5. Delivery charges — the ₹69/₹99 tiers are unreachable 🔴
