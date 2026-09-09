@@ -32,6 +32,33 @@ Verified end to end on a real checkout: one Melatonin totals **₹748.00** (₹6
 
 ## 📮 Round 3 — sent 9 Sep, awaiting reply
 
+### R5. Delivery charges — the ₹69/₹99 tiers are unreachable 🔴
+
+**Tested on the live store with real carts.** Because products are ₹599–₹699, two packs already exceed the ₹999 free-shipping threshold — so only **single-pack orders ever pay for delivery**.
+
+| Basket | Packs | Weight | Value | Customer pays |
+|---|---|---|---|---|
+| 1 Melatonin | 1 | 0.15 kg | ₹699 | ₹49 |
+| 1 Brain Booster | 1 | 0.15 kg | ₹599 | ₹49 |
+| Melatonin + Brain | 2 | 0.30 kg | ₹1,298 | **₹0** |
+| All three | 3 | 0.45 kg | ₹1,897 | **₹0** |
+| 2 of each | 6 | 0.90 kg | ₹3,794 | **₹0** |
+| 3 of each | 9 | 1.35 kg | ₹5,691 | **₹0** |
+| 10 packs | 10 | 1.50 kg | ₹6,990 | **₹0** |
+
+An order must reach ~4 packs to leave the 0–0.5 kg band, but only 2 packs to clear ₹999. So the ₹69 and ₹99 rates are **structurally unreachable** — they exist but can never be charged.
+
+**Weight cap is impossible.** Tested `deliveryProfileUpdate` with both a price and a weight condition on one rate; Shopify rejects it:
+
+> *"Method definition cannot save conditions with different fields (total_weight and total_price)."*
+
+So "free over ₹999 but only under 1kg" cannot be built. The mutation failed cleanly — no stray rate was created.
+
+**Priyal's absorbed cost per free order** (estimates until her rate card arrives): 2–3 packs ≈ ₹45–70 · 6 packs ≈ ₹65–95 · 9–10 packs ≈ ₹90–120.
+
+**Four options put to her:** (1) leave as-is · (2) same outcome, remove the dead ₹69/₹99 rates so checkout shows one option not two · (3) raise the threshold to ₹1,999 so weight tiers become live again · (4) drop free shipping entirely. **Recommended: 2** — at launch a second pouch is worth more than ₹50 of absorbed delivery.
+
+
 ### R2. GST rate — needed from the CA 🔴
 
 Prices are live and GST-inclusive. Shopify currently assumes **18%** (CGST 9% + SGST 9%), which it applied automatically. Nothing else is blocked by this, but the wrong rate is a filing problem rather than a display one, so it needs confirming before the first real order.
