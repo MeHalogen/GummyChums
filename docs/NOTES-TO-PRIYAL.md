@@ -113,13 +113,13 @@ Prices are set and live: **₹699 / ₹599 / ₹599, GST-inclusive** (her 9 Sep 
 
 **Still needed:** the GST **slab** her CA confirms — expected 10 Sep. Shopify currently assumes 18% (CGST 9% + SGST 9%). Also worth confirming whether **shipping charges** should carry GST; they currently don't.
 
-Note the *inclusive* half of this is already decided and shouldn't wait on the CA — see the banner at the top of this file.
+The *inclusive* half is done and verified — see the banner at the top of this file. Only the rate is outstanding.
 
-### 2. Shipping — confirmed, one thing to build
+### 2. Shipping ✅ done — rate card still welcome
 
-Priyal confirmed the tiers on 9 Sep: **₹49** (1–3 packs) · **₹69** (4–6) · **₹99** (7+). She'll still send the real Shiprocket rate card to cross-check.
+Tiers confirmed and live: **₹49** (1–3 packs) · **₹69** (4–6) · **₹99** (7+), plus **free shipping over ₹999**. Verified: a ₹699 cart still pays ₹49; a ₹1398 cart ships free.
 
-**To add: free shipping over ₹999.** Her reasoning is sound — at a ₹699 top price, a ₹699 threshold would make a single Melatonin qualify and do nothing for basket size. ₹999 requires a second item.
+Priyal will still send the real Shiprocket rate card so we can cross-check the tiers against her actual costs.
 
 ---
 
