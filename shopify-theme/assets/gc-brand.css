@@ -116,6 +116,14 @@ p,li,a,span,div,button,input,label{font-family:'Manrope',system-ui,sans-serif}
 .gc-rise{opacity:0;transform:translateY(12px);transition:opacity .32s var(--gc-ease),transform .32s var(--gc-ease)}
 .gc-rise.in{opacity:1;transform:none}
 
+/* Product cards get a springier entrance than plain copy — they scale up as
+   well as rise, on the overshoot curve, so they arrive with a bit of bounce.
+   Deliberately NOT a pinned/scroll-driven effect: the page keeps scrolling
+   normally throughout, which is what stops it reading as a frozen screen. */
+.gc-pop{opacity:0;transform:translateY(20px) scale(.93);
+  transition:opacity .34s var(--gc-ease),transform .46s var(--gc-spring)}
+.gc-pop.in{opacity:1;transform:none}
+
 /* ---- cards ---- */
 .gc-card{background:var(--gc-white);border-radius:var(--gc-radius);padding:20px;
   box-shadow:0 26px 54px -34px rgba(25,19,22,.4);
@@ -124,6 +132,6 @@ p,li,a,span,div,button,input,label{font-family:'Manrope',system-ui,sans-serif}
 
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001s !important;transition-duration:.001s !important}
-  .gc-rise{opacity:1;transform:none}
+  .gc-rise,.gc-pop{opacity:1;transform:none}
   .gc-ripple,.gc-splash{display:none}
 }

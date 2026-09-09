@@ -123,7 +123,7 @@
 
   /* ---------- reveal on scroll ---------- */
   function initReveal() {
-    var els = document.querySelectorAll('.gc-rise');
+    var els = document.querySelectorAll('.gc-rise,.gc-pop');
     if (!els.length) return;
     if (!('IntersectionObserver' in window) || reduce) {
       els.forEach(function (el) { el.classList.add('in'); });
