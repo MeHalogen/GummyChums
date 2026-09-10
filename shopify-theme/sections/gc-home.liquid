@@ -45,16 +45,37 @@
      0,1,1 and `.gh-gummy` only 0,1,0. This element is DELIBERATELY empty — the
      whole gummy is one CSS gradient now — so the selector is qualified to clear
      that bar. Same reason the reduced-motion rule below is qualified: it has to
-     out-specify this one in turn. */
-  .gh-pin .gh-gummy{display:block;position:absolute;left:50%;top:50%;width:min(22vw,150px);aspect-ratio:1;z-index:1;
+     out-specify this one in turn.
+
+     TIMING. The point of this element is that it fills the screen and the words
+     land ON it. It used to reach full coverage around z=0.78 while the reveal was
+     already fully opaque at 0.66 — so the text arrived over the cream background
+     with a pink ball still climbing underneath it. The three phases are now
+     ordered properly and each is given room:
+
+       0    → 0.37   hero copy fades out
+       0.37 → 0.45   gummy finishes rising and covers the screen
+       0.48 → 0.62   WHAT'S INSIDE? fades in, on solid pink
+       0.62 → 1.00   held there — about 185px of scrolling to read it
+
+     Sized in vmax and capped rather than scaled without limit. Coverage needs a
+     circle as wide as the viewport DIAGONAL, and the diagonal-to-vmax ratio is
+     worst on a square-ish window: 1.414, against 1.0 for a very tall or very
+     wide one. So the cap is set for the square case (11vmax x 13 = 1.43vmax,
+     just past the 1.414 it needs) and every other shape clears it easily —
+     a phone only needs ~10x, and gets there by z=0.39.
+
+     Capping also stops the raster growing forever. Peak is ~1,157px on a phone
+     where it used to be 1,733 — under half the pixels to rasterise. */
+  .gh-pin .gh-gummy{display:block;position:absolute;left:50%;top:50%;width:11vmax;aspect-ratio:1;z-index:1;
     border-radius:50%;backface-visibility:hidden;transform-origin:50% 50%;
     background:radial-gradient(circle at 36% 30%,
       color-mix(in srgb, var(--c-cherry) 50%, white) 0%,
       var(--c-cherry) 52%,
       color-mix(in srgb, var(--c-cherry) 76%, black) 100%);
     opacity:calc(var(--z,0) * 14);
-    transform:translate3d(-50%, calc(-50% + (1 - var(--z,0)) * 55vh), 0)
-              scale(calc(1 + var(--z,0) * var(--z,0) * 20))}
+    transform:translate3d(-50%, calc(-50% + max(0px, (.45 - var(--z,0)) * 122vh)), 0)
+              scale(min(13, calc(1 + var(--z,0) * var(--z,0) * 58)))}
   /* will-change only while the hero is actually on screen — a permanent one
      pins a layer in GPU memory for the whole page */
   .gh-stage.gh-live .gh-gummy{will-change:transform,opacity}
@@ -131,7 +152,7 @@
     animation:ghBounce 1.7s ease-in-out infinite}
   @keyframes ghBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
   .gh-reveal{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;padding:0 var(--sp-5);
-    color:var(--c-surface);opacity:calc((var(--z,0) - .42) * 4.2);pointer-events:none}
+    color:var(--c-surface);opacity:calc((var(--z,0) - .48) * 7.1);pointer-events:none}
   /* Dawn's base.css sets an explicit colour on h1-h6, and a direct rule beats
      the colour inherited from .gh-reveal — so headings on dark/coloured
      backgrounds must restate it or they render near-black. */
