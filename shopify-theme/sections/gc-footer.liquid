@@ -41,7 +41,9 @@
   .gcf-sub:active{transform:scale(.95)}
   .gcf-ok{flex-basis:100%;margin:var(--sp-2) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-bold);color:var(--c-accent)}
 
-  .gcf-hr{height:1px;background:var(--c-purple-ink);opacity:.14;margin:var(--sp-8) 0 var(--sp-5)}
+  /* qualified to clear Dawn's `div:empty{display:none}` — this rule is a
+     deliberately empty div, and a bare .gcf-hr loses the specificity contest */
+  .gcf .gcf-hr{display:block;height:1px;background:var(--c-purple-ink);opacity:.14;margin:var(--sp-8) 0 var(--sp-5)}
   .gcf-bot{display:flex;flex-wrap:wrap;gap:var(--sp-3);justify-content:space-between;align-items:center}
   .gcf-bot span{font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-purple-ink);opacity:.6}
   .gcf-dot{display:inline-block;width:var(--sp-3);height:var(--sp-3);margin:0 var(--sp-2);

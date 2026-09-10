@@ -40,7 +40,13 @@
      gradient on one rounded box is a far cheaper raster. Nothing is lost: past
      about 4x the highlights are off-screen and it reads as a flat colour wash.
      Origin is 50% now the shape fills its box — the SVG's circle sat at 48.333%. */
-  .gh-gummy{position:absolute;left:50%;top:50%;width:min(22vw,150px);aspect-ratio:1;z-index:1;
+  /* Dawn's base.css carries `a:empty, div:empty, p:empty, … {display:none}` as a
+     guard against stray markup, and it beats a bare class: `div:empty` scores
+     0,1,1 and `.gh-gummy` only 0,1,0. This element is DELIBERATELY empty — the
+     whole gummy is one CSS gradient now — so the selector is qualified to clear
+     that bar. Same reason the reduced-motion rule below is qualified: it has to
+     out-specify this one in turn. */
+  .gh-pin .gh-gummy{display:block;position:absolute;left:50%;top:50%;width:min(22vw,150px);aspect-ratio:1;z-index:1;
     border-radius:50%;backface-visibility:hidden;transform-origin:50% 50%;
     background:radial-gradient(circle at 36% 30%,
       color-mix(in srgb, var(--c-cherry) 50%, white) 0%,
@@ -229,7 +235,7 @@
 
   @media (prefers-reduced-motion:reduce){
     .gh-stage{height:auto}.gh-pin{position:relative;height:auto;padding:70px 0}
-    .gh-gummy{display:none}.gh-mid{opacity:1!important}.gh-reveal{display:none}
+    .gh-pin .gh-gummy{display:none}.gh-mid{opacity:1!important}.gh-reveal{display:none}
     .gh-chum{animation:none;opacity:1}
     .gh-g{animation:none}
   }

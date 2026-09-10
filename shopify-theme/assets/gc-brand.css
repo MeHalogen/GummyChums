@@ -109,7 +109,8 @@ p,li,a,span,div,button,input,label{font-family:'Manrope',system-ui,sans-serif}
 @keyframes gcRipple{0%{width:12px;height:12px;opacity:.9}100%{width:280px;height:280px;opacity:0}}
 .gc-splash{position:fixed;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);
   border-radius:46% 54% 52% 48%/48% 46% 54% 52%}
-.gc-flash{position:fixed;inset:0;pointer-events:none;z-index:9996;opacity:0;transition:opacity .45s ease}
+/* qualified for Dawn's `div:empty{display:none}` — see gc-home's .gh-gummy note */
+body .gc-flash{display:block;position:fixed;inset:0;pointer-events:none;z-index:9996;opacity:0;transition:opacity .45s ease}
 
 /* ---- floating WhatsApp — the default support channel for Indian shoppers ---- */
 .gc-wa{position:fixed;right:18px;bottom:18px;z-index:65;width:54px;height:54px;border-radius:999px;
