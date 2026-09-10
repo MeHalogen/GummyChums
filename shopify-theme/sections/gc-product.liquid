@@ -101,6 +101,29 @@
   .gp-chip--cod{color:var(--pc);box-shadow:inset 0 0 0 1.5px var(--pc)}
 
   /* share row */
+  .gp-pin{margin:var(--sp-5) 0 0;background:var(--c-surface);border-radius:var(--r-md);
+    padding:var(--sp-4) var(--sp-5) var(--sp-5);box-shadow:var(--sh-1)}
+  .gp-pin-t{display:block;font-size:var(--fs-xs);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--c-ink-3);margin-bottom:var(--sp-3)}
+  .gp-pin-row{display:flex;gap:var(--sp-2);flex-wrap:wrap}
+  .gp-pin-in{flex:1 1 150px;min-width:0;font-family:inherit;font-size:var(--fs-base);
+    font-weight:var(--fw-bold);letter-spacing:var(--ls-wide);color:var(--c-ink);
+    background:var(--c-bg);border:1.5px solid var(--c-line);border-radius:var(--r-sm);
+    padding:var(--sp-3) var(--sp-4);outline:none;transition:border-color var(--dur-2) var(--ease)}
+  .gp-pin-in:focus{border-color:var(--pc)}
+  .gp-pin-in::placeholder{color:var(--c-ink-3);font-weight:var(--fw-body);letter-spacing:var(--ls-normal)}
+  .gp-pin-go{border:0;cursor:pointer;font-family:inherit;font-weight:var(--fw-black);
+    font-size:var(--fs-sm);color:var(--c-surface);background:var(--pc);
+    padding:var(--sp-3) var(--sp-6);border-radius:var(--r-sm);
+    transition:filter var(--dur-2) var(--ease),transform var(--dur-1) var(--spring)}
+  .gp-pin-go:hover{filter:brightness(1.08)}
+  .gp-pin-go:active{transform:scale(.96)}
+  .gp-pin-out{margin:var(--sp-3) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-body);
+    color:var(--c-ink-2);line-height:var(--lh-body);min-height:1.2em}
+  .gp-pin-out b{color:var(--c-ink);font-weight:var(--fw-black)}
+  .gp-pin-out.is-bad{color:var(--c-accent)}
+  @media (prefers-reduced-motion:reduce){.gp-pin-go{transition:none}}
+
   .gp-share{margin:var(--sp-5) 0 0;display:flex;align-items:center;gap:var(--sp-3);flex-wrap:wrap}
   .gp-share-t{font-size:var(--fs-xs);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);
     text-transform:uppercase;color:var(--c-ink-3)}
@@ -230,6 +253,28 @@
         </div>
       </div>
 
+      {%- comment -%}
+        Delivery check. The question every Indian shopper asks before they trust
+        a new D2C site — "does it even come to me?" — answered in place instead
+        of buried in a policy page.
+
+        The lookup ships WITH the theme: a prefix table, no API call. That means
+        no key to leak, no third party to go down, no round trip, and the PIN
+        never leaves the browser. Three-digit prefixes name the big cities, two
+        digits cover the state, and anything unrecognised still gets an honest
+        pan-India answer rather than a dead end.
+      {%- endcomment -%}
+      <div class="gp-pin">
+        <label class="gp-pin-t" for="gp-pin-in">Check delivery to your PIN code</label>
+        <div class="gp-pin-row">
+          <input class="gp-pin-in" id="gp-pin-in" type="text" inputmode="numeric"
+                 pattern="[0-9]*" maxlength="6" placeholder="e.g. 302001"
+                 autocomplete="postal-code" aria-describedby="gp-pin-out">
+          <button class="gp-pin-go" type="button" id="gp-pin-go">Check</button>
+        </div>
+        <p class="gp-pin-out" id="gp-pin-out" role="status" aria-live="polite"></p>
+      </div>
+
       {%- comment -%} share — Gen Z sends the link before they buy {%- endcomment -%}
       <div class="gp-share">
         <span class="gp-share-t">Send to a chum</span>
@@ -354,6 +399,67 @@
     else done();
   });
 })();
+
+  /* ---------- delivery check ----------
+     Prefix table, no network call: the PIN never leaves the page, there is no
+     key to leak and nothing third-party to go down. CITY covers the metros by
+     three digits so the answer is specific where it can be; STATE covers the
+     rest by two. Delivery bands come from the zones we actually ship on —
+     anything unmatched still gets an honest pan-India answer. */
+  var CITY = {
+    '110':'Delhi','201':'Noida','122':'Gurugram','160':'Chandigarh','226':'Lucknow',
+    '302':'Jaipur','380':'Ahmedabad','395':'Surat','400':'Mumbai','403':'Goa',
+    '411':'Pune','440':'Nagpur','452':'Indore','462':'Bhopal','500':'Hyderabad',
+    '560':'Bengaluru','600':'Chennai','641':'Coimbatore','682':'Kochi','695':'Thiruvananthapuram',
+    '700':'Kolkata','751':'Bhubaneswar','781':'Guwahati','800':'Patna','834':'Ranchi'
+  };
+  var STATE = {
+    '11':'Delhi','12':'Haryana','13':'Haryana','14':'Punjab','15':'Punjab','16':'Punjab',
+    '17':'Himachal Pradesh','18':'Jammu & Kashmir','19':'Jammu & Kashmir',
+    '20':'Uttar Pradesh','21':'Uttar Pradesh','22':'Uttar Pradesh','23':'Uttar Pradesh',
+    '24':'Uttarakhand','25':'Uttar Pradesh','26':'Uttarakhand','27':'Uttar Pradesh','28':'Uttar Pradesh',
+    '30':'Rajasthan','31':'Rajasthan','32':'Rajasthan','33':'Rajasthan','34':'Rajasthan',
+    '36':'Gujarat','37':'Gujarat','38':'Gujarat','39':'Gujarat',
+    '40':'Maharashtra','41':'Maharashtra','42':'Maharashtra','43':'Maharashtra','44':'Maharashtra',
+    '45':'Madhya Pradesh','46':'Madhya Pradesh','47':'Madhya Pradesh','48':'Madhya Pradesh','49':'Chhattisgarh',
+    '50':'Telangana','51':'Andhra Pradesh','52':'Andhra Pradesh','53':'Andhra Pradesh',
+    '56':'Karnataka','57':'Karnataka','58':'Karnataka','59':'Karnataka',
+    '60':'Tamil Nadu','61':'Tamil Nadu','62':'Tamil Nadu','63':'Tamil Nadu','64':'Tamil Nadu',
+    '67':'Kerala','68':'Kerala','69':'Kerala',
+    '70':'West Bengal','71':'West Bengal','72':'West Bengal','73':'West Bengal','74':'West Bengal',
+    '75':'Odisha','76':'Odisha','77':'Odisha','78':'Assam','79':'the North East',
+    '80':'Bihar','81':'Bihar','82':'Bihar','83':'Jharkhand','84':'Bihar','85':'Bihar'
+  };
+  var SLOW = {'17':1,'18':1,'19':1,'78':1,'79':1};              /* hills, J&K, North East */
+  var NEAR = {'11':1,'12':1,'13':1,'20':1,'21':1,'22':1,'23':1,'25':1,'27':1,'28':1,'30':1,'31':1,'32':1,'33':1,'34':1};
+
+  var pinIn = document.getElementById('gp-pin-in');
+  var pinGo = document.getElementById('gp-pin-go');
+  var pinOut = document.getElementById('gp-pin-out');
+  if (pinIn && pinGo && pinOut) {
+    var check = function () {
+      var v = (pinIn.value || '').replace(/\D/g, '');
+      pinOut.classList.remove('is-bad');
+      if (v.length !== 6) {
+        pinOut.classList.add('is-bad');
+        pinOut.textContent = 'That needs to be a 6-digit PIN code.';
+        return;
+      }
+      var two = v.slice(0, 2), three = v.slice(0, 3);
+      var place = CITY[three] || STATE[two];
+      var days = SLOW[two] ? '7–10' : (NEAR[two] ? '3–5' : '4–7');
+      /* no place name means the sentence has to start on its own */
+      var lead = place ? '<b>' + place + '</b> — delivers' : 'Delivers';
+      pinOut.innerHTML = lead + ' in <b>' + days +
+        ' working days</b>, with tracking. Cash on Delivery available.';
+    };
+    pinGo.addEventListener('click', check);
+    pinIn.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); check(); } });
+    pinIn.addEventListener('input', function () {
+      pinIn.value = pinIn.value.replace(/\D/g, '').slice(0, 6);
+      if (pinIn.value.length === 6) check();
+    });
+  }
 </script>
 
 {% schema %}

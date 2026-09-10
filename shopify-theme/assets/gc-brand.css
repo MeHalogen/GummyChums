@@ -158,3 +158,20 @@ body .gc-flash{display:block;position:fixed;inset:0;pointer-events:none;z-index:
    nothing, and resumes with no visible seam because these are all idle loops
    rather than entrances. */
 .gc-paused,.gc-paused *{animation-play-state:paused!important}
+
+/* ---- kolam: dots first, then the line draws itself ----
+   Set out the way a real one is: the pulli are placed, then a single unbroken
+   stroke loops around them. The dash length is generous because the path is
+   measured in the viewBox's own units, and any value at or above the true
+   length gives a clean full-sweep draw. */
+.gc2-kolam{display:block;overflow:visible}
+.gc2-kolam-dots{opacity:0;transition:opacity .45s var(--gc-ease)}
+.gc2-kolam-line{stroke-dasharray:900;stroke-dashoffset:900;
+  transition:stroke-dashoffset 2.1s cubic-bezier(.5,0,.2,1) .38s}
+.in .gc2-kolam-dots{opacity:.55}
+.in .gc2-kolam-line{stroke-dashoffset:0}
+@media (prefers-reduced-motion:reduce){
+  .gc2-kolam-dots,.gc2-kolam-line{transition:none}
+  .gc2-kolam-dots{opacity:.55}
+  .gc2-kolam-line{stroke-dashoffset:0}
+}

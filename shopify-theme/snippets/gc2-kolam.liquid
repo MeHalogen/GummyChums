@@ -1,0 +1,53 @@
+{%- comment -%}
+  Kolam — the threshold drawing.
+
+  A kolam is set out every morning on a grid of dots (pulli) at the doorway, and
+  the line is drawn in one unbroken stroke looping around them. It is a daily
+  ritual of welcome, which is the same thing this brand is selling, and it is
+  built on a DOT GRID — the same geometry as the book's pixel-stepped border, so
+  it reads as the identity going deeper rather than as decoration added on top.
+
+  The order matters and is the whole detail: the dots are placed FIRST, then the
+  line is drawn around them. That is how it is actually made, so that is how it
+  animates — dots fade in, then the stroke draws itself in one pass.
+
+  Four petals, one continuous path: each petal ends exactly where the next
+  begins, so the line never lifts. Nine dots — the four tips, the four diagonals,
+  and the centre.
+
+  Params:
+    id     (required) unique per instance. MUST be pre-assigned — {% render %}
+           does not evaluate filters.
+    tone   stroke and dot colour token. Default '--c-purple-ink'.
+    size   rendered width in px. Default 132.
+
+  Reveals with .gc-rise: add the class on this element's wrapper and gc-brand.js
+  adds .in when it scrolls into view.
+{%- endcomment -%}
+
+{%- assign tone = tone | default: '--c-purple-ink' -%}
+{%- assign size = size | default: 132 -%}
+
+<svg class="gc2-kolam" id="kolam-{{ id }}" width="{{ size }}" height="{{ size }}"
+     viewBox="-100 -100 200 200" fill="none" aria-hidden="true" focusable="false" role="presentation">
+  {%- comment -%} pulli — the dots, placed before the line {%- endcomment -%}
+  <g class="gc2-kolam-dots" fill="var({{ tone }})">
+    <circle cx="0"   cy="0"   r="4"></circle>
+    <circle cx="0"   cy="-78" r="4"></circle>
+    <circle cx="78"  cy="0"   r="4"></circle>
+    <circle cx="0"   cy="78"  r="4"></circle>
+    <circle cx="-78" cy="0"   r="4"></circle>
+    <circle cx="55"  cy="-55" r="4"></circle>
+    <circle cx="55"  cy="55"  r="4"></circle>
+    <circle cx="-55" cy="55"  r="4"></circle>
+    <circle cx="-55" cy="-55" r="4"></circle>
+  </g>
+  {%- comment -%} one unbroken line, four petals, closed back to the start {%- endcomment -%}
+  <path class="gc2-kolam-line" stroke="var({{ tone }})" stroke-width="3.5"
+        stroke-linecap="round" stroke-linejoin="round"
+        d="M -18 -18
+           C -40 -60, -18 -78, 0 -78 C 18 -78, 40 -60, 18 -18
+           C 60 -40, 78 -18, 78 0 C 78 18, 60 40, 18 18
+           C 40 60, 18 78, 0 78 C -18 78, -40 60, -18 18
+           C -60 40, -78 18, -78 0 C -78 -18, -60 -40, -18 -18 Z"></path>
+</svg>

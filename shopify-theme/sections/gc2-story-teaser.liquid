@@ -38,6 +38,10 @@
   }
   @keyframes gctsSway{from{transform:rotate(-1.2deg)}to{transform:translateY(-7px) rotate(1.2deg)}}
 
+  /* the kolam sits above the kicker — a threshold mark at the way in */
+  .gcts-kolam{display:flex;justify-content:center;margin:0 0 var(--sp-5)}
+  @media(min-width:900px){.gcts-kolam{justify-content:flex-start}}
+
   .gcts-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
     font-size:var(--fs-xs);color:var(--c-accent);margin:0}
   .gcts h2{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
@@ -62,6 +66,8 @@
 <div class="gcts-edge gcts-edge--in">{% render 'gc2-edge', id: edge_in, tone: '--c-purple', side: 'bottom' %}</div>
 <section class="gcts" id="gc-story">
   <div class="gcts-in gc-rise">
+    {%- assign kolam_id = 'story' -%}
+    <div class="gcts-kolam">{% render 'gc2-kolam', id: kolam_id, tone: '--c-purple-ink', size: 108 %}</div>
     <p class="gcts-kick">{{ s.kicker }}</p>
     <h2>{{ s.headline | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
     <p class="gcts-body">{{ s.body }}</p>
