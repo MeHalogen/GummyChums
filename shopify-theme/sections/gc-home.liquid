@@ -22,7 +22,7 @@
      whole way down: the gummy grows, then the words arrive and HOLD. */
   @media(max-width:749px){.gh-stage{height:130vh}}
   /* transparent so the global fixed flavour background shows through — nothing to repaint */
-  .gh-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
+  .gh-pin{--zoom-k:140;--rise-end:.18;position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
     background:transparent;contain:paint;padding-bottom:4vh}
 
   /* The zooming gummy. Scaling is anchored to the CIRCLE's own centre
@@ -83,7 +83,7 @@
 
      Capping also stops the raster growing forever. Peak is ~1,157px on a phone
      where it used to be 1,733 — under half the pixels to rasterise. */
-  .gh-pin .gh-gummy{--zoom-k:140;--rise-end:.30;display:block;position:absolute;left:50%;top:50%;width:11vmax;aspect-ratio:1;z-index:1;
+  .gh-pin .gh-gummy{display:block;position:absolute;left:50%;top:50%;width:11vmax;aspect-ratio:1;z-index:1;
     border-radius:50%;backface-visibility:hidden;transform-origin:50% 50%;
     background:radial-gradient(circle at 36% 30%,
       color-mix(in srgb, var(--c-cherry) 50%, white) 0%,
@@ -94,7 +94,7 @@
               scale(min(14, calc(1 + var(--z,0) * var(--z,0) * var(--zoom-k))))}
   /* will-change only while the hero is actually on screen — a permanent one
      pins a layer in GPU memory for the whole page */
-  @media(min-width:750px){.gh-pin .gh-gummy{--zoom-k:40;--rise-end:.55}}
+  @media(min-width:750px){.gh-pin{--zoom-k:40;--rise-end:.30}}
   .gh-stage.gh-live .gh-gummy{will-change:transform,opacity}
   /* ---- THE CHUMS · the real characters from Brand Book v2 ----
      They stand on the hero's bottom edge and flank the centre column, which is
@@ -168,13 +168,18 @@
   .gh-scroll{margin-top:var(--sp-4);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);font-size:var(--fs-xs);color:var(--c-ink-3);
     animation:ghBounce 1.7s ease-in-out infinite}
   @keyframes ghBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
-  .gh-reveal{--rev-start:.32;--rev-ramp:7.1;position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;padding:0 var(--sp-5);
-    color:var(--c-surface);opacity:calc((var(--z,0) - var(--rev-start)) * var(--rev-ramp));pointer-events:none}
+  .gh-reveal{--rev-start:.11;--rev-ramp:11;position:absolute;left:50%;top:50%;width:100%;height:100%;
+    z-index:3;display:grid;place-items:center;text-align:center;padding:0 var(--sp-5);
+    color:var(--c-surface);opacity:calc((var(--z,0) - var(--rev-start)) * var(--rev-ramp));
+    transform-origin:50% 50%;
+    transform:translate3d(-50%, calc(-50% + max(0px, (var(--rise-end) - var(--z,0)) / var(--rise-end) * 55vh)), 0)
+              scale(min(1, calc((1 + var(--z,0) * var(--z,0) * var(--zoom-k)) / 14)));
+    pointer-events:none}
   /* Dawn's base.css sets an explicit colour on h1-h6, and a direct rule beats
      the colour inherited from .gh-reveal — so headings on dark/coloured
      backgrounds must restate it or they render near-black. */
   .gh-reveal h2{font-size:var(--fs-4xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0;color:var(--c-surface)}
-  @media(min-width:750px){.gh-reveal{--rev-start:.55;--rev-ramp:13}}
+  @media(min-width:750px){.gh-reveal{--rev-start:.13;--rev-ramp:9}}
   .gh-reveal p{font-size:var(--fs-xl);font-weight:var(--fw-bold);margin:var(--sp-4) auto 0;max-width:30ch;opacity:.92}
 
   /* ---------- ACT 2 — flavours ---------- */
