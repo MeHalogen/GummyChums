@@ -63,12 +63,32 @@
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'cart-disclosure-modal.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'cart-disclosure-tooltip.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'standard-actions-override.js' | asset_url }}" defer="defer"></script>
+
+    {%- comment -%}
+      Five Dawn scripts used to load here and defined custom elements that this
+      theme never renders. Each was traced to the only markup that instantiates
+      it, and every one of those is unreachable:
+
+        cart-disclosure-modal.js    <cart-disclosure-modal>  → cart-disclosure-indicator,
+        cart-disclosure-tooltip.js  .cart-item__disclosure-tooltip     reached only from
+                                                               main-cart-items,
+                                                               cart-notification-product
+                                                               or the cart drawer — the
+                                                               cart template renders
+                                                               gc-cart, and cart_type
+                                                               is not 'drawer'
+        details-disclosure.js       <details-disclosure>, <header-menu>  → Dawn's
+                                    header-dropdown-menu / header-mega-menu, reached
+                                    only from sections/header.liquid. header-group
+                                    renders gc-header, whose mobile menu is a bare
+                                    <details> and needs no JS at all
+        details-modal.js            <details-modal>  → header-search, same story
+        search-form.js              <search-form>    → header-search, same story
+
+      The asset files are still in the theme, so restoring one is a single line.
+      Add the script back the moment a Dawn section that needs it is placed.
+    {%- endcomment -%}
 
     {%- if settings.animations_reveal_on_scroll -%}
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
@@ -316,14 +336,11 @@
       <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    {%- if settings.predictive_search_enabled -%}
-      <link
-        rel="stylesheet"
-        href="{{ 'component-predictive-search.css' | asset_url }}"
-        media="print"
-        onload="this.media='all'"
-      >
-    {%- endif -%}
+    {%- comment -%}
+      component-predictive-search.css and predictive-search.js removed with it:
+      <predictive-search> appears only in header-search and main-search, and this
+      theme renders neither. gc-search posts a plain form to routes.search_url.
+    {%- endcomment -%}
 
     <script>
       if (Shopify.designMode) {
@@ -419,10 +436,6 @@
         countrySelectorSearchCount: `{{ 'localization.country_results_count' | t: count: '[count]' }}`,
       };
     </script>
-
-    {%- if settings.predictive_search_enabled -%}
-      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
-    {%- endif -%}
 
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
