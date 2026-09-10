@@ -77,8 +77,8 @@
      BIGGER and bleed further out: about a third of each figure is visible, which
      still reads unmistakably as a person. Where the subline crosses them it
      gets a cream halo, so the overlap looks composed instead of accidental. */
-  @media(max-width:749px){.gh-chum--l{height:33vh;left:-15%}}
-  @media(max-width:749px){.gh-chum--r{height:31vh;right:-15%}}
+  @media(max-width:749px){.gh-chum--l{height:33vh;left:-7%}}
+  @media(max-width:749px){.gh-chum--r{height:31vh;right:-7%}}
   /* Narrowed so it wraps INSIDE the gap between the two figures rather than
      running under their arms. In px, not ch: this typeface's "0" is ~19.6px
      wide at this size, so 20ch computed to 393px — wider than the phone. The
@@ -99,9 +99,9 @@
     display:inline-flex;align-items:center;gap:var(--sp-2);padding:var(--sp-1) var(--sp-1);border-bottom:2.5px solid var(--c-ink)}
   .gh-cta2 span{transition:transform var(--dur-2) var(--ease);display:inline-block}
   .gh-cta2:hover span{transform:translateX(5px)}
-  .gh-logo{display:block;width:min(470px,74vw);height:auto;margin:0 auto var(--sp-3);
+  .gh-logo{display:block;width:min(470px,74vw);height:auto;margin:0 auto var(--sp-5);
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none;pointer-events:none}
-  .gh-tag{font-size:var(--fs-4xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0 auto;max-width:17ch}
+  .gh-tag{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0 auto;max-width:17ch}
   .gh-sub{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-3) auto 0;max-width:34ch;line-height:var(--lh-body)}
   .gh-cta{margin-top:var(--sp-5);display:flex;align-items:center;justify-content:center;gap:var(--sp-4);flex-wrap:wrap}
   .gh-pills{display:flex;gap:var(--sp-2);justify-content:center;flex-wrap:wrap;margin-top:var(--sp-4)}
@@ -197,8 +197,21 @@
      complaint was not knowing where to go. */
   @media(max-width:749px){.gh-eyebrow{display:none}}
   @media(max-width:749px){.gh-mid .gh-cta2{display:none}}
-  @media(max-width:749px){.gh-mid{padding-bottom:var(--sp-9)}}
-  @media(max-width:749px){.gh-logo{width:min(360px,66vw)}}
+  /* Copy to the top of the fold, figures along the bottom — two bands instead
+     of one crowded middle. Centring the copy put it right where the Chums stand,
+     which is why the clearance kept coming out at 5-13px and why every fix so
+     far has been a choice between smaller words and smaller characters. Stacked
+     this way the copy (~330px) and the figures (~257px) both fit the ~650px of
+     hero that's visible before you scroll, with real air between them, and the
+     Chums can come back IN from the edges instead of being pushed off. */
+  @media(max-width:749px){.gh-pin{align-content:start;padding-top:7vh;padding-bottom:0}}
+  /* On a phone the sizes stop being the issue and the BLOCKS become it: the
+     wordmark is ~92px tall while three lines of 38px headline is ~118px, so the
+     headline out-weighed the logo even though its letters were smaller. The
+     logo grows, the headline drops another step to --fs-2xl and falls to two
+     lines, and the logo is comfortably the largest thing again. */
+  @media(max-width:749px){.gh-logo{width:min(360px,76vw)}}
+  @media(max-width:749px){.gh-mid .gh-tag{font-size:var(--fs-2xl)}}
 
   @media (prefers-reduced-motion:reduce){
     .gh-stage{height:auto}.gh-pin{position:relative;height:auto;padding:70px 0}
