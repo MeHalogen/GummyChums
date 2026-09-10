@@ -1,3 +1,17 @@
+{%- comment -%}
+  ┌───────────────────────────────────────────────────────────────────────────┐
+  │ LOCKED — the pink gummy scroll sequence. Signed off 11 Sep 2026.          │
+  │                                                                           │
+  │ .gh-stage heights, .gh-pin's --zoom-k / --rise-end, .gh-pin .gh-gummy and │
+  │ .gh-reveal's transform and fade are approved as they stand. Do not tune   │
+  │ them while fixing something nearby.                                       │
+  │                                                                           │
+  │ tests/locked-hero.test.mjs asserts every one of those values and fails    │
+  │ loudly if any changes — that is the flag, for either of us. Changing one  │
+  │ on purpose means updating that file in the same commit and saying in the  │
+  │ message that the lock was lifted.                                         │
+  └───────────────────────────────────────────────────────────────────────────┘
+{%- endcomment -%}
 {%- comment -%} GummyChums homepage — coming-soon vibe, pink-forward, scroll fall-in kept {%- endcomment -%}
 {%- assign s = section.settings -%}
 <style>
@@ -128,15 +142,28 @@
      space, so the figures move outward and shrink rather than overlap the copy.
      On phones they bleed roughly half off each edge: enough that you read them
      as two people standing there, not enough to crowd the headline. */
-  @media(max-width:1100px){.gh-chum--l{height:min(42vh,360px);left:-5%}}
-  @media(max-width:1100px){.gh-chum--r{height:min(39vh,340px);right:-5%}}
+  @media(max-width:1100px){.gh-chum--l{height:min(42vh,360px);left:8px}}
+  @media(max-width:1100px){.gh-chum--r{height:min(39vh,340px);right:8px}}
   /* On a 375px screen the copy column and two standing figures cannot both
      have the width they want. Rather than shrink the Chums to slivers, they go
      BIGGER and bleed further out: about a third of each figure is visible, which
      still reads unmistakably as a person. Where the subline crosses them it
      gets a cream halo, so the overlap looks composed instead of accidental. */
-  @media(max-width:749px){.gh-chum--l{height:33vh;left:-7%}}
-  @media(max-width:749px){.gh-chum--r{height:31vh;right:-7%}}
+  /* NOTHING BLEEDS OFF THE EDGE. Every figure sits fully inside the viewport at
+     every width — a Chum cut in half by the screen edge reads as a broken page
+     rather than as a crop, and that is worth more than the size bleeding bought.
+
+     Height is capped by BOTH dimensions, which is the part that took two passes
+     to get right. The svh term keeps the figures clear of the copy stacked above
+     them; the vw term keeps roughly 200px open between them, because that is what
+     the "Shop the flavours" button needs and at 360px wide the figures were
+     otherwise sitting under it by 25px a side. The floor keeps them recognisable
+     on the shortest phone, the ceiling stops them dominating the tallest. */
+  @media(max-width:749px){.gh-chum--l{height:clamp(150px,min(calc(100svh - 520px),calc((100vw - 200px) * 1.31)),300px);left:6px}}
+  @media(max-width:749px){.gh-chum--r{height:clamp(142px,min(calc(100svh - 536px),calc((100vw - 200px) * 1.24)),284px);right:6px}}
+  /* the shortest phones have no room for a scroll hint under the button once
+     the figures are in; the gradient and the Chums already say there is more */
+  @media(max-width:749px) and (max-height:700px){.gh-scroll{display:none}}
   /* Narrowed so it wraps INSIDE the gap between the two figures rather than
      running under their arms. In px, not ch: this typeface's "0" is ~19.6px
      wide at this size, so 20ch computed to 393px — wider than the phone. The

@@ -11,20 +11,25 @@
     bg.className = 'gc-bg';
     bg.setAttribute('aria-hidden', 'true');
 
-    // floating blurred gummies — fixed positions so it looks composed, not random
-    // kept to the edges — the centre column stays clean for type
-    // 4 (was 7) — each blurred layer costs compositor memory
+    // The three blurred flavour gummies from the coming-soon page, at the size
+    // they are there. They were 4 blobs of a FIXED 200-250px here, which on
+    // anything bigger than a phone read as small smudges rather than the big
+    // soft washes of colour that page has — 52vw is 749px on a 1440 screen,
+    // where 230px is a third of that.
+    //
+    // Sizes, positions, blur and opacity all match deploy/index.html. The one
+    // thing deliberately NOT carried over is its drift animation: a blur this
+    // large has to be re-rasterised on every frame it moves, and four of them
+    // animating was the single biggest cause of scroll jank on this site.
+    // Static, they rasterise once and cost nothing after that.
     var gummies = [
-      { l: '-4%', t: '10%', s: 230, c: '#DE1D61', o: .34 },
-      { l: '86%', t: '4%',  s: 200, c: '#8DAA31', o: .26 },
-      { l: '88%', t: '56%', s: 240, c: '#F9740D', o: .30 },
-      { l: '-6%', t: '64%', s: 250, c: '#F9740D', o: .24 }
+      { css: 'left:-6vw;top:-4vw;width:52vw;height:52vw',   c: '#DE1D61' },
+      { css: 'right:-6vw;top:8vw;width:46vw;height:46vw',   c: '#8DAA31' },
+      { css: 'left:20vw;bottom:-10vw;width:50vw;height:50vw', c: '#F9740D' }
     ];
     gummies.forEach(function (g) {
       var el = document.createElement('i');
-      el.style.cssText =
-        'left:' + g.l + ';top:' + g.t + ';width:' + g.s + 'px;height:' + g.s + 'px;' +
-        'background:' + g.c + ';opacity:' + g.o + ';';
+      el.style.cssText = g.css + ';background:' + g.c + ';';
       bg.appendChild(el);
     });
 

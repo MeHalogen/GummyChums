@@ -29,9 +29,11 @@ html{background:#F8EBDF}
    Deliberately NOT animated: a blur this large has to be re-rasterised on every
    frame it moves, and four of them animating was the single biggest cause of
    scroll jank. Static, they rasterise once and cost nothing thereafter. */
-.gc-bg i{position:absolute;display:block;
-  border-radius:46% 54% 52% 48%/48% 46% 54% 52%;
-  filter:blur(44px);opacity:.34}
+/* blur and opacity match the coming-soon page (blur(60px) at .55); the shape is
+   a true circle there, and at this blur radius the organic border-radius was
+   never visible anyway */
+.gc-bg i{position:absolute;display:block;border-radius:50%;
+  filter:blur(60px);opacity:.55}
 
 /* Grain over the whole ground — the book calls for "grainy gradients and
    tactile textures", and the smooth washes we had read as polished rather
