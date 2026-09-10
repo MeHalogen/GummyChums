@@ -23,9 +23,9 @@
     // animating was the single biggest cause of scroll jank on this site.
     // Static, they rasterise once and cost nothing after that.
     var gummies = [
-      { css: 'left:-6vw;top:-4vw;width:52vw;height:52vw',   c: '#DE1D61' },
-      { css: 'right:-6vw;top:8vw;width:46vw;height:46vw',   c: '#8DAA31' },
-      { css: 'left:20vw;bottom:-10vw;width:50vw;height:50vw', c: '#F9740D' }
+      { css: 'left:-6vw;top:-4vw;width:52vw;height:52vw',   c: 'var(--c-cherry)' },
+      { css: 'right:-6vw;top:8vw;width:46vw;height:46vw',   c: 'var(--c-mango)' },
+      { css: 'left:20vw;bottom:-10vw;width:50vw;height:50vw', c: 'var(--c-orange)' }
     ];
     gummies.forEach(function (g) {
       var el = document.createElement('i');
