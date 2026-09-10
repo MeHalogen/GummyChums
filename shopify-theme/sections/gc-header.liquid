@@ -77,7 +77,7 @@
 </style>
 
 {%- if section.settings.show_bar -%}
-<div class="gch-bar" aria-hidden="true"><div class="trk">
+<div class="gch-bar" aria-hidden="true" data-idle-pause><div class="trk">
   {%- for i in (1..4) -%}<span>{{ section.settings.bar_text }}</span>{%- endfor -%}
 </div></div>
 {%- endif -%}

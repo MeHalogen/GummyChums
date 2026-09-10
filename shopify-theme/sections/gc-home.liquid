@@ -33,11 +33,25 @@
      of the top before it ever reached the bottom edge — leaving a ~74px strip
      of background along the bottom at peak zoom. Scaling harder made it worse,
      since the circle rises faster than it grows. */
-  .gh-gummy{position:absolute;left:50%;top:50%;width:min(22vw,150px);z-index:1;
-    will-change:transform,opacity;backface-visibility:hidden;transform-origin:50% 48.333%;
+  /* A CSS circle, not the gc-gummy SVG. This element scales to 21x — measured
+     at 1733x1733 CSS px, which on a phone at DPR 3 is ~27 million device pixels.
+     Re-rasterising an SVG document (four radial gradients, six shapes, a rotate)
+     at that size is the most phone-hostile thing on the page; a single CSS
+     gradient on one rounded box is a far cheaper raster. Nothing is lost: past
+     about 4x the highlights are off-screen and it reads as a flat colour wash.
+     Origin is 50% now the shape fills its box — the SVG's circle sat at 48.333%. */
+  .gh-gummy{position:absolute;left:50%;top:50%;width:min(22vw,150px);aspect-ratio:1;z-index:1;
+    border-radius:50%;backface-visibility:hidden;transform-origin:50% 50%;
+    background:radial-gradient(circle at 36% 30%,
+      color-mix(in srgb, var(--c-cherry) 50%, white) 0%,
+      var(--c-cherry) 52%,
+      color-mix(in srgb, var(--c-cherry) 76%, black) 100%);
     opacity:calc(var(--z,0) * 14);
-    transform:translate3d(-50%, calc(-48.333% + (1 - var(--z,0)) * 55vh), 0)
+    transform:translate3d(-50%, calc(-50% + (1 - var(--z,0)) * 55vh), 0)
               scale(calc(1 + var(--z,0) * var(--z,0) * 20))}
+  /* will-change only while the hero is actually on screen — a permanent one
+     pins a layer in GPU memory for the whole page */
+  .gh-stage.gh-live .gh-gummy{will-change:transform,opacity}
   /* ---- THE CHUMS · the real characters from Brand Book v2 ----
      They stand on the hero's bottom edge and flank the centre column, which is
      how the book's own cover is composed. Anchored bottom-left / bottom-right
@@ -225,7 +239,7 @@
 
   <!-- ACT 1 -->
   <header class="gh-stage" id="gh-stage">
-    <div class="gh-pin" id="gh-pin">
+    <div class="gh-pin" id="gh-pin" data-idle-pause>
 
       {%- comment -%} the Chums, flanking the wordmark — brand book v2 {%- endcomment -%}
       <div class="gh-chum gh-chum--l" aria-hidden="true">
@@ -235,8 +249,8 @@
         <img src="{{ 'gc2-chum-sleep.svg' | asset_url }}" alt="" width="407" height="1031" fetchpriority="high" decoding="async" draggable="false">
       </div>
 
-      {%- comment -%} the one that zooms on scroll {%- endcomment -%}
-      <div class="gh-gummy">{% render 'gc-gummy', tone: '--c-cherry', id: 'hz' %}</div>
+      {%- comment -%} the one that zooms on scroll — CSS circle, see .gh-gummy {%- endcomment -%}
+      <div class="gh-gummy" aria-hidden="true"></div>
 
       <div class="gh-mid">
         <span class="gh-eyebrow">{{ s.eyebrow }}</span>
@@ -357,10 +371,28 @@
   var stage=document.getElementById('gh-stage'); if(!stage)return;
   var tk=false;
   var pin=document.getElementById('gh-pin');
-  function upd(){var r=stage.getBoundingClientRect();var d=r.height-innerHeight;
-    var z=d>0?Math.min(Math.max(-r.top/d,0),1):0;stage.style.setProperty('--z',z.toFixed(4));
-    if(pin){var p=pin.getBoundingClientRect();
-      stage.style.setProperty('--gh-ground',Math.max(0,p.bottom-innerHeight).toFixed(1)+'px');}}
+  /* Two things this deliberately avoids, both of which cost on every frame of a
+     ten-screen scroll rather than just the hero's own screen:
+       - it used to run for the whole page. Past the hero, z is pinned at 1 and
+         nothing can change, yet --z was still written every frame, invalidating
+         style for the stage's subtree each time. Now it goes quiet.
+       - it used to write --z and --gh-ground unconditionally. Writing a custom
+         property is what triggers that invalidation, so skipping the write when
+         the value is unchanged skips the recalc entirely. */
+  var lastZ='', lastG='', live=false;
+  function upd(){
+    var r=stage.getBoundingClientRect();
+    var onScreen = r.bottom > 0 && r.top < innerHeight;
+    if(onScreen !== live){ live = onScreen; stage.classList.toggle('gh-live', live); }
+    if(!onScreen) return;
+    var d=r.height-innerHeight;
+    var z=(d>0?Math.min(Math.max(-r.top/d,0),1):0).toFixed(4);
+    if(z!==lastZ){ lastZ=z; stage.style.setProperty('--z',z); }
+    if(pin){
+      var g=Math.max(0,pin.getBoundingClientRect().bottom-innerHeight).toFixed(1)+'px';
+      if(g!==lastG){ lastG=g; stage.style.setProperty('--gh-ground',g); }
+    }
+  }
   addEventListener('scroll',function(){if(!tk){requestAnimationFrame(function(){upd();tk=false;});tk=true;}},{passive:true});
   addEventListener('resize',upd);upd();
 })();

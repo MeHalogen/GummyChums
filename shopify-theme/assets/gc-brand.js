@@ -147,3 +147,13 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
 })();
+
+  /* pause always-on decorative animation while it is off screen */
+  (function () {
+    var targets = document.querySelectorAll('[data-idle-pause]');
+    if (!targets.length || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { e.target.classList.toggle('gc-paused', !e.isIntersecting); });
+    }, { rootMargin: '150px' });
+    targets.forEach(function (el) { io.observe(el); });
+  })();

@@ -148,3 +148,10 @@ p,li,a,span,div,button,input,label{font-family:'Manrope',system-ui,sans-serif}
   .gc-rise,.gc-pop{opacity:1;transform:none}
   .gc-ripple,.gc-splash{display:none}
 }
+
+/* Decorative animation that never ends — the marquee, the Chums' sway — keeps
+   the compositor doing work for as long as the tab is open, including the nine
+   screens where none of it is on screen. Paused while off-screen it costs
+   nothing, and resumes with no visible seam because these are all idle loops
+   rather than entrances. */
+.gc-paused,.gc-paused *{animation-play-state:paused!important}
