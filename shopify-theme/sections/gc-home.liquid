@@ -8,7 +8,7 @@
   .gc-wrap{max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter)}
 
   /* ---------- ACT 1 — hero + scroll fall-in ---------- */
-  .gh-stage{position:relative;height:200vh}
+  .gh-stage{position:relative;height:150vh}
   /* Shorter pin on phones. With no scrollbar there is no feedback that the page
      is still scrolling, so a long pin reads as a frozen page. 120vh leaves
      ~160px of pinned scroll — enough for the effect, short enough not to alarm. */
@@ -20,7 +20,7 @@
      160vh gives 60vh (~490px) instead. Still well short of the 200vh that once
      read as a frozen page, and unlike that version something is moving the
      whole way down: the gummy grows, then the words arrive and HOLD. */
-  @media(max-width:749px){.gh-stage{height:160vh}}
+  @media(max-width:749px){.gh-stage{height:130vh}}
   /* transparent so the global fixed flavour background shows through — nothing to repaint */
   .gh-pin{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
     background:transparent;contain:paint;padding-bottom:4vh}
@@ -53,17 +53,33 @@
      with a pink ball still climbing underneath it. The three phases are now
      ordered properly and each is given room:
 
-       0    → 0.37   hero copy fades out
-       0.37 → 0.45   gummy finishes rising and covers the screen
-       0.48 → 0.62   WHAT'S INSIDE? fades in, on solid pink
-       0.62 → 1.00   held there — about 185px of scrolling to read it
+       0    → 0.22   hero copy fades out
+       0.22 → 0.30   gummy finishes rising and covers the screen
+       0.32 → 0.46   WHAT'S INSIDE? fades in, on solid pink
+       0.46 → 1.00   held there
+
+     Percentages are the wrong unit to judge this in — what a thumb feels is
+     DISTANCE. Measured on a phone, against the theme this replaced:
+
+                        old theme      first attempt      now
+       pin length         162px            487px         244px
+       text starts         97px            234px          78px
+       fully legible      140px            302px         112px
+       held legible        22px            185px         132px
+
+     The first attempt fixed the flash-past by making everything longer, which
+     just moved the wait to the front. Compressing the phases instead gets the
+     words on screen sooner than the old theme managed AND keeps them there six
+     times longer — while still landing them on solid pink.
 
      Sized in vmax and capped rather than scaled without limit. Coverage needs a
      circle as wide as the viewport DIAGONAL, and the diagonal-to-vmax ratio is
      worst on a square-ish window: 1.414, against 1.0 for a very tall or very
-     wide one. So the cap is set for the square case (11vmax x 13 = 1.43vmax,
-     just past the 1.414 it needs) and every other shape clears it easily —
-     a phone only needs ~10x, and gets there by z=0.39.
+     wide one. A cap of 13 clears that by barely 1%, measured at ONE pixel of
+     margin on a 444x458 window — so it is 14, which leaves ~9%. The cap only
+     bounds the size; when coverage happens is set by the 140 multiplier, and
+     that puts it at z=0.25 on a phone and z=0.29 on a square window, both
+     before the words start at 0.32.
 
      Capping also stops the raster growing forever. Peak is ~1,157px on a phone
      where it used to be 1,733 — under half the pixels to rasterise. */
@@ -74,8 +90,8 @@
       var(--c-cherry) 52%,
       color-mix(in srgb, var(--c-cherry) 76%, black) 100%);
     opacity:calc(var(--z,0) * 14);
-    transform:translate3d(-50%, calc(-50% + max(0px, (.45 - var(--z,0)) * 122vh)), 0)
-              scale(min(13, calc(1 + var(--z,0) * var(--z,0) * 58)))}
+    transform:translate3d(-50%, calc(-50% + max(0px, (.30 - var(--z,0)) * 183vh)), 0)
+              scale(min(14, calc(1 + var(--z,0) * var(--z,0) * 140)))}
   /* will-change only while the hero is actually on screen — a permanent one
      pins a layer in GPU memory for the whole page */
   .gh-stage.gh-live .gh-gummy{will-change:transform,opacity}
@@ -99,7 +115,7 @@
      bottom edge once it's pinned. */
   .gcg{width:100%;height:auto;display:block}
   .gh-chum{position:absolute;bottom:var(--gh-ground,0px);z-index:1;pointer-events:none;line-height:0;
-    opacity:calc(1 - var(--z,0) * 2.7);transform-origin:50% 100%;
+    opacity:calc(1 - var(--z,0) * 4.5);transform-origin:50% 100%;
     animation:ghSway ease-in-out infinite alternate}
   .gh-chum img{display:block;width:auto;height:100%;
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
@@ -130,7 +146,7 @@
 
 
   .gh-mid{position:relative;z-index:2;text-align:center;padding:0 var(--sp-5);
-    opacity:calc(1 - var(--z,0) * 2.7);will-change:opacity}
+    opacity:calc(1 - var(--z,0) * 4.5);will-change:opacity}
   .gh-eyebrow{display:inline-flex;align-items:center;gap:var(--sp-2);background:var(--c-ink);color:var(--c-surface);
     font-weight:var(--fw-black);font-size:var(--fs-xs);letter-spacing:var(--ls-wide);text-transform:uppercase;
     padding:var(--sp-2) var(--sp-4);border-radius:var(--r-full);margin-bottom:var(--sp-4)}
@@ -152,7 +168,7 @@
     animation:ghBounce 1.7s ease-in-out infinite}
   @keyframes ghBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
   .gh-reveal{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;padding:0 var(--sp-5);
-    color:var(--c-surface);opacity:calc((var(--z,0) - .48) * 7.1);pointer-events:none}
+    color:var(--c-surface);opacity:calc((var(--z,0) - .32) * 7.1);pointer-events:none}
   /* Dawn's base.css sets an explicit colour on h1-h6, and a direct rule beats
      the colour inherited from .gh-reveal — so headings on dark/coloured
      backgrounds must restate it or they render near-black. */
