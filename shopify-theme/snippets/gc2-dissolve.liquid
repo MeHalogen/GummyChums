@@ -1,0 +1,69 @@
+{%- comment -%}
+  Pixel dissolve — the transition out of a full-bleed colour block.
+
+  WHY THIS EXISTS RATHER THAN gc2-edge. That snippet draws coloured teeth on
+  transparency and sits BELOW the block it closes, so its flat fill has to match
+  whatever is above it. Against the hero it does not: the hero's pink is a huge
+  radial gradient, so a flat cherry band met it in a hard horizontal seam, and
+  the shape read as bunting rather than as the book's stepped border.
+
+  This inverts the whole idea. It draws the PAGE colour, and it sits ON TOP of
+  the block's last stretch. So the colour above every gap is the block's own —
+  gradient, photo, whatever — and the colour of the teeth is the page's own.
+  There is no seam to match because nothing is being matched: both halves are
+  the real thing showing through a stencil.
+
+  The motif itself is squares on a fixed grid, never triangles: a stepped
+  pyramid rising out of a solid base, then detached pixels floating clear of it,
+  so the block looks like it is breaking up into the page rather than being cut
+  off by a border.
+
+  Params:
+    id    (required) unique per instance. Pattern ids collide otherwise, and a
+          duplicate silently makes every later band reuse the first one.
+          MUST be pre-assigned — {% render %} does not evaluate filters.
+    tone  colour token for the TEETH — the page behind, not the block above.
+          Default '--c-bg'.
+    scale size of one pixel. 1 = 10px. Default 0.8, giving 8px pixels and a
+          128px band, which reads as deliberate on a phone and on a laptop.
+
+  Usage:
+    {%- assign did = 'hero-out' -%}
+    {% render 'gc2-dissolve', id: did, tone: '--c-bg' %}
+{%- endcomment -%}
+
+{%- assign tone  = tone  | default: '--c-bg' -%}
+{%- assign scale = scale | default: 0.8 -%}
+
+{%- comment -%} tile is 12 x 16 cells of 10px {%- endcomment -%}
+{%- assign unit_w = 120 | times: scale -%}
+{%- assign unit_h = 160 | times: scale -%}
+
+<svg class="gc2-dissolve" width="100%" height="{{ unit_h }}"
+     aria-hidden="true" focusable="false" role="presentation">
+  <defs>
+    <pattern id="gc2dis-{{ id }}" width="{{ unit_w }}" height="{{ unit_h }}" patternUnits="userSpaceOnUse">
+      <g transform="scale({{ scale }})" fill="var({{ tone }})">
+        {%- comment -%} stepped pyramid, column heights 2 3 4 6 8 10 10 8 6 4 3 2 {%- endcomment -%}
+        <rect x="0"   y="140" width="10" height="20"></rect>
+        <rect x="10"  y="130" width="10" height="30"></rect>
+        <rect x="20"  y="120" width="10" height="40"></rect>
+        <rect x="30"  y="100" width="10" height="60"></rect>
+        <rect x="40"  y="80"  width="10" height="80"></rect>
+        <rect x="50"  y="60"  width="10" height="100"></rect>
+        <rect x="60"  y="60"  width="10" height="100"></rect>
+        <rect x="70"  y="80"  width="10" height="80"></rect>
+        <rect x="80"  y="100" width="10" height="60"></rect>
+        <rect x="90"  y="120" width="10" height="40"></rect>
+        <rect x="100" y="130" width="10" height="30"></rect>
+        <rect x="110" y="140" width="10" height="20"></rect>
+        {%- comment -%} detached pixels — the block breaking up as it goes {%- endcomment -%}
+        <rect x="50"  y="40"  width="10" height="10"></rect>
+        <rect x="60"  y="40"  width="10" height="10"></rect>
+        <rect x="60"  y="20"  width="10" height="10"></rect>
+        <rect x="0"   y="110" width="10" height="10"></rect>
+      </g>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#gc2dis-{{ id }})"></rect>
+</svg>

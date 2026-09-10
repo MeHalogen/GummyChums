@@ -209,11 +209,14 @@
   @media(min-width:750px){.gh-reveal{--rev-start:.13;--rev-ramp:9}}
   .gh-reveal p{font-size:var(--fs-xl);font-weight:var(--fw-bold);margin:var(--sp-4) auto 0;max-width:30ch;opacity:.92}
 
-  /* the stepped edge closing the hero — negative margin so no hairline of
-     background shows between the pink and the first step */
-  .gh-edge{line-height:0;margin-top:-1px;position:relative;z-index:2}
+  /* The dissolve sits ON the hero's last 128px rather than below it, which is
+     the whole point: the teeth are page-colour and the gaps are the hero's own
+     pink, so neither half has a colour to match and there is no seam. Pulled up
+     by its exact height, and above the stage in the stacking order. */
+  .gh-edge{line-height:0;position:relative;z-index:2;margin-top:-128px;pointer-events:none}
 
   /* ---------- ACT 2 — flavours ---------- */
+  /* the dissolve already supplies the top separation */
   .gh-sec{padding:clamp(var(--sp-7),6vw,var(--sp-8)) 0}
   .gh-head{text-align:center;margin-bottom:clamp(var(--sp-5),4vw,var(--sp-7))}
   .gh-head h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:var(--sp-2) 0 0}
@@ -362,7 +365,7 @@
     the purple steps out of the story panel.
   {%- endcomment -%}
   {%- assign gh_edge = 'hero-out' -%}
-  <div class="gh-edge">{% render 'gc2-edge', id: gh_edge, tone: '--c-cherry', side: 'top' %}</div>
+  <div class="gh-edge">{% render 'gc2-dissolve', id: gh_edge, tone: '--c-bg' %}</div>
 
   <!-- ACT 2 — flavours -->
   <section class="gh-sec" id="shop">
