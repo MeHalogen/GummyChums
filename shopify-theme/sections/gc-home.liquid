@@ -236,10 +236,7 @@
   .gh-priced{display:flex;flex-direction:column;gap:var(--sp-1)}
   .gh-price{font-size:var(--fs-xl);font-weight:var(--fw-black);line-height:1}
   .gh-perday{font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3)}
-  .gh-add{border:0;cursor:pointer;font-family:inherit;font-weight:var(--fw-black);font-size:var(--fs-sm);color:var(--c-surface);
     padding:var(--sp-3) var(--sp-5);border-radius:var(--r-full);transition:transform var(--dur-1) var(--spring),filter var(--dur-2) var(--ease)}
-  .gh-add:hover{filter:brightness(1.08)} .gh-add:active{transform:scale(.93)}
-  .gh-add--soldout{background:var(--c-ink-3);cursor:default}
 
   /* ---------- meet the Chums: a vertical scroll that rides sideways ----------
      Scrolling down pins this block and slides the track left through the three
@@ -275,7 +272,7 @@
      box has a fixed, clamped height so the Chum's height is definite and it can
      never be cropped — on an iPhone SE2 the whole card is ~470px of a 561px
      pinned area. */
-  .gh-hs-card{flex:0 0 84vw;scroll-snap-align:start;box-sizing:border-box;background:var(--hs-soft);
+  .gh-hs-card{position:relative;flex:0 0 84vw;scroll-snap-align:start;box-sizing:border-box;background:var(--hs-soft);
     border-radius:var(--r-lg);padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-3)}
   .gh-hs-badge{align-self:flex-start;background:var(--c-surface);color:var(--hs-tone);font-size:var(--fs-xs);
     font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
@@ -292,9 +289,19 @@
   .gh-hs-name{font-size:var(--fs-xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
     margin:var(--sp-1) 0 0;color:var(--c-ink);text-wrap:balance}
   .gh-hs-name a{color:inherit;text-decoration:none}
+  /* one stretched link per card: the whole card is clickable, but there is still
+     exactly one focusable element and no nested anchors */
+  .gh-hs-name a::after{content:"";position:absolute;inset:0;border-radius:var(--r-lg)}
+  .gh-hs-meta{font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3);margin:0;letter-spacing:var(--ls-normal)}
+  .gh-hs-cta{flex:0 0 auto;background:var(--hs-tone);color:var(--c-surface);font-size:var(--fs-sm);
+    font-weight:var(--fw-black);padding:var(--sp-3) var(--sp-5);border-radius:var(--r-full);
+    white-space:nowrap;transition:filter var(--dur-2) var(--ease)}
+  .gh-hs-card:hover .gh-hs-cta{filter:brightness(1.08)}
+  .gh-hs-cta--out{background:var(--c-ink-3)}
+  @media (prefers-reduced-motion:reduce){.gh-hs-cta{transition:none}}
   .gh-hs-line{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-2);margin:0;line-height:var(--lh-snug)}
   .gh-hs-buy{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);margin-top:auto}
-  .gh-hs-card .gh-price{color:var(--hs-tone)}
+  .gh-hs-card .gh-price{color:var(--c-ink)}
   @media(min-width:750px){.gh-hs-card{flex-basis:min(40vw,560px)}}
 
   /* ---------- ACT 4 — FAQ ---------- */
@@ -422,7 +429,7 @@
         <article class="gh-hs-card" style="--hs-tone:var(--c-mango);--hs-soft:var(--c-mango-soft)">
           <span class="gh-hs-badge">Focus</span>
           <div class="gh-hs-media">
-            <a class="gh-hs-shot" href="{{ p1.url | default: routes.all_products_collection_url }}" tabindex="-1" aria-hidden="true">
+            <span class="gh-hs-shot">
               {%- if p1.featured_image -%}
                 {{ p1.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', width: 800, height: 800, alt: '', class: 'gh-hs-photo' }}
               {%- else -%}
@@ -432,11 +439,12 @@
                   <span class="gh-g gh-g3">{% render 'gc-gummy', tone: '--c-mango', id: 'hs1c' %}</span>
                 </span>
               {%- endif -%}
-            </a>
+            </span>
             <img class="gh-hs-fig" src="{{ 'gc2-chum-brain.svg' | asset_url }}" alt="A Chum reading a Brain Boosting book" width="340" height="894" loading="lazy" decoding="async" draggable="false">
           </div>
           <h3 class="gh-hs-name"><a href="{{ p1.url | default: routes.all_products_collection_url }}">{{ p1.title | default: 'Brain Booster Gummies' }}</a></h3>
           <p class="gh-hs-line">Big brain energy, tiny gummy.</p>
+          <p class="gh-hs-meta">30 gummies · one a day</p>
           <div class="gh-hs-buy">
             <span class="gh-priced">
               <span class="gh-price">{% render 'gc-money', price: p1.price %}</span>
@@ -444,20 +452,16 @@
               <span class="gh-perday">≈ ₹{{ pd }}/day</span>
             </span>
             {%- if p1.available -%}
-              <form method="post" action="{{ routes.cart_add_url }}">
-                <input type="hidden" name="id" value="{{ p1.selected_or_first_available_variant.id }}">
-                <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="gh-add" style="background:var(--c-mango)">Add to bag</button>
-              </form>
+              <span class="gh-hs-cta">View product <span aria-hidden="true">→</span></span>
             {%- else -%}
-              <span class="gh-add gh-add--soldout">Sold out</span>
+              <span class="gh-hs-cta gh-hs-cta--out">Sold out</span>
             {%- endif -%}
           </div>
         </article>
         <article class="gh-hs-card" style="--hs-tone:var(--c-orange);--hs-soft:var(--c-orange-soft)">
           <span class="gh-hs-badge">Eye care</span>
           <div class="gh-hs-media">
-            <a class="gh-hs-shot" href="{{ p2.url | default: routes.all_products_collection_url }}" tabindex="-1" aria-hidden="true">
+            <span class="gh-hs-shot">
               {%- if p2.featured_image -%}
                 {{ p2.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', width: 800, height: 800, alt: '', class: 'gh-hs-photo' }}
               {%- else -%}
@@ -467,11 +471,12 @@
                   <span class="gh-g gh-g3">{% render 'gc-gummy', tone: '--c-orange', id: 'hs2c' %}</span>
                 </span>
               {%- endif -%}
-            </a>
+            </span>
             <img class="gh-hs-fig" src="{{ 'gc2-chum-eye.svg' | asset_url }}" alt="A Chum scrolling on their phone" width="371" height="984" loading="lazy" decoding="async" draggable="false">
           </div>
           <h3 class="gh-hs-name"><a href="{{ p2.url | default: routes.all_products_collection_url }}">{{ p2.title | default: 'Eye Care Gummies' }}</a></h3>
           <p class="gh-hs-line">For screen-tired eyes.</p>
+          <p class="gh-hs-meta">30 gummies · one a day</p>
           <div class="gh-hs-buy">
             <span class="gh-priced">
               <span class="gh-price">{% render 'gc-money', price: p2.price %}</span>
@@ -479,20 +484,16 @@
               <span class="gh-perday">≈ ₹{{ pd }}/day</span>
             </span>
             {%- if p2.available -%}
-              <form method="post" action="{{ routes.cart_add_url }}">
-                <input type="hidden" name="id" value="{{ p2.selected_or_first_available_variant.id }}">
-                <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="gh-add" style="background:var(--c-orange)">Add to bag</button>
-              </form>
+              <span class="gh-hs-cta">View product <span aria-hidden="true">→</span></span>
             {%- else -%}
-              <span class="gh-add gh-add--soldout">Sold out</span>
+              <span class="gh-hs-cta gh-hs-cta--out">Sold out</span>
             {%- endif -%}
           </div>
         </article>
         <article class="gh-hs-card" style="--hs-tone:var(--c-cherry);--hs-soft:var(--c-cherry-soft)">
           <span class="gh-hs-badge">Sleep</span>
           <div class="gh-hs-media">
-            <a class="gh-hs-shot" href="{{ p3.url | default: routes.all_products_collection_url }}" tabindex="-1" aria-hidden="true">
+            <span class="gh-hs-shot">
               {%- if p3.featured_image -%}
                 {{ p3.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', width: 800, height: 800, alt: '', class: 'gh-hs-photo' }}
               {%- else -%}
@@ -502,11 +503,12 @@
                   <span class="gh-g gh-g3">{% render 'gc-gummy', tone: '--c-cherry', id: 'hs3c' %}</span>
                 </span>
               {%- endif -%}
-            </a>
+            </span>
             <img class="gh-hs-fig" src="{{ 'gc2-chum-sleep.svg' | asset_url }}" alt="A Chum with an iced coffee, eyes closed" width="407" height="1031" loading="lazy" decoding="async" draggable="false">
           </div>
           <h3 class="gh-hs-name"><a href="{{ p3.url | default: routes.all_products_collection_url }}">{{ p3.title | default: 'Melatonin Gummies' }}</a></h3>
           <p class="gh-hs-line">Wind down. Sleep tight, Chum.</p>
+          <p class="gh-hs-meta">30 gummies · one a day</p>
           <div class="gh-hs-buy">
             <span class="gh-priced">
               <span class="gh-price">{% render 'gc-money', price: p3.price %}</span>
@@ -514,13 +516,9 @@
               <span class="gh-perday">≈ ₹{{ pd }}/day</span>
             </span>
             {%- if p3.available -%}
-              <form method="post" action="{{ routes.cart_add_url }}">
-                <input type="hidden" name="id" value="{{ p3.selected_or_first_available_variant.id }}">
-                <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="gh-add" style="background:var(--c-cherry)">Add to bag</button>
-              </form>
+              <span class="gh-hs-cta">View product <span aria-hidden="true">→</span></span>
             {%- else -%}
-              <span class="gh-add gh-add--soldout">Sold out</span>
+              <span class="gh-hs-cta gh-hs-cta--out">Sold out</span>
             {%- endif -%}
           </div>
         </article>
