@@ -60,6 +60,8 @@
     box-shadow:var(--sh-2)}
   .gp-buy:hover{background:var(--c-accent-hover);transform:translateY(-2px);box-shadow:var(--sh-3)} .gp-buy:active{transform:scale(.96)}
   .gp-buy[disabled]{background:var(--c-ink-3);color:var(--c-surface);box-shadow:none;cursor:default}
+  .gp-added{margin:var(--sp-3) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-black);color:var(--c-ink)}
+  .gp-added a{color:var(--c-accent);text-decoration:underline;text-underline-offset:3px}
   /* secondary express path — ghost, so it never competes with Add to bag */
   .gp-now{background:transparent;color:var(--c-ink);border:0;cursor:pointer;font-family:inherit;
     font-weight:var(--fw-black);font-size:var(--fs-base);padding:var(--sp-4) var(--sp-6);
@@ -240,6 +242,7 @@
           <button type="button" class="gp-buy" disabled>Sold out</button>
         {%- endif -%}
       </form>
+      <p class="gp-added" id="gp-added" hidden>In your bag ✓ <a href="{{ routes.cart_url }}" id="gp-viewbag">View bag →</a></p>
 
       {%- comment -%} payment reassurance — COD/UPI are the two questions every Indian first-time buyer has {%- endcomment -%}
       <div class="gp-pay">
@@ -375,6 +378,44 @@
       .then(function(){location.href='/checkout';})
       .catch(function(){ /* fall back to the normal add-to-cart path */
         now.removeAttribute('aria-busy'); now.textContent=label; form.submit(); });
+  });
+
+  /* Add to bag without leaving the page. The plain form POST reloaded the whole
+     site and dumped you on /cart; this keeps you where you are, updates the
+     header count and pre-warms /cart so opening the bag is instant. The sticky
+     bar's button submits this same form, so it is covered too. Any failure
+     falls back to the native submit. */
+  var added=document.getElementById('gp-added');
+  var warmed=false;
+  function warmCart(){
+    if(warmed)return; warmed=true;
+    var l=document.createElement('link'); l.rel='prefetch'; l.href='/cart'; document.head.appendChild(l);
+  }
+  function setCount(n){
+    var el=document.getElementById('gc-cart-count'); if(el)el.textContent=n;
+  }
+  if(form)form.addEventListener('submit',function(e){
+    if(!window.fetch)return;                 /* let the browser do it the old way */
+    e.preventDefault();
+    var btn=document.getElementById('gp-buy');
+    if(btn&&btn.getAttribute('aria-busy')==='true')return;
+    var label=btn?btn.textContent:'';
+    if(btn){btn.setAttribute('aria-busy','true');btn.textContent='Adding…';}
+    fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({id:document.getElementById('gp-vid').value,
+                           quantity:parseInt(document.getElementById('gp-qty').value,10)||1})})
+      .then(function(r){if(!r.ok)throw new Error('add failed');return r.json();})
+      .then(function(){return fetch('/cart.js',{headers:{'Accept':'application/json'}}).then(function(r){return r.json();});})
+      .then(function(cart){
+        setCount(cart.item_count);
+        if(btn){btn.removeAttribute('aria-busy');btn.textContent=label;}
+        if(added)added.hidden=false;
+        warmCart();
+      })
+      .catch(function(){
+        if(btn){btn.removeAttribute('aria-busy');btn.textContent=label;}
+        form.submit();
+      });
   });
 
   /* sticky bar: show once the real Add button has scrolled out of view */

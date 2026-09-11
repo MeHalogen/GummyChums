@@ -162,3 +162,39 @@
     }, { rootMargin: '150px' });
     targets.forEach(function (el) { io.observe(el); });
   })();
+
+
+  /* Warm a page the moment someone shows intent — hover on a mouse, the first
+     touch on a phone — so the tap that follows lands on an already-fetched
+     page. This is what makes "open the bag" feel instant; the navigation is
+     still a normal one, we just start it earlier.
+
+     Never prefetches /cart/change or /cart/add: those CHANGE the cart, and a
+     prefetch would fire them for real. Skips slow connections and Save-Data. */
+  (function () {
+    if (!('fetch' in window)) return;
+    var c = navigator.connection;
+    if (c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ''))) return;
+    var done = Object.create(null);
+    function warm(url) {
+      if (done[url]) return;
+      done[url] = 1;
+      var l = document.createElement('link');
+      l.rel = 'prefetch';
+      l.href = url;
+      document.head.appendChild(l);
+    }
+    function intent(e) {
+      var t = e.target;
+      var a = t && t.closest ? t.closest('a') : null;
+      if (!a || a.hasAttribute('download')) return;
+      if (a.target && a.target !== '_self') return;
+      var href = a.getAttribute('href') || '';
+      if (href.charAt(0) !== '/') return;                 /* same-origin paths only */
+      if (href.indexOf('/cart/change') === 0) return;     /* mutating */
+      if (href.indexOf('/cart/add') === 0) return;        /* mutating */
+      warm(a.href);
+    }
+    addEventListener('pointerover', intent, { passive: true });
+    addEventListener('touchstart', intent, { passive: true });
+  })();

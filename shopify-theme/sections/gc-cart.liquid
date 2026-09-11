@@ -104,7 +104,7 @@
     {%- else -%}
 
       <h1 class="gck-title">{{ s.title }}</h1>
-      <p class="gck-count">
+      <p class="gck-count" id="gck-count">
         {{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}
       </p>
 
@@ -121,7 +121,7 @@
               {%- else -%}
                 {%- assign tone = '--c-mango' -%}{%- assign tone_soft = '--c-mango-soft' -%}
               {%- endif -%}
-              <div class="gck-row">
+              <div class="gck-row" data-line="{{ forloop.index }}">
                 <span class="gck-shot" style="--pc-soft:var({{ tone_soft }})">
                   {%- if item.image -%}
                     {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', width: 200, height: 200, alt: item.title }}
@@ -146,7 +146,7 @@
                     {%- assign more = item.quantity | plus: 1 -%}
                     <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ less }}"
                        aria-label="Decrease quantity of {{ item.product.title }}">−</a>
-                    <span>{{ item.quantity }}</span>
+                    <span class="gck-qtyv">{{ item.quantity }}</span>
                     <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ more }}"
                        aria-label="Increase quantity of {{ item.product.title }}">+</a>
                   </span>
@@ -161,7 +161,7 @@
             <h2>Order summary</h2>
             <div class="gck-line">
               <span>Subtotal</span>
-              <b>{% render 'gc-money', price: cart.total_price %}</b>
+              <b id="gck-subtotal">{% render 'gc-money', price: cart.total_price %}</b>
             </div>
             <div class="gck-line">
               <span>Shipping</span>
@@ -170,7 +170,7 @@
             <div class="gck-rule" aria-hidden="true"></div>
             <div class="gck-total">
               <span>Total</span>
-              <b>{% render 'gc-money', price: cart.total_price %}</b>
+              <b id="gck-total">{% render 'gc-money', price: cart.total_price %}</b>
             </div>
             <p class="gck-tax">{{ s.tax_note }}</p>
 
@@ -192,6 +192,76 @@
     {%- endif -%}
   </div>
 </section>
+
+<script>
+(function(){
+  /* Quantity and Remove used to be plain links to /cart/change, so every tap
+     reloaded the whole cart page. They now change the cart in place: one POST,
+     then the row, the totals and the header count are updated from the reply.
+     No fetch support, or any failure, and the original link still works. */
+  var form=document.getElementById('gck-form');
+  if(!form||!window.fetch) return;
+
+  function money(cents){
+    var v=cents/100;
+    return '\u20B9'+(v%1===0?v.toFixed(0):v.toFixed(2));
+  }
+  function rows(){ return [].slice.call(form.querySelectorAll('.gck-row')); }
+
+  function paint(cart){
+    var el=document.getElementById('gc-cart-count'); if(el)el.textContent=cart.item_count;
+    var cnt=document.getElementById('gck-count');
+    if(cnt)cnt.textContent=cart.item_count+' '+(cart.item_count===1?'item':'items');
+    var sub=document.getElementById('gck-subtotal'), tot=document.getElementById('gck-total');
+    if(sub)sub.textContent=money(cart.total_price);
+    if(tot)tot.textContent=money(cart.total_price);
+
+    var rs=rows();
+    /* a removed line shifts every line number after it, so drop the row that
+       went and renumber what is left */
+    if(cart.items.length!==rs.length){
+      rs.forEach(function(r){
+        var i=parseInt(r.getAttribute('data-line'),10);
+        if(i>cart.items.length) r.remove();
+      });
+      rs=rows();
+    }
+    rs.forEach(function(r,i){
+      var it=cart.items[i]; if(!it)return;
+      r.setAttribute('data-line',i+1);
+      var qv=r.querySelector('.gck-qtyv'); if(qv)qv.textContent=it.quantity;
+      var lt=r.querySelector('.gck-line-total'); if(lt)lt.textContent=money(it.final_line_price!=null?it.final_line_price:it.line_price);
+      var links=r.querySelectorAll('.gck-qty a');
+      if(links[0])links[0].setAttribute('href','/cart/change?line='+(i+1)+'&quantity='+(it.quantity-1));
+      if(links[1])links[1].setAttribute('href','/cart/change?line='+(i+1)+'&quantity='+(it.quantity+1));
+      var rm=r.querySelector('.gck-remove');
+      if(rm)rm.setAttribute('href','/cart/change?line='+(i+1)+'&quantity=0');
+    });
+  }
+
+  var busy=false;
+  form.addEventListener('click',function(e){
+    var a=e.target.closest('a'); if(!a)return;
+    if(!a.closest('.gck-qty')&&!a.classList.contains('gck-remove'))return;
+    var href=a.getAttribute('href')||'';
+    var line=(href.match(/[?&]line=(\d+)/)||[])[1];
+    var qty=(href.match(/[?&]quantity=(\d+)/)||[])[1];
+    if(line==null||qty==null)return;
+    e.preventDefault();
+    if(busy)return; busy=true;
+    var row=a.closest('.gck-row'); if(row)row.setAttribute('aria-busy','true');
+    fetch('/cart/change.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({line:parseInt(line,10),quantity:parseInt(qty,10)})})
+      .then(function(r){if(!r.ok)throw new Error('change failed');return r.json();})
+      .then(function(cart){
+        busy=false; if(row)row.removeAttribute('aria-busy');
+        if(cart.item_count===0){location.href='/cart';return;}  /* show the empty state */
+        paint(cart);
+      })
+      .catch(function(){ busy=false; location.href=href; });
+  });
+})();
+</script>
 
 {% schema %}
 {
