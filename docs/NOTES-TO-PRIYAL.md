@@ -2,7 +2,7 @@
 
 _The single parked list. Everything not-yet-done lives here: questions for Priyal, decisions taken on her behalf, and the tasks still on Mehal's plate. Nothing else should hold a to-do list._
 
-**Launch: 19 Sep 2026** · Last updated: 9 Sep 2026
+**Launch: 19 Sep 2026** · Last updated: 12 Sep 2026
 
 ---
 
@@ -41,7 +41,7 @@ Full spec in [`REBRAND-PLAN.md`](REBRAND-PLAN.md).
 **Still open:**
 1. **NaN Jaune woff2 once the licence is bought.** The folder contains `NaNJauneTRIAL-MaxiMedium…ttf`. **We have not put it on the site**, and shouldn't: NaN's trial fonts are licensed for testing and mockups, not for web embedding on a live commercial store — the file is served publicly, so it is a real licence breach rather than a technicality. The site stays on Manrope until the paid web licence lands. See item 9.
 2. **A decision on timing** — the rebrand now has its assets, so it's no longer blocked. It lives on an unpublished theme and can be published whenever Priyal approves the look. Recommendation is unchanged: launch on whichever design she's happy with, and don't let the rebrand hold the launch date.
-3. **Which character belongs to which product**, if she wants them used on the product pages. Our read: the girl with the "Brain Boosting" book → Brain Booster, the boy on his phone → Eye Care (screen time), the woman with the iced coffee → Melatonin. Worth her confirming rather than us guessing.
+3. **Which character belongs to which product — now LIVE on the homepage, please confirm.** Since 12 Sep the "Meet our Chums" sideways-scroll section pairs each Chum with a product: the girl with the "Brain Boosting" book → Brain Booster, the boy on his phone → Eye Care (screen time), the woman with the iced coffee → Melatonin. This was our read, not hers. If she sees it differently it is a two-minute swap. The characters still have no names — the book gives none, so we didn't invent any.
 
 ---
 
@@ -232,6 +232,8 @@ Each was needed to keep building, and each is easy to change.
 | 13 | **FSSAI line = manufacturer's licence** (Biovencer, 10017051002083) | Nirmay's own licence still pending | **Swap the moment yours arrives** |
 | 14 | **"Free shipping over ₹699" removed** | Never confirmed, and contradicts weight-based pricing | Was in five places |
 | 15 | **Delivery shown as 3–10 working days** | Your stated range | Checkout shows 5–8 business days, which sits inside it |
+| 16 | **Delivery times on the PIN-code check**: 3–5 working days (Delhi NCR, UP, Rajasthan, Haryana), 7–10 (J&K, Himachal, North East), 4–7 everywhere else | Estimated from our shipping zones; the product page now promises these | **Check against what Shiprocket actually quotes before launch** |
+| 17 | **"Cash on Delivery available"** is printed on every PIN-code result, as well as in the marquee and FAQ | Matches what the site already says | COD is still an open question — if it goes, these lines must go with it |
 
 ---
 

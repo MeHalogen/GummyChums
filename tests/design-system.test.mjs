@@ -35,7 +35,8 @@ test('tokens define the full spacing scale (--sp-1..--sp-10)', () => {
 });
 
 // 9, not 8, since 11 Sep 2026: --fs-display added deliberately for the
-// kinetic band. Adding a tenth needs the same conversation, not a quiet edit.
+// display headline (now the "Meet our Chums" title). A tenth needs the same
+// conversation, not a quiet edit.
 test('type scale defines exactly the 9 approved sizes', () => {
   const css = read(TOKENS);
   const expected = ['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl', 'display'];

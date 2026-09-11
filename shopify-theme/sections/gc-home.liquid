@@ -257,24 +257,44 @@
   .gh-add--soldout{background:var(--c-ink-3);cursor:default}
   .gh-empty{grid-column:1/-1;text-align:center;color:var(--c-ink-2)}
 
-  /* ---------- kinetic band ----------
-     Three huge words that slide in from the left as you scroll, each dragging
-     an arrow, and STOP when you stop. That is the difference from the marquee
-     up top: this only moves under your thumb, so it reads as controlled rather
-     than as one more thing animating at you.
+  /* ---------- meet the Chums: a vertical scroll that rides sideways ----------
+     Scrolling down pins this block and slides the track left through the three
+     Chums, then lets go and normal scrolling resumes. The section is made
+     exactly as tall as the sideways travel, so a pixel of scroll is a pixel of
+     movement — 1:1, which is what stops a pin from feeling stuck: something is
+     always moving under your thumb, and it ends the moment the last Chum is in.
 
-     Deliberately one band, not pinned — it adds no dead scroll and cannot feel
-     stuck — and it settles into a readable resting state rather than drifting
-     forever. Without JavaScript, or with reduced motion, the rows simply sit
-     there at rest: that is the default, and motion is layered on top. */
-  .gh-kin{padding:clamp(var(--sp-8),8vw,var(--sp-10)) 0;overflow:hidden}
-  .gh-kin-row{display:flex;align-items:center;gap:.16em;padding-inline:var(--gutter);
-    font-size:var(--fs-display);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
-    line-height:.98;text-transform:uppercase;white-space:nowrap;color:var(--c-ink)}
-  .gh-kin-row + .gh-kin-row{margin-top:.06em}
-  .gh-kin--live .gh-kin-row{will-change:transform}
-  .gh-kin-arrow{flex:0 0 auto;display:block;height:.56em;width:auto;color:var(--c-cherry)}
-  @media (prefers-reduced-motion:reduce){.gh-kin-row{transform:none!important}}
+     Without JavaScript, or with reduced motion, there is no pin at all: the
+     row is an ordinary swipeable strip with snap points. The pinned ride is
+     layered on top of that, never required by it. */
+  .gh-hs{position:relative}
+  .gh-hs-pin{display:flex;align-items:center;padding:var(--sp-7) 0}
+  .gh-hs--js .gh-hs-pin{position:sticky;top:0;height:100svh;box-sizing:border-box;
+    padding:var(--header-h) 0 var(--sp-5);overflow:hidden}
+  .gh-hs-track{display:flex;align-items:center;gap:var(--sp-4);padding-inline:var(--gutter);
+    overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .gh-hs--js .gh-hs-track{overflow:visible;scroll-snap-type:none;width:max-content}
+  .gh-hs--live .gh-hs-track{will-change:transform}
+  .gh-hs-intro{flex:0 0 84vw;scroll-snap-align:start}
+  .gh-hs-title{font-size:var(--fs-display);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    margin:0;color:var(--c-ink);text-wrap:balance}
+  .gh-hs-title em{font-style:normal;color:var(--c-accent)}
+  .gh-hs-hint{margin:var(--sp-5) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--c-ink-3)}
+  .gh-hs-card{flex:0 0 84vw;scroll-snap-align:start;box-sizing:border-box;background:var(--hs-soft);
+    border-radius:var(--r-lg);padding:var(--sp-5);display:flex;flex-direction:column;
+    align-items:center;gap:var(--sp-4);text-align:center}
+  .gh-hs-badge{background:var(--c-surface);color:var(--hs-tone);font-size:var(--fs-xs);
+    font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
+    padding:var(--sp-2) var(--sp-3);border-radius:var(--r-full);box-shadow:var(--sh-1)}
+  .gh-hs-fig{display:block;height:min(48svh,460px);width:auto;
+    -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+  .gh-hs-line{font-size:var(--fs-xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    margin:0;color:var(--c-ink);text-wrap:balance}
+  .gh-hs-link{font-size:var(--fs-base);font-weight:var(--fw-black);color:var(--hs-tone);text-decoration:none}
+  .gh-hs-link:hover{text-decoration:underline;text-underline-offset:3px}
+  @media(min-width:750px){.gh-hs-intro{flex-basis:min(60vw,880px)}}
+  @media(min-width:750px){.gh-hs-card{flex-basis:min(40vw,560px)}}
 
   /* ---------- ACT 4 — FAQ ---------- */
   .gh-faq{max-width:760px;margin:0 auto}
@@ -451,38 +471,69 @@
     </div>
   </section>
 
-  <!-- ACT 3 — kinetic band: the promise, in the words the FAQ already uses -->
-  <section class="gh-kin" id="gh-kin">
-    <div class="gh-kin-row"><span>No pills</span><svg class="gh-kin-arrow" viewBox="0 0 120 60" fill="none" aria-hidden="true" focusable="false"><path d="M0 30H110M84 5l26 25-26 25" stroke="currentColor" stroke-width="7" stroke-linecap="square"/></svg></div>
-    <div class="gh-kin-row"><span>No water</span><svg class="gh-kin-arrow" viewBox="0 0 120 60" fill="none" aria-hidden="true" focusable="false"><path d="M0 30H110M84 5l26 25-26 25" stroke="currentColor" stroke-width="7" stroke-linecap="square"/></svg></div>
-    <div class="gh-kin-row"><span>No fuss</span><svg class="gh-kin-arrow" viewBox="0 0 120 60" fill="none" aria-hidden="true" focusable="false"><path d="M0 30H110M84 5l26 25-26 25" stroke="currentColor" stroke-width="7" stroke-linecap="square"/></svg></div>
+  <!-- ACT 3 — meet the Chums. Order runs morning -> screen hours -> night.
+       Which Chum stands for which product is our read, not yet confirmed by
+       Priyal (NOTES R6.3) — change the three blocks below if she says otherwise. -->
+  {%- assign p1 = all_products['brain-booster-gummies'] -%}
+  {%- assign p2 = all_products['eye-care-gummies'] -%}
+  {%- assign p3 = all_products['melatonin-gummies'] -%}
+  <section class="gh-hs" id="gh-hs">
+    <div class="gh-hs-pin" id="gh-hs-pin">
+      <div class="gh-hs-track" id="gh-hs-track">
+        <div class="gh-hs-intro">
+          <h2 class="gh-hs-title">Meet our <em>Chums</em></h2>
+          <p class="gh-hs-hint">Keep scrolling <span aria-hidden="true">→</span></p>
+        </div>
+        <article class="gh-hs-card" style="--hs-tone:var(--c-mango);--hs-soft:var(--c-mango-soft)">
+          <span class="gh-hs-badge">Focus</span>
+          <img class="gh-hs-fig" src="{{ 'gc2-chum-brain.svg' | asset_url }}" alt="A Chum reading a Brain Boosting book" width="340" height="894" loading="lazy" decoding="async" draggable="false">
+          <h3 class="gh-hs-line">Big brain energy, tiny gummy.</h3>
+          <a class="gh-hs-link" href="{{ p1.url | default: routes.all_products_collection_url }}">{{ p1.title | default: 'Brain Booster Gummies' }} <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="gh-hs-card" style="--hs-tone:var(--c-orange);--hs-soft:var(--c-orange-soft)">
+          <span class="gh-hs-badge">Eye care</span>
+          <img class="gh-hs-fig" src="{{ 'gc2-chum-eye.svg' | asset_url }}" alt="A Chum scrolling on their phone" width="371" height="984" loading="lazy" decoding="async" draggable="false">
+          <h3 class="gh-hs-line">For screen-tired eyes.</h3>
+          <a class="gh-hs-link" href="{{ p2.url | default: routes.all_products_collection_url }}">{{ p2.title | default: 'Eye Care Gummies' }} <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="gh-hs-card" style="--hs-tone:var(--c-cherry);--hs-soft:var(--c-cherry-soft)">
+          <span class="gh-hs-badge">Sleep</span>
+          <img class="gh-hs-fig" src="{{ 'gc2-chum-sleep.svg' | asset_url }}" alt="A Chum with an iced coffee, eyes closed" width="407" height="1031" loading="lazy" decoding="async" draggable="false">
+          <h3 class="gh-hs-line">Wind down. Sleep tight, Chum.</h3>
+          <a class="gh-hs-link" href="{{ p3.url | default: routes.all_products_collection_url }}">{{ p3.title | default: 'Melatonin Gummies' }} <span aria-hidden="true">→</span></a>
+        </article>
+      </div>
+    </div>
   </section>
   <script>
   (function(){
-    var kin=document.getElementById('gh-kin'); if(!kin) return;
+    var sec=document.getElementById('gh-hs'), pin=document.getElementById('gh-hs-pin'), track=document.getElementById('gh-hs-track');
+    if(!sec||!pin||!track) return;
     if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-    var rows=[].slice.call(kin.querySelectorAll('.gh-kin-row'));
-    var last=[], live=false, tk=false;
-    function ease(t){return 1-Math.pow(1-t,3);}
-    /* progress runs 0 -> 1 as the band's top travels from the bottom of the
-       screen to 30% up it; each row starts 14% of that later than the one
-       above, so they arrive as a cascade and settle at rest */
+    sec.classList.add('gh-hs--js');
+    var travel=0, last='', live=false, tk=false;
     function place(force){
       tk=false;
-      var r=kin.getBoundingClientRect(), vh=innerHeight;
-      var on=r.bottom>0&&r.top<vh;
-      if(on!==live){live=on;kin.classList.toggle('gh-kin--live',on);}
+      var r=sec.getBoundingClientRect();
+      var on=r.bottom>0&&r.top<innerHeight;
+      if(on!==live){live=on;sec.classList.toggle('gh-hs--live',on);}
       if(!on&&!force) return;
-      var p=(vh-r.top)/(vh*0.7);
-      rows.forEach(function(el,i){
-        var t=Math.min(Math.max((p-i*0.14)/0.62,0),1);
-        var x=((1-ease(t))*-100).toFixed(2);
-        if(x!==last[i]){last[i]=x;el.style.transform='translate3d('+x+'vw,0,0)';}
-      });
+      var p=travel?Math.min(Math.max(-r.top/travel,0),1):0;
+      var x=(-p*travel).toFixed(1);
+      if(x!==last){last=x;track.style.transform='translate3d('+x+'px,0,0)';}
+    }
+    /* the section is exactly one pinned screen plus the sideways travel, so
+       vertical and horizontal distance match 1:1 */
+    function measure(){
+      travel=Math.max(0,track.offsetWidth-pin.clientWidth);
+      sec.style.height=(pin.offsetHeight+travel)+'px';
+      last=''; place(true);
     }
     addEventListener('scroll',function(){if(!tk){tk=true;requestAnimationFrame(function(){place(false);});}},{passive:true});
-    addEventListener('resize',function(){place(true);});
-    place(true);
+    /* iOS resizes on every toolbar show/hide; only a width change alters the travel */
+    var w=innerWidth; addEventListener('resize',function(){if(innerWidth!==w){w=innerWidth;measure();}else{place(true);}});
+    if(document.fonts&&document.fonts.ready) document.fonts.ready.then(measure);
+    measure();
   })();
   </script>
 
