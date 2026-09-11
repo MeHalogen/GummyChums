@@ -257,6 +257,25 @@
   .gh-add--soldout{background:var(--c-ink-3);cursor:default}
   .gh-empty{grid-column:1/-1;text-align:center;color:var(--c-ink-2)}
 
+  /* ---------- kinetic band ----------
+     Three huge words that slide in from the left as you scroll, each dragging
+     an arrow, and STOP when you stop. That is the difference from the marquee
+     up top: this only moves under your thumb, so it reads as controlled rather
+     than as one more thing animating at you.
+
+     Deliberately one band, not pinned — it adds no dead scroll and cannot feel
+     stuck — and it settles into a readable resting state rather than drifting
+     forever. Without JavaScript, or with reduced motion, the rows simply sit
+     there at rest: that is the default, and motion is layered on top. */
+  .gh-kin{padding:clamp(var(--sp-8),8vw,var(--sp-10)) 0;overflow:hidden}
+  .gh-kin-row{display:flex;align-items:center;gap:.16em;padding-inline:var(--gutter);
+    font-size:var(--fs-display);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    line-height:.98;text-transform:uppercase;white-space:nowrap;color:var(--c-ink)}
+  .gh-kin-row + .gh-kin-row{margin-top:.06em}
+  .gh-kin--live .gh-kin-row{will-change:transform}
+  .gh-kin-arrow{flex:0 0 auto;display:block;height:.56em;width:auto;color:var(--c-cherry)}
+  @media (prefers-reduced-motion:reduce){.gh-kin-row{transform:none!important}}
+
   /* ---------- ACT 4 — FAQ ---------- */
   .gh-faq{max-width:760px;margin:0 auto}
   .gh-q{background:var(--c-surface);border-radius:var(--r-md);margin-bottom:var(--sp-3);overflow:hidden;box-shadow:var(--sh-2)}
@@ -431,6 +450,41 @@
       </div>
     </div>
   </section>
+
+  <!-- ACT 3 — kinetic band: the promise, in the words the FAQ already uses -->
+  <section class="gh-kin" id="gh-kin">
+    <div class="gh-kin-row"><span>No pills</span><svg class="gh-kin-arrow" viewBox="0 0 120 60" fill="none" aria-hidden="true" focusable="false"><path d="M0 30H110M84 5l26 25-26 25" stroke="currentColor" stroke-width="7" stroke-linecap="square"/></svg></div>
+    <div class="gh-kin-row"><span>No water</span><svg class="gh-kin-arrow" viewBox="0 0 120 60" fill="none" aria-hidden="true" focusable="false"><path d="M0 30H110M84 5l26 25-26 25" stroke="currentColor" stroke-width="7" stroke-linecap="square"/></svg></div>
+    <div class="gh-kin-row"><span>No fuss</span><svg class="gh-kin-arrow" viewBox="0 0 120 60" fill="none" aria-hidden="true" focusable="false"><path d="M0 30H110M84 5l26 25-26 25" stroke="currentColor" stroke-width="7" stroke-linecap="square"/></svg></div>
+  </section>
+  <script>
+  (function(){
+    var kin=document.getElementById('gh-kin'); if(!kin) return;
+    if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    var rows=[].slice.call(kin.querySelectorAll('.gh-kin-row'));
+    var last=[], live=false, tk=false;
+    function ease(t){return 1-Math.pow(1-t,3);}
+    /* progress runs 0 -> 1 as the band's top travels from the bottom of the
+       screen to 30% up it; each row starts 14% of that later than the one
+       above, so they arrive as a cascade and settle at rest */
+    function place(force){
+      tk=false;
+      var r=kin.getBoundingClientRect(), vh=innerHeight;
+      var on=r.bottom>0&&r.top<vh;
+      if(on!==live){live=on;kin.classList.toggle('gh-kin--live',on);}
+      if(!on&&!force) return;
+      var p=(vh-r.top)/(vh*0.7);
+      rows.forEach(function(el,i){
+        var t=Math.min(Math.max((p-i*0.14)/0.62,0),1);
+        var x=((1-ease(t))*-100).toFixed(2);
+        if(x!==last[i]){last[i]=x;el.style.transform='translate3d('+x+'vw,0,0)';}
+      });
+    }
+    addEventListener('scroll',function(){if(!tk){tk=true;requestAnimationFrame(function(){place(false);});}},{passive:true});
+    addEventListener('resize',function(){place(true);});
+    place(true);
+  })();
+  </script>
 
   <!-- ACT 4 — FAQ -->
   <section class="gh-sec" id="gc-faq" style="padding-top:0">

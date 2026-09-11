@@ -23,6 +23,11 @@
   --fs-2xl:clamp(29px,3.4vw,38px);          /* section headings     */
   --fs-3xl:clamp(38px,5vw,56px);            /* page headings        */
   --fs-4xl:clamp(48px,7vw,80px);            /* hero                 */
+  /* Added 11 Sep 2026 for the kinetic "NO PILLS / NO WATER / NO FUSS" band,
+     whose whole effect depends on type far past the hero's 80px ceiling. It is
+     the ONE place this size may be used; the floor is set so the longest row
+     still fits a 360px phone with its arrow, untruncated. */
+  --fs-display:clamp(40px,12vw,184px);      /* kinetic band only    */
 
   --lh-tight:1.04; --lh-snug:1.25; --lh-body:1.55;
   --ls-tight:-0.03em; --ls-normal:-0.01em; --ls-wide:0.18em;

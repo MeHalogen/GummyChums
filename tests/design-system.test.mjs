@@ -34,14 +34,16 @@ test('tokens define the full spacing scale (--sp-1..--sp-10)', () => {
   }
 });
 
-test('type scale defines exactly the 8 approved sizes', () => {
+// 9, not 8, since 11 Sep 2026: --fs-display added deliberately for the
+// kinetic band. Adding a tenth needs the same conversation, not a quiet edit.
+test('type scale defines exactly the 9 approved sizes', () => {
   const css = read(TOKENS);
-  const expected = ['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl'];
+  const expected = ['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl', '4xl', 'display'];
   for (const n of expected) {
     assert.match(css, new RegExp(`--fs-${n}\\s*:`), `missing --fs-${n}`);
   }
   const found = [...css.matchAll(/--fs-([a-z0-9]+)\s*:/g)].map((m) => m[1]);
-  assert.equal(new Set(found).size, 8, `type scale must be exactly 8 sizes, found ${new Set(found).size}`);
+  assert.equal(new Set(found).size, 9, `type scale must be exactly 9 sizes, found ${new Set(found).size}`);
 });
 
 test('tokens define colour roles including a single reserved accent', () => {
