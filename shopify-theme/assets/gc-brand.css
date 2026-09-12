@@ -25,6 +25,22 @@ html{background:#F8EBDF}
     radial-gradient(54vw 54vw at 96% 100%,rgba(244,116,33,.26), transparent 60%),
     radial-gradient(46vw 46vw at 2% 100%, rgba(89,35,84,.20),   transparent 60%),
     linear-gradient(180deg,#FBF0E6 0%,#F8EBDF 50%,#FAEEE6 100%)}
+/* Phones repeat the washes above measured against the LONG side, and the desktop
+   values are left exactly as they are. In vw these were tuned for a wide screen:
+   58vw is 835px on a laptop but 228px on a 393px phone, so four small stains sat
+   in the corners of an 852px-tall screen with flat cream between them — colour on
+   a desktop, white on a phone. Same design, same proportion of the screen's long
+   side. The green is eased back slightly because on a narrow screen it meets the
+   cherry nearer the middle than it ever does on a wide one. */
+@media(max-width:749px){
+  .gc-bg{background:
+    radial-gradient(58vmax 58vmax at 0% 0%,   rgba(222,29,98,.24), transparent 60%),
+    radial-gradient(48vmax 48vmax at 100% 6%, rgba(141,170,61,.18), transparent 60%),
+    radial-gradient(54vmax 54vmax at 96% 100%,rgba(244,116,33,.24), transparent 60%),
+    radial-gradient(46vmax 46vmax at 2% 100%, rgba(89,35,84,.18),   transparent 60%),
+    linear-gradient(180deg,#FBF0E6 0%,#F8EBDF 50%,#FAEEE6 100%)}
+  .gc-bg::after{background:radial-gradient(46vmax 34vmax at 50% 46%, rgba(255,248,251,.42), transparent 72%)}
+}
 /* Soft ambient gummies — heavily diffused so they never fight the content.
    Deliberately NOT animated: a blur this large has to be re-rasterised on every
    frame it moves, and four of them animating was the single biggest cause of

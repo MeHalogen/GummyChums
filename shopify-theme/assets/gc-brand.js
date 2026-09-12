@@ -22,7 +22,14 @@
     // large has to be re-rasterised on every frame it moves, and four of them
     // animating was the single biggest cause of scroll jank on this site.
     // Static, they rasterise once and cost nothing after that.
-    var gummies = [
+    // Phones take the same three gummies measured against the long side, for the
+    // reason the washes in gc-brand.css do: a vw size tuned for a 1440 screen is
+    // a smudge on a 393px one. Same proportions, desktop untouched.
+    var gummies = innerWidth <= 749 ? [
+      { css: 'left:-14vw;top:-4vh;width:52vmax;height:52vmax',    c: 'var(--c-cherry)' },
+      { css: 'right:-14vw;top:14vh;width:46vmax;height:46vmax',   c: 'var(--c-mango)' },
+      { css: 'left:-4vw;bottom:-8vh;width:50vmax;height:50vmax',  c: 'var(--c-orange)' }
+    ] : [
       { css: 'left:-6vw;top:-4vw;width:52vw;height:52vw',   c: 'var(--c-cherry)' },
       { css: 'right:-6vw;top:8vw;width:46vw;height:46vw',   c: 'var(--c-mango)' },
       { css: 'left:20vw;bottom:-10vw;width:50vw;height:50vw', c: 'var(--c-orange)' }
