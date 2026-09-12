@@ -46,6 +46,9 @@
 
   /* PURPLE — new in v2 and structural, not decorative. Carries dark panels,
      the stepped edge motif, and headings that need weight without shouting. */
+  /* The cover's ground, measured off the brand book at 150dpi. Distinct from
+     --c-mango (#8DAA3D), which stays the Focus product tone. */
+  --c-olive:#9CA93D;
   --c-purple:#592354;
   --c-purple-soft:rgba(89,35,84,0.10);
   --c-purple-ink:#F8EBDF;         /* cream reads better than white on it    */
