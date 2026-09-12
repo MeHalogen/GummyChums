@@ -7,22 +7,28 @@
   if(!sec||!pin||!track) return;
   if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   sec.classList.add('gh-hs--js');
-  var travel=0, last='', live=false, tk=false;
+  var travel=0, span=0, last='', live=false, tk=false;
+  /* A phone flick covers roughly a thousand pixels, which at 1:1 is the entire
+     ride — you never actually see the third Chum. On phones the section is made
+     longer than the sideways travel, so the same flick moves the track less far
+     and each Chum gets time on screen. Desktop keeps 1:1, which was right. */
+  function ratio(){ return innerWidth <= 749 ? 1.7 : 1; }
   function place(force){
     tk=false;
     var r=sec.getBoundingClientRect();
     var on=r.bottom>0&&r.top<innerHeight;
     if(on!==live){live=on;sec.classList.toggle('gh-hs--live',on);}
     if(!on&&!force) return;
-    var p=travel?Math.min(Math.max(-r.top/travel,0),1):0;
+    var p=span?Math.min(Math.max(-r.top/span,0),1):0;
     var x=(-p*travel).toFixed(1);
     if(x!==last){last=x;track.style.transform='translate3d('+x+'px,0,0)';}
   }
-  /* the section is exactly one pinned screen plus the sideways travel, so
-     vertical and horizontal distance match 1:1 */
+  /* one pinned screen plus the scroll distance the ride is given — equal to the
+     sideways travel on desktop, 1.7x it on a phone */
   function measure(){
     travel=Math.max(0,track.offsetWidth-pin.clientWidth);
-    sec.style.height=(pin.offsetHeight+travel)+'px';
+    span=travel*ratio();
+    sec.style.height=(pin.offsetHeight+span)+'px';
     last=''; place(true);
   }
   addEventListener('scroll',function(){if(!tk){tk=true;requestAnimationFrame(function(){place(false);});}},{passive:true});

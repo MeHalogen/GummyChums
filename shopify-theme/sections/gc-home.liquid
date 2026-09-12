@@ -34,9 +34,9 @@
      160vh gives 60vh (~490px) instead. Still well short of the 200vh that once
      read as a frozen page, and unlike that version something is moving the
      whole way down: the gummy grows, then the words arrive and HOLD. */
-  @media(max-width:749px){.gh-stage{height:130vh}}
+  @media(max-width:749px){.gh-stage{height:190vh}}
   /* transparent so the global fixed flavour background shows through — nothing to repaint */
-  .gh-pin{--zoom-k:140;--rise-end:.18;position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
+  .gh-pin{--zoom-k:55;--rise-end:.34;position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
     background:transparent;contain:paint;padding-bottom:4vh}
 
   /* The zooming gummy. Scaling is anchored to the CIRCLE's own centre
@@ -195,7 +195,7 @@
   .gh-scroll{margin-top:var(--sp-4);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);font-size:var(--fs-xs);color:var(--c-ink-3);
     animation:ghBounce 1.7s ease-in-out infinite}
   @keyframes ghBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
-  .gh-reveal{--rev-start:.11;--rev-ramp:11;position:absolute;left:50%;top:50%;width:100%;height:100%;
+  .gh-reveal{--rev-start:.18;--rev-ramp:7;position:absolute;left:50%;top:50%;width:100%;height:100%;
     z-index:3;display:grid;place-items:center;text-align:center;padding:0 var(--sp-5);
     color:var(--c-surface);opacity:calc((var(--z,0) - var(--rev-start)) * var(--rev-ramp));
     transform-origin:50% 50%;

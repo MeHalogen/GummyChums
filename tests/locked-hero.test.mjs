@@ -1,7 +1,10 @@
 /**
  * LOCKED: the pink gummy scroll sequence.
  *
- * Signed off 11 Sep 2026 — "I like the pink Gummy thing that we did right now,
+ * Signed off 11 Sep 2026. Phone pacing re-opened by Mehal on 12 Sep 2026 —
+ * it read as a jump on a real phone — and re-signed at the values below.
+ *
+ * Original sign-off — "I like the pink Gummy thing that we did right now,
  * whatever you had to change in the diff is perfectly fine. Lock this diff, and
  * if I try to change it, flag me. If you try to change it, flag yourself."
  *
@@ -21,13 +24,13 @@ const src = readFileSync(new URL('../shopify-theme/sections/gc-home.liquid', imp
 
 const LOCKED = [
   ['stage height, desktop',        '.gh-stage{position:relative;height:200vh}'],
-  ['stage height, phone',          '@media(max-width:749px){.gh-stage{height:130vh}}'],
-  ['zoom + rise, phone',           '.gh-pin{--zoom-k:140;--rise-end:.18;'],
+  ['stage height, phone',          '@media(max-width:749px){.gh-stage{height:190vh}}'],
+  ['zoom + rise, phone',           '.gh-pin{--zoom-k:55;--rise-end:.34;'],
   ['zoom + rise, desktop',         '@media(min-width:750px){.gh-pin{--zoom-k:40;--rise-end:.30}}'],
   ['gummy is a CSS circle',        'width:11vmax;aspect-ratio:1;'],
   ['gummy scale curve and cap',    'scale(min(14, calc(1 + var(--z,0) * var(--z,0) * var(--zoom-k))))'],
   ['gummy rise curve',             'max(0px, (var(--rise-end) - var(--z,0)) / var(--rise-end) * 55vh)'],
-  ['reveal fade, phone',           '.gh-reveal{--rev-start:.11;--rev-ramp:11;'],
+  ['reveal fade, phone',           '.gh-reveal{--rev-start:.18;--rev-ramp:7;'],
   ['reveal fade, desktop',         '@media(min-width:750px){.gh-reveal{--rev-start:.13;--rev-ramp:9}}'],
   ['reveal grows out of the gummy','scale(min(1, calc((1 + var(--z,0) * var(--z,0) * var(--zoom-k)) / 14)))'],
 ];
