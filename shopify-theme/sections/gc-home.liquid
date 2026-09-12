@@ -36,14 +36,8 @@
      whole way down: the gummy grows, then the words arrive and HOLD. */
   @media(max-width:749px){.gh-stage{height:130vh}}
   /* transparent so the global fixed flavour background shows through — nothing to repaint */
-  .gh-pin{--zoom-k:140;--rise-end:.18;--fr:40px;position:sticky;top:0;height:100svh;overflow:hidden;
-    display:grid;place-items:center;contain:paint;
-    /* the book's cover ground; the rest of the page stays cream */
-    background:var(--c-olive);
-    padding:var(--fr) var(--fr) calc(4vh + var(--fr))}
-  /* the cover's border, fading out on the same curve as the copy so the pink
-     zoom finishes on a clean screen */
-  .gh-frame{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:calc(1 - var(--z,0) * 4.5)}
+  .gh-pin{--zoom-k:140;--rise-end:.18;position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
+    background:transparent;contain:paint;padding-bottom:4vh}
 
   /* The zooming gummy. Scaling is anchored to the CIRCLE's own centre
      (cy=58 in a 120 viewBox = 48.333%), not the box, and the element rides up
@@ -135,21 +129,21 @@
      fold, so their feet stay on the fold at rest and settle onto the pin's own
      bottom edge once it's pinned. */
   .gcg{width:100%;height:auto;display:block}
-  .gh-chum{position:absolute;bottom:calc(var(--gh-ground,0px) + var(--fr));z-index:1;pointer-events:none;line-height:0;
+  .gh-chum{position:absolute;bottom:var(--gh-ground,0px);z-index:1;pointer-events:none;line-height:0;
     opacity:calc(1 - var(--z,0) * 4.5);transform-origin:50% 100%;
     animation:ghSway ease-in-out infinite alternate}
   .gh-chum img{display:block;width:auto;height:100%;
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
-  .gh-chum--l{left:var(--fr);height:min(56vh,500px);animation-duration:6.5s}
-  .gh-chum--r{right:var(--fr);height:min(52vh,466px);animation-duration:8.2s;animation-delay:-3s}
+  .gh-chum--l{left:0;height:min(56vh,500px);animation-duration:6.5s}
+  .gh-chum--r{right:0;height:min(52vh,466px);animation-duration:8.2s;animation-delay:-3s}
   @keyframes ghSway{from{transform:translate3d(0,0,0) rotate(-1.2deg)}to{transform:translate3d(0,-8px,0) rotate(1.2deg)}}
 
   /* Below ~1100px the centre column and the figures start sharing horizontal
      space, so the figures move outward and shrink rather than overlap the copy.
      On phones they bleed roughly half off each edge: enough that you read them
      as two people standing there, not enough to crowd the headline. */
-  @media(max-width:1100px){.gh-chum--l{height:min(42vh,360px);left:calc(var(--fr) + 8px)}}
-  @media(max-width:1100px){.gh-chum--r{height:min(39vh,340px);right:calc(var(--fr) + 8px)}}
+  @media(max-width:1100px){.gh-chum--l{height:min(42vh,360px);left:8px}}
+  @media(max-width:1100px){.gh-chum--r{height:min(39vh,340px);right:8px}}
   /* On a 375px screen the copy column and two standing figures cannot both
      have the width they want. Rather than shrink the Chums to slivers, they go
      BIGGER and bleed further out: about a third of each figure is visible, which
@@ -165,8 +159,8 @@
      the "Shop the flavours" button needs and at 360px wide the figures were
      otherwise sitting under it by 25px a side. The floor keeps them recognisable
      on the shortest phone, the ceiling stops them dominating the tallest. */
-  @media(max-width:749px){.gh-chum--l{height:clamp(150px,min(calc(100svh - 520px),calc((100vw - 200px) * 1.31)),300px);left:calc(var(--fr) + 6px)}}
-  @media(max-width:749px){.gh-chum--r{height:clamp(142px,min(calc(100svh - 536px),calc((100vw - 200px) * 1.24)),284px);right:calc(var(--fr) + 6px)}}
+  @media(max-width:749px){.gh-chum--l{height:clamp(150px,min(calc(100svh - 520px),calc((100vw - 200px) * 1.31)),300px);left:6px}}
+  @media(max-width:749px){.gh-chum--r{height:clamp(142px,min(calc(100svh - 536px),calc((100vw - 200px) * 1.24)),284px);right:6px}}
   /* the shortest phones have no room for a scroll hint under the button once
      the figures are in; the gradient and the Chums already say there is more */
   @media(max-width:749px) and (max-height:700px){.gh-scroll{display:none}}
@@ -353,7 +347,7 @@
      this way the copy (~330px) and the figures (~257px) both fit the ~650px of
      hero that's visible before you scroll, with real air between them, and the
      Chums can come back IN from the edges instead of being pushed off. */
-  @media(max-width:749px){.gh-pin{align-content:start;padding-top:7vh;padding-bottom:var(--fr)}}
+  @media(max-width:749px){.gh-pin{align-content:start;padding-top:7vh;padding-bottom:0}}
   /* On a phone the sizes stop being the issue and the BLOCKS become it: the
      wordmark is ~92px tall while three lines of 38px headline is ~118px, so the
      headline out-weighed the logo even though its letters were smaller. The
@@ -375,16 +369,13 @@
   <!-- ACT 1 -->
   <header class="gh-stage" id="gh-stage">
     <div class="gh-pin" id="gh-pin" data-idle-pause>
-      {%- assign hero_frame = 'hero' -%}
-      <div class="gh-frame">{% render 'gc2-frame', id: hero_frame, tone: '--c-purple', scale: 2 %}</div>
 
       {%- comment -%} the Chums, flanking the wordmark — brand book v2 {%- endcomment -%}
-      {%- comment -%} arranged as the brand book's cover: boy left, girl right {%- endcomment -%}
       <div class="gh-chum gh-chum--l" aria-hidden="true">
-        <img src="{{ 'gc2-chum-eye.svg' | asset_url }}" alt="" width="371" height="984" fetchpriority="high" decoding="async" draggable="false">
+        <img src="{{ 'gc2-chum-brain.svg' | asset_url }}" alt="" width="340" height="894" fetchpriority="high" decoding="async" draggable="false">
       </div>
       <div class="gh-chum gh-chum--r" aria-hidden="true">
-        <img src="{{ 'gc2-chum-brain.svg' | asset_url }}" alt="" width="340" height="894" fetchpriority="high" decoding="async" draggable="false">
+        <img src="{{ 'gc2-chum-sleep.svg' | asset_url }}" alt="" width="407" height="1031" fetchpriority="high" decoding="async" draggable="false">
       </div>
 
       {%- comment -%} the one that zooms on scroll — CSS circle, see .gh-gummy {%- endcomment -%}

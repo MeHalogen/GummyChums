@@ -175,15 +175,3 @@ body .gc-flash{display:block;position:fixed;inset:0;pointer-events:none;z-index:
   .gc2-kolam-dots{opacity:.55}
   .gc2-kolam-line{stroke-dashoffset:0}
 }
-
-/* ---- the cover frame ----
-   Four strips pinned to the edges of whatever box they are dropped into. The
-   sides use the transposed tile, so the corners are simply where two solid
-   bands meet. Mirrored on the bottom and right so the teeth always point inward. */
-.gc2-frame{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.gc2-frame > span{position:absolute;display:block;line-height:0}
-.gc2-frame-t{top:0;left:0;right:0;transform:scaleY(-1)}
-.gc2-frame-b{bottom:0;left:0;right:0}
-.gc2-frame-l{top:0;bottom:0;left:0;width:var(--fr)}
-.gc2-frame-r{top:0;bottom:0;right:0;width:var(--fr);transform:scaleX(-1)}
-.gc2-frame-l svg,.gc2-frame-r svg{height:100%}
