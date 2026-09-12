@@ -22,7 +22,29 @@
   .gc-wrap{max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter)}
 
   /* ---------- ACT 1 — hero + scroll fall-in ---------- */
+  @property --z{syntax:"<number>";inherits:true;initial-value:0}
+  @property --gh-ground{syntax:"<length>";inherits:true;initial-value:0px}
   .gh-stage{position:relative;height:200vh}
+  /* Both sequences run as scroll-driven animations, not scroll handlers. The
+     handlers were never slow — measured on the real page in Safari, a --z write
+     plus a full style flush costs 0.4ms over baseline. They are LATE: a handler
+     runs behind the compositor, so through a momentum flick the pinned content
+     chases the finger and corrects, which is the back-and-forth.
+
+     Ranges are absolute scroll offsets in px, published once by the script from
+     layout. Deliberately NOT view()/contain: those resolve against the
+     scrollport, and iOS resizes the scrollport every time its toolbar collapses,
+     which re-scales the timeline mid-scroll and makes everything on it jump —
+     worse than the handler it replaces. A scroll offset in px cannot move when
+     the toolbar does. */
+  @supports (animation-timeline:scroll()){
+    .gh-stage{animation:ghZ linear both, ghGround linear both;
+      animation-timeline:scroll(root block), scroll(root block);
+      animation-range:var(--gh-z0,0px) var(--gh-z1,0px), 0px var(--gh-lift,0px)}
+    @keyframes ghZ{from{--z:0}to{--z:1}}
+    @keyframes ghGround{0%{--gh-ground:calc(var(--gh-pad,0px) + var(--gh-lift,0px))}
+      100%{--gh-ground:var(--gh-pad,0px)}}
+  }
   /* Shorter pin on phones. With no scrollbar there is no feedback that the page
      is still scrolling, so a long pin reads as a frozen page. 120vh leaves
      ~160px of pinned scroll — enough for the effect, short enough not to alarm. */
@@ -311,6 +333,12 @@
     .gh-hs-intro,.gh-hs-card{flex-basis:76vw}
     .gh-hs--js .gh-hs-track{padding-inline-end:24vw}
   }
+  @supports (animation-timeline:scroll()){
+    .gh-hs--js .gh-hs-track{animation:ghRide linear both;animation-timeline:scroll(root block);
+      animation-range:var(--gh-r0,0px) var(--gh-r1,0px)}
+    @keyframes ghRide{from{transform:translate3d(0,0,0)}
+      to{transform:translate3d(calc(-1 * var(--gh-travel,0px)),0,0)}}
+  }
 
   /* ---------- ACT 4 — FAQ ---------- */
   .gh-faq{max-width:760px;margin:0 auto}
@@ -582,7 +610,19 @@
     var h=el.offsetHeight; el.parentNode.removeChild(el);
     return h||document.documentElement.clientHeight;
   }
-  function gauge(){ vhPx=svh(); }
+  function gauge(){
+    vhPx=svh();
+    /* Layout distances, read once — never during a scroll. lift is how far the
+       stage sits down the page before it pins; pad is how far the pin overhangs
+       the fold once stuck; z0..z1 is the scroll span the zoom occupies. */
+    var top=Math.max(0, stage.getBoundingClientRect().top + (scrollY||pageYOffset||0));
+    var pad=pin?Math.max(0, pin.offsetHeight - vhPx):0;
+    var d=Math.max(0, stage.offsetHeight - vhPx);
+    stage.style.setProperty('--gh-lift', top.toFixed(1)+'px');
+    stage.style.setProperty('--gh-pad',  pad.toFixed(1)+'px');
+    stage.style.setProperty('--gh-z0',   top.toFixed(1)+'px');
+    stage.style.setProperty('--gh-z1',   (top+d).toFixed(1)+'px');
+  }
   /* Two things this deliberately avoids, both of which cost on every frame of a
      ten-screen scroll rather than just the hero's own screen:
        - it used to run for the whole page. Past the hero, z is pinned at 1 and
@@ -592,15 +632,20 @@
          property is what triggers that invalidation, so skipping the write when
          the value is unchanged skips the recalc entirely. */
   var lastZ='', lastG='', live=false;
+  /* an animation outranks an inline style, so where CSS drives these the script
+     must not also write them or the two fight and the script loses */
+  var cssDriven = window.CSS && CSS.supports && CSS.supports('animation-timeline','scroll()');
   function upd(){
     var r=stage.getBoundingClientRect();
     var onScreen = r.bottom > 0 && r.top < vhPx;
     if(onScreen !== live){ live = onScreen; stage.classList.toggle('gh-live', live); }
     if(!onScreen) return;
     var d=r.height-vhPx;
-    var z=(d>0?Math.min(Math.max(-r.top/d,0),1):0).toFixed(4);
-    if(z!==lastZ){ lastZ=z; stage.style.setProperty('--z',z); }
-    if(pin){
+    if(!cssDriven){
+      var z=(d>0?Math.min(Math.max(-r.top/d,0),1):0).toFixed(4);
+      if(z!==lastZ){ lastZ=z; stage.style.setProperty('--z',z); }
+    }
+    if(pin&&!cssDriven){
       var g=Math.max(0,pin.getBoundingClientRect().bottom-vhPx).toFixed(1)+'px';
       if(g!==lastG){ lastG=g; stage.style.setProperty('--gh-ground',g); }
     }
@@ -611,6 +656,10 @@
   var gw=innerWidth;
   addEventListener('resize',function(){ if(innerWidth!==gw){ gw=innerWidth; gauge(); } upd(); });
   gauge(); upd();
+  /* those distances are layout, so anything that can still move the hero down
+     the page after this runs has to make them read again */
+  addEventListener('load',function(){ gauge(); upd(); });
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ gauge(); upd(); });
 })();
 </script>
 

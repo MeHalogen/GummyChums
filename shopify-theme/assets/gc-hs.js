@@ -7,6 +7,7 @@
   if(!sec||!pin||!track) return;
   if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   var travel=0, span=0, last='', live=false, tk=false, vhPx=0;
+  var cssDriven = window.CSS && CSS.supports && CSS.supports('animation-timeline','scroll()');
   /* One viewport, measured the only way that cannot move: ask the browser for
      100svh. iOS shifts innerHeight AND documentElement.clientHeight as its
      toolbar collapses, and the hero pin carries padding on top of its 100svh
@@ -30,7 +31,7 @@
     var on=r.bottom>0&&r.top<vhPx;
     on=on&&!!span;   /* no compositing layer on a phone, which no longer transforms */
     if(on!==live){live=on;sec.classList.toggle('gh-hs--live',on);}
-    if(!span||(!on&&!force)) return;
+    if(cssDriven||!span||(!on&&!force)) return;
     var p=span?Math.min(Math.max(-r.top/span,0),1):0;
     var x=(-p*travel).toFixed(1);
     if(x!==last){last=x;track.style.transform='translate3d('+x+'px,0,0)';}
@@ -56,6 +57,12 @@
       travel=Math.max(0, track.offsetWidth-contW);   /* desktop, exactly as signed off */
     }
     span=travel*ratio();
+    /* absolute scroll offsets for the CSS timeline — see gc-home.liquid */
+    var r0=Math.max(0, sec.getBoundingClientRect().top + (scrollY||pageYOffset||0));
+    sec.style.setProperty('--gh-travel', travel.toFixed(1)+'px');
+    sec.style.setProperty('--gh-r0', r0.toFixed(1)+'px');
+    sec.style.setProperty('--gh-r1', (r0+span).toFixed(1)+'px');
+    if(cssDriven) track.style.transform='';
     sec.style.height=(pin.offsetHeight+span)+'px';
     last=''; place(true);
   }
