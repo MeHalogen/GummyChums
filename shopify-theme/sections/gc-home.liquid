@@ -26,6 +26,8 @@
      run as a real animation. Declaring it changes nothing for the var(--z,0)
      readers; unsupported browsers ignore the rule and keep the script's writes. */
   @property --z{syntax:"<number>";inherits:true;initial-value:0}
+  @property --gh-ground{syntax:"<length>";inherits:true;initial-value:0px}
+
   .gh-stage{position:relative;height:200vh}
   /* Same reasoning as the Chums' ride: a scroll handler runs behind the
      compositor on iOS, so the gummy lands late and appears to swim back and
@@ -33,10 +35,28 @@
      samples it against the real scroll offset instead. `contain` on a subject
      taller than the screen is the script's 0..1 exactly — verified equal. */
   @supports (animation-timeline:view()){
-    .gh-stage{animation:ghZ linear both;animation-timeline:view(block);
-      animation-range:contain 0% contain 100%}
+    /* Two sequences, two timelines. --z runs across the whole stage. --gh-ground
+       runs only over the stretch before the pin sticks: the Chums' feet sit on
+       the fold at rest, and the pin hangs below it by exactly its own top
+       padding once stuck, so the only varying part is how far the stage still
+       has to climb — a layout distance gc-home publishes once as --gh-lift, not
+       a per-frame measurement. This was the last thing still being written from
+       a scroll handler, and on iOS that handler runs behind the compositor: the
+       pin moved with the finger, the figures arrived late, and they sagged and
+       snapped back. Nothing here is measured during a scroll any more. */
+    /* --gh-pad is how far the pin hangs below the fold once stuck, which is
+       exactly its own top padding — see .gh-pin. It lives here rather than on
+       the stage rule above so the locked height declarations stay byte-identical
+       to what was signed off. */
+    .gh-stage{--gh-pad:0px;
+      animation:ghZ linear both, ghGround linear both;
+      animation-timeline:view(block), scroll(root block);
+      animation-range:contain 0% contain 100%, 0px var(--gh-lift,0px)}
     @keyframes ghZ{from{--z:0}to{--z:1}}
+    @keyframes ghGround{0%{--gh-ground:calc(var(--gh-pad,0px) + var(--gh-lift,0px))}
+      100%{--gh-ground:var(--gh-pad,0px)}}
   }
+  @media(max-width:749px){.gh-stage{--gh-pad:7vh}}
   /* Shorter pin on phones. With no scrollbar there is no feedback that the page
      is still scrolling, so a long pin reads as a frozen page. 120vh leaves
      ~160px of pinned scroll — enough for the effect, short enough not to alarm. */
@@ -612,7 +632,13 @@
     return h||document.documentElement.clientHeight;
   }
   var pinH=0;
-  function gauge(){ vhPx=svh(); pinH=pin?pin.offsetHeight:vhPx; }
+  function gauge(){
+    vhPx=svh(); pinH=pin?pin.offsetHeight:vhPx;
+    /* how far the stage still has to travel before the pin sticks — layout, not
+       scroll, so it is read once here and never during a scroll */
+    var lift=Math.max(0, stage.getBoundingClientRect().top + (scrollY||pageYOffset||0));
+    stage.style.setProperty('--gh-lift', lift.toFixed(1)+'px');
+  }
   /* Two things this deliberately avoids, both of which cost on every frame of a
      ten-screen scroll rather than just the hero's own screen:
        - it used to run for the whole page. Past the hero, z is pinned at 1 and
@@ -635,13 +661,10 @@
       var z=(d>0?Math.min(Math.max(-r.top/d,0),1):0).toFixed(4);
       if(z!==lastZ){ lastZ=z; stage.style.setProperty('--z',z); }
     }
-    if(pin){
-      /* Derived from the stage's own rect, never the pin's. The pin is sticky,
-         and on iOS a sticky element's measured position trails the compositor
-         during a momentum flick, so reading it returned a value that drifted and
-         snapped back — and this drives `bottom`-like placement on the Chums, so
-         every wobble cost a layout. Computed this way it is a constant for the
-         whole pinned stretch, so the write below almost never fires. */
+    if(pin&&!cssDriven){
+      /* Fallback only. Derived from the stage's own rect, never the pin's: the
+         pin is sticky, and on iOS a sticky element's measured position trails
+         the compositor through a momentum flick. */
       var pb=Math.min(r.bottom, Math.max(0,r.top)+pinH);
       var g=Math.max(0,pb-vhPx).toFixed(1)+'px';
       if(g!==lastG){ lastG=g; stage.style.setProperty('--gh-ground',g); }
@@ -653,6 +676,11 @@
   var gw=innerWidth;
   addEventListener('resize',function(){ if(innerWidth!==gw){ gw=innerWidth; gauge(); } upd(); });
   gauge(); upd();
+  /* --gh-lift is a layout distance read once, so anything that can still move the
+     hero down the page after this runs — a late webfont, the marquee — has to
+     make it read again, or the Chums stand at a stale height all session. */
+  addEventListener('load',function(){ gauge(); upd(); });
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ gauge(); upd(); });
 })();
 </script>
 
