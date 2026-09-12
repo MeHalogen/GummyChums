@@ -58,6 +58,19 @@ html{background:#F8EBDF}
 .gc-bg::before{content:"";position:absolute;inset:0;pointer-events:none;
   background-image:var(--gc-grain);background-repeat:repeat;background-size:180px 180px;
   opacity:.42;mix-blend-mode:multiply}
+/* Phones drop the blend and soften the blurs. .gc-bg is a full-screen FIXED
+   layer; a blend mode on one of those cannot be composited on its own, so the
+   browser re-blends it against the page beneath on every scrolled frame, and
+   three 60px blurs on the same layer are rasterised into that same work. On a
+   phone GPU that is a per-frame cost paid for the entire length of the page.
+   Plain opacity composites once and then just moves. The grain is lifted to
+   compensate for losing multiply, and the blur is cut to a radius that still
+   reads as a soft wash at phone size. Desktop keeps both exactly as they were. */
+@media(max-width:749px){
+  .gc-bg{transform:translateZ(0)}
+  .gc-bg::before{mix-blend-mode:normal;opacity:.30}
+  .gc-bg i{filter:blur(34px);opacity:.5}
+}
 
 /* The stepped edge motif — see snippets/gc2-edge.liquid */
 .gc2-edge{display:block;width:100%}

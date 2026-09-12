@@ -650,7 +650,17 @@
       if(g!==lastG){ lastG=g; stage.style.setProperty('--gh-ground',g); }
     }
   }
-  addEventListener('scroll',function(){if(!tk){requestAnimationFrame(function(){upd();tk=false;});tk=true;}},{passive:true});
+  /* With CSS driving the sequence there is nothing left to compute per frame —
+     only a class saying the hero is on screen. An observer reports that without
+     the page running our code on every scroll event at all. */
+  if(cssDriven && window.IntersectionObserver){
+    new IntersectionObserver(function(es){
+      var on=es[0].isIntersecting;
+      if(on!==live){ live=on; stage.classList.toggle('gh-live',on); }
+    }).observe(stage);
+  } else {
+    addEventListener('scroll',function(){if(!tk){requestAnimationFrame(function(){upd();tk=false;});tk=true;}},{passive:true});
+  }
   /* only a real width change can alter 100svh; iOS fires resize on every toolbar
      nudge, and re-gauging on those is exactly what made the hero jitter */
   var gw=innerWidth;

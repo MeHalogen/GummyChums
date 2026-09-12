@@ -66,7 +66,16 @@
     sec.style.height=(pin.offsetHeight+span)+'px';
     last=''; place(true);
   }
-  addEventListener('scroll',function(){if(!tk){tk=true;requestAnimationFrame(function(){place(false);});}},{passive:true});
+  /* same as the hero: when CSS drives the track, the only thing left is the
+     on-screen class, and an observer reports that without a scroll handler */
+  if(cssDriven && window.IntersectionObserver){
+    new IntersectionObserver(function(es){
+      var on=es[0].isIntersecting;
+      if(on!==live){ live=on; sec.classList.toggle('gh-hs--live',on); }
+    }).observe(sec);
+  } else {
+    addEventListener('scroll',function(){if(!tk){tk=true;requestAnimationFrame(function(){place(false);});}},{passive:true});
+  }
   /* iOS resizes on every toolbar show/hide; only a width change alters the travel */
   var w=innerWidth; addEventListener('resize',function(){if(innerWidth!==w){w=innerWidth;measure();}else{place(true);}});
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(measure);
