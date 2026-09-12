@@ -260,6 +260,8 @@
   .gh-hs-title{font-size:var(--fs-display);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
     margin:0;color:var(--c-ink);text-wrap:balance}
   .gh-hs-title em{font-style:normal;color:var(--c-accent)}
+  .gh-hs-scroll{display:none}
+  @media(min-width:750px){.gh-hs-swipe{display:none}.gh-hs-scroll{display:inline}}
   .gh-hs-hint{margin:var(--sp-5) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-black);
     letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--c-ink-3)}
   @media(min-width:750px){.gh-hs-intro{flex-basis:min(60vw,880px)}}
@@ -424,7 +426,7 @@
       <div class="gh-hs-track" id="gh-hs-track">
         <div class="gh-hs-intro" id="shop">
           <h2 class="gh-hs-title">Meet our <em>Chums</em></h2>
-          <p class="gh-hs-hint">Keep scrolling <span aria-hidden="true">→</span></p>
+          <p class="gh-hs-hint"><span class="gh-hs-swipe">Swipe across</span><span class="gh-hs-scroll">Keep scrolling</span> <span aria-hidden="true">→</span></p>
         </div>
         <article class="gh-hs-card" style="--hs-tone:var(--c-mango);--hs-soft:var(--c-mango-soft)">
           <span class="gh-hs-badge">Focus</span>
@@ -560,6 +562,8 @@
   var stage=document.getElementById('gh-stage'); if(!stage)return;
   var tk=false;
   var pin=document.getElementById('gh-pin');
+  /* layout viewport, not visual: iOS's toolbar must not move these numbers */
+  function vh(){ return document.documentElement.clientHeight; }
   /* Two things this deliberately avoids, both of which cost on every frame of a
      ten-screen scroll rather than just the hero's own screen:
        - it used to run for the whole page. Past the hero, z is pinned at 1 and
@@ -571,14 +575,14 @@
   var lastZ='', lastG='', live=false;
   function upd(){
     var r=stage.getBoundingClientRect();
-    var onScreen = r.bottom > 0 && r.top < innerHeight;
+    var onScreen = r.bottom > 0 && r.top < vh();
     if(onScreen !== live){ live = onScreen; stage.classList.toggle('gh-live', live); }
     if(!onScreen) return;
-    var d=r.height-innerHeight;
+    var d=r.height-vh();
     var z=(d>0?Math.min(Math.max(-r.top/d,0),1):0).toFixed(4);
     if(z!==lastZ){ lastZ=z; stage.style.setProperty('--z',z); }
     if(pin){
-      var g=Math.max(0,pin.getBoundingClientRect().bottom-innerHeight).toFixed(1)+'px';
+      var g=Math.max(0,pin.getBoundingClientRect().bottom-vh()).toFixed(1)+'px';
       if(g!==lastG){ lastG=g; stage.style.setProperty('--gh-ground',g); }
     }
   }
