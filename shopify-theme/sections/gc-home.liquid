@@ -568,8 +568,21 @@
   var stage=document.getElementById('gh-stage'); if(!stage)return;
   var tk=false;
   var pin=document.getElementById('gh-pin');
-  /* layout viewport, not visual: iOS's toolbar must not move these numbers */
-  function vh(){ return document.documentElement.clientHeight; }
+  var vhPx=0;
+  /* One viewport, measured the only way that cannot move: ask the browser for
+     100svh. iOS shifts innerHeight AND documentElement.clientHeight as its
+     toolbar collapses, and the hero pin carries padding on top of its 100svh
+     (nothing here sets border-box globally — Dawn scopes that to details > *),
+     so neither of those is the ruler. A span, not a div: base.css hides empty
+     divs. Read once per gauge; svh cannot change without a resize. */
+  function svh(){
+    var el=document.createElement('span');
+    el.style.cssText='position:absolute;top:0;left:0;width:0;height:100svh;visibility:hidden;pointer-events:none';
+    document.body.appendChild(el);
+    var h=el.offsetHeight; el.parentNode.removeChild(el);
+    return h||document.documentElement.clientHeight;
+  }
+  function gauge(){ vhPx=svh(); }
   /* Two things this deliberately avoids, both of which cost on every frame of a
      ten-screen scroll rather than just the hero's own screen:
        - it used to run for the whole page. Past the hero, z is pinned at 1 and
@@ -581,19 +594,68 @@
   var lastZ='', lastG='', live=false;
   function upd(){
     var r=stage.getBoundingClientRect();
-    var onScreen = r.bottom > 0 && r.top < vh();
+    var onScreen = r.bottom > 0 && r.top < vhPx;
     if(onScreen !== live){ live = onScreen; stage.classList.toggle('gh-live', live); }
     if(!onScreen) return;
-    var d=r.height-vh();
+    var d=r.height-vhPx;
     var z=(d>0?Math.min(Math.max(-r.top/d,0),1):0).toFixed(4);
     if(z!==lastZ){ lastZ=z; stage.style.setProperty('--z',z); }
     if(pin){
-      var g=Math.max(0,pin.getBoundingClientRect().bottom-vh()).toFixed(1)+'px';
+      var g=Math.max(0,pin.getBoundingClientRect().bottom-vhPx).toFixed(1)+'px';
       if(g!==lastG){ lastG=g; stage.style.setProperty('--gh-ground',g); }
     }
   }
   addEventListener('scroll',function(){if(!tk){requestAnimationFrame(function(){upd();tk=false;});tk=true;}},{passive:true});
-  addEventListener('resize',upd);upd();
+  /* only a real width change can alter 100svh; iOS fires resize on every toolbar
+     nudge, and re-gauging on those is exactly what made the hero jitter */
+  var gw=innerWidth;
+  addEventListener('resize',function(){ if(innerWidth!==gw){ gw=innerWidth; gauge(); } upd(); });
+  gauge(); upd();
+})();
+</script>
+
+{%- comment -%}
+  Temporary. Add ?gcdebug=1 to the homepage URL to float a readout of every
+  number the two scroll sequences depend on. It exists because these are phone
+  bugs on real iOS Safari, which cannot be reproduced on this machine, and
+  guessing at them from a desktop browser has cost more than one round. Nothing
+  renders without the flag. Delete once the phone pacing is settled.
+{%- endcomment -%}
+<script>
+(function(){
+  if(location.search.indexOf('gcdebug')<0) return;
+  var box=document.createElement('div');
+  box.setAttribute('style','position:fixed;left:6px;top:6px;z-index:99999;background:rgba(0,0,0,.82);'+
+    'color:#0f0;font:11px/1.45 ui-monospace,Menlo,monospace;padding:7px 9px;border-radius:6px;'+
+    'white-space:pre;pointer-events:none;max-width:74vw');
+  document.body.appendChild(box);
+  var stage=document.getElementById('gh-stage'), hpin=document.getElementById('gh-pin');
+  var sec=document.getElementById('gh-hs'), pin=document.getElementById('gh-hs-pin'), track=document.getElementById('gh-hs-track');
+  var t=false;
+  function n(v){ return Math.round(v); }
+  function draw(){
+    t=false;
+    var L=[];
+    L.push('w '+innerWidth+'  ih '+n(innerHeight)+'  clientH '+document.documentElement.clientHeight);
+    if(hpin) L.push('heroPin '+n(hpin.offsetHeight)+'  z '+(stage?getComputedStyle(stage).getPropertyValue('--z').trim():'-'));
+    if(sec&&pin&&track){
+      var kids=track.children, lastEl=kids[kids.length-1];
+      var contW=pin.clientWidth;
+      var want=Math.max(0,lastEl.offsetLeft-Math.max(0,(contW-lastEl.offsetWidth)/2));
+      var r=sec.getBoundingClientRect();
+      var c3=document.querySelectorAll('.gh-hs-card');
+      c3=c3.length?c3[c3.length-1].getBoundingClientRect():null;
+      L.push('js '+(sec.classList.contains('gh-hs--js')?'Y':'N')+'  ridePin '+n(pin.offsetHeight)+'  contW '+contW);
+      L.push('trackW '+n(track.offsetWidth)+'  lastLeft '+n(lastEl.offsetLeft)+'  lastW '+n(lastEl.offsetWidth));
+      L.push('travel '+n(want)+'  secH '+n(sec.offsetHeight)+'  top '+n(r.top));
+      L.push('basis '+getComputedStyle(lastEl).flexBasis+'  padEnd '+getComputedStyle(track).paddingInlineEnd);
+      L.push('tx '+(track.style.transform||'-'));
+      if(c3) L.push('chum3 L '+n(c3.left)+' R '+n(c3.right)+(c3.left>=-1&&c3.right<=contW+1?'  FULL':'  CUT'));
+    }
+    box.textContent=L.join('\n');
+  }
+  addEventListener('scroll',function(){if(!t){t=true;requestAnimationFrame(draw);}},{passive:true});
+  addEventListener('resize',draw); setTimeout(draw,400); draw();
 })();
 </script>
 
