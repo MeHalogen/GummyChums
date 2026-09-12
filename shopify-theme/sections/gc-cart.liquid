@@ -54,7 +54,9 @@
   .gck-line{display:flex;justify-content:space-between;align-items:baseline;gap:var(--sp-4);
     font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-ink-2);margin-bottom:var(--sp-3)}
   .gck-line b{font-weight:var(--fw-black);color:var(--c-ink)}
-  .gck-rule{height:1px;background:var(--c-line);margin:var(--sp-5) 0}
+  /* qualified past Dawn's `div:empty{display:none}` — this divider is a
+     deliberately empty div, and a bare class loses the specificity contest */
+  .gck-sum .gck-rule{display:block;height:1px;background:var(--c-line);margin:var(--sp-5) 0}
   .gck-total{display:flex;justify-content:space-between;align-items:baseline;gap:var(--sp-4)}
   .gck-total span{font-size:var(--fs-base);font-weight:var(--fw-black);color:var(--c-ink)}
   .gck-total b{font-size:var(--fs-2xl);font-weight:var(--fw-black);color:var(--c-accent);line-height:1}

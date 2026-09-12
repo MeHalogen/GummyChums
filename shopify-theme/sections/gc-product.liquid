@@ -120,7 +120,9 @@
     transition:filter var(--dur-2) var(--ease),transform var(--dur-1) var(--spring)}
   .gp-pin-go:hover{filter:brightness(1.08)}
   .gp-pin-go:active{transform:scale(.96)}
-  .gp-pin-out{margin:var(--sp-3) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-body);
+  /* qualified past Dawn's `p:empty{display:none}`: this starts empty on purpose
+     and its min-height reserves the space the answer will occupy */
+  .gp-pin .gp-pin-out{display:block;margin:var(--sp-3) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-body);
     color:var(--c-ink-2);line-height:var(--lh-body);min-height:1.2em}
   .gp-pin-out b{color:var(--c-ink);font-weight:var(--fw-black)}
   .gp-pin-out.is-bad{color:var(--c-accent)}
