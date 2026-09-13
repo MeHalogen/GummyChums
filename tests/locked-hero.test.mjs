@@ -4,6 +4,14 @@
  * Signed off 11 Sep 2026. Phone pacing re-opened by Mehal on 12 Sep 2026 —
  * it read as a jump on a real phone — and re-signed at the values below.
  *
+ * 13 Sep 2026 — SCOPE NARROWED TO DESKTOP, by Mehal, after four rounds of
+ * jitter on iOS. Below 750px the hero no longer pins and nothing is driven by
+ * scroll: see the PHONE HERO block in sections/gc-home.liquid. The declarations
+ * asserted below still exist and still drive every screen at 750px and up, so
+ * these assertions still pass — but they no longer describe what a phone does.
+ * Read them as the DESKTOP lock. If the phone sequence is ever restored, the
+ * values to restore it to are the ones here.
+ *
  * Original sign-off — "I like the pink Gummy thing that we did right now,
  * whatever you had to change in the diff is perfectly fine. Lock this diff, and
  * if I try to change it, flag me. If you try to change it, flag yourself."
