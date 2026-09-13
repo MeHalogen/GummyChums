@@ -278,8 +278,6 @@
   .gh-hs-title{font-size:var(--fs-display);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
     margin:0;color:var(--c-ink);text-wrap:balance}
   .gh-hs-title em{font-style:normal;color:var(--c-accent)}
-  .gh-hs-scroll{display:none}
-  @media(min-width:750px){.gh-hs-swipe{display:none}.gh-hs-scroll{display:inline}}
   .gh-hs-hint{margin:var(--sp-5) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-black);
     letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--c-ink-3)}
   @media(min-width:750px){.gh-hs-intro{flex-basis:min(60vw,880px)}}
@@ -332,9 +330,7 @@
        header is not overlaying this section, so it does not need clearing */
     .gh-hs--js .gh-hs-pin{padding-top:var(--sp-4);padding-bottom:var(--sp-4)}
     .gh-hs-intro,.gh-hs-card{flex-basis:76vw}
-    .gh-hs-track{padding-inline-end:24vw;scroll-padding-inline-start:var(--gutter);
-      -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
-    .gh-hs-track::-webkit-scrollbar{display:none}
+    .gh-hs--js .gh-hs-track{padding-inline-end:24vw}
   }
   @supports (animation-timeline:scroll()){
     .gh-hs--js .gh-hs-track{animation:ghRide linear both;animation-timeline:scroll(root block);
@@ -463,7 +459,7 @@
       <div class="gh-hs-track" id="gh-hs-track">
         <div class="gh-hs-intro" id="shop">
           <h2 class="gh-hs-title">Meet our <em>Chums</em></h2>
-          <p class="gh-hs-hint"><span class="gh-hs-swipe">Swipe across</span><span class="gh-hs-scroll">Keep scrolling</span> <span aria-hidden="true">→</span></p>
+          <p class="gh-hs-hint">Keep scrolling <span aria-hidden="true">→</span></p>
         </div>
         <article class="gh-hs-card" style="--hs-tone:var(--c-mango);--hs-soft:var(--c-mango-soft)">
           <span class="gh-hs-badge">Focus</span>
