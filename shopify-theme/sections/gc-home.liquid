@@ -58,7 +58,7 @@
      whole way down: the gummy grows, then the words arrive and HOLD. */
   @media(max-width:749px){.gh-stage{height:270vh}}
   /* transparent so the global fixed flavour background shows through — nothing to repaint */
-  .gh-pin{--zoom-k:26;--rev-start:.62;--rev-ramp:3.6;position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
+  .gh-pin{--zoom-k:26;--rev-start:.47;--rev-ramp:4.2;position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
     background:transparent;contain:paint;padding-bottom:4vh}
 
   /* The zooming gummy. Scaling is anchored to the CIRCLE's own centre
@@ -131,6 +131,15 @@
      pins a layer in GPU memory for the whole page */
 
   .gh-stage.gh-live .gh-gummy{will-change:transform,opacity}
+  /* When the pink finishes covering the screen, solved rather than guessed. The
+     gummy's base is pinned 4% up from the fold and it grows from there, so the
+     screen is covered once its radius reaches the far top corner:
+       r = (32vw/2)·s ,  s = 1 + z²·26 ,  r² ≥ (W/2)² + (H − 0.04H − r)²
+     which lands at z≈0.45 on a phone and z≈0.56 on a wide desktop — the circle
+     has much further to travel across a wide screen. index31 used .62 for both,
+     which on a phone left roughly 300px of scrolling through flat pink before
+     the words arrived. Each now starts as its own coverage completes. */
+  @media(min-width:750px){.gh-pin{--rev-start:.59;--rev-ramp:4.5}}
   /* ---- THE CHUMS · the real characters from Brand Book v2 ----
      They stand on the hero's bottom edge and flank the centre column, which is
      how the book's own cover is composed. Anchored bottom-left / bottom-right
