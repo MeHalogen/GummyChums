@@ -21,10 +21,14 @@
     var h=el.offsetHeight; el.parentNode.removeChild(el);
     return h||document.documentElement.clientHeight;
   }
-  /* A phone flick covers a lot of page, so the ride is given more scroll than it
-     has sideways travel — each Chum then holds the screen long enough to read.
-     Desktop stays 1:1, which was signed off. */
-  function ratio(){ return innerWidth <= 749 ? 1.7 : 1; }
+  /* Phones do not get the pinned ride. Driving a sideways transform from vertical
+     scroll is the same mechanism that was taken out of the hero, and it fights a
+     phone for the same reasons: a viewport that resizes mid-gesture, scrolling
+     handed to another thread with momentum physics, and no GPU headroom to spare.
+     A phone already owns a gesture for sideways travel, so the row stays what the
+     CSS below it always was — a snapping, swipeable strip. Nothing is driven by
+     scroll there, so there is nothing to fall behind. Desktop keeps the ride. */
+  function pinned(){ return innerWidth > 749; }
   function place(force){
     tk=false;
     var r=sec.getBoundingClientRect();
@@ -39,6 +43,15 @@
   /* one pinned screen plus the scroll distance the ride is given: the sideways
      travel on desktop, 1.7x it on a phone so each Chum holds the screen */
   function measure(){
+    if(!pinned()){                      /* hand the strip back to the browser */
+      sec.classList.remove('gh-hs--js');
+      sec.classList.remove('gh-hs--live');
+      sec.style.height=''; track.style.transform='';
+      sec.style.removeProperty('--gh-travel');
+      sec.style.removeProperty('--gh-r0');
+      sec.style.removeProperty('--gh-r1');
+      travel=0; span=0; last=''; live=false; return;
+    }
     sec.classList.add('gh-hs--js');
     vhPx=svh();
     /* On a phone, travel is read off the LAST card itself. Track-width minus one
@@ -56,7 +69,7 @@
     }else{
       travel=Math.max(0, track.offsetWidth-contW);   /* desktop, exactly as signed off */
     }
-    span=travel*ratio();
+    span=travel;   /* desktop rides 1:1, as signed off */
     /* absolute scroll offsets for the CSS timeline — see gc-home.liquid */
     var r0=Math.max(0, sec.getBoundingClientRect().top + (scrollY||pageYOffset||0));
     sec.style.setProperty('--gh-travel', travel.toFixed(1)+'px');
@@ -68,7 +81,7 @@
   }
   /* same as the hero: when CSS drives the track, the only thing left is the
      on-screen class, and an observer reports that without a scroll handler */
-  if(cssDriven && window.IntersectionObserver){
+  if(cssDriven && pinned() && window.IntersectionObserver){
     new IntersectionObserver(function(es){
       var on=es[0].isIntersecting;
       if(on!==live){ live=on; sec.classList.toggle('gh-hs--live',on); }
