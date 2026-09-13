@@ -38,12 +38,14 @@
      worse than the handler it replaces. A scroll offset in px cannot move when
      the toolbar does. */
   @supports (animation-timeline:scroll()){
-    .gh-stage{animation:ghZ linear both, ghGround linear both;
-      animation-timeline:scroll(root block), scroll(root block);
-      animation-range:var(--gh-z0,0px) var(--gh-z1,0px), 0px var(--gh-lift,0px)}
+    .gh-stage{animation:ghZ linear both;
+      animation-timeline:scroll(root block);
+      animation-range:var(--gh-z0,0px) var(--gh-z1,0px)}
     @keyframes ghZ{from{--z:0}to{--z:1}}
-    @keyframes ghGround{0%{--gh-ground:calc(var(--gh-pad,0px) + var(--gh-lift,0px))}
-      100%{--gh-ground:var(--gh-pad,0px)}}
+    /* a single animation on one element — no list of timelines to parse */
+    .gh-feet{animation:ghFeet linear both;animation-timeline:scroll(root block);
+      animation-range:0px var(--gh-lift,0px)}
+    @keyframes ghFeet{0%{translate:0 calc(-1 * var(--gh-lift,0px))}100%{translate:0 0}}
   }
   /* Shorter pin on phones. With no scrollbar there is no feedback that the page
      is still scrolling, so a long pin reads as a frozen page. 120vh leaves
@@ -58,7 +60,7 @@
      whole way down: the gummy grows, then the words arrive and HOLD. */
   @media(max-width:749px){.gh-stage{height:270vh}}
   /* transparent so the global fixed flavour background shows through — nothing to repaint */
-  .gh-pin{--zoom-k:26;--rev-start:.62;--rev-ramp:3.6;position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
+  .gh-pin{--zoom-k:26;--rev-start:.38;--rev-ramp:4.5;--flood-start:.22;--flood-ramp:4.4;position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
     background:transparent;contain:paint;padding-bottom:4vh}
 
   /* The zooming gummy. Scaling is anchored to the CIRCLE's own centre
@@ -131,6 +133,28 @@
      pins a layer in GPU memory for the whole page */
 
   .gh-stage.gh-live .gh-gummy{will-change:transform,opacity}
+  /* The gummy is a CIRCLE growing from a point just above the fold, so it reaches
+     the far top corners long before it reaches the bottom ones — near its base the
+     edge curves away as x²/2r, leaving a crescent of page showing under it. That
+     crescent is where the blurred background gummies were coming through, which is
+     the blur at the bottom. It cannot be closed by anchoring lower: on a 1700px
+     screen the circle is capped at 190px and would need to sit 414px below the
+     fold. So the pin carries a flood of the circle's own OUTER tone — the colour
+     its edge already is — fading in underneath it and complete by the time the
+     circle covers. The corners change colour where the circle is already that
+     colour, so there is no seam and nothing blurred underneath. */
+  .gh-pin::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:color-mix(in srgb, var(--c-cherry) 76%, black);
+    opacity:calc((var(--z,0) - var(--flood-start)) * var(--flood-ramp))}
+  /* When the pink finishes covering the screen, solved rather than guessed. The
+     gummy's base is pinned 4% up from the fold and it grows from there, so the
+     screen is covered once its radius reaches the far top corner:
+       r = (32vw/2)·s ,  s = 1 + z²·26 ,  r² ≥ (W/2)² + (H − 0.04H − r)²
+     which lands at z≈0.45 on a phone and z≈0.56 on a wide desktop — the circle
+     has much further to travel across a wide screen. index31 used .62 for both,
+     which on a phone left roughly 300px of scrolling through flat pink before
+     the words arrived. Each now starts as its own coverage completes. */
+  @media(min-width:750px){.gh-pin{--rev-start:.46;--rev-ramp:4.5;--flood-start:.30;--flood-ramp:3.9}}
   /* ---- THE CHUMS · the real characters from Brand Book v2 ----
      They stand on the hero's bottom edge and flank the centre column, which is
      how the book's own cover is composed. Anchored bottom-left / bottom-right
@@ -150,7 +174,24 @@
      fold, so their feet stay on the fold at rest and settle onto the pin's own
      bottom edge once it's pinned. */
   .gcg{width:100%;height:auto;display:block}
-  .gh-chum{position:absolute;bottom:var(--gh-ground,0px);z-index:1;pointer-events:none;line-height:0;
+  /* `translate`, not `bottom`. The pin is a grid container, and an absolutely
+     positioned grid child resolves `bottom` against its GRID AREA rather than the
+     padding box — measured, it came out at exactly 75% of --gh-ground, so the
+     figures only ever compensated three quarters of the pin's overhang and sank
+     by the rest as you began to scroll. A translation has no such ambiguity, and
+     being a separate property from `transform` it composes with the sway rather
+     than fighting it. */
+  /* One wrapper carries the compensation for both figures. It exists because the
+     pin starts below the header, so its base sits --gh-lift under the fold until
+     it pins; the wrapper is offset by exactly that and rides back to zero as the
+     pin arrives, which keeps their feet on the fold without them appearing to
+     sink. Deliberately NOT driven by a registered custom property the figures
+     read: measured in Safari, a descendant consuming one of those got 150px from
+     a 200px value, while a literal 200px resolved correctly. --gh-lift is a plain
+     inline property, never animated, and substitutes exactly. */
+  .gh-feet{position:absolute;inset:0;z-index:1;pointer-events:none;
+    translate:0 calc(-1 * var(--gh-lift,0px))}
+  .gh-chum{position:absolute;bottom:0;z-index:1;pointer-events:none;line-height:0;
     opacity:calc(1 - var(--z,0) * 2.6);transform-origin:50% 100%;
     animation:ghSway ease-in-out infinite alternate}
   .gh-chum img{display:block;width:auto;height:100%;
@@ -406,11 +447,13 @@
     <div class="gh-pin" id="gh-pin" data-idle-pause>
 
       {%- comment -%} the Chums, flanking the wordmark — brand book v2 {%- endcomment -%}
+      <div class="gh-feet" aria-hidden="true">
       <div class="gh-chum gh-chum--l" aria-hidden="true">
         <img src="{{ 'gc2-chum-brain.svg' | asset_url }}" alt="" width="340" height="894" fetchpriority="high" decoding="async" draggable="false">
       </div>
       <div class="gh-chum gh-chum--r" aria-hidden="true">
         <img src="{{ 'gc2-chum-eye.svg' | asset_url }}" alt="" width="371" height="984" fetchpriority="high" decoding="async" draggable="false">
+      </div>
       </div>
 
       {%- comment -%} the one that zooms on scroll — CSS circle, see .gh-gummy {%- endcomment -%}

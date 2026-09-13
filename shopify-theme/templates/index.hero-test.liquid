@@ -1,0 +1,33 @@
+{%- comment -%}
+  ISOLATION TEST — reachable at /?view=hero-test
+
+  The homepage runs 47 scripts, Dawn's whole stylesheet, a fixed blurred
+  background, a marquee and a sticky header. The hero is a fraction of that, yet
+  every jitter fix so far has been aimed at the hero. This template renders the
+  SAME section with none of the rest: no layout, no Dawn CSS or JS, no background
+  layer, no header. Only the design tokens the section needs to lay out.
+
+  If this scrolls smoothly on a phone and the real homepage does not, the hero is
+  exonerated and the cause is in what this page leaves out. If this judders too,
+  the cause is the section itself and the search narrows to one file.
+
+  Delete once the question is settled.
+{%- endcomment -%}
+{% layout none %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GummyChums — hero isolation test</title>
+  {{ 'gc-tokens.css' | asset_url | stylesheet_tag }}
+  <style>
+    body{margin:0;background:var(--c-bg,#FBF0E6);color:var(--c-ink,#2b2b2b)}
+    .isolated-note{position:fixed;left:8px;top:8px;z-index:99999;background:rgba(0,0,0,.8);
+      color:#fff;font:600 11px/1.4 system-ui;padding:5px 8px;border-radius:5px;pointer-events:none}
+  </style>
+</head>
+<body>
+  <div class="isolated-note">ISOLATION TEST — hero only</div>
+  {% section 'gc-home' %}
+</body>
+</html>

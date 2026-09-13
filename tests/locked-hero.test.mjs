@@ -45,7 +45,8 @@ const src = readFileSync(new URL('../shopify-theme/sections/gc-home.liquid', imp
 const LOCKED = [
   ['stage height, desktop',        '.gh-stage{position:relative;height:270vh}'],
   ['stage height, phone',          '@media(max-width:749px){.gh-stage{height:270vh}}'],
-  ['zoom and reveal timing',       '.gh-pin{--zoom-k:26;--rev-start:.62;--rev-ramp:3.6;'],
+  ['zoom and reveal timing',       '.gh-pin{--zoom-k:26;--rev-start:.38;--rev-ramp:4.5;--flood-start:.22;--flood-ramp:4.4;'],
+  ['reveal timing, desktop',       '@media(min-width:750px){.gh-pin{--rev-start:.46;--rev-ramp:4.5;--flood-start:.30;--flood-ramp:3.9}}'],
   ['gummy is a CSS circle',        'width:min(32vw,190px);aspect-ratio:1;'],
   ['gummy sits on the fold',       'bottom:4%;'],
   ['gummy grows from its base',    'transform-origin:center bottom;'],
