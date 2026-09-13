@@ -321,64 +321,6 @@
     white-space:nowrap;transition:filter var(--dur-2) var(--ease)}
   .gh-hs-card:hover .gh-hs-cta{filter:brightness(1.08)}
   .gh-hs-cta--out{background:var(--c-ink-3)}
-  /* ══ PHONE HERO — no pin, nothing driven by scroll ═══════════════════════
-     Mehal's call on 13 Sep 2026, after four rounds of chasing jitter on iOS.
-     The desktop sequence above is untouched and still signed off; everything
-     here applies only below 750px.
-
-     Why: pinning the screen and mapping motion to scroll position needs things
-     a desktop gives free and a phone does not — a viewport that keeps its size
-     mid-gesture (iOS resizes it every time the toolbar collapses), scrolling
-     that is not handed to another thread with momentum physics, and GPU headroom.
-     The work itself was never heavy: measured on the real page in Safari, the
-     whole thing costs under 1ms a frame. It is the dependency that is wrong, so
-     on a phone the dependency is removed rather than tuned.
-
-     What it becomes: an ordinary screen. Logo, headline, button, then both Chums
-     side by side beneath it, then the pink panel carrying the reveal. The Chums
-     are laid out in flow, so they cannot be cropped by a viewport that changes
-     size and cannot drift against it — which also retires the 32px drift and the
-     half-figures at rest. The pink arrives as a panel cresting up from the fold
-     rather than a full circle floating in open space, which is the "appear
-     halfway, not the full gummy" Mehal asked for. Nothing here is animated on
-     scroll, so there is nothing to fight. */
-  @media(max-width:749px){
-    .gh-stage{height:auto;animation:none;--gh-chum-h:clamp(148px,calc((100vw - 168px) * 1.12),250px)}
-    .gh-pin{position:relative;height:auto;overflow:visible;
-      display:grid;grid-template-columns:1fr 1fr;align-items:end;
-      padding:var(--sp-6) 0 0;place-items:initial}
-    .gh-pin .gh-gummy{display:none}
-    .gh-mid{grid-column:1 / -1;grid-row:1;opacity:1;padding-bottom:var(--sp-3)}
-    /* in flow, not absolute: nothing to position against a moving viewport */
-    .gh-chum{position:relative;z-index:2;opacity:1;translate:none;bottom:auto;left:auto;right:auto;
-      grid-row:2;height:var(--gh-chum-h);width:auto}
-    .gh-chum--l{grid-column:1;justify-self:end;margin-right:4.5vw}
-    .gh-chum--r{grid-column:2;justify-self:start;margin-left:4.5vw;height:calc(var(--gh-chum-h) * .95)}
-    .gh-chum img{height:100%;width:auto}
-    /* the pink, as a panel that crests up from the Chums' feet */
-    .gh-reveal{grid-column:1 / -1;grid-row:3;position:relative;left:auto;top:auto;
-      width:auto;height:auto;transform:none;opacity:1;display:block;
-      margin:calc(var(--gh-chum-h) * -0.46) calc(var(--gutter) * -1) 0;
-      padding:calc(var(--sp-7) + 9vw) var(--gutter) calc(var(--sp-7) + 128px);
-      background:var(--c-cherry);border-radius:50% 50% 0 0 / 13vw 13vw 0 0;text-align:center}
-    /* The pink still ARRIVES — Mehal wanted the motion, not the jitter, and the
-       two are separable. This plays once when the panel comes into view, as an
-       ordinary animation the compositor owns: it cannot fall behind the finger
-       the way a scroll-linked transform does, because it is not following the
-       finger at all. No initial hidden state, so if the observer never fires the
-       panel is simply there. */
-    .gh-reveal.gh-rise{animation:ghRise .66s cubic-bezier(.22,.9,.3,1) both;
-      transform-origin:50% 100%;will-change:transform,opacity}
-    .gh-reveal.gh-rise::after{content:"";position:absolute;inset:0;pointer-events:none}
-    @keyframes ghRise{
-      0%{transform:translateY(30px) scale(.92);opacity:0}
-      60%{opacity:1}
-      100%{transform:none;opacity:1}}
-    @media (prefers-reduced-motion:reduce){.gh-reveal.gh-rise{animation:none}}
-    .gh-reveal h2{font-size:var(--fs-3xl)}
-    .gh-reveal p{font-size:var(--fs-lg);max-width:34ch}
-  }
-
   @media (prefers-reduced-motion:reduce){.gh-hs-cta{transition:none}}
   .gh-hs-line{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-2);margin:0;line-height:var(--lh-snug)}
   .gh-hs-buy{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);margin-top:auto}
@@ -700,9 +642,6 @@
      must not also write them or the two fight and the script loses */
   var cssDriven = window.CSS && CSS.supports && CSS.supports('animation-timeline','scroll()');
   function upd(){
-    /* phone hero is static — see the PHONE HERO block; writing --z here would
-       fade the headline and the Chums that the phone layout keeps at full */
-    if(innerWidth<=749) return;
     var r=stage.getBoundingClientRect();
     var onScreen = r.bottom > 0 && r.top < vhPx;
     if(onScreen !== live){ live = onScreen; stage.classList.toggle('gh-live', live); }
@@ -735,15 +674,6 @@
   gauge(); upd();
   /* those distances are layout, so anything that can still move the hero down
      the page after this runs has to make them read again */
-  /* phone: play the pink's entrance once, when it arrives */
-  (function(){
-    if(innerWidth>749 || !window.IntersectionObserver) return;
-    var rev=stage.querySelector('.gh-reveal'); if(!rev) return;
-    if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-    new IntersectionObserver(function(es,ob){
-      if(es[0].isIntersecting){ rev.classList.add('gh-rise'); ob.disconnect(); }
-    },{threshold:.2}).observe(rev);
-  })();
   addEventListener('load',function(){ gauge(); upd(); });
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ gauge(); upd(); });
 })();
