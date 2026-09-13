@@ -358,8 +358,22 @@
     .gh-reveal{grid-column:1 / -1;grid-row:3;position:relative;left:auto;top:auto;
       width:auto;height:auto;transform:none;opacity:1;display:block;
       margin:calc(var(--gh-chum-h) * -0.46) calc(var(--gutter) * -1) 0;
-      padding:calc(var(--sp-7) + 9vw) var(--gutter) var(--sp-7);
+      padding:calc(var(--sp-7) + 9vw) var(--gutter) calc(var(--sp-7) + 128px);
       background:var(--c-cherry);border-radius:50% 50% 0 0 / 13vw 13vw 0 0;text-align:center}
+    /* The pink still ARRIVES — Mehal wanted the motion, not the jitter, and the
+       two are separable. This plays once when the panel comes into view, as an
+       ordinary animation the compositor owns: it cannot fall behind the finger
+       the way a scroll-linked transform does, because it is not following the
+       finger at all. No initial hidden state, so if the observer never fires the
+       panel is simply there. */
+    .gh-reveal.gh-rise{animation:ghRise .66s cubic-bezier(.22,.9,.3,1) both;
+      transform-origin:50% 100%;will-change:transform,opacity}
+    .gh-reveal.gh-rise::after{content:"";position:absolute;inset:0;pointer-events:none}
+    @keyframes ghRise{
+      0%{transform:translateY(30px) scale(.92);opacity:0}
+      60%{opacity:1}
+      100%{transform:none;opacity:1}}
+    @media (prefers-reduced-motion:reduce){.gh-reveal.gh-rise{animation:none}}
     .gh-reveal h2{font-size:var(--fs-3xl)}
     .gh-reveal p{font-size:var(--fs-lg);max-width:34ch}
   }
@@ -374,6 +388,9 @@
      so the third Chum can ride all the way to where the others sit. Both panels
      must match, or the travel maths in gc-hs.js lands on the wrong card. */
   @media(max-width:749px){
+    /* a whole header of empty space above the cards on a 667px screen — the
+       header is not overlaying this section, so it does not need clearing */
+    .gh-hs--js .gh-hs-pin{padding-top:var(--sp-4);padding-bottom:var(--sp-4)}
     .gh-hs-intro,.gh-hs-card{flex-basis:76vw}
     .gh-hs--js .gh-hs-track{padding-inline-end:24vw}
   }
@@ -715,6 +732,15 @@
   gauge(); upd();
   /* those distances are layout, so anything that can still move the hero down
      the page after this runs has to make them read again */
+  /* phone: play the pink's entrance once, when it arrives */
+  (function(){
+    if(innerWidth>749 || !window.IntersectionObserver) return;
+    var rev=stage.querySelector('.gh-reveal'); if(!rev) return;
+    if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    new IntersectionObserver(function(es,ob){
+      if(es[0].isIntersecting){ rev.classList.add('gh-rise'); ob.disconnect(); }
+    },{threshold:.2}).observe(rev);
+  })();
   addEventListener('load',function(){ gauge(); upd(); });
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ gauge(); upd(); });
 })();
