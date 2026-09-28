@@ -234,7 +234,6 @@
   @media(max-width:749px){.gh-mid .gh-sub{max-width:280px}}
   @media(max-width:749px){.gh-mid .gh-cta2{text-shadow:0 0 10px var(--c-bg),0 0 22px var(--c-bg)}}
 
-
   .gh-mid{position:relative;z-index:2;text-align:center;padding:0 var(--sp-5);
     opacity:calc(1 - var(--z,0) * 2.6);will-change:opacity}
   .gh-eyebrow{display:inline-flex;align-items:center;gap:var(--sp-2);background:var(--c-ink);color:var(--c-surface);
@@ -281,7 +280,6 @@
   .gh-head{text-align:center;margin-bottom:clamp(var(--sp-5),4vw,var(--sp-7))}
   .gh-head h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:var(--sp-2) 0 0}
   .gh-head p{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-3) auto 0;max-width:40ch}
-
 
   /* shorter, balanced media ratio — no more empty 1:1 void */
 
@@ -712,51 +710,6 @@
      the page after this runs has to make them read again */
   addEventListener('load',function(){ gauge(); upd(); });
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ gauge(); upd(); });
-})();
-</script>
-
-{%- comment -%}
-  Temporary. Add ?gcdebug=1 to the homepage URL to float a readout of every
-  number the two scroll sequences depend on. It exists because these are phone
-  bugs on real iOS Safari, which cannot be reproduced on this machine, and
-  guessing at them from a desktop browser has cost more than one round. Nothing
-  renders without the flag. Delete once the phone pacing is settled.
-{%- endcomment -%}
-<script>
-(function(){
-  if(location.search.indexOf('gcdebug')<0) return;
-  var box=document.createElement('div');
-  box.setAttribute('style','position:fixed;left:6px;top:6px;z-index:99999;background:rgba(0,0,0,.82);'+
-    'color:#0f0;font:11px/1.45 ui-monospace,Menlo,monospace;padding:7px 9px;border-radius:6px;'+
-    'white-space:pre;pointer-events:none;max-width:74vw');
-  document.body.appendChild(box);
-  var stage=document.getElementById('gh-stage'), hpin=document.getElementById('gh-pin');
-  var sec=document.getElementById('gh-hs'), pin=document.getElementById('gh-hs-pin'), track=document.getElementById('gh-hs-track');
-  var t=false;
-  function n(v){ return Math.round(v); }
-  function draw(){
-    t=false;
-    var L=[];
-    L.push('w '+innerWidth+'  ih '+n(innerHeight)+'  clientH '+document.documentElement.clientHeight);
-    if(hpin) L.push('heroPin '+n(hpin.offsetHeight)+'  z '+(stage?getComputedStyle(stage).getPropertyValue('--z').trim():'-'));
-    if(sec&&pin&&track){
-      var kids=track.children, lastEl=kids[kids.length-1];
-      var contW=pin.clientWidth;
-      var want=Math.max(0,lastEl.offsetLeft-Math.max(0,(contW-lastEl.offsetWidth)/2));
-      var r=sec.getBoundingClientRect();
-      var c3=document.querySelectorAll('.gh-hs-card');
-      c3=c3.length?c3[c3.length-1].getBoundingClientRect():null;
-      L.push('js '+(sec.classList.contains('gh-hs--js')?'Y':'N')+'  ridePin '+n(pin.offsetHeight)+'  contW '+contW);
-      L.push('trackW '+n(track.offsetWidth)+'  lastLeft '+n(lastEl.offsetLeft)+'  lastW '+n(lastEl.offsetWidth));
-      L.push('travel '+n(want)+'  secH '+n(sec.offsetHeight)+'  top '+n(r.top));
-      L.push('basis '+getComputedStyle(lastEl).flexBasis+'  padEnd '+getComputedStyle(track).paddingInlineEnd);
-      L.push('tx '+(track.style.transform||'-'));
-      if(c3) L.push('chum3 L '+n(c3.left)+' R '+n(c3.right)+(c3.left>=-1&&c3.right<=contW+1?'  FULL':'  CUT'));
-    }
-    box.textContent=L.join('\n');
-  }
-  addEventListener('scroll',function(){if(!t){t=true;requestAnimationFrame(draw);}},{passive:true});
-  addEventListener('resize',draw); setTimeout(draw,400); draw();
 })();
 </script>
 
