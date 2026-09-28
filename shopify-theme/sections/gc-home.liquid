@@ -331,7 +331,7 @@
      pinned area. */
   .gh-hs-card{position:relative;flex:0 0 84vw;scroll-snap-align:start;box-sizing:border-box;background:var(--hs-soft);
     border-radius:var(--r-lg);padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-3)}
-  .gh-hs-badge{align-self:flex-start;background:var(--c-surface);color:var(--hs-tone);font-size:var(--fs-xs);
+  .gh-hs-badge{align-self:flex-start;background:var(--c-surface);color:var(--hs-ink,var(--hs-tone));font-size:var(--fs-xs);
     font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
     padding:var(--sp-2) var(--sp-3);border-radius:var(--r-full);box-shadow:var(--sh-1)}
   .gh-hs-media{display:flex;align-items:flex-end;height:clamp(190px,34svh,340px);box-sizing:border-box;
@@ -350,7 +350,7 @@
      exactly one focusable element and no nested anchors */
   .gh-hs-name a::after{content:"";position:absolute;inset:0;z-index:2;border-radius:var(--r-lg)}
   .gh-hs-meta{font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3);margin:0;letter-spacing:var(--ls-normal)}
-  .gh-hs-cta{flex:0 0 auto;background:var(--hs-tone);color:var(--c-surface);font-size:var(--fs-sm);
+  .gh-hs-cta{flex:0 0 auto;background:var(--hs-ink,var(--hs-tone));color:var(--c-surface);font-size:var(--fs-sm);
     font-weight:var(--fw-black);padding:var(--sp-3) var(--sp-5);border-radius:var(--r-full);
     white-space:nowrap;transition:filter var(--dur-2) var(--ease)}
   .gh-hs-card:hover .gh-hs-cta{filter:brightness(1.08)}
@@ -502,7 +502,7 @@
           <h2 class="gh-hs-title">Meet our <em>Chums</em></h2>
           <p class="gh-hs-hint">Keep scrolling <span aria-hidden="true">→</span></p>
         </div>
-        <article class="gh-hs-card" style="--hs-tone:var(--c-mango);--hs-soft:var(--c-mango-soft)">
+        <article class="gh-hs-card" style="--hs-tone:var(--c-mango);--hs-ink:var(--c-mango-deep);--hs-soft:var(--c-mango-soft)">
           <span class="gh-hs-badge">Focus</span>
           <div class="gh-hs-media">
             <span class="gh-hs-shot">
@@ -534,7 +534,7 @@
             {%- endif -%}
           </div>
         </article>
-        <article class="gh-hs-card" style="--hs-tone:var(--c-orange);--hs-soft:var(--c-orange-soft)">
+        <article class="gh-hs-card" style="--hs-tone:var(--c-orange);--hs-ink:var(--c-orange-deep);--hs-soft:var(--c-orange-soft)">
           <span class="gh-hs-badge">Eye care</span>
           <div class="gh-hs-media">
             <span class="gh-hs-shot">
@@ -566,7 +566,7 @@
             {%- endif -%}
           </div>
         </article>
-        <article class="gh-hs-card" style="--hs-tone:var(--c-cherry);--hs-soft:var(--c-cherry-soft)">
+        <article class="gh-hs-card" style="--hs-tone:var(--c-cherry);--hs-ink:var(--c-cherry);--hs-soft:var(--c-cherry-soft)">
           <span class="gh-hs-badge">Sleep</span>
           <div class="gh-hs-media">
             <span class="gh-hs-shot">

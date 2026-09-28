@@ -41,7 +41,9 @@
   --c-surface:#FFFFFF;            /* cards, panels                          */
   --c-ink:#000000;                /* primary text — true black per the book */
   --c-ink-2:rgba(0,0,0,0.66);     /* secondary text                         */
-  --c-ink-3:rgba(0,0,0,0.42);     /* tertiary / meta                        */
+  --c-ink-3:rgba(0,0,0,0.55);     /* tertiary / meta — 0.42 rendered #908881 on the
+                                     cream ground, 2.98:1, under the 4.5:1 AA floor
+                                     for small text. 0.55 renders #706A64 at 4.56:1. */
   --c-line:rgba(89,35,84,0.14);   /* hairlines — tinted purple, not grey    */
 
   /* PURPLE — new in v2 and structural, not decorative. Carries dark panels,
@@ -61,6 +63,13 @@
   --c-cherry:#DE1D62; --c-cherry-soft:rgba(222,29,98,0.12);
   --c-mango:#8DAA3D;  --c-mango-soft:rgba(141,170,61,0.12);
   --c-orange:#F47421; --c-orange-soft:rgba(244,116,33,0.12);
+  /* Text-bearing variants. The base tones are brand colours and stay exactly as
+     they are for fills and decoration, but white on #F47421 is 2.85:1 and on
+     #8DAA3D is 2.64:1 — both well under AA. These are the same hue and
+     saturation, darkened until they clear 4.5:1 against white, so the buttons
+     and badges read without changing the palette. */
+  --c-orange-deep:#C3530A;
+  --c-mango-deep:#687D2D;
 
   /* ---- radii ---- */
   --r-sm:12px; --r-md:20px; --r-lg:28px; --r-full:999px;
