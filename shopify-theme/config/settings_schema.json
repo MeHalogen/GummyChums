@@ -1466,5 +1466,20 @@
         "label": "t:settings_schema.customer_accounts.settings.customer_account_menu.label"
       }
     ]
+  },
+  {
+    "name": "Analytics",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Paste a GA4 Measurement ID to switch on Google Analytics. Left blank, no third-party analytics script loads at all. Shopify's own analytics is unaffected either way."
+      },
+      {
+        "type": "text",
+        "id": "ga4_id",
+        "label": "GA4 Measurement ID",
+        "info": "Looks like G-XXXXXXXXXX. Leave blank to load nothing."
+      }
+    ]
   }
 ]

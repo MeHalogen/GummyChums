@@ -17,10 +17,39 @@
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
       <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
     {%- else -%}
-      <link rel="icon" type="image/png" href="{{ 'gc-monogram.png' | asset_url }}">
-      <link rel="apple-touch-icon" href="{{ 'gc-monogram.png' | asset_url }}">
+      {%- comment -%}
+        Pre-sized. gc-monogram.png is a 4167x4167 master at 207KB — fine as art,
+        absurd as a 32px tab icon, and it was being fetched at full size on every
+        page load. These are the same mark rendered once at the two sizes that
+        are actually requested.
+      {%- endcomment -%}
+      <link rel="icon" type="image/png" sizes="32x32" href="{{ 'gc-favicon-32.png' | asset_url }}">
+      <link rel="apple-touch-icon" sizes="180x180" href="{{ 'gc-favicon-180.png' | asset_url }}">
     {%- endif -%}
     <meta name="theme-color" content="#DE1D61">
+
+    {%- comment -%}
+      Google Analytics, and ONLY if an ID has been entered in the theme editor.
+      Blank means not a single third-party byte is requested — no tag, no
+      connection, nothing to consent to. Deliberately gated this way rather than
+      hardcoded, so switching analytics off is a field you clear, not a deploy.
+    {%- endcomment -%}
+    {%- if settings.ga4_id != blank -%}
+      {%- comment -%}theme-check-disable RemoteAsset{%- endcomment -%}
+      {%- comment -%}
+        RemoteAsset is suppressed deliberately: gtag.js can only come from
+        Google's own CDN, so the warning can never be actioned. Suppressing it
+        with a reason keeps the baseline at 10 so a real one still stands out.
+      {%- endcomment -%}
+      <script async src="https://www.googletagmanager.com/gtag/js?id={{ settings.ga4_id | escape }}"></script>
+      {%- comment -%}theme-check-enable RemoteAsset{%- endcomment -%}
+      <script>
+        window.dataLayer=window.dataLayer||[];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js',new Date());
+        gtag('config',{{ settings.ga4_id | json }});
+      </script>
+    {%- endif -%}
 
     {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>

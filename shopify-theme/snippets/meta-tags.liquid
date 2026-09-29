@@ -29,11 +29,17 @@
     No product photography yet, so every share would otherwise render as a
     blank card. Fall back to the wordmark until real photos land.
   {%- endcomment -%}
-  {%- assign og_fallback = 'gc-wordmark-stack.png' | asset_url -%}
+  {%- comment -%}
+    1200x630 — the 1.91:1 that Facebook, WhatsApp and LinkedIn crop to. The
+    previous fallback was the 4146x1550 wordmark master, which is 2.67:1, so
+    every share cropped it badly and pulled 130KB to do it.
+  {%- endcomment -%}
+  {%- assign og_fallback = 'gc-og-card.png' | asset_url -%}
   <meta property="og:image" content="{{ og_fallback }}">
   <meta property="og:image:secure_url" content="{{ og_fallback }}">
-  <meta property="og:image:width" content="4146">
-  <meta property="og:image:height" content="1550">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{ shop.name | escape }}">
 {%- endif -%}
 
 {%- if request.page_type == 'product' -%}
