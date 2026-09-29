@@ -204,7 +204,7 @@
         {%- assign per_day = product.selected_or_first_available_variant.price | divided_by: 3000 | round -%}
         <span class="gp-perday">≈ ₹{{ per_day }}/day</span>
       </div>
-      <p class="gp-tax">Inclusive of all taxes · 30 gummies · Cash on Delivery available</p>
+      <p class="gp-tax">Inclusive of all taxes · 30 gummies</p>
 
       <div class="gp-facts">
         <span class="gp-fact">🌱 100% Veg</span>
@@ -246,16 +246,13 @@
       </form>
       <p class="gp-added" id="gp-added" hidden>In your bag ✓ <a href="{{ routes.cart_url }}" id="gp-viewbag">View bag →</a></p>
 
-      {%- comment -%} payment reassurance — COD/UPI are the two questions every Indian first-time buyer has {%- endcomment -%}
+      {%- comment -%}
+        Payment methods are deliberately NOT listed. Nothing on the storefront
+        should name a method until it is confirmed enabled at checkout — see
+        docs/NOTES-TO-PRIYAL.md. Restore this block once Priyal confirms.
+      {%- endcomment -%}
       <div class="gp-pay">
         <span class="gp-pay-t">Secure checkout</span>
-        <div class="gp-pay-row">
-          <span class="gp-chip">UPI</span>
-          <span class="gp-chip">Cards</span>
-          <span class="gp-chip">Net banking</span>
-          <span class="gp-chip">Wallets</span>
-          <span class="gp-chip gp-chip--cod">Cash on Delivery</span>
-        </div>
       </div>
 
       {%- comment -%}
@@ -298,7 +295,7 @@
           <div class="body">One gummy a day, whenever suits you. No water, no pills, no fuss — your daily chum is waiting.</div>
         </details>
         <details><summary>Shipping &amp; returns</summary>
-          <div class="body">We ship pan-India via Shiprocket, usually delivered in 3–10 working days with tracking. Cash on Delivery available. See our Returns policy for details.</div>
+          <div class="body">We ship pan-India via Shiprocket, usually delivered in 3–10 working days with tracking. See our Returns policy for details.</div>
         </details>
       </div>
     </div>
@@ -366,7 +363,7 @@
 
   /* Buy it now — add to cart, then straight to checkout. Deterministic across
      gateways, unlike the dynamic checkout button (which mostly surfaces wallets
-     that are not the norm for Indian UPI/COD shoppers). */
+     that are not the norm for Indian shoppers). */
   var now=document.getElementById('gp-now'),form=document.getElementById('gp-form');
   if(now&&form)now.addEventListener('click',function(){
     if(now.getAttribute('aria-busy')==='true')return;
@@ -494,7 +491,7 @@
       /* no place name means the sentence has to start on its own */
       var lead = place ? '<b>' + place + '</b> — delivers' : 'Delivers';
       pinOut.innerHTML = lead + ' in <b>' + days +
-        ' working days</b>, with tracking. Cash on Delivery available.';
+        ' working days</b>, with tracking.';
     };
     pinGo.addEventListener('click', check);
     pinIn.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); check(); } });
