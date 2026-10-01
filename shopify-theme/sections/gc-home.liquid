@@ -123,16 +123,25 @@
      where it used to be 1,733 — under half the pixels to rasterise. */
   .gh-pin .gh-gummy{display:block;position:absolute;left:50%;top:auto;bottom:4%;width:min(32vw,190px);aspect-ratio:1;z-index:1;
     border-radius:50%;backface-visibility:hidden;transform-origin:center bottom;
-    background:radial-gradient(circle at 36% 30%,
-      color-mix(in srgb, var(--c-cherry) 50%, white) 0%,
-      var(--c-cherry) 52%,
-      color-mix(in srgb, var(--c-cherry) 76%, black) 100%);
-    opacity:1;
-    transform:translateX(-50%) scale(calc(1 + var(--z,0) * var(--z,0) * var(--zoom-k)))}
-  /* will-change only while the hero is actually on screen — a permanent one
-     pins a layer in GPU memory for the whole page */
+    /* FLAT, and capped. This element scales to many times its own size, and what
+       it is filled with decides what that costs. A three-stop radial gradient
+       built from color-mix must be re-rasterised at every new scale: at 27x a
+       190px circle is 5130px square — 26 megapixels — and will-change kept a
+       backing store for it the whole way up. Free on a desktop GPU, ruinous on a
+       phone, which is exactly where the zoom juddered.
 
-  .gh-stage.gh-live .gh-gummy{will-change:transform,opacity}
+       A single colour is a solid quad the compositor scales without rasterising
+       anything. The gradient was only ever legible at rest, and the cap costs
+       nothing visible either: the flood behind this reaches full from .22, so
+       past roughly 8x the circle's edge is off-screen and further growth cannot
+       be seen. 12 keeps the layer under 2300px. */
+    background:var(--c-cherry);
+    opacity:1;
+    transform:translateX(-50%) scale(min(12, calc(1 + var(--z,0) * var(--z,0) * var(--zoom-k))))}
+  /* No will-change on the gummy. It was there to keep the layer warm, but on an
+     element that scales twelvefold it does the opposite: it pins a backing store
+     sized to the SCALED box and forces a re-raster every time the scale moves.
+     A flat-filled rounded box needs neither. */
   /* The gummy is a CIRCLE growing from a point just above the fold, so it reaches
      the far top corners long before it reaches the bottom ones — near its base the
      edge curves away as x²/2r, leaving a crescent of page showing under it. That

@@ -4,6 +4,14 @@
  * Signed off 11 Sep 2026. Phone pacing re-opened by Mehal on 12 Sep 2026 —
  * it read as a jump on a real phone — and re-signed at the values below.
  *
+ * 1 Oct 2026 — the gummy's FILL and CAP changed for performance, not for looks.
+ * It was a three-stop radial gradient built from color-mix, scaled uncapped to
+ * 27x with will-change holding a backing store — 26 megapixels of re-rasterised
+ * gradient on a phone, which is what made the zoom judder. It is now a flat
+ * cherry fill capped at 12x with no will-change. The curve, the timing and the
+ * motion are unchanged; only what is being scaled is. Do not restore the
+ * gradient or remove the cap without measuring on a phone first.
+ *
  * 13 Sep 2026 — LOCK LIFTED AND RE-CUT, by Mehal, who asked for the sequence
  * from index31.html instead: "Look at index 31 in this repo. I wanted that
  * scroll, the big gummy coming in." Ported from that file's .tp-stage / .tp-pin
@@ -50,7 +58,8 @@ const LOCKED = [
   ['gummy is a CSS circle',        'width:min(32vw,190px);aspect-ratio:1;'],
   ['gummy sits on the fold',       'bottom:4%;'],
   ['gummy grows from its base',    'transform-origin:center bottom;'],
-  ['gummy scale curve',            'scale(calc(1 + var(--z,0) * var(--z,0) * var(--zoom-k)))'],
+  ['gummy scale curve + cap',      'scale(min(12, calc(1 + var(--z,0) * var(--z,0) * var(--zoom-k))))'],
+  ['gummy fill stays flat',        'background:var(--c-cherry);'],
   ['headline fade rate',           'opacity:calc(1 - var(--z,0) * 2.6)'],
   ['reveal fade curve',            'opacity:calc((var(--z,0) - var(--rev-start)) * var(--rev-ramp))'],
   ['reveal does not scale',        'pointer-events:none;transform:none;'],
