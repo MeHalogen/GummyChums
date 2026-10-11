@@ -67,7 +67,12 @@
   .gp-now:hover{background:var(--c-ink);color:var(--c-surface)}
   .gp-now:active{transform:scale(.96)}
   .gp-now[aria-busy="true"]{opacity:.6;cursor:default}
-  .gp-note{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-3);text-align:center}
+  .gp-pay{margin:var(--sp-5) 0 0}
+/* .gc-eyebrow carries the type treatment; this is the page's one deviation
+   from it, a slightly larger gap under the label. Adopting the component and
+   overriding one value beats re-declaring six. */
+.gp-pay-t{margin-bottom:var(--sp-3)}
+.gp-note{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-3);text-align:center}
   .gp-note a{color:var(--c-ink-2);font-weight:var(--fw-bold);text-decoration:underline;text-underline-offset:2px}
   .gp-note a:hover{color:var(--pc)}
 
@@ -90,14 +95,6 @@
   .gp-rte i{color:var(--c-ink-3);font-size:var(--fs-xs);display:block;margin-top:var(--sp-3);line-height:var(--lh-body)}
 
   /* payment reassurance */
-  .gp-pay{margin:var(--sp-5) 0 0}
-  .gp-pay-t{display:block;font-size:var(--fs-xs);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);
-    text-transform:uppercase;color:var(--c-ink-3);margin-bottom:var(--sp-3)}
-  .gp-pay-row{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
-  .gp-chip{background:var(--c-surface);color:var(--c-ink-2);border-radius:var(--r-sm);
-    padding:var(--sp-2) var(--sp-3);font-size:var(--fs-xs);font-weight:var(--fw-black);
-    letter-spacing:var(--ls-normal);box-shadow:inset 0 0 0 1px var(--c-line)}
-  .gp-chip--cod{color:var(--pc);box-shadow:inset 0 0 0 1.5px var(--pc)}
 
   /* share row */
   .gp-pin{margin:var(--sp-5) 0 0;background:var(--c-surface);border-radius:var(--r-md);
