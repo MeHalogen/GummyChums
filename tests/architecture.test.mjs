@@ -14,7 +14,7 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 const THEME = 'shopify-theme';
@@ -102,5 +102,26 @@ test('no duplicate rule bodies inside the component layer', () => {
       assert.fail(`"${sel}" duplicates "${seen.get(body)}" — make one a modifier of the other`);
     }
     seen.set(body, sel);
+  }
+});
+
+const SNIPPETS = join(THEME, 'snippets');
+
+test('control and price components are defined', () => {
+  const css = read(COMPONENTS);
+  for (const sel of ['.gc-chip', '.gc-price']) {
+    assert.ok(css.includes(sel), `missing ${sel}`);
+  }
+});
+
+test('every gc snippet documents its parameters', () => {
+  const files = readdirSync(SNIPPETS).filter((f) => f.startsWith('gc-') && f.endsWith('.liquid'));
+  for (const f of files) {
+    const head = read(join(SNIPPETS, f)).slice(0, 900);
+    assert.match(
+      head, /\{%-?\s*comment\s*-?%\}/,
+      `${f} must open with a comment block documenting its parameters — a snippet ` +
+      `whose arguments you have to reverse-engineer is not a component`
+    );
   }
 });

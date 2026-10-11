@@ -1,0 +1,20 @@
+{%- comment -%}
+  Price cluster — the amount, and what it works out to per dose.
+
+  Parameters
+    price         required  Shopify price in the shop's minor unit (paise).
+    unit_divisor  optional  Divide by this for the unit figure. Default 3000.0,
+                            which is 30 doses expressed in paise.
+    unit_label    optional  Text after the unit figure. Default "/day".
+
+  Usage
+    {% render 'gc-price', price: product.price %}
+    {% render 'gc-price', price: product.price, unit_label: '/dose' %}
+{%- endcomment -%}
+{%- assign divisor = unit_divisor | default: 3000.0 -%}
+{%- assign label = unit_label | default: '/day' -%}
+{%- assign per_unit = price | divided_by: divisor | round -%}
+<span class="gc-price">
+  <span class="gc-price__now">{% render 'gc-money', price: price %}</span>
+  <span class="gc-price__unit">≈ ₹{{ per_unit }}{{ label }}</span>
+</span>
