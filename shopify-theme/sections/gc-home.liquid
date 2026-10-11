@@ -97,11 +97,7 @@
           <p class="gh-hs-line">Big brain energy, tiny gummy.</p>
           <p class="gh-hs-meta">30 gummies · one a day</p>
           <div class="gh-hs-buy">
-            <span class="gh-priced">
-              <span class="gh-price">{% render 'gc-money', price: p1.price %}</span>
-              {%- assign pd = p1.price | divided_by: 3000.0 | round -%}
-              <span class="gh-perday">≈ ₹{{ pd }}/day</span>
-            </span>
+            {% render 'gc-price', price: p1.price %}
             {%- if p1.available -%}
               <span class="gh-hs-cta">View product <span aria-hidden="true">→</span></span>
             {%- else -%}
@@ -129,11 +125,7 @@
           <p class="gh-hs-line">For screen-tired eyes.</p>
           <p class="gh-hs-meta">30 gummies · one a day</p>
           <div class="gh-hs-buy">
-            <span class="gh-priced">
-              <span class="gh-price">{% render 'gc-money', price: p2.price %}</span>
-              {%- assign pd = p2.price | divided_by: 3000.0 | round -%}
-              <span class="gh-perday">≈ ₹{{ pd }}/day</span>
-            </span>
+            {% render 'gc-price', price: p2.price %}
             {%- if p2.available -%}
               <span class="gh-hs-cta">View product <span aria-hidden="true">→</span></span>
             {%- else -%}
@@ -161,11 +153,7 @@
           <p class="gh-hs-line">Wind down. Sleep tight, Chum.</p>
           <p class="gh-hs-meta">30 gummies · one a day</p>
           <div class="gh-hs-buy">
-            <span class="gh-priced">
-              <span class="gh-price">{% render 'gc-money', price: p3.price %}</span>
-              {%- assign pd = p3.price | divided_by: 3000.0 | round -%}
-              <span class="gh-perday">≈ ₹{{ pd }}/day</span>
-            </span>
+            {% render 'gc-price', price: p3.price %}
             {%- if p3.available -%}
               <span class="gh-hs-cta">View product <span aria-hidden="true">→</span></span>
             {%- else -%}

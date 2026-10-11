@@ -158,10 +158,6 @@
   .gh-g3{width:26%;left:36%;bottom:8%;transform:rotate(-15deg);animation-duration:7.1s;animation-delay:-4.2s}
   @keyframes ghBob{0%{translate:0 0}100%{translate:0 -9px}}
 
-  .gh-priced{display:flex;flex-direction:column;gap:var(--sp-1)}
-  .gh-price{font-size:var(--fs-xl);font-weight:var(--fw-black);line-height:1}
-  .gh-perday{font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3)}
-
   /* ---------- meet the Chums: a vertical scroll that rides sideways ----------
      Scrolling down pins this block and slides the track left through the three
      Chums, then lets go and normal scrolling resumes. The section is made
@@ -224,7 +220,6 @@
   @media (prefers-reduced-motion:reduce){.gh-hs-cta{transition:none}}
   .gh-hs-line{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-2);margin:0;line-height:var(--lh-snug)}
   .gh-hs-buy{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);margin-top:auto}
-  .gh-hs-card .gh-price{color:var(--c-ink)}
 
   /* ---------- ACT 4 — FAQ ---------- */
   .gh-faq{max-width:760px;margin:0 auto}
