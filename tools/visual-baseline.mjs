@@ -20,6 +20,20 @@ const PAGES = [
 ];
 const WIDTHS = [[430, 900, 'phone'], [1280, 900, 'desktop']];
 
+/* Injected before every screenshot: kill motion, force lazy images in, settle
+   at the top. Everything that makes two captures of one page differ. */
+const FREEZE = `
+  var st = document.createElement('style');
+  st.textContent = '*,*::before,*::after{animation:none!important;' +
+    'transition:none!important;caret-color:transparent!important}' +
+    'html{scroll-behavior:auto!important}';
+  document.head.appendChild(st);
+  document.querySelectorAll('img[loading="lazy"]').forEach(function(i){ i.loading='eager'; });
+  window.scrollTo(0, document.body.scrollHeight);
+  window.scrollTo(0, 0);
+  return document.querySelectorAll('img').length;
+`;
+
 const api = async (method, path, body) => {
   const res = await fetch(DRIVER + path, {
     method,
@@ -46,7 +60,13 @@ async function capture(label) {
       await api('POST', `/session/${id}/window/rect`, { width: w, height: h });
       for (const [pname, path] of PAGES) {
         await api('POST', `/session/${id}/url`, { url: SITE + path });
-        await new Promise((r) => setTimeout(r, 2500));
+        await new Promise((r) => setTimeout(r, 2000));
+        /* Freeze the page before looking at it. Without this the Chums' sway and
+           the background drift put every capture on a different frame, and the
+           harness reports a difference for an unchanged site — which it did,
+           and which a control capture caught. */
+        await api('POST', `/session/${id}/execute/sync`, { script: FREEZE, args: [] });
+        await new Promise((r) => setTimeout(r, 1200));
         const shot = await api('GET', `/session/${id}/screenshot`);
         writeFileSync(join(dir, `${pname}-${wname}.png`), Buffer.from(shot.value, 'base64'));
         console.log(`  captured ${pname}-${wname}`);
