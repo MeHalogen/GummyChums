@@ -54,3 +54,49 @@
   max-width: 40ch;
   text-wrap: balance;
 }
+
+/* Responsive product grid. Replaced .gcc-grid, .gcq-grid and .gcs-grid, which
+   were byte-identical under three names. */
+.gc-grid{
+  display: grid;
+  gap: var(--sp-5);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 750px){
+  .gc-grid--2{ grid-template-columns: repeat(2, 1fr); align-items: start; }
+  .gc-grid--3{ grid-template-columns: repeat(3, 1fr); align-items: start; }
+}
+
+/* A surface that holds content. --gc-card-tone lets a caller tint one without
+   the card needing to know which brand colour that is. */
+.gc-card{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  box-sizing: border-box;
+  background: var(--gc-card-tone, var(--role-surface));
+  color: var(--role-surface-ink);
+  border-radius: var(--r-lg);
+  padding: var(--sp-5);
+}
+.gc-card__body{ display: flex; flex-direction: column; gap: var(--sp-2); flex: 1 1 auto; }
+
+/* Aspect-boxed media frame. Replaced .gcc-shot's sizing and .gcr-stage's. */
+.gc-media{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  background: var(--role-surface);
+}
+.gc-media > img,
+.gc-media > video{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gc-media--contain > img{ object-fit: contain; }

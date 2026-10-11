@@ -83,3 +83,24 @@ test('page furniture components are defined', () => {
     assert.ok(css.includes(sel), `missing ${sel}`);
   }
 });
+
+test('surface and layout components are defined', () => {
+  const css = read(COMPONENTS);
+  for (const sel of ['.gc-grid', '.gc-card', '.gc-media']) {
+    assert.ok(css.includes(sel), `missing ${sel}`);
+  }
+});
+
+test('no duplicate rule bodies inside the component layer', () => {
+  const css = read(COMPONENTS).replace(/\/\*[\s\S]*?\*\//g, '');
+  const seen = new Map();
+  for (const m of css.matchAll(/([^{}]+)\{([^{}]+)\}/g)) {
+    const body = m[2].replace(/\s+/g, '');
+    if (body.length < 40) continue;
+    const sel = m[1].trim().split('\n').pop().trim();
+    if (seen.has(body)) {
+      assert.fail(`"${sel}" duplicates "${seen.get(body)}" — make one a modifier of the other`);
+    }
+    seen.set(body, sel);
+  }
+});
