@@ -14,3 +14,4 @@ fonts/NaNJaune-MaxiMedium-TRIAL.ttf
 
 # Shopify CLI local config/auth
 shopify-theme/.shopify/
+.visual/
