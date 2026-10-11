@@ -21,149 +21,24 @@
   .gc-home *{box-sizing:border-box}
   .gc-wrap{max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter)}
 
-  /* ---------- ACT 1 — hero + scroll fall-in ---------- */
-  @property --z{syntax:"<number>";inherits:true;initial-value:0}
-  @property --gh-ground{syntax:"<length>";inherits:true;initial-value:0px}
-  .gh-stage{position:relative;height:270vh}
-  /* Both sequences run as scroll-driven animations, not scroll handlers. The
-     handlers were never slow — measured on the real page in Safari, a --z write
-     plus a full style flush costs 0.4ms over baseline. They are LATE: a handler
-     runs behind the compositor, so through a momentum flick the pinned content
-     chases the finger and corrects, which is the back-and-forth.
+  /* ---------- ACT 1 — hero ----------
+     No pin. No scroll-driven zoom. Both came out on 11 Oct 2026 at Mehal's call,
+     after the phone juddered through every tuning pass: the cause was structural,
+     not tunable — a gradient-filled circle scaled past 5000px square, and a
+     sideways transform driven from vertical scroll. Nothing on this page is
+     driven by scroll position any more, so nothing can fall behind a finger.
 
-     Ranges are absolute scroll offsets in px, published once by the script from
-     layout. Deliberately NOT view()/contain: those resolve against the
-     scrollport, and iOS resizes the scrollport every time its toolbar collapses,
-     which re-scales the timeline mid-scroll and makes everything on it jump —
-     worse than the handler it replaces. A scroll offset in px cannot move when
-     the toolbar does. */
-  @supports (animation-timeline:scroll()){
-    .gh-stage{animation:ghZ linear both;
-      animation-timeline:scroll(root block);
-      animation-range:var(--gh-z0,0px) var(--gh-z1,0px)}
-    @keyframes ghZ{from{--z:0}to{--z:1}}
-    /* a single animation on one element — no list of timelines to parse */
-    .gh-feet{animation:ghFeet linear both;animation-timeline:scroll(root block);
-      animation-range:0px var(--gh-lift,0px)}
-    @keyframes ghFeet{0%{translate:0 calc(-1 * var(--gh-lift,0px))}100%{translate:0 0}}
-  }
-  /* Shorter pin on phones. With no scrollbar there is no feedback that the page
-     is still scrolling, so a long pin reads as a frozen page. 120vh leaves
-     ~160px of pinned scroll — enough for the effect, short enough not to alarm. */
-  /* 160vh, not 120. The pin is 100svh, so the stage height MINUS one viewport is
-     the entire scroll budget the zoom and the reveal have to share. At 120vh
-     that was 20vh — about 160px, one flick — and with the reveal only starting
-     at z=0.60 the words "WHAT'S INSIDE?" were legible for the last ~22px of it.
-     Unreadable, which is exactly the complaint.
-     160vh gives 60vh (~490px) instead. Still well short of the 200vh that once
-     read as a frozen page, and unlike that version something is moving the
-     whole way down: the gummy grows, then the words arrive and HOLD. */
-  @media(max-width:749px){.gh-stage{height:270vh}}
-  /* transparent so the global fixed flavour background shows through — nothing to repaint */
-  .gh-pin{--zoom-k:26;--rev-start:.38;--rev-ramp:4.5;--flood-start:.22;--flood-ramp:4.4;position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center;
-    background:transparent;contain:paint;padding-bottom:4vh}
+     What the hero keeps is its content and its order: wordmark, promise, one
+     action, the two Chums standing under it, then the pink band that says what
+     is actually in the thing. Laid out as grid rows so the markup did not have
+     to move. */
+  .gh-stage{position:relative}
+  .gh-pin{position:relative;display:grid;grid-template-columns:1fr 1fr;
+    align-items:end;background:transparent;
+    padding:clamp(var(--sp-5),5vw,var(--sp-7)) 0 0;
+    --gh-chum-h:clamp(150px,calc((100vw - 150px) * .58),330px)}
+  .gh-pin .gh-gummy{display:none}
 
-  /* The zooming gummy. Scaling is anchored to the CIRCLE's own centre
-     (cy=58 in a 120 viewBox = 48.333%), not the box, and the element rides up
-     from below the fold to dead-centre as --z grows. That combination is what
-     guarantees full coverage at any aspect ratio: the old `center bottom`
-     origin sat 14% below the fold, so on a tall phone the circle climbed out
-     of the top before it ever reached the bottom edge — leaving a ~74px strip
-     of background along the bottom at peak zoom. Scaling harder made it worse,
-     since the circle rises faster than it grows. */
-  /* A CSS circle, not the gc-gummy SVG. This element scales to 21x — measured
-     at 1733x1733 CSS px, which on a phone at DPR 3 is ~27 million device pixels.
-     Re-rasterising an SVG document (four radial gradients, six shapes, a rotate)
-     at that size is the most phone-hostile thing on the page; a single CSS
-     gradient on one rounded box is a far cheaper raster. Nothing is lost: past
-     about 4x the highlights are off-screen and it reads as a flat colour wash.
-     Origin is 50% now the shape fills its box — the SVG's circle sat at 48.333%. */
-  /* Dawn's base.css carries `a:empty, div:empty, p:empty, … {display:none}` as a
-     guard against stray markup, and it beats a bare class: `div:empty` scores
-     0,1,1 and `.gh-gummy` only 0,1,0. This element is DELIBERATELY empty — the
-     whole gummy is one CSS gradient now — so the selector is qualified to clear
-     that bar. Same reason the reduced-motion rule below is qualified: it has to
-     out-specify this one in turn.
-
-     TIMING. The point of this element is that it fills the screen and the words
-     land ON it. It used to reach full coverage around z=0.78 while the reveal was
-     already fully opaque at 0.66 — so the text arrived over the cream background
-     with a pink ball still climbing underneath it. The three phases are now
-     ordered properly and each is given room:
-
-       0    → 0.22   hero copy fades out
-       0.22 → 0.30   gummy finishes rising and covers the screen
-       0.32 → 0.46   WHAT'S INSIDE? fades in, on solid pink
-       0.46 → 1.00   held there
-
-     Percentages are the wrong unit to judge this in — what a thumb feels is
-     DISTANCE. Measured on a phone, against the theme this replaced:
-
-                        old theme      first attempt      now
-       pin length         162px            487px         244px
-       text starts         97px            234px          78px
-       fully legible      140px            302px         112px
-       held legible        22px            185px         132px
-
-     The first attempt fixed the flash-past by making everything longer, which
-     just moved the wait to the front. Compressing the phases instead gets the
-     words on screen sooner than the old theme managed AND keeps them there six
-     times longer — while still landing them on solid pink.
-
-     Sized in vmax and capped rather than scaled without limit. Coverage needs a
-     circle as wide as the viewport DIAGONAL, and the diagonal-to-vmax ratio is
-     worst on a square-ish window: 1.414, against 1.0 for a very tall or very
-     wide one. A cap of 13 clears that by barely 1%, measured at ONE pixel of
-     margin on a 444x458 window — so it is 14, which leaves ~9%. The cap only
-     bounds the size; when coverage happens is set by the 140 multiplier, and
-     that puts it at z=0.25 on a phone and z=0.29 on a square window, both
-     before the words start at 0.32.
-
-     Capping also stops the raster growing forever. Peak is ~1,157px on a phone
-     where it used to be 1,733 — under half the pixels to rasterise. */
-  .gh-pin .gh-gummy{display:block;position:absolute;left:50%;top:auto;bottom:4%;width:min(32vw,190px);aspect-ratio:1;z-index:1;
-    border-radius:50%;backface-visibility:hidden;transform-origin:center bottom;
-    /* FLAT, and capped. This element scales to many times its own size, and what
-       it is filled with decides what that costs. A three-stop radial gradient
-       built from color-mix must be re-rasterised at every new scale: at 27x a
-       190px circle is 5130px square — 26 megapixels — and will-change kept a
-       backing store for it the whole way up. Free on a desktop GPU, ruinous on a
-       phone, which is exactly where the zoom juddered.
-
-       A single colour is a solid quad the compositor scales without rasterising
-       anything. The gradient was only ever legible at rest, and the cap costs
-       nothing visible either: the flood behind this reaches full from .22, so
-       past roughly 8x the circle's edge is off-screen and further growth cannot
-       be seen. 12 keeps the layer under 2300px. */
-    background:var(--c-cherry);
-    opacity:1;
-    transform:translateX(-50%) scale(min(12, calc(1 + var(--z,0) * var(--z,0) * var(--zoom-k))))}
-  /* No will-change on the gummy. It was there to keep the layer warm, but on an
-     element that scales twelvefold it does the opposite: it pins a backing store
-     sized to the SCALED box and forces a re-raster every time the scale moves.
-     A flat-filled rounded box needs neither. */
-  /* The gummy is a CIRCLE growing from a point just above the fold, so it reaches
-     the far top corners long before it reaches the bottom ones — near its base the
-     edge curves away as x²/2r, leaving a crescent of page showing under it. That
-     crescent is where the blurred background gummies were coming through, which is
-     the blur at the bottom. It cannot be closed by anchoring lower: on a 1700px
-     screen the circle is capped at 190px and would need to sit 414px below the
-     fold. So the pin carries a flood of the circle's own OUTER tone — the colour
-     its edge already is — fading in underneath it and complete by the time the
-     circle covers. The corners change colour where the circle is already that
-     colour, so there is no seam and nothing blurred underneath. */
-  .gh-pin::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-    background:color-mix(in srgb, var(--c-cherry) 76%, black);
-    opacity:calc((var(--z,0) - var(--flood-start)) * var(--flood-ramp))}
-  /* When the pink finishes covering the screen, solved rather than guessed. The
-     gummy's base is pinned 4% up from the fold and it grows from there, so the
-     screen is covered once its radius reaches the far top corner:
-       r = (32vw/2)·s ,  s = 1 + z²·26 ,  r² ≥ (W/2)² + (H − 0.04H − r)²
-     which lands at z≈0.45 on a phone and z≈0.56 on a wide desktop — the circle
-     has much further to travel across a wide screen. index31 used .62 for both,
-     which on a phone left roughly 300px of scrolling through flat pink before
-     the words arrived. Each now starts as its own coverage completes. */
-  @media(min-width:750px){.gh-pin{--rev-start:.46;--rev-ramp:4.5;--flood-start:.30;--flood-ramp:3.9}}
   /* ---- THE CHUMS · the real characters from Brand Book v2 ----
      They stand on the hero's bottom edge and flank the centre column, which is
      how the book's own cover is composed. Anchored bottom-left / bottom-right
@@ -175,38 +50,25 @@
      The sway rotates about 50% 100% — the feet. Rotating about the centre made
      them look like they were hovering rather than shifting their weight.
 
-     --gh-ground, not bottom:0. The pin is 100svh tall but starts BELOW the
-     marquee and header, so at scroll 0 its bottom edge sits ~129px under the
-     fold and the figures were cut off at the knees — which is the only moment
-     they're at full opacity, since they fade out within 60px of scrolling.
-     The script keeps --gh-ground equal to however far the pin overhangs the
-     fold, so their feet stay on the fold at rest and settle onto the pin's own
-     bottom edge once it's pinned. */
+     The figures sit in a row beneath the copy and in front of the pink band.
+     They used to be absolutely positioned inside a pinned box and lifted by a
+     scroll-driven offset, which is what made them appear to sink as you began
+     scrolling. In flow there is nothing to compensate for, so nothing can drift.
+  */
   .gcg{width:100%;height:auto;display:block}
-  /* `translate`, not `bottom`. The pin is a grid container, and an absolutely
-     positioned grid child resolves `bottom` against its GRID AREA rather than the
-     padding box — measured, it came out at exactly 75% of --gh-ground, so the
-     figures only ever compensated three quarters of the pin's overhang and sank
-     by the rest as you began to scroll. A translation has no such ambiguity, and
-     being a separate property from `transform` it composes with the sway rather
-     than fighting it. */
-  /* One wrapper carries the compensation for both figures. It exists because the
-     pin starts below the header, so its base sits --gh-lift under the fold until
-     it pins; the wrapper is offset by exactly that and rides back to zero as the
-     pin arrives, which keeps their feet on the fold without them appearing to
-     sink. Deliberately NOT driven by a registered custom property the figures
-     read: measured in Safari, a descendant consuming one of those got 150px from
-     a 200px value, while a literal 200px resolved correctly. --gh-lift is a plain
-     inline property, never animated, and substitutes exactly. */
-  .gh-feet{position:absolute;inset:0;z-index:1;pointer-events:none;
-    translate:0 calc(-1 * var(--gh-lift,0px))}
-  .gh-chum{position:absolute;bottom:0;z-index:1;pointer-events:none;line-height:0;
-    opacity:calc(1 - var(--z,0) * 2.6);transform-origin:50% 100%;
+  /* Holds the two figures side by side under the copy. It carried a
+     scroll-driven offset once, to stop them sinking while the hero was pinned;
+     in normal flow there is nothing to correct. */
+  .gh-feet{grid-column:1 / -1;grid-row:2;display:grid;grid-template-columns:1fr 1fr;
+    align-items:end;z-index:2;pointer-events:none}
+  .gh-chum{position:relative;z-index:2;pointer-events:none;line-height:0;
+    opacity:1;transform-origin:50% 100%;height:var(--gh-chum-h);
     animation:ghSway ease-in-out infinite alternate}
   .gh-chum img{display:block;width:auto;height:100%;
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
-  .gh-chum--l{left:0;height:min(56vh,500px);animation-duration:6.5s}
-  .gh-chum--r{right:0;height:min(52vh,466px);animation-duration:8.2s;animation-delay:-3s}
+  .gh-chum--l{grid-column:1;justify-self:end;margin-right:4vw;animation-duration:6.5s}
+  .gh-chum--r{grid-column:2;justify-self:start;margin-left:4vw;animation-duration:8.2s;
+    animation-delay:-3s;height:calc(var(--gh-chum-h) * .95)}
   @keyframes ghSway{from{transform:translate3d(0,0,0) rotate(-1.2deg)}to{transform:translate3d(0,-8px,0) rotate(1.2deg)}}
 
   /* Below ~1100px the centre column and the figures start sharing horizontal
@@ -243,8 +105,8 @@
   @media(max-width:749px){.gh-mid .gh-sub{max-width:280px}}
   @media(max-width:749px){.gh-mid .gh-cta2{text-shadow:0 0 10px var(--c-bg),0 0 22px var(--c-bg)}}
 
-  .gh-mid{position:relative;z-index:2;text-align:center;padding:0 var(--sp-5);
-    opacity:calc(1 - var(--z,0) * 2.6);will-change:opacity}
+  .gh-mid{grid-column:1 / -1;grid-row:1;position:relative;z-index:2;text-align:center;
+    padding:0 var(--sp-5) var(--sp-4)}
   .gh-eyebrow{display:inline-flex;align-items:center;gap:var(--sp-2);background:var(--c-ink);color:var(--c-surface);
     font-weight:var(--fw-black);font-size:var(--fs-xs);letter-spacing:var(--ls-wide);text-transform:uppercase;
     padding:var(--sp-2) var(--sp-4);border-radius:var(--r-full);margin-bottom:var(--sp-4)}
@@ -265,9 +127,13 @@
   .gh-scroll{margin-top:var(--sp-4);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);font-size:var(--fs-xs);color:var(--c-ink-3);
     animation:ghBounce 1.7s ease-in-out infinite}
   @keyframes ghBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
-  .gh-reveal{position:absolute;inset:0;
+  .gh-reveal{grid-column:1 / -1;grid-row:3;position:relative;
+    margin:calc(var(--gh-chum-h) * -0.14) calc(var(--gutter) * -1) 0;
+    padding:calc(var(--sp-7) + 7vw) var(--gutter) calc(var(--sp-7) + 128px);
+    background:var(--c-cherry);border-radius:50% 50% 0 0 / 11vw 11vw 0 0;
+    opacity:1;
     z-index:3;display:grid;place-items:center;text-align:center;padding:0 var(--sp-5);
-    color:var(--c-surface);opacity:calc((var(--z,0) - var(--rev-start)) * var(--rev-ramp));
+    color:var(--c-surface);
     pointer-events:none;transform:none;
     pointer-events:none}
   /* Dawn's base.css sets an explicit colour on h1-h6, and a direct rule beats
@@ -315,20 +181,19 @@
      row is an ordinary swipeable strip with snap points. The pinned ride is
      layered on top of that, never required by it. */
   .gh-hs{position:relative}
-  .gh-hs-pin{display:flex;align-items:center;padding:var(--sp-7) 0}
-  .gh-hs--js .gh-hs-pin{position:sticky;top:0;height:100svh;box-sizing:border-box;
-    padding:var(--header-h) 0 var(--sp-5);overflow:hidden}
-  .gh-hs-track{display:flex;align-items:center;gap:var(--sp-4);padding-inline:var(--gutter);
-    overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
-  .gh-hs--js .gh-hs-track{overflow:visible;scroll-snap-type:none;width:max-content}
-  .gh-hs--live .gh-hs-track{will-change:transform}
-  .gh-hs-intro{flex:0 0 84vw;scroll-snap-align:start}
+  /* A grid, not a ride. Scrolling down no longer drags this sideways: that was
+     a sideways transform driven from vertical scroll, which fights a phone's own
+     scrolling and was the second place it juddered. Three cards, stacked on a
+     phone and three-up from 750px, is the same content with nothing to fight. */
+  .gh-hs-pin{padding:var(--sp-6) 0}  .gh-hs-track{display:grid;gap:var(--sp-5);padding-inline:var(--gutter);
+    max-width:var(--container);margin-inline:auto}
+  @media(min-width:750px){.gh-hs-track{grid-template-columns:repeat(3,1fr);align-items:start}}
+  .gh-hs-intro{grid-column:1 / -1;text-align:center;margin-bottom:var(--sp-3)}
   .gh-hs-title{font-size:var(--fs-display);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
     margin:0;color:var(--c-ink);text-wrap:balance}
   .gh-hs-title em{font-style:normal;color:var(--c-accent)}
   .gh-hs-hint{margin:var(--sp-5) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-black);
     letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--c-ink-3)}
-  @media(min-width:750px){.gh-hs-intro{flex-basis:min(60vw,880px)}}
   /* One card is now the product card as well: the Chum stands beside the shot,
      then name, price, per-day and Add to bag. "Meet the three" said the same
      thing a second time, so it is gone and this ride sits in its place.
@@ -338,7 +203,7 @@
      box has a fixed, clamped height so the Chum's height is definite and it can
      never be cropped — on an iPhone SE2 the whole card is ~470px of a 561px
      pinned area. */
-  .gh-hs-card{position:relative;flex:0 0 84vw;scroll-snap-align:start;box-sizing:border-box;background:var(--hs-soft);
+  .gh-hs-card{position:relative;box-sizing:border-box;background:var(--hs-soft);
     border-radius:var(--r-lg);padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-3)}
   .gh-hs-badge{align-self:flex-start;background:var(--c-surface);color:var(--hs-ink,var(--hs-tone));font-size:var(--fs-xs);
     font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
@@ -368,24 +233,6 @@
   .gh-hs-line{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-2);margin:0;line-height:var(--lh-snug)}
   .gh-hs-buy{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);margin-top:auto}
   .gh-hs-card .gh-price{color:var(--c-ink)}
-  @media(min-width:750px){.gh-hs-card{flex-basis:min(40vw,560px)}}
-  /* Phone: a little narrower than the screen, so the next Chum peeks in and you
-     can see the row continues, and trailing space equal to the leftover screen
-     so the third Chum can ride all the way to where the others sit. Both panels
-     must match, or the travel maths in gc-hs.js lands on the wrong card. */
-  @media(max-width:749px){
-    /* a whole header of empty space above the cards on a 667px screen — the
-       header is not overlaying this section, so it does not need clearing */
-    .gh-hs--js .gh-hs-pin{padding-top:var(--sp-4);padding-bottom:var(--sp-4)}
-    .gh-hs-intro,.gh-hs-card{flex-basis:76vw}
-    .gh-hs--js .gh-hs-track{padding-inline-end:24vw}
-  }
-  @supports (animation-timeline:scroll()){
-    .gh-hs--js .gh-hs-track{animation:ghRide linear both;animation-timeline:scroll(root block);
-      animation-range:var(--gh-r0,0px) var(--gh-r1,0px)}
-    @keyframes ghRide{from{transform:translate3d(0,0,0)}
-      to{transform:translate3d(calc(-1 * var(--gh-travel,0px)),0,0)}}
-  }
 
   /* ---------- ACT 4 — FAQ ---------- */
   .gh-faq{max-width:760px;margin:0 auto}
@@ -463,9 +310,6 @@
       </div>
       </div>
 
-      {%- comment -%} the one that zooms on scroll — CSS circle, see .gh-gummy {%- endcomment -%}
-      <div class="gh-gummy" aria-hidden="true"></div>
-
       <div class="gh-mid">
         <span class="gh-eyebrow">{{ s.eyebrow }}</span>
         <img class="gh-logo" fetchpriority="high" decoding="async" src="{{ 'gc-wordmark-stack.png' | asset_url }}" alt="{{ shop.name }}" width="680" height="254" draggable="false" oncontextmenu="return false">
@@ -509,7 +353,7 @@
       <div class="gh-hs-track" id="gh-hs-track">
         <div class="gh-hs-intro" id="shop">
           <h2 class="gh-hs-title">Meet our <em>Chums</em></h2>
-          <p class="gh-hs-hint">Keep scrolling <span aria-hidden="true">→</span></p>
+          <p class="gh-hs-hint">Three chums · one a day</p>
         </div>
         <article class="gh-hs-card" style="--hs-tone:var(--c-mango);--hs-ink:var(--c-mango-deep);--hs-soft:var(--c-mango-soft)">
           <span class="gh-hs-badge">Focus</span>
@@ -610,7 +454,6 @@
       </div>
     </div>
   </section>
-  <script src="{{ 'gc-hs.js' | asset_url }}" defer></script>
 
   <!-- ACT 4 — FAQ -->
   <section class="gh-sec" id="gc-faq" style="padding-top:0">
@@ -639,87 +482,6 @@
   </section>
 </div>
 
-<script>
-(function(){
-  var stage=document.getElementById('gh-stage'); if(!stage)return;
-  var tk=false;
-  var pin=document.getElementById('gh-pin');
-  var vhPx=0;
-  /* One viewport, measured the only way that cannot move: ask the browser for
-     100svh. iOS shifts innerHeight AND documentElement.clientHeight as its
-     toolbar collapses, and the hero pin carries padding on top of its 100svh
-     (nothing here sets border-box globally — Dawn scopes that to details > *),
-     so neither of those is the ruler. A span, not a div: base.css hides empty
-     divs. Read once per gauge; svh cannot change without a resize. */
-  function svh(){
-    var el=document.createElement('span');
-    el.style.cssText='position:absolute;top:0;left:0;width:0;height:100svh;visibility:hidden;pointer-events:none';
-    document.body.appendChild(el);
-    var h=el.offsetHeight; el.parentNode.removeChild(el);
-    return h||document.documentElement.clientHeight;
-  }
-  function gauge(){
-    vhPx=svh();
-    /* Layout distances, read once — never during a scroll. lift is how far the
-       stage sits down the page before it pins; pad is how far the pin overhangs
-       the fold once stuck; z0..z1 is the scroll span the zoom occupies. */
-    var top=Math.max(0, stage.getBoundingClientRect().top + (scrollY||pageYOffset||0));
-    var pad=pin?Math.max(0, pin.offsetHeight - vhPx):0;
-    var d=Math.max(0, stage.offsetHeight - vhPx);
-    stage.style.setProperty('--gh-lift', top.toFixed(1)+'px');
-    stage.style.setProperty('--gh-pad',  pad.toFixed(1)+'px');
-    stage.style.setProperty('--gh-z0',   top.toFixed(1)+'px');
-    stage.style.setProperty('--gh-z1',   (top+d).toFixed(1)+'px');
-  }
-  /* Two things this deliberately avoids, both of which cost on every frame of a
-     ten-screen scroll rather than just the hero's own screen:
-       - it used to run for the whole page. Past the hero, z is pinned at 1 and
-         nothing can change, yet --z was still written every frame, invalidating
-         style for the stage's subtree each time. Now it goes quiet.
-       - it used to write --z and --gh-ground unconditionally. Writing a custom
-         property is what triggers that invalidation, so skipping the write when
-         the value is unchanged skips the recalc entirely. */
-  var lastZ='', lastG='', live=false;
-  /* an animation outranks an inline style, so where CSS drives these the script
-     must not also write them or the two fight and the script loses */
-  var cssDriven = window.CSS && CSS.supports && CSS.supports('animation-timeline','scroll()');
-  function upd(){
-    var r=stage.getBoundingClientRect();
-    var onScreen = r.bottom > 0 && r.top < vhPx;
-    if(onScreen !== live){ live = onScreen; stage.classList.toggle('gh-live', live); }
-    if(!onScreen) return;
-    var d=r.height-vhPx;
-    if(!cssDriven){
-      var z=(d>0?Math.min(Math.max(-r.top/d,0),1):0).toFixed(4);
-      if(z!==lastZ){ lastZ=z; stage.style.setProperty('--z',z); }
-    }
-    if(pin&&!cssDriven){
-      var g=Math.max(0,pin.getBoundingClientRect().bottom-vhPx).toFixed(1)+'px';
-      if(g!==lastG){ lastG=g; stage.style.setProperty('--gh-ground',g); }
-    }
-  }
-  /* With CSS driving the sequence there is nothing left to compute per frame —
-     only a class saying the hero is on screen. An observer reports that without
-     the page running our code on every scroll event at all. */
-  if(cssDriven && window.IntersectionObserver){
-    new IntersectionObserver(function(es){
-      var on=es[0].isIntersecting;
-      if(on!==live){ live=on; stage.classList.toggle('gh-live',on); }
-    }).observe(stage);
-  } else {
-    addEventListener('scroll',function(){if(!tk){requestAnimationFrame(function(){upd();tk=false;});tk=true;}},{passive:true});
-  }
-  /* only a real width change can alter 100svh; iOS fires resize on every toolbar
-     nudge, and re-gauging on those is exactly what made the hero jitter */
-  var gw=innerWidth;
-  addEventListener('resize',function(){ if(innerWidth!==gw){ gw=innerWidth; gauge(); } upd(); });
-  gauge(); upd();
-  /* those distances are layout, so anything that can still move the hero down
-     the page after this runs has to make them read again */
-  addEventListener('load',function(){ gauge(); upd(); });
-  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ gauge(); upd(); });
-})();
-</script>
 
 {% schema %}
 {
