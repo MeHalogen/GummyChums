@@ -125,3 +125,29 @@ test('every gc snippet documents its parameters', () => {
     );
   }
 });
+
+/* Sections proven to live on the component layer. Adding a name here is a
+   promise that the section carries no CSS of its own. Unmigrated sections are
+   deliberately absent rather than failing — they predate the rule. */
+const MIGRATED = ['gc-product.liquid'];
+
+test('migrated sections carry no CSS of their own', () => {
+  for (const f of MIGRATED) {
+    const src = read(join(THEME, 'sections', f));
+    assert.ok(
+      !/<style>/.test(src),
+      `${f} still has a <style> block. Its styling belongs in gc-components.css, ` +
+      `or it is specific enough to deserve a component of its own.`
+    );
+  }
+});
+
+test('migrated sections use no raw colour values', () => {
+  for (const f of MIGRATED) {
+    const src = read(join(THEME, 'sections', f))
+      .replace(/\{%[\s\S]*?%\}/g, '')
+      .replace(/\{\{[\s\S]*?\}\}/g, '');
+    const hex = [...src.matchAll(/#[0-9a-fA-F]{3,8}\b/g)].map((m) => m[0]);
+    assert.deepEqual([...new Set(hex)], [], `${f} hard-codes colours: ${hex.join(', ')}`);
+  }
+});

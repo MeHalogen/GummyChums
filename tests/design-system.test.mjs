@@ -123,8 +123,21 @@ test('sections use no off-scale font sizes', () => {
   assert.deepEqual(problems, [], `off-scale font sizes:\n${problems.join('\n')}`);
 });
 
+/* A section's CSS may live in its own <style> block or, once migrated, in a
+   stylesheet it links. This follows the link rather than assuming the former —
+   the assumption the architecture refactor set out to remove. */
+function sectionCss(file) {
+  const src = read(join(SECTIONS, file));
+  let css = styleCss(file);
+  for (const m of src.matchAll(/'([a-z0-9-]+\.css)'\s*\|\s*asset_url/g)) {
+    const asset = join(THEME, 'assets', m[1]);
+    if (existsSync(asset)) css += '\n' + read(asset);
+  }
+  return css;
+}
+
 test('every section constrains content with --container', () => {
-  const missing = gcSections().filter((f) => !styleCss(f).includes('var(--container)'));
+  const missing = gcSections().filter((f) => !sectionCss(f).includes('var(--container)'));
   assert.deepEqual(missing, [], `sections not using --container: ${missing.join(', ')}`);
 });
 
