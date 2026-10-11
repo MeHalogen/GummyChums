@@ -151,3 +151,27 @@ test('migrated sections use no raw colour values', () => {
     assert.deepEqual([...new Set(hex)], [], `${f} hard-codes colours: ${hex.join(', ')}`);
   }
 });
+
+test('a brand colour change is one file', () => {
+  /* The headline promise of this architecture. Every colour in the component
+     layer resolves through a role, so gc-tokens.css is the only file that names
+     a brand colour. If this fails, the Figma pivot has stopped being cheap and
+     whoever broke it should find out now rather than in six months. */
+  const css = read(COMPONENTS).replace(/\/\*[\s\S]*?\*\//g, '');
+  const prims = [...css.matchAll(/var\(--c-[a-z0-9-]+/g)].map((m) => m[0]);
+  assert.deepEqual(
+    [...new Set(prims)], [],
+    `gc-components.css names a brand colour directly. Route it through a ` +
+    `--role-* token so a re-skin stays a single-file edit.`
+  );
+});
+
+test('migrated sections keep their CSS in a stylesheet, not in Liquid', () => {
+  for (const f of MIGRATED) {
+    const src = read(join(THEME, 'sections', f));
+    assert.match(
+      src, /asset_url\s*\|\s*stylesheet_tag/,
+      `${f} should link a stylesheet — that is where its CSS now lives`
+    );
+  }
+});

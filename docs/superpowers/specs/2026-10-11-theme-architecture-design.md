@@ -191,3 +191,66 @@ No step requires finding where a colour was hard-coded.
   component classes — the lower-specificity shared class can lose to a leftover
   section rule. Mitigated by removing the section rule in the same commit as the
   adoption, never leaving both.
+
+---
+
+## 10. Outcome — measured 11 Oct 2026
+
+| | before | after |
+|---|---|---|
+| CSS inside section `<style>` blocks | 1,062 lines | **611** |
+| CSS in stylesheets | 307 lines | **912** |
+| Reusable / re-themable share | 23% | **59%** |
+| `gc-home` | 508 lines, 279 CSS | **218 lines, 0 CSS** |
+| `gc-product` | 507 lines, 161 CSS | **347 lines, 0 CSS** |
+
+Both target sections carry zero CSS. The remaining 611 lines are the eleven
+unmigrated sections, which were always out of scope.
+
+Every step verified byte-identical against a Safari baseline at phone and
+desktop widths. Theme check finished at its 10-offence baseline; all three
+suites green (architecture 15, design-system 11, hero lock 8).
+
+### What did not go to plan, and what it taught
+
+**The plan over-estimated how much was duplicated.** The spec predicted the
+product page's rules would collapse into components. They did not: `.gp-kick`,
+`.gp-grid` and `.gp-perday` only *look* like `.gc-eyebrow`, `.gc-grid` and
+`.gc-price__unit` — different font size, a fixed two-column 760px grid, `--fs-sm`
+against `--fs-xs`. Adopting them would have changed the design, which the
+constraints forbid. The 21 measured duplicates are across collection, quality,
+search and reviews; the product page's controls are genuinely bespoke.
+
+Forcing them would have improved the adoption metric by editing pixels. The real
+convergence belongs with the Figma, when the designs are meant to agree.
+
+**One component was deleted rather than used.** `gc-section-head` was built from
+the duplication audit, but its duplicates are all in unmigrated sections, and the
+home page's own heading legitimately differs. It was removed. Build the component
+when the second caller exists, not before.
+
+**The verification harness was wrong three times.** It reported false differences
+from animation frames until captures were frozen; it screenshotted a blank window
+and called it a regression until it asserted the page had rendered; and it
+captured blank again whenever Safari was not frontmost, until it brought Safari
+forward itself. Each was caught by a control — capturing an unchanged site twice
+and expecting identity. A verification tool is not trustworthy because it was
+written carefully; it is trustworthy once it has been shown to fail when it
+should and pass when it should.
+
+**Two existing guards assumed CSS lived in sections.** `design-system`'s
+`--container` check and the hero lock both read section `<style>` blocks, so
+moving CSS to stylesheets would have silently hollowed them out — the hero lock
+in particular would have stopped seeing scroll-coupling entirely. Both now follow
+a section's linked stylesheets. The lock was re-proved by reintroducing a banned
+pattern and watching it fail.
+
+### Where this leaves the Figma pivot
+
+1. Remap `--role-*` in `gc-tokens.css` — one file, 15 roles.
+2. Adjust `gc-components.css` where a component's own shape changed.
+3. Recompose sections, and move page-specific rules in
+   `section-gc-home.css` / `section-gc-product.css`.
+
+No step requires finding where a colour was hard-coded in Liquid, which is what
+it required before.
