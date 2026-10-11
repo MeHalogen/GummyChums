@@ -1,0 +1,286 @@
+/* ── HOME PAGE ────────────────────────────────────────────────────────────
+   Lifted verbatim out of sections/gc-home.liquid, which carried 278 lines of
+   CSS — the largest single pocket in this theme — that no other page could
+   reuse or re-theme without editing Liquid.
+
+   Page-specific styling lives here. Anything genuinely shared moves to
+   gc-components.css as it is adopted, and a test fails this section if a
+   <style> block ever returns. */
+
+/* No negative margin: it made this element wider than the viewport, which iOS
+     turns into a horizontal scroll. Sections handle their own gutters. */
+  .gc-home{overflow-x:clip;color:var(--c-ink)}
+  .gc-home *{box-sizing:border-box}
+  .gc-wrap{max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter)}
+
+  /* ---------- ACT 1 — hero ----------
+     No pin. No scroll-driven zoom. Both came out on 11 Oct 2026 at Mehal's call,
+     after the phone juddered through every tuning pass: the cause was structural,
+     not tunable — a gradient-filled circle scaled past 5000px square, and a
+     sideways transform driven from vertical scroll. Nothing on this page is
+     driven by scroll position any more, so nothing can fall behind a finger.
+
+     What the hero keeps is its content and its order: wordmark, promise, one
+     action, the two Chums standing under it, then the pink band that says what
+     is actually in the thing. Laid out as grid rows so the markup did not have
+     to move. */
+  .gh-stage{position:relative}
+  .gh-pin{position:relative;display:grid;grid-template-columns:1fr 1fr;
+    align-items:end;background:transparent;
+    padding:clamp(var(--sp-5),5vw,var(--sp-7)) 0 0;
+    --gh-chum-h:clamp(150px,calc((100vw - 150px) * .58),330px)}
+  .gh-pin .gh-gummy{display:none}
+
+  /* ---- THE CHUMS · the real characters from Brand Book v2 ----
+     They stand on the hero's bottom edge and flank the centre column, which is
+     how the book's own cover is composed. Anchored bottom-left / bottom-right
+     rather than centred, so they stay planted while the viewport changes shape.
+
+     They fade on the same --z curve as .gh-mid, so the scroll-zoom hands over
+     to the reveal with nothing left floating over it.
+
+     The sway rotates about 50% 100% — the feet. Rotating about the centre made
+     them look like they were hovering rather than shifting their weight.
+
+     The figures sit in a row beneath the copy and in front of the pink band.
+     They used to be absolutely positioned inside a pinned box and lifted by a
+     scroll-driven offset, which is what made them appear to sink as you began
+     scrolling. In flow there is nothing to compensate for, so nothing can drift.
+  */
+  .gcg{width:100%;height:auto;display:block}
+  /* Holds the two figures side by side under the copy. It carried a
+     scroll-driven offset once, to stop them sinking while the hero was pinned;
+     in normal flow there is nothing to correct. */
+  .gh-feet{grid-column:1 / -1;grid-row:2;display:grid;grid-template-columns:1fr 1fr;
+    align-items:end;z-index:2;pointer-events:none}
+  .gh-chum{position:relative;z-index:2;pointer-events:none;line-height:0;
+    opacity:1;transform-origin:50% 100%;height:var(--gh-chum-h);
+    animation:ghSway ease-in-out infinite alternate}
+  .gh-chum img{display:block;width:auto;height:100%;
+    -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+  .gh-chum--l{grid-column:1;justify-self:end;margin-right:4vw;animation-duration:6.5s}
+  .gh-chum--r{grid-column:2;justify-self:start;margin-left:4vw;animation-duration:8.2s;
+    animation-delay:-3s;height:calc(var(--gh-chum-h) * .95)}
+  @keyframes ghSway{from{transform:translate3d(0,0,0) rotate(-1.2deg)}to{transform:translate3d(0,-8px,0) rotate(1.2deg)}}
+
+  /* Below ~1100px the centre column and the figures start sharing horizontal
+     space, so the figures move outward and shrink rather than overlap the copy.
+     On phones they bleed roughly half off each edge: enough that you read them
+     as two people standing there, not enough to crowd the headline. */
+  @media(max-width:1100px){.gh-chum--l{height:min(42vh,360px);left:8px}}
+  @media(max-width:1100px){.gh-chum--r{height:min(39vh,340px);right:8px}}
+  /* On a 375px screen the copy column and two standing figures cannot both
+     have the width they want. Rather than shrink the Chums to slivers, they go
+     BIGGER and bleed further out: about a third of each figure is visible, which
+     still reads unmistakably as a person. Where the subline crosses them it
+     gets a cream halo, so the overlap looks composed instead of accidental. */
+  /* NOTHING BLEEDS OFF THE EDGE. Every figure sits fully inside the viewport at
+     every width — a Chum cut in half by the screen edge reads as a broken page
+     rather than as a crop, and that is worth more than the size bleeding bought.
+
+     Height is capped by BOTH dimensions, which is the part that took two passes
+     to get right. The svh term keeps the figures clear of the copy stacked above
+     them; the vw term keeps roughly 200px open between them, because that is what
+     the "Shop the flavours" button needs and at 360px wide the figures were
+     otherwise sitting under it by 25px a side. The floor keeps them recognisable
+     on the shortest phone, the ceiling stops them dominating the tallest. */
+  @media(max-width:749px){.gh-chum--l{height:clamp(150px,min(calc(100svh - 520px),calc((100vw - 200px) * 1.31)),300px);left:6px}}
+  @media(max-width:749px){.gh-chum--r{height:clamp(142px,min(calc(100svh - 536px),calc((100vw - 200px) * 1.24)),284px);right:6px}}
+  /* the shortest phones have no room for a scroll hint under the button once
+     the figures are in; the gradient and the Chums already say there is more */
+  @media(max-width:749px) and (max-height:700px){.gh-scroll{display:none}}
+  /* Narrowed so it wraps INSIDE the gap between the two figures rather than
+     running under their arms. In px, not ch: this typeface's "0" is ~19.6px
+     wide at this size, so 20ch computed to 393px — wider than the phone. The
+     measured gap between the figures is 228px. The halo stays as insurance
+     for 320px screens, where the gap closes further. */
+  @media(max-width:749px){.gh-mid .gh-sub{max-width:280px}}
+  @media(max-width:749px){.gh-mid .gh-cta2{text-shadow:0 0 10px var(--c-bg),0 0 22px var(--c-bg)}}
+
+  .gh-mid{grid-column:1 / -1;grid-row:1;position:relative;z-index:2;text-align:center;
+    padding:0 var(--sp-5) var(--sp-4)}
+  .gh-eyebrow{display:inline-flex;align-items:center;gap:var(--sp-2);background:var(--c-ink);color:var(--c-surface);
+    font-weight:var(--fw-black);font-size:var(--fs-xs);letter-spacing:var(--ls-wide);text-transform:uppercase;
+    padding:var(--sp-2) var(--sp-4);border-radius:var(--r-full);margin-bottom:var(--sp-4)}
+  .gh-tag mark{background:linear-gradient(180deg,transparent 58%,var(--c-accent-soft) 58%);
+    color:inherit;padding:0 .06em}
+  .gh-cta2{color:var(--c-ink);font-weight:var(--fw-black);font-size:var(--fs-base);text-decoration:none;
+    display:inline-flex;align-items:center;gap:var(--sp-2);padding:var(--sp-1) var(--sp-1);border-bottom:2.5px solid var(--c-ink)}
+  .gh-cta2 span{transition:transform var(--dur-2) var(--ease);display:inline-block}
+  .gh-cta2:hover span{transform:translateX(5px)}
+  .gh-logo{display:block;width:min(470px,74vw);height:auto;margin:0 auto var(--sp-5);
+    -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none;pointer-events:none}
+  .gh-tag{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0 auto;max-width:17ch}
+  .gh-sub{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-3) auto 0;max-width:34ch;line-height:var(--lh-body)}
+  .gh-cta{margin-top:var(--sp-5);display:flex;align-items:center;justify-content:center;gap:var(--sp-4);flex-wrap:wrap}
+  .gh-pills{display:flex;gap:var(--sp-2);justify-content:center;flex-wrap:wrap;margin-top:var(--sp-4)}
+  .gh-pill{background:var(--c-surface);border-radius:var(--r-full);padding:var(--sp-2) var(--sp-4);font-size:var(--fs-sm);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-normal);box-shadow:var(--sh-2);outline:1px solid var(--c-line);outline-offset:-1px}
+  .gh-scroll{margin-top:var(--sp-4);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);font-size:var(--fs-xs);color:var(--c-ink-3);
+    animation:ghBounce 1.7s ease-in-out infinite}
+  @keyframes ghBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+  .gh-reveal{grid-column:1 / -1;grid-row:3;position:relative;
+    margin:calc(var(--gh-chum-h) * -0.14) calc(var(--gutter) * -1) 0;
+    padding:calc(var(--sp-7) + 7vw) var(--gutter) calc(var(--sp-7) + 128px);
+    background:var(--c-cherry);border-radius:50% 50% 0 0 / 11vw 11vw 0 0;
+    opacity:1;
+    z-index:3;display:grid;place-items:center;text-align:center;padding:0 var(--sp-5);
+    color:var(--c-surface);
+    pointer-events:none;transform:none;
+    pointer-events:none}
+  /* Dawn's base.css sets an explicit colour on h1-h6, and a direct rule beats
+     the colour inherited from .gh-reveal — so headings on dark/coloured
+     backgrounds must restate it or they render near-black. */
+  .gh-reveal h2{font-size:var(--fs-4xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0;color:var(--c-surface)}
+
+  .gh-reveal p{font-size:var(--fs-xl);font-weight:var(--fw-bold);margin:var(--sp-4) auto 0;max-width:46ch;opacity:.92;text-wrap:balance}
+
+  /* The dissolve sits ON the hero's last 128px rather than below it, which is
+     the whole point: the teeth are page-colour and the gaps are the hero's own
+     pink, so neither half has a colour to match and there is no seam. Pulled up
+     by its exact height, and above the stage in the stacking order. */
+  .gh-edge{line-height:0;position:relative;z-index:2;margin-top:-128px;pointer-events:none}
+
+  /* ---------- ACT 2 — flavours ---------- */
+  /* the dissolve already supplies the top separation */
+  .gh-sec{padding:clamp(var(--sp-7),6vw,var(--sp-8)) 0}
+  .gh-head{text-align:center;margin-bottom:clamp(var(--sp-5),4vw,var(--sp-7))}
+  .gh-head h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:var(--sp-2) 0 0}
+  .gh-head p{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-3) auto 0;max-width:40ch}
+
+  /* shorter, balanced media ratio — no more empty 1:1 void */
+
+  /* cluster of 2-3 gummies at different sizes/rotations — reads as product, not an icon */
+  .gh-cluster{position:absolute;inset:0}
+  .gh-g{position:absolute;display:block;animation:ghBob ease-in-out infinite alternate}
+  .gh-g1{width:44%;left:9%;top:19%;transform:rotate(-9deg);animation-duration:6.5s}
+  .gh-g2{width:29%;right:9%;top:9%;transform:rotate(13deg);animation-duration:7.8s;animation-delay:-2.4s}
+  .gh-g3{width:26%;left:36%;bottom:8%;transform:rotate(-15deg);animation-duration:7.1s;animation-delay:-4.2s}
+  @keyframes ghBob{0%{translate:0 0}100%{translate:0 -9px}}
+
+  .gh-priced{display:flex;flex-direction:column;gap:var(--sp-1)}
+  .gh-price{font-size:var(--fs-xl);font-weight:var(--fw-black);line-height:1}
+  .gh-perday{font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3)}
+
+  /* ---------- meet the Chums: a vertical scroll that rides sideways ----------
+     Scrolling down pins this block and slides the track left through the three
+     Chums, then lets go and normal scrolling resumes. The section is made
+     exactly as tall as the sideways travel, so a pixel of scroll is a pixel of
+     movement — 1:1, which is what stops a pin from feeling stuck: something is
+     always moving under your thumb, and it ends the moment the last Chum is in.
+
+     Without JavaScript, or with reduced motion, there is no pin at all: the
+     row is an ordinary swipeable strip with snap points. The pinned ride is
+     layered on top of that, never required by it. */
+  .gh-hs{position:relative}
+  /* A grid, not a ride. Scrolling down no longer drags this sideways: that was
+     a sideways transform driven from vertical scroll, which fights a phone's own
+     scrolling and was the second place it juddered. Three cards, stacked on a
+     phone and three-up from 750px, is the same content with nothing to fight. */
+  .gh-hs-pin{padding:var(--sp-6) 0}  .gh-hs-track{display:grid;gap:var(--sp-5);padding-inline:var(--gutter);
+    max-width:var(--container);margin-inline:auto}
+  @media(min-width:750px){.gh-hs-track{grid-template-columns:repeat(3,1fr);align-items:start}}
+  .gh-hs-intro{grid-column:1 / -1;text-align:center;margin-bottom:var(--sp-3)}
+  .gh-hs-title{font-size:var(--fs-display);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    margin:0;color:var(--c-ink);text-wrap:balance}
+  .gh-hs-title em{font-style:normal;color:var(--c-accent)}
+  .gh-hs-hint{margin:var(--sp-5) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--c-ink-3)}
+  /* One card is now the product card as well: the Chum stands beside the shot,
+     then name, price, per-day and Add to bag. "Meet the three" said the same
+     thing a second time, so it is gone and this ride sits in its place.
+
+     The shot is the product's featured image the moment one is uploaded in
+     Shopify; until then it is the gummy cluster the old grid used. The media
+     box has a fixed, clamped height so the Chum's height is definite and it can
+     never be cropped — on an iPhone SE2 the whole card is ~470px of a 561px
+     pinned area. */
+  .gh-hs-card{position:relative;box-sizing:border-box;background:var(--hs-soft);
+    border-radius:var(--r-lg);padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-3)}
+  .gh-hs-badge{align-self:flex-start;background:var(--c-surface);color:var(--hs-ink,var(--hs-tone));font-size:var(--fs-xs);
+    font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
+    padding:var(--sp-2) var(--sp-3);border-radius:var(--r-full);box-shadow:var(--sh-1)}
+  .gh-hs-media{display:flex;align-items:flex-end;height:clamp(190px,34svh,340px);box-sizing:border-box;
+    background:var(--c-surface);border-radius:var(--r-md);padding:0 var(--sp-3)}
+  .gh-hs-shot{flex:1 1 auto;min-width:0;align-self:stretch;position:relative;display:flex;
+    align-items:center;justify-content:center}
+  .gh-hs-photo{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+  .gh-hs-shot .gh-cluster{position:absolute;inset:0}
+  /* overlaps the shot a little, as if presenting it; never leaves the card */
+  .gh-hs-fig{flex:0 0 auto;display:block;height:94%;width:auto;position:relative;z-index:0;
+    margin-left:calc(var(--sp-5) * -1);-webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+  .gh-hs-name{font-size:var(--fs-xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    margin:var(--sp-1) 0 0;color:var(--c-ink);text-wrap:balance}
+  .gh-hs-name a{color:inherit;text-decoration:none}
+  /* one stretched link per card: the whole card is clickable, but there is still
+     exactly one focusable element and no nested anchors */
+  .gh-hs-name a::after{content:"";position:absolute;inset:0;z-index:2;border-radius:var(--r-lg)}
+  .gh-hs-meta{font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3);margin:0;letter-spacing:var(--ls-normal)}
+  .gh-hs-cta{flex:0 0 auto;background:var(--hs-ink,var(--hs-tone));color:var(--c-surface);font-size:var(--fs-sm);
+    font-weight:var(--fw-black);padding:var(--sp-3) var(--sp-5);border-radius:var(--r-full);
+    white-space:nowrap;transition:filter var(--dur-2) var(--ease)}
+  .gh-hs-card:hover .gh-hs-cta{filter:brightness(1.08)}
+  .gh-hs-cta--out{background:var(--c-ink-3)}
+  @media (prefers-reduced-motion:reduce){.gh-hs-cta{transition:none}}
+  .gh-hs-line{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-2);margin:0;line-height:var(--lh-snug)}
+  .gh-hs-buy{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);margin-top:auto}
+  .gh-hs-card .gh-price{color:var(--c-ink)}
+
+  /* ---------- ACT 4 — FAQ ---------- */
+  .gh-faq{max-width:760px;margin:0 auto}
+  .gh-q{background:var(--c-surface);border-radius:var(--r-md);margin-bottom:var(--sp-3);overflow:hidden;box-shadow:var(--sh-2)}
+  .gh-q summary{cursor:pointer;list-style:none;padding:var(--sp-4) var(--sp-5);font-weight:var(--fw-black);font-size:var(--fs-base);
+    display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3)}
+  .gh-q summary::-webkit-details-marker{display:none}
+  .gh-q summary::after{content:"+";font-size:var(--fs-xl);color:var(--c-accent);transition:transform var(--dur-3) var(--ease);line-height:1}
+  .gh-q[open] summary::after{transform:rotate(45deg)}
+  .gh-q p{margin:0;padding:0 var(--sp-5) var(--sp-5);font-weight:var(--fw-body);font-size:var(--fs-base);color:var(--c-ink-2);line-height:var(--lh-body)}
+  .gh-q p a{color:var(--c-accent);font-weight:var(--fw-black);text-decoration:underline;text-underline-offset:2px}
+
+  /* ---------- ACT 5 — closing CTA ---------- */
+  .gh-end{text-align:center;padding:clamp(var(--sp-8),8vw,var(--sp-10)) var(--sp-5)}
+  .gh-end h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0 auto;max-width:16ch}
+  .gh-end h2 em{font-style:normal;color:var(--c-accent)}
+  .gh-end p{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-4) auto var(--sp-6);max-width:36ch}
+
+  /* ---------- phone: room to breathe ----------
+     Deliberately last in this stylesheet. These override base rules declared
+     above, and at equal specificity the later rule wins — anywhere earlier and
+     they silently do nothing.
+
+     An earlier pass shrank padding and squeezed the product images to make the
+     page shorter. Wrong lever: a shorter page made of tighter boxes is a worse
+     page. Height comes off by removing things instead — the hero loses its
+     chip and its secondary link, the certifications became a badge row — and
+     what's left gets MORE space, not less. */
+  @media(max-width:749px){.gh-sec{padding:var(--sp-8) 0}}
+  @media(max-width:749px){.gh-head{margin-bottom:var(--sp-7)}}
+  @media(max-width:749px){.gh-q summary{padding:var(--sp-5)}}
+
+  /* One clear action in the hero. The chip repeated the marquee above it and
+     the second link competed with the button for the same glance — the whole
+     complaint was not knowing where to go. */
+  @media(max-width:749px){.gh-eyebrow{display:none}}
+  @media(max-width:749px){.gh-mid .gh-cta2{display:none}}
+  /* Copy to the top of the fold, figures along the bottom — two bands instead
+     of one crowded middle. Centring the copy put it right where the Chums stand,
+     which is why the clearance kept coming out at 5-13px and why every fix so
+     far has been a choice between smaller words and smaller characters. Stacked
+     this way the copy (~330px) and the figures (~257px) both fit the ~650px of
+     hero that's visible before you scroll, with real air between them, and the
+     Chums can come back IN from the edges instead of being pushed off. */
+  @media(max-width:749px){.gh-pin{align-content:start;padding-top:7vh;padding-bottom:0}}
+  /* On a phone the sizes stop being the issue and the BLOCKS become it: the
+     wordmark is ~92px tall while three lines of 38px headline is ~118px, so the
+     headline out-weighed the logo even though its letters were smaller. The
+     logo grows, the headline drops another step to --fs-2xl and falls to two
+     lines, and the logo is comfortably the largest thing again. */
+  @media(max-width:749px){.gh-logo{width:min(360px,76vw)}}
+  @media(max-width:749px){.gh-mid .gh-tag{font-size:var(--fs-2xl)}}
+
+  @media (prefers-reduced-motion:reduce){
+    .gh-stage{height:auto}.gh-pin{position:relative;height:auto;padding:70px 0}
+    .gh-pin .gh-gummy{display:none}.gh-mid{opacity:1!important}.gh-reveal{display:none}
+    .gh-chum{animation:none;opacity:1}
+    .gh-g{animation:none}
+  }

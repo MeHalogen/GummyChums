@@ -129,7 +129,7 @@ test('every gc snippet documents its parameters', () => {
 /* Sections proven to live on the component layer. Adding a name here is a
    promise that the section carries no CSS of its own. Unmigrated sections are
    deliberately absent rather than failing — they predate the rule. */
-const MIGRATED = ['gc-product.liquid'];
+const MIGRATED = ['gc-product.liquid', 'gc-home.liquid'];
 
 test('migrated sections carry no CSS of their own', () => {
   for (const f of MIGRATED) {

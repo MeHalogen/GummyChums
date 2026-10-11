@@ -21,7 +21,18 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-const src = readFileSync(new URL('../shopify-theme/sections/gc-home.liquid', import.meta.url), 'utf8');
+/* The section AND any stylesheet it links. When gc-home's CSS moved to
+   assets/section-gc-home.css, reading only the .liquid left a hole: scroll
+   coupling could return in the stylesheet and this lock would not see it. */
+const SECTION = new URL('../shopify-theme/sections/gc-home.liquid', import.meta.url);
+const src = (() => {
+  let out = readFileSync(SECTION, 'utf8');
+  for (const m of out.matchAll(/'([a-z0-9-]+\.css)'\s*\|\s*asset_url/g)) {
+    const asset = new URL(`../shopify-theme/assets/${m[1]}`, import.meta.url);
+    try { out += '\n' + readFileSync(asset, 'utf8'); } catch { /* not present yet */ }
+  }
+  return out;
+})();
 
 const BANNED = [
   ['no scroll-driven timelines', 'animation-timeline'],

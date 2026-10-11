@@ -11,6 +11,14 @@
  */
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { execFileSync } from 'node:child_process';
+
+/* Safari paints a blank window when it is not frontmost, and a blank capture
+   reads as a visual regression. Bring it forward before every shot rather than
+   relying on whoever is running this to remember. */
+const front = () => {
+  try { execFileSync('osascript', ['-e', 'tell application "Safari" to activate']); } catch {}
+};
 
 const DRIVER = 'http://127.0.0.1:4712';
 const SITE = 'http://127.0.0.1:9292';
@@ -65,7 +73,18 @@ async function capture(label) {
            the background drift put every capture on a different frame, and the
            harness reports a difference for an unchanged site — which it did,
            and which a control capture caught. */
-        await api('POST', `/session/${id}/execute/sync`, { script: FREEZE, args: [] });
+        front();
+        await new Promise((r) => setTimeout(r, 600));
+        const frozen = await api('POST', `/session/${id}/execute/sync`, { script: FREEZE, args: [] });
+        /* Did the page actually load? A blank Safari window screenshots happily
+           and then reads as a visual regression, sending you after a bug that is
+           not there. It happened; hence this. */
+        if (typeof frozen.value !== 'number' || frozen.value < 1) {
+          console.error(`  ABORT: ${pname} at ${wname} rendered no images — the page did not load.`);
+          console.error('  Check the dev server, and quit Safari if it is wedged.');
+          await api('DELETE', `/session/${id}`);
+          process.exit(2);
+        }
         await new Promise((r) => setTimeout(r, 1200));
         const shot = await api('GET', `/session/${id}/screenshot`);
         writeFileSync(join(dir, `${pname}-${wname}.png`), Buffer.from(shot.value, 'base64'));
