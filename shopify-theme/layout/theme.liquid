@@ -382,6 +382,12 @@
     {%- comment -%} grain tile lives as an asset; CSS can't resolve asset_url itself {%- endcomment -%}
     <style>:root{--gc-grain:url("{{ 'gc2-grain.svg' | asset_url }}")}</style>
     {{ 'gc-brand.css' | asset_url | stylesheet_tag }}
+    {%- comment -%}
+      After gc-brand deliberately: during the migration a component may need to
+      win against a legacy brand rule of equal specificity, and source order is
+      what decides that.
+    {%- endcomment -%}
+    {{ 'gc-components.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'gc-brand.js' | asset_url }}" defer></script>
   </head>
 

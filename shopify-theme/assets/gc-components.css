@@ -1,0 +1,56 @@
+/* ── COMPONENTS ───────────────────────────────────────────────────────────
+   Shared, named, section-agnostic. Values come from --role-* only; see the
+   role block in gc-tokens.css for why.
+
+   Every class here replaces a rule that was duplicated across sections under a
+   private prefix — .gcc-kick, .gcq-kick, .gcr-kick and three more were all this
+   file's .gc-eyebrow. Adding a component here is cheap. Re-implementing one
+   inside a section is what this layer exists to stop, and a test fails any
+   migrated section that tries.
+
+   Enforced by tests/architecture.test.mjs. */
+
+/* A page section's vertical rhythm. --gc-band-tone paints it; left unset it
+   inherits the page ground, which is the common case. Children read
+   --gc-band-ink so text inside a toned band flips without knowing the tone. */
+.gc-band{
+  padding-block: clamp(var(--sp-7), 6vw, var(--sp-8));
+  background: var(--gc-band-tone, transparent);
+  color: var(--gc-band-ink, var(--role-page-ink));
+}
+.gc-band--tone{
+  --gc-band-tone: var(--role-band-tone);
+  --gc-band-ink:  var(--role-band-ink);
+}
+.gc-band--flush{ padding-block: 0; }
+
+/* The small uppercase line above a heading. Six sections had their own. */
+.gc-eyebrow{
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--gc-band-ink, var(--role-eyebrow-ink));
+  margin: 0 0 var(--sp-2);
+}
+
+/* Heading cluster: eyebrow + title + sub. */
+.gc-head{ text-align: center; margin-bottom: clamp(var(--sp-5), 4vw, var(--sp-7)); }
+.gc-head--start{ text-align: start; }
+.gc-head__title{
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+  margin: 0;
+  text-wrap: balance;
+}
+.gc-head__sub{
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-body);
+  color: var(--gc-band-ink, var(--role-ink-muted));
+  margin: var(--sp-3) auto 0;
+  max-width: 40ch;
+  text-wrap: balance;
+}

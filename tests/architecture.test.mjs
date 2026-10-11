@@ -55,3 +55,31 @@ test('no role points at another role (one hop only)', () => {
     assert.ok(!/var\(--role-/.test(m[1]), `--role-${r} points at another role; keep it one hop`);
   }
 });
+
+const COMPONENTS = join(THEME, 'assets', 'gc-components.css');
+
+test('component stylesheet exists', () => {
+  assert.doesNotThrow(() => read(COMPONENTS), 'gc-components.css must exist');
+});
+
+test('components reference roles, never primitives', () => {
+  const css = read(COMPONENTS).replace(/\/\*[\s\S]*?\*\//g, '');
+  const offenders = [...css.matchAll(/var\(--c-[a-z0-9-]+/g)].map((m) => m[0]);
+  assert.deepEqual(
+    [...new Set(offenders)], [],
+    'components must use var(--role-*). A component naming a brand colour is ' +
+    'exactly what makes a re-skin expensive.'
+  );
+});
+
+test('component stylesheet is loaded by the layout', () => {
+  const layout = read(join(THEME, 'layout', 'theme.liquid'));
+  assert.match(layout, /gc-components\.css/, 'theme.liquid must load gc-components.css');
+});
+
+test('page furniture components are defined', () => {
+  const css = read(COMPONENTS);
+  for (const sel of ['.gc-band', '.gc-eyebrow', '.gc-head']) {
+    assert.ok(css.includes(sel), `missing ${sel}`);
+  }
+});
