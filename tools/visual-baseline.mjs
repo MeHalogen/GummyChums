@@ -54,6 +54,7 @@ const api = async (method, path, body) => {
 async function capture(label) {
   const dir = join('.visual', label);
   mkdirSync(dir, { recursive: true });
+  const sizes = {};
   const session = await api('POST', '/session', {
     capabilities: { alwaysMatch: { browserName: 'safari' } },
   });
@@ -86,17 +87,46 @@ async function capture(label) {
           process.exit(2);
         }
         await new Promise((r) => setTimeout(r, 1200));
+        const real = await api('POST', `/session/${id}/execute/sync`,
+          { script: 'return innerWidth + "x" + innerHeight;', args: [] });
+        sizes[`${pname}-${wname}`] = real.value;
         const shot = await api('GET', `/session/${id}/screenshot`);
         writeFileSync(join(dir, `${pname}-${wname}.png`), Buffer.from(shot.value, 'base64'));
         console.log(`  captured ${pname}-${wname}`);
       }
     }
+    /* Safari clamps the window to its own minimum, and that minimum is not the
+       same across restarts — one session gave 573x1130 for the same 430x900
+       request that another answered with 430x848. Captures taken at different
+       widths are different renders, so comparing them reports a regression that
+       is not there. Recording the real size is what lets compare() refuse. */
+    writeFileSync(join(dir, 'viewport.json'), JSON.stringify(sizes, null, 2));
   } finally {
     await api('DELETE', `/session/${id}`);
   }
 }
 
 function compare(a, b) {
+  const va = join('.visual', a, 'viewport.json');
+  const vb = join('.visual', b, 'viewport.json');
+  if (!existsSync(va) || !existsSync(vb)) {
+    console.log('  WARNING: one of these captures predates viewport recording, so there is');
+    console.log('  no way to tell whether both were taken at the same window size. Safari');
+    console.log('  clamps to a minimum that varies between restarts, and a width change');
+    console.log('  looks exactly like a regression. Recapture both before trusting a result.\n');
+  }
+  if (existsSync(va) && existsSync(vb)) {
+    const sa = JSON.parse(readFileSync(va, 'utf8'));
+    const sb = JSON.parse(readFileSync(vb, 'utf8'));
+    const bad = Object.keys(sa).filter((k) => sb[k] && sa[k] !== sb[k]);
+    if (bad.length) {
+      console.log('  REFUSING to compare — these were captured at different viewport sizes:');
+      for (const k of bad) console.log(`    ${k}: ${a}=${sa[k]}  ${b}=${sb[k]}`);
+      console.log('\n  Safari clamps the window to a minimum that varies between restarts,');
+      console.log('  so these are different renders. Recapture both in one session.');
+      process.exit(3);
+    }
+  }
   let differed = false;
   for (const [, , wname] of WIDTHS) {
     for (const [pname] of PAGES) {

@@ -142,7 +142,11 @@
      the whole point: the teeth are page-colour and the gaps are the hero's own
      pink, so neither half has a colour to match and there is no seam. Pulled up
      by its exact height, and above the stage in the stacking order. */
-  .gh-edge{line-height:0;position:relative;z-index:2;margin-top:-128px;pointer-events:none}
+  /* Above the pink band, not below it. The teeth are page-coloured and are meant
+     to bite UP into the pink — at z-index 2 against the band's 3 the band simply
+     painted over them. They only showed before because the band was too short to
+     reach them, which was itself the padding bug. */
+  .gh-edge{line-height:0;position:relative;z-index:4;margin-top:-128px;pointer-events:none}
 
   /* ---------- ACT 2 — flavours ---------- */
   /* the dissolve already supplies the top separation */
