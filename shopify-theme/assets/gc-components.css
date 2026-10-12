@@ -165,8 +165,19 @@
 /* Halftone — the printed-newsprint ground the direction calls for. A dot grid,
    not an image: it costs one gradient and scales to any size. Deliberately very
    low contrast; it should register as texture, never as pattern. */
-.gc-halftone{
-  background-image: radial-gradient(var(--role-page-ink) 1.2px, transparent 1.3px);
+/* Printed-dot texture for a band, the newsprint/riso look a sticker-shop poster
+   has. Put it on the band itself — it paints its own layer rather than fading the
+   band's contents, which is what an `opacity` on the element would have done.
+
+   The dots are currentColor, so a cream band gets ink dots and the pink band gets
+   cream ones without a second class. inset:0 + border-radius:inherit keeps the
+   texture inside a band with a shaped top like .gh-reveal's dome; isolation keeps
+   the negative z-index from sliding behind the band's own background. */
+.gc-halftone{ position: relative; isolation: isolate; }
+.gc-halftone::before{
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit; pointer-events: none;
+  background-image: radial-gradient(currentColor 1.2px, transparent 1.3px);
   background-size: 14px 14px;
-  opacity: .07;
+  opacity: var(--gc-halftone-strength, .07);
 }
