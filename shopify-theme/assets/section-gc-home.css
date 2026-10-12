@@ -119,15 +119,18 @@
   .gh-scroll{margin-top:var(--sp-4);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);font-size:var(--fs-xs);color:var(--c-ink-3);
     animation:ghBounce 1.7s ease-in-out infinite}
   @keyframes ghBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
-  .gh-reveal{grid-column:1 / -1;grid-row:3;position:relative;
+  /* The pink band. Three declarations here were leftovers from when this was a
+     full-screen overlay inside the pinned hero, and one of them mattered: a
+     second `padding:0 var(--sp-5)` came after the band's own padding and won,
+     so the band had NO vertical padding. That is why the heading sat flush
+     against the dome and the stepped teeth cut across the text — .gh-edge pulls
+     itself up 128px, which the bottom padding here is sized to clear. */
+  .gh-reveal{grid-column:1 / -1;grid-row:3;position:relative;z-index:3;
     margin:calc(var(--gh-chum-h) * -0.14) calc(var(--gutter) * -1) 0;
     padding:calc(var(--sp-7) + 7vw) var(--gutter) calc(var(--sp-7) + 128px);
     background:var(--c-cherry);border-radius:50% 50% 0 0 / 11vw 11vw 0 0;
-    opacity:1;
-    z-index:3;display:grid;place-items:center;text-align:center;padding:0 var(--sp-5);
-    color:var(--c-surface);
-    pointer-events:none;transform:none;
-    pointer-events:none}
+    display:grid;place-items:center;text-align:center;
+    color:var(--c-surface);pointer-events:none}
   /* Dawn's base.css sets an explicit colour on h1-h6, and a direct rule beats
      the colour inherited from .gh-reveal — so headings on dark/coloured
      backgrounds must restate it or they render near-black. */
