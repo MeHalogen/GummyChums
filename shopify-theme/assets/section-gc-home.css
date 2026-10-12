@@ -196,9 +196,9 @@
      pinned area. */
   .gh-hs-card{position:relative;box-sizing:border-box;background:var(--hs-soft);
     border-radius:var(--r-lg);padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-3)}
-  .gh-hs-badge{align-self:flex-start;background:var(--c-surface);color:var(--hs-ink,var(--hs-tone));font-size:var(--fs-xs);
-    font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
-    padding:var(--sp-2) var(--sp-3);border-radius:var(--r-full);box-shadow:var(--sh-1)}
+  /* .gc-sticker owns the look. This keeps only what is specific to the card:
+     where it sits, and the per-flavour ink the card passes down. */
+  .gh-hs-badge{align-self:flex-start;--gc-sticker-ink:var(--hs-ink,var(--hs-tone))}
   .gh-hs-media{display:flex;align-items:flex-end;height:clamp(190px,34svh,340px);box-sizing:border-box;
     background:var(--c-surface);border-radius:var(--r-md);padding:0 var(--sp-3)}
   .gh-hs-shot{flex:1 1 auto;min-width:0;align-self:stretch;position:relative;display:flex;

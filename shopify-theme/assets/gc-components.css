@@ -129,3 +129,44 @@
   font-weight: var(--fw-bold);
   color: var(--role-ink-faint);
 }
+
+/* ── STICKER ──────────────────────────────────────────────────────────────
+   The die-cut, per the Tapri direction in
+   docs/superpowers/specs/2026-08-02-tapri-desi-design.md: a hard ink border,
+   a solid offset shadow rather than a soft one, and a few degrees of rotation
+   so it reads as something stuck on rather than drawn in.
+
+   This is the page's one loud element, deliberately. Everything around it stays
+   quiet — a second shouting component would make both of them noise. It is
+   applied where a label already existed, so it adds character without adding
+   clutter.
+
+   The offset shadow is a hard edge (no blur) because that is what makes a
+   sticker look printed rather than floating. --gc-sticker-tilt lets alternating
+   instances lean opposite ways so a row of them does not look mechanical. */
+.gc-sticker{
+  display: inline-block;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--gc-sticker-ink, var(--role-page-ink));
+  background: var(--gc-sticker-bg, var(--role-surface));
+  border: 2px solid var(--role-page-ink);
+  border-radius: var(--r-full);
+  padding: var(--sp-2) var(--sp-4);
+  box-shadow: 3px 3px 0 var(--role-page-ink);
+  rotate: var(--gc-sticker-tilt, -2deg);
+  transform-origin: center;
+}
+.gc-sticker--right{ --gc-sticker-tilt: 2deg; }
+.gc-sticker--flat { --gc-sticker-tilt: 0deg; }
+
+/* Halftone — the printed-newsprint ground the direction calls for. A dot grid,
+   not an image: it costs one gradient and scales to any size. Deliberately very
+   low contrast; it should register as texture, never as pattern. */
+.gc-halftone{
+  background-image: radial-gradient(var(--role-page-ink) 1.2px, transparent 1.3px);
+  background-size: 14px 14px;
+  opacity: .07;
+}
