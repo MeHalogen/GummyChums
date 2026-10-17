@@ -44,9 +44,14 @@ for (const route of ROUTES) {
       const broken = [];
       page.on('console', (m) => {
         if (m.type() !== 'error') return;
-        if (ignorable(m.text())) return;
-        if (fromThirdParty(m.location()?.url)) return;   // not ours to fix
-        errors.push(`${m.text()}  @${m.location()?.url ?? 'inline'}`);
+        const where = m.location()?.url ?? '';
+        /* The URL must be filtered too, not just the text. A failed subresource
+           reports as "Failed to load resource: ... 400 ..." with the endpoint
+           only in location() — so matching on text alone let every one of these
+           through and failed every tablet page. */
+        if (ignorable(m.text()) || ignorable(where)) return;
+        if (fromThirdParty(where)) return;               // not ours to fix
+        errors.push(`${m.text()}  @${where || 'inline'}`);
       });
       page.on('pageerror', (e) => { if (!ignorable(String(e))) errors.push(`pageerror: ${e}`); });
       page.on('response', (r) => {
@@ -82,3 +87,16 @@ for (const route of ROUTES) {
     });
   });
 }
+
+/* The brand font ships to every visitor on every page. It was a 163 KB TTF; the
+   WOFF2 is 53 KB for byte-identical glyph coverage. This asserts the small one
+   is what the page actually asks for, because a stray edit to the @font-face
+   would silently cost 110 KB on every load and nothing else would notice. */
+test('the page requests the small font, not the large one', async ({ page }) => {
+  const fonts = [];
+  page.on('request', (r) => { if (/Manrope-Variable/.test(r.url())) fonts.push(r.url()); });
+  await page.goto('/', { waitUntil: 'load' });
+  await page.waitForTimeout(1200);
+  expect(fonts.some((u) => u.endsWith('.ttf')),
+    `the 163 KB TTF was requested: ${fonts.join(', ')}`).toBe(false);
+});
