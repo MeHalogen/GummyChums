@@ -188,13 +188,29 @@ body .gc-flash{display:block;position:fixed;inset:0;pointer-events:none;z-index:
    measured in the viewBox's own units, and any value at or above the true
    length gives a clean full-sweep draw. */
 .gc2-kolam{display:block;overflow:visible}
-.gc2-kolam-dots{opacity:0;transition:opacity .45s var(--gc-ease)}
+/* The delays are variables so several kolams can be staggered from the markup —
+   the hero draws three left to right, so it reads as one hand crossing a doorway
+   rather than three ornaments appearing at once. The fallbacks are exactly the
+   values that were hard-coded here, so gc2-story-teaser, which sets neither,
+   animates as it always has. */
+.gc2-kolam-dots{opacity:0;transition:opacity .45s var(--gc-ease) var(--k-dot-delay,0s)}
 .gc2-kolam-line{stroke-dasharray:900;stroke-dashoffset:900;
-  transition:stroke-dashoffset 2.1s cubic-bezier(.5,0,.2,1) .38s}
+  transition:stroke-dashoffset 2.1s cubic-bezier(.5,0,.2,1) var(--k-delay,.38s)}
 .in .gc2-kolam-dots{opacity:.55}
 .in .gc2-kolam-line{stroke-dashoffset:0}
 @media (prefers-reduced-motion:reduce){
   .gc2-kolam-dots,.gc2-kolam-line{transition:none}
+  .gc2-kolam-dots{opacity:.55}
+  .gc2-kolam-line{stroke-dashoffset:0}
+}
+
+/* The draw waits for gc-brand.js to add .in. Without the script the dots sit at
+   opacity 0 and the line stays fully dashed — which on the homepage means the
+   hero's centrepiece renders as an empty pink band, not a quieter version of
+   itself. Scripting can be off for duller reasons than a user disabling it: a
+   blocked CDN, an error thrown earlier in the bundle, a connection that gave up.
+   Draw it anyway; the animation is the garnish, the kolam is the point. */
+@media (scripting: none){
   .gc2-kolam-dots{opacity:.55}
   .gc2-kolam-line{stroke-dashoffset:0}
 }
