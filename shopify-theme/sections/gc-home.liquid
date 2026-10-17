@@ -30,9 +30,17 @@
     <div class="gh-pin" id="gh-pin" data-idle-pause>
 
       {%- comment -%} the Chums, flanking the wordmark — brand book v2 {%- endcomment -%}
+      {%- comment -%}
+        ALL THREE Chums, one per SKU. For a long time this showed only two while
+        the section directly below announced "three chums" — the page argued with
+        itself, and the sleep Chum was simply missing from her own brand's hero.
+      {%- endcomment -%}
       <div class="gh-feet" aria-hidden="true">
       <div class="gh-chum gh-chum--l" aria-hidden="true">
         <img src="{{ 'gc2-chum-brain.svg' | asset_url }}" alt="" width="340" height="894" fetchpriority="high" decoding="async" draggable="false">
+      </div>
+      <div class="gh-chum gh-chum--c" aria-hidden="true">
+        <img src="{{ 'gc2-chum-sleep.svg' | asset_url }}" alt="" width="407" height="1031" fetchpriority="high" decoding="async" draggable="false">
       </div>
       <div class="gh-chum gh-chum--r" aria-hidden="true">
         <img src="{{ 'gc2-chum-eye.svg' | asset_url }}" alt="" width="371" height="984" fetchpriority="high" decoding="async" draggable="false">
@@ -233,8 +241,8 @@
     { "type": "text", "id": "headline", "label": "Headline (use [ ] to highlight)", "default": "Not another [supplement] brand." },
     { "type": "text", "id": "sub", "label": "Subline", "default": "We’re making healthy habits feel good." },
     { "type": "text", "id": "cta", "label": "CTA label", "default": "Shop the flavours →" },
-    { "type": "text", "id": "reveal_title", "label": "Threshold line", "default": "Come in." },
-    { "type": "text", "id": "reveal_sub", "label": "Threshold sub", "default": "One a day, every day." },
+    { "type": "text", "id": "reveal_title", "label": "Threshold line", "default": "Hey, chum!" },
+    { "type": "text", "id": "reveal_sub", "label": "Threshold sub", "default": "We’re glad you found us." },
     { "type": "header", "content": "Flavours" },
     { "type": "text", "id": "shop_kicker", "label": "Kicker", "default": "Three flavours ✦ one happy habit" },
     { "type": "text", "id": "shop_title", "label": "Title", "default": "Meet the three." },

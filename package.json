@@ -5,5 +5,8 @@
   "scripts": {
     "test": "node --test tests/design-system.test.mjs",
     "lint:theme": "shopify theme check --path shopify-theme"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1"
   }
 }

@@ -191,3 +191,29 @@ test('the actives are listed on the certifications strip', () => {
       'certifications strip is where it was meant to land');
   }
 });
+
+/* ---------- one Chum per SKU ----------
+   The hero shipped with two Chums while the section directly below it announced
+   "three chums · one a day". The brand has three SKUs and three characters; the
+   sleep Chum was missing from her own homepage and nothing caught it. */
+
+test('the hero shows one Chum per product, not two', () => {
+  const liquid = read(SECTION);
+  for (const chum of ['gc2-chum-brain.svg', 'gc2-chum-sleep.svg', 'gc2-chum-eye.svg']) {
+    assert.match(liquid, new RegExp(chum.replace('.', '\\.')),
+      `${chum} is missing from the hero — the page would claim three Chums and show fewer`);
+  }
+});
+
+test('every Chum is sized at every breakpoint', () => {
+  /* The middle Chum was added without an entry in the two media tiers that size
+     her neighbours, so she computed to 159px against their 249px and 236px. A
+     figure a head shorter than the others reads as a bug, not as depth. */
+  for (const tier of ['max-width:1100px', 'max-width:749px']) {
+    for (const chum of ['--l', '--c', '--r']) {
+      const re = new RegExp(`@media\\(${tier.replace(/[-:]/g, '\\$&')}\\)\\{\\.gh-chum${chum}\\{height:`);
+      assert.match(homeSrc, re,
+        `.gh-chum${chum} has no height at ${tier} — it will fall back and stand out of scale`);
+    }
+  }
+});

@@ -51,25 +51,32 @@
   /* Holds the two figures side by side under the copy. It carried a
      scroll-driven offset once, to stop them sinking while the hero was pinned;
      in normal flow there is nothing to correct. */
-  .gh-feet{grid-column:1 / -1;grid-row:2;display:grid;grid-template-columns:1fr 1fr;
+  /* Three columns, one per Chum. This was two for a long time and the third
+     SKU's character simply did not appear on the homepage. */
+  .gh-feet{grid-column:1 / -1;grid-row:2;display:grid;grid-template-columns:repeat(3,1fr);
     align-items:end;z-index:2;pointer-events:none}
   .gh-chum{position:relative;z-index:2;pointer-events:none;line-height:0;
     opacity:1;transform-origin:50% 100%;height:var(--gh-chum-h);
     animation:ghSway ease-in-out infinite alternate}
   .gh-chum img{display:block;width:auto;height:100%;
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
-  .gh-chum--l{grid-column:1;justify-self:end;margin-right:4vw;animation-duration:6.5s}
-  .gh-chum--r{grid-column:2;justify-self:start;margin-left:4vw;animation-duration:8.2s;
+  .gh-chum--l{grid-column:1;justify-self:center;animation-duration:6.5s}
+  /* The middle Chum stands a little taller and sways on her own clock, so the
+     three read as three people at a doorway rather than one sprite repeated. */
+  .gh-chum--c{grid-column:2;justify-self:center;height:calc(var(--gh-chum-h) * 1.06);
+    animation-duration:7.4s;z-index:3}
+  .gh-chum--r{grid-column:3;justify-self:center;animation-duration:8.2s;
     animation-delay:-3s;height:calc(var(--gh-chum-h) * .95)}
   @keyframes ghSway{from{transform:translate3d(0,0,0) rotate(-1.2deg)}to{transform:translate3d(0,-8px,0) rotate(1.2deg)}}
 
   /* Below ~1100px the centre column and the figures start sharing horizontal
      space, so the figures move outward and shrink rather than overlap the copy.
      On phones they bleed roughly half off each edge: enough that you read them
-     as two people standing there, not enough to crowd the headline. */
-  @media(max-width:1100px){.gh-chum--l{height:min(42vh,360px);left:8px}}
-  @media(max-width:1100px){.gh-chum--r{height:min(39vh,340px);right:8px}}
-  /* On a 375px screen the copy column and two standing figures cannot both
+     as three people standing there, not enough to crowd the headline. */
+  @media(max-width:1100px){.gh-chum--l{height:min(42vh,360px)}}
+  @media(max-width:1100px){.gh-chum--c{height:min(43vh,366px)}}
+  @media(max-width:1100px){.gh-chum--r{height:min(39vh,340px)}}
+  /* On a 375px screen the copy column and the standing figures cannot both
      have the width they want. Rather than shrink the Chums to slivers, they go
      BIGGER and bleed further out: about a third of each figure is visible, which
      still reads unmistakably as a person. Where the subline crosses them it
@@ -84,8 +91,12 @@
      the "Shop the flavours" button needs and at 360px wide the figures were
      otherwise sitting under it by 25px a side. The floor keeps them recognisable
      on the shortest phone, the ceiling stops them dominating the tallest. */
-  @media(max-width:749px){.gh-chum--l{height:clamp(150px,min(calc(100svh - 520px),calc((100vw - 200px) * 1.31)),300px);left:6px}}
-  @media(max-width:749px){.gh-chum--r{height:clamp(142px,min(calc(100svh - 536px),calc((100vw - 200px) * 1.24)),284px);right:6px}}
+  @media(max-width:749px){.gh-chum--l{height:clamp(150px,min(calc(100svh - 520px),calc((100vw - 200px) * 1.31)),300px)}}
+  /* Without her own entry here the middle Chum fell back to the base height and
+     computed to 159px against her neighbours' 249px and 236px — a head shorter,
+     which read as a mistake rather than as depth. */
+  @media(max-width:749px){.gh-chum--c{height:clamp(148px,min(calc(100svh - 524px),calc((100vw - 200px) * 1.28)),292px)}}
+  @media(max-width:749px){.gh-chum--r{height:clamp(142px,min(calc(100svh - 536px),calc((100vw - 200px) * 1.24)),284px)}}
   /* the shortest phones have no room for a scroll hint under the button once
      the figures are in; the gradient and the Chums already say there is more */
   @media(max-width:749px) and (max-height:700px){.gh-scroll{display:none}}
