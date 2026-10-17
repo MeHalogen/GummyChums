@@ -20,6 +20,7 @@
 
   /* ---- badges ---- */
   .gcq-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--sp-3);margin:var(--sp-7) auto 0;max-width:760px}
+  .gcq-actives{margin:var(--sp-4) 0 0;text-align:center;font-size:var(--fs-sm);color:var(--role-ink-muted)}
   .gcq-badge{display:inline-flex;align-items:center;gap:var(--sp-2);background:var(--c-bg);
     border-radius:var(--r-full);padding:var(--sp-3) var(--sp-5);font-size:var(--fs-sm);
     font-weight:var(--fw-black);color:var(--c-ink);white-space:nowrap}
@@ -57,7 +58,13 @@
         <span class="gcq-badge">🧪 Every batch lab-tested</span>
         <span class="gcq-badge">🌱 100% vegetarian</span>
         <span class="gcq-badge">🇮🇳 Made in India</span>
+        <span class="gcq-badge">🍬 No added sugar</span>
       </div>
+      {%- comment -%}
+        The actives, displaced from the hero when the dome became the threshold.
+        A list rather than a claim, so it reads as a line and not as a badge.
+      {%- endcomment -%}
+      <p class="gcq-actives">Bacopa · Melatonin · Lutein</p>
       <a class="gcq-more" href="{{ s.more_link }}">{{ s.more_label }} <span>→</span></a>
 
     {%- else -%}
@@ -95,6 +102,11 @@
           <span class="gcq-icon" aria-hidden="true">🇮🇳</span>
           <b>Proudly made in India</b>
           <p>Formulated and manufactured in Greater Noida, Uttar Pradesh — no importing, no middlemen.</p>
+        </div>
+        <div class="gcq-card">
+          <span class="gcq-icon" aria-hidden="true">🍬</span>
+          <b>No added sugar</b>
+          <p>Sweetened without added sugar — the actives are Bacopa, Melatonin and Lutein, one to a gummy.</p>
         </div>
       </div>
       <p class="gcq-note">{{ s.disclaimer }}</p>

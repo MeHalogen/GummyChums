@@ -163,3 +163,30 @@ test('the kolam row narrows before it overflows', () => {
     'shrink all three below legibility (spec §5.2)',
   );
 });
+
+/* ---------- where the displaced copy went ---------- */
+
+const QUALITY = join(THEME, 'sections', 'gc-quality.liquid');
+
+test('the no-sugar claim survives either quality layout', () => {
+  const liquid = read(QUALITY);
+  const [badges, full] = liquid.split(/\{%-?\s*else\s*-?%\}/s);
+  assert.ok(full, 'gc-quality no longer has two layout branches');
+  for (const [name, branch] of [['badges', badges], ['full', full]]) {
+    assert.match(
+      branch, /No added sugar/i,
+      `the no-sugar claim is missing from the ${name} branch. The homepage ` +
+      'saves layout:"badges" while the schema default is "full", so a claim ' +
+      'living in only one branch disappears the moment that setting changes.',
+    );
+  }
+});
+
+test('the actives are listed on the certifications strip', () => {
+  const liquid = read(QUALITY);
+  for (const active of ['Bacopa', 'Melatonin', 'Lutein']) {
+    assert.match(liquid, new RegExp(active),
+      `${active} is missing — it was displaced from the hero and the ` +
+      'certifications strip is where it was meant to land');
+  }
+});
