@@ -166,3 +166,32 @@
   .gp-mini .sh svg{width:74%}
   .gp-mini b{display:block;font-size:var(--fs-base);font-weight:var(--fw-black)}
   .gp-mini span{font-size:var(--fs-sm);font-weight:var(--fw-bold);color:var(--c-ink-2)}
+
+
+/* ---------- the label, on the page ----------
+   Transcribed from the finalised cartons. Reads as a spec sheet rather than as
+   marketing, because that is what it is: someone checking whether they can take
+   this alongside their medication is not browsing. */
+.gp-age{margin:var(--sp-2) 0 0;font-size:var(--fs-xs);font-weight:var(--fw-black);
+  letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--role-ink-faint)}
+
+.gpf{margin-top:var(--sp-5);display:grid;gap:var(--sp-6)}
+.gpf-h{margin:0 0 var(--sp-1);font-size:var(--fs-base);font-weight:var(--fw-black);
+  letter-spacing:var(--ls-tight);color:var(--role-page-ink)}
+.gpf-note{margin:0 0 var(--sp-3);font-size:var(--fs-xs);color:var(--role-ink-faint);
+  text-transform:uppercase;letter-spacing:var(--ls-wide);font-weight:var(--fw-black)}
+.gpf-list,.gpf-plain{list-style:none;margin:0;padding:0}
+.gpf-list li{display:flex;justify-content:space-between;gap:var(--sp-4);
+  padding:var(--sp-2) 0;border-bottom:1px solid var(--role-line)}
+.gpf-list li:last-child{border-bottom:0}
+.gpf-list b{white-space:nowrap;font-variant-numeric:tabular-nums}
+.gpf-table{width:100%;border-collapse:collapse}
+.gpf-table th,.gpf-table td{text-align:left;padding:var(--sp-2) 0;
+  border-bottom:1px solid var(--role-line);font-weight:var(--fw-body)}
+.gpf-table td{text-align:right;font-variant-numeric:tabular-nums;font-weight:var(--fw-bold)}
+.gpf-table tr:last-child th,.gpf-table tr:last-child td{border-bottom:0}
+.gpf-sub{margin:var(--sp-3) 0 0;font-size:var(--fs-sm);color:var(--role-ink-muted);line-height:var(--lh-body)}
+.gpf-plain li{padding:var(--sp-2) 0 var(--sp-2) var(--sp-5);position:relative;
+  font-size:var(--fs-sm);color:var(--role-ink-muted);line-height:var(--lh-body)}
+.gpf-plain li::before{content:'';position:absolute;left:0;top:calc(var(--sp-2) + .55em);
+  width:6px;height:6px;border-radius:var(--r-full);background:var(--role-accent)}

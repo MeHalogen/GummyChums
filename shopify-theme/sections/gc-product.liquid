@@ -44,7 +44,8 @@
         {%- assign per_day = product.selected_or_first_available_variant.price | divided_by: 3000 | round -%}
         <span class="gp-perday">≈ ₹{{ per_day }}/day</span>
       </div>
-      <p class="gp-tax">Inclusive of all taxes · 30 gummies</p>
+      <p class="gp-tax">Inclusive of all taxes · 30 gummies · Net 105 g</p>
+      <p class="gp-age">For adults 18+ · Not for medicinal use</p>
 
       <div class="gp-facts">
         <span class="gp-fact">🌱 100% Veg</span>
@@ -127,8 +128,8 @@
       <div class="gp-acc">
         <details open><summary>What’s inside</summary>
           <div class="body gp-rte">
-            {%- if product.description != blank -%}{{ product.description }}
-            {%- else -%}Full ingredient list coming soon.{%- endif -%}
+            {%- if product.description != blank -%}{{ product.description }}{%- endif -%}
+            {% render 'gc-product-facts', product: product %}
           </div>
         </details>
         <details><summary>How to take it</summary>

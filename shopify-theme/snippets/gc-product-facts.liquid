@@ -1,0 +1,87 @@
+{%- comment -%}
+  The label, on the page.
+
+  Everything here is transcribed from the finalised cartons and the manufacturer's
+  nutrition data — not written for the website. A nutraceutical sold in India has
+  to carry its actives, its full ingredient list, its nutrition panel, its net
+  quantity and its warnings, and until this snippet existed the product pages
+  carried none of them: "What's inside" fell back to "Full ingredient list coming
+  soon."
+
+  The numbers are shared across all three SKUs because the base gummy is the same
+  (1 gummy ≈ 3.5 g, 30 per pack, 105 g net). Only the actives and the flavour
+  differ, so only those are switched per handle.
+
+  If a figure here ever disagrees with a printed carton, the carton wins and this
+  file is wrong — it is a transcription, not a source.
+
+  Parameters
+    product   required  the Shopify product object. {% render %} has isolated
+                        scope, so it must be passed explicitly.
+{%- endcomment -%}
+
+{%- assign h = product.handle -%}
+
+{%- case h -%}
+  {%- when 'brain-booster-gummies' -%}
+    {%- assign flavour = 'Mango' -%}
+    {%- assign actives = 'Bacopa Monnieri Leaf Extract — 60 mg' -%}
+  {%- when 'melatonin-gummies' -%}
+    {%- assign flavour = 'Cherry' -%}
+    {%- assign actives = 'Melatonin — 5 mg|Chamomile Extract — 5 mg|Ashwagandha Extract — 2 mg|Valerian Root Extract — 2 mg|Passion Flower Extract — 2 mg|Lemon Extract — 2 mg|Magnesium — 0.2 mg' -%}
+  {%- when 'eye-care-gummies' -%}
+    {%- assign flavour = 'Orange' -%}
+    {%- assign actives = 'Bilberry Fruit Extract — 100 mg|Vitamin C — 35 mg|Grape Seed Extract — 25 mg|Lutein — 5 mg|Lycopene — 2 mg|Zeaxanthin — 1 mg|Vitamin B6 — 0.9 mg|Vitamin B2 — 0.6 mg|Vitamin B1 — 0.5 mg|Vitamin A — 250 IU|Vitamin E — 5 IU' -%}
+{%- endcase -%}
+
+{%- if actives != blank -%}
+<div class="gpf">
+
+  <div class="gpf-block">
+    <h3 class="gpf-h">What's actually in it</h3>
+    <p class="gpf-note">Per gummy</p>
+    <ul class="gpf-list">
+      {%- assign rows = actives | split: '|' -%}
+      {%- for row in rows -%}
+        {%- assign cells = row | split: '—' -%}
+        <li><span>{{ cells[0] | strip }}</span><b>{{ cells[1] | strip }}</b></li>
+      {%- endfor -%}
+    </ul>
+    <p class="gpf-sub">
+      <b>Other ingredients:</b> Pectin (INS 440), Fructooligosaccharides (FOS),
+      Citric Acid (INS 330), Trisodium Citrate (INS 331(iii)), nature-identical
+      {{ flavour | downcase }} flavour.
+    </p>
+  </div>
+
+  <div class="gpf-block">
+    <h3 class="gpf-h">Nutrition</h3>
+    <p class="gpf-note">Serving size 1 gummy (approx. 3.5 g) · 30 servings per pack</p>
+    <table class="gpf-table">
+      <tbody>
+        <tr><th scope="row">Energy</th><td>13.2 kcal</td></tr>
+        <tr><th scope="row">Total Fat</th><td>0 g</td></tr>
+        <tr><th scope="row">Total Carbohydrate</th><td>3.3 g</td></tr>
+        <tr><th scope="row">Added Sugars</th><td>0 g</td></tr>
+        <tr><th scope="row">Protein</th><td>0 g</td></tr>
+      </tbody>
+    </table>
+    <p class="gpf-sub">Net quantity 105 g. %RDA values per ICMR Guidelines 2020 for a moderately active adult.</p>
+  </div>
+
+  <div class="gpf-block">
+    <h3 class="gpf-h">Before you take it</h3>
+    <ul class="gpf-plain">
+      <li>Take 1 gummy daily, or as directed by a healthcare professional.</li>
+      <li>Do not exceed the recommended usage.</li>
+      <li>Not for medicinal use, and not a substitute for a varied diet.</li>
+      <li>Consult a healthcare professional if you are pregnant, breastfeeding,
+          taking medication or managing a medical condition.</li>
+      <li>Check the ingredient list before use if you have allergies or sensitivities.</li>
+      <li>Store cool and dry, away from sunlight and moisture. Keep tightly closed
+          and out of reach of children.</li>
+    </ul>
+  </div>
+
+</div>
+{%- endif -%}
