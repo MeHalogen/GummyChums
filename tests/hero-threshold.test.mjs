@@ -92,3 +92,74 @@ test('the kolam is drawn even when scripting is off', () => {
   assert.match(block[0], /\.gc2-kolam-dots\{opacity:\.55\}/,
     'the no-scripting branch must leave the dots at their final opacity');
 });
+
+/* ---------- the floor ----------
+   The section plus any stylesheet it links. Reading only the .liquid would miss
+   every one of these, since gc-home's CSS lives in assets/. */
+const SECTION = join(THEME, 'sections', 'gc-home.liquid');
+const homeSrc = (() => {
+  const liquid = read(SECTION);
+  let out = liquid;
+  for (const m of liquid.matchAll(/'([a-z0-9-]+\.css)'\s*\|\s*asset_url/g)) {
+    out += '\n' + read(join(THEME, 'assets', m[1]));
+  }
+  return out;
+})();
+
+test('the dome keeps the floor the Chums stand on', () => {
+  const rule = homeSrc.match(/\.gh-reveal\{[^}]*\}/s);
+  assert.ok(rule, '.gh-reveal rule not found');
+  const r = rule[0];
+  assert.match(
+    r, /calc\(var\(--gh-chum-h\)\s*\*\s*-0\.14\)/,
+    '.gh-reveal must keep its negative top margin. It is not spacing: it tucks ' +
+    'the dome under the Chums\' feet so they stand ON the pink. Without it they ' +
+    'float above a band.',
+  );
+  assert.match(
+    r, /border-radius:50% 50% 0 0/,
+    '.gh-reveal must keep its domed top — the threshold the Chums stand at',
+  );
+  assert.match(
+    r, /padding:[^;]*128px/,
+    '.gh-reveal\'s bottom padding must still clear 128px. .gh-edge pulls itself ' +
+    'up by exactly that, and without the clearance the stepped teeth ride up ' +
+    'across the copy.',
+  );
+});
+
+test('the threshold renders exactly three kolams', () => {
+  const n = [...read(SECTION).matchAll(/render\s+'gc2-kolam'/g)].length;
+  assert.equal(n, 3, `expected 3 kolams in the hero, found ${n} — spec §6 caps it at three`);
+});
+
+test('each kolam carries its own stagger delays', () => {
+  const liquid = read(SECTION);
+  const line = [...liquid.matchAll(/--k-delay:\s*([0-9.]+s)/g)].map((m) => m[1]);
+  const dot = [...liquid.matchAll(/--k-dot-delay:\s*([0-9.]+s)/g)].map((m) => m[1]);
+  assert.deepEqual(line, ['.38s', '.92s', '1.46s'],
+    'the three line delays must stagger left to right so the row reads as one ' +
+    'hand drawing across the doorway');
+  assert.deepEqual(dot, ['0s', '.54s', '1.08s'],
+    'each kolam places its dots before its own line — the order a kolam is ' +
+    'actually made in');
+});
+
+test('threshold copy is omitted when blank, not rendered empty', () => {
+  const liquid = read(SECTION);
+  for (const id of ['reveal_title', 'reveal_sub']) {
+    assert.match(
+      liquid, new RegExp(`s\\.${id}\\s*!=\\s*blank`),
+      `${id} must be guarded with != blank. Priyal clearing it in the theme ` +
+      'editor would otherwise leave an empty element holding its margins open.',
+    );
+  }
+});
+
+test('the kolam row narrows before it overflows', () => {
+  assert.match(
+    homeSrc, /@media\s*\(max-width:\s*380px\)\{[^}]*\.gh-thresh__kolams[^}]*\}/s,
+    'below 380px the row must drop a kolam rather than overflow the gutter or ' +
+    'shrink all three below legibility (spec §5.2)',
+  );
+});

@@ -138,6 +138,21 @@
 
   .gh-reveal p{font-size:var(--fs-xl);font-weight:var(--fw-bold);margin:var(--sp-4) auto 0;max-width:46ch;opacity:.92;text-wrap:balance}
 
+  /* The threshold row. The kolams are sized here rather than by the snippet's
+     width/height attributes — the SVG carries a viewBox, so a CSS width wins and
+     lets them scale with the viewport instead of sitting at a fixed 96px. */
+  .gh-thresh__kolams{display:flex;justify-content:center;align-items:center;
+    gap:var(--sp-6);margin-top:var(--sp-7)}
+  .gh-thresh__kolams .gc2-kolam{width:clamp(64px,20vw,112px);height:auto}
+
+  /* Below 380px three kolams plus their gaps run past the gutter and the page
+     picks up a horizontal scroll. Drop one rather than shrink all three — two
+     still read as a hand crossing the doorway; three tiny ones read as noise. */
+  @media (max-width:380px){
+    .gh-thresh__kolams{gap:var(--sp-5)}
+    .gh-thresh__kolams span:nth-child(3){display:none}
+  }
+
   /* The dissolve sits ON the hero's last 128px rather than below it, which is
      the whole point: the teeth are page-colour and the gaps are the hero's own
      pink, so neither half has a colour to match and there is no seam. Pulled up

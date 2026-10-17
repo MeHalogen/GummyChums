@@ -1,15 +1,22 @@
 {%- comment -%}
   ┌───────────────────────────────────────────────────────────────────────────┐
-  │ LOCKED — the pink gummy scroll sequence. Signed off 11 Sep 2026.          │
+  │ .gh-reveal IS THE FLOOR. It reads as a div with a heading in it. It is    │
+  │ the ground the two Chums stand on.                                        │
   │                                                                           │
-  │ .gh-stage heights, .gh-pin's --zoom-k / --rise-end, .gh-pin .gh-gummy and │
-  │ .gh-reveal's transform and fade are approved as they stand. Do not tune   │
-  │ them while fixing something nearby.                                       │
+  │ Its negative top margin tucks the dome under their feet. Its domed        │
+  │ radius is the threshold they stand at. Its bottom padding clears the      │
+  │ 128px that .gh-edge pulls itself up by, so the stepped teeth bite UP      │
+  │ into the pink instead of riding across the copy.                          │
   │                                                                           │
-  │ tests/locked-hero.test.mjs asserts every one of those values and fails    │
-  │ loudly if any changes — that is the flag, for either of us. Changing one  │
-  │ on purpose means updating that file in the same commit and saying in the  │
-  │ message that the lock was lifted.                                         │
+  │ None of the three is spacing. Change one and the characters float.        │
+  │                                                                           │
+  │ tests/hero-threshold.test.mjs asserts all three and says why on fail.     │
+  │                                                                           │
+  │ This banner used to lock the pink gummy scroll sequence, signed off       │
+  │ 11 Sep 2026. That sequence was removed on 11 Oct 2026 because it          │
+  │ juddered on a phone. --zoom-k, --rise-end and .gh-pin .gh-gummy no        │
+  │ longer exist, and tests/locked-hero.test.mjs is now inverted to           │
+  │ assert it stays gone.                                                     │
   └───────────────────────────────────────────────────────────────────────────┘
 {%- endcomment -%}
 {%- comment -%} GummyChums homepage — coming-soon vibe, pink-forward, scroll fall-in kept {%- endcomment -%}
@@ -44,10 +51,34 @@
         <div class="gh-scroll">SCROLL ↓</div>
       </div>
 
+      {%- comment -%}
+        The threshold. A kolam is the drawing set out at the doorway each morning
+        on a grid of dots, looped in one unbroken line — a daily ritual of welcome,
+        which is the same thing "one a day, every day" is selling.
+
+        Three of them, drawn LEFT TO RIGHT rather than together: each starts about
+        half a second after the one beside it, so the row reads as one hand
+        crossing the doorway rather than three ornaments appearing. The delays are
+        the whole effect; tests/hero-threshold.test.mjs asserts them by value.
+
+        Nothing here is tied to scroll position. .gc-rise fires once on entry.
+      {%- endcomment -%}
+      {%- assign k1 = 'th-1' -%}
+      {%- assign k2 = 'th-2' -%}
+      {%- assign k3 = 'th-3' -%}
       <div class="gh-reveal gc-halftone">
-        <div>
-          <h2>{{ s.reveal_title }}</h2>
-          <p>{{ s.reveal_sub }}</p>
+        <div class="gh-thresh">
+          {%- if s.reveal_title != blank -%}
+            <h2 class="gh-thresh__line">{{ s.reveal_title }}</h2>
+          {%- endif -%}
+          {%- if s.reveal_sub != blank -%}
+            <p class="gh-thresh__sub">{{ s.reveal_sub }}</p>
+          {%- endif -%}
+          <div class="gh-thresh__kolams gc-rise" aria-hidden="true">
+            <span style="--k-dot-delay:0s;--k-delay:.38s">{% render 'gc2-kolam', id: k1, tone: '--c-surface', size: 96 %}</span>
+            <span style="--k-dot-delay:.54s;--k-delay:.92s">{% render 'gc2-kolam', id: k2, tone: '--c-surface', size: 96 %}</span>
+            <span style="--k-dot-delay:1.08s;--k-delay:1.46s">{% render 'gc2-kolam', id: k3, tone: '--c-surface', size: 96 %}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -202,8 +233,8 @@
     { "type": "text", "id": "headline", "label": "Headline (use [ ] to highlight)", "default": "Not another [supplement] brand." },
     { "type": "text", "id": "sub", "label": "Subline", "default": "We’re making healthy habits feel good." },
     { "type": "text", "id": "cta", "label": "CTA label", "default": "Shop the flavours →" },
-    { "type": "text", "id": "reveal_title", "label": "Scroll reveal title", "default": "WHAT’S INSIDE?" },
-    { "type": "text", "id": "reveal_sub", "label": "Scroll reveal sub", "default": "Bacopa · Melatonin · Lutein. No added sugar." },
+    { "type": "text", "id": "reveal_title", "label": "Threshold line", "default": "Come in." },
+    { "type": "text", "id": "reveal_sub", "label": "Threshold sub", "default": "One a day, every day." },
     { "type": "header", "content": "Flavours" },
     { "type": "text", "id": "shop_kicker", "label": "Kicker", "default": "Three flavours ✦ one happy habit" },
     { "type": "text", "id": "shop_title", "label": "Title", "default": "Meet the three." },
