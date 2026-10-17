@@ -158,9 +158,10 @@ test('threshold copy is omitted when blank, not rendered empty', () => {
 
 test('the kolam row narrows before it overflows', () => {
   assert.match(
-    homeSrc, /@media\s*\(max-width:\s*380px\)\{[^}]*\.gh-thresh__kolams[^}]*\}/s,
-    'below 380px the row must drop a kolam rather than overflow the gutter or ' +
-    'shrink all three below legibility (spec §5.2)',
+    homeSrc, /@media\s*\(max-width:\s*348px\)\{[^}]*\.gh-thresh__kolams[^}]*\}/s,
+    'the row must drop its third kolam before it overflows the gutter. 348px is ' +
+    'measured: at 19vw three kolams plus their gaps stop fitting just below ' +
+    'that, which keeps all three on every common phone (360px and up).',
   );
 });
 

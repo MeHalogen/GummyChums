@@ -143,13 +143,17 @@
      lets them scale with the viewport instead of sitting at a fixed 96px. */
   .gh-thresh__kolams{display:flex;justify-content:center;align-items:center;
     gap:var(--sp-6);margin-top:var(--sp-7)}
-  .gh-thresh__kolams .gc2-kolam{width:clamp(64px,20vw,112px);height:auto}
+  .gh-thresh__kolams .gc2-kolam{width:clamp(56px,19vw,112px);height:auto}
 
-  /* Below 380px three kolams plus their gaps run past the gutter and the page
-     picks up a horizontal scroll. Drop one rather than shrink all three — two
-     still read as a hand crossing the doorway; three tiny ones read as noise. */
-  @media (max-width:380px){
-    .gh-thresh__kolams{gap:var(--sp-5)}
+  /* Measured, not guessed. At 20vw three kolams plus two 24px gaps came to
+     exactly the available width at 375px — fitting with zero slack, which is
+     not fitting. 19vw buys ~11px of room there and moves the point where three
+     stop fitting down to ~349px, below every common phone (360/375/390/414/430).
+
+     Under that, drop the third rather than tighten the gaps. Shrinking the
+     spacing to cram three in is the lever we do not use: two kolams still read
+     as a hand crossing the doorway, three squashed ones read as noise. */
+  @media (max-width:348px){
     .gh-thresh__kolams span:nth-child(3){display:none}
   }
 
