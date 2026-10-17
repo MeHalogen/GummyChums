@@ -24,7 +24,7 @@ const read = (p) => readFileSync(p, 'utf8');
 const ROLES = [
   'page-bg', 'page-ink', 'ink-muted', 'ink-faint', 'line',
   'surface', 'surface-ink', 'cta-bg', 'cta-ink',
-  'accent', 'accent-ink', 'band-tone', 'band-ink', 'eyebrow-ink', 'focus',
+  'accent', 'band-tone', 'band-ink', 'eyebrow-ink', 'focus',
 ];
 
 test('every semantic role is defined', () => {
@@ -174,4 +174,22 @@ test('migrated sections keep their CSS in a stylesheet, not in Liquid', () => {
       `${f} should link a stylesheet — that is where its CSS now lives`
     );
   }
+});
+
+/* A role that nothing consumes is not architecture, it is a promise. --role-focus
+   sat declared and unreferenced from the day the role tier landed, which is why
+   no GummyChums component had a focus ring and no keyboard user could see where
+   they were. The general form of that bug is worth catching. */
+test('every declared role is actually consumed by something', () => {
+  const dir = join(THEME, 'assets');
+  const consumers = readdirSync(dir)
+    .filter((f) => f.endsWith('.css') && f !== 'gc-tokens.css')
+    .map((f) => read(join(dir, f)))
+    .join('\n');
+  const unused = ROLES.filter((r) => !consumers.includes(`var(--role-${r})`));
+  assert.deepEqual(
+    unused, [],
+    `these roles are declared in gc-tokens.css and used by no stylesheet: ${unused.join(', ')}. ` +
+    'Either something should be using them, or they should not exist.',
+  );
 });

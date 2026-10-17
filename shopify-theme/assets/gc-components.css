@@ -181,3 +181,64 @@
   background-size: 14px 14px;
   opacity: var(--gc-halftone-strength, .07);
 }
+
+/* ============================================================================
+   INTERACTION
+
+   This layer had none. Not a hover, not a press, not a focus ring — which is
+   both why the brand components felt flat and, more seriously, why a keyboard
+   user could not see where they were. --role-focus had been declared since the
+   roles landed and was referenced by precisely nothing.
+
+   The rules are deliberately small. A card that lifts 2px and a sticker that
+   straightens when you touch it is the difference between a page that responds
+   and a page that doesn't; anything larger starts performing.
+   ============================================================================ */
+
+/* One ring, every brand control, drawn outside the box so it never shifts
+   layout. :focus-visible rather than :focus, so a mouse click does not leave a
+   ring behind but a Tab key always does. */
+.gc-card a:focus-visible,
+.gc-chip:focus-visible,
+.gc-sticker:focus-visible,
+a.gc-sticker:focus-visible,
+.gc-price:focus-visible,
+.gc-band a:focus-visible{
+  outline: 3px solid var(--role-focus);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+/* The card lifts, and its shadow grows with it rather than staying pinned —
+   a shadow that does not move is what makes a lift look like a sticker sliding
+   rather than an object rising. */
+.gc-card{
+  transition: transform .22s var(--gc-ease, ease), box-shadow .22s var(--gc-ease, ease);
+}
+@media (hover: hover){
+  .gc-card:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 10px 0 -4px var(--role-page-ink);
+  }
+}
+.gc-card:active{ transform: translateY(0); }
+
+/* Stickers are the one place a little play is right: they are die-cut stickers,
+   so they straighten when you press them, the way a real one would under a
+   thumb. */
+.gc-sticker{
+  transition: rotate .18s var(--gc-ease, ease), translate .18s var(--gc-ease, ease);
+}
+@media (hover: hover){
+  .gc-sticker:hover{ rotate: 0deg; translate: 0 -1px; }
+}
+.gc-sticker:active{ rotate: 0deg; translate: 0 1px; }
+
+/* Nothing above is load-bearing. Anyone who has asked not to see motion gets
+   the same page without any of it — the focus ring stays, because that is not
+   decoration. */
+@media (prefers-reduced-motion: reduce){
+  .gc-card, .gc-sticker{ transition: none; }
+  .gc-card:hover, .gc-sticker:hover,
+  .gc-card:active, .gc-sticker:active{ transform: none; rotate: var(--gc-sticker-tilt, -2deg); translate: none; }
+}

@@ -1,17 +1,31 @@
 /* ============ GummyChums brand layer — coming-soon vibe, pink-forward ============ */
-@font-face{font-family:'Manrope';src:url('Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
+/* WOFF2 first: the same variable font at 53 KB instead of 163 KB, on every
+   page of every visit. The TTF stays as a fallback for anything that cannot
+   take WOFF2, which in practice is nothing still shipping. */
+@font-face{font-family:'Manrope';src:url('Manrope-Variable.woff2') format('woff2'),url('Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
 html{background:#F8EBDF}
 
 :root{
-  --gc-ink:#000000;
-  --gc-cream:#F8EBDF;          /* warm cream ground — Brand Book v2 */
-  --gc-white:#ffffff;
-  --gc-cherry:#DE1D62;         /* PRIMARY — pink */
+  /* These were a SECOND copy of the palette, written as hexes alongside the
+     --c-* primitives in gc-tokens.css. Seven of the eight were byte-identical
+     duplicates, so "change the brand colour in one file" was never true: this
+     file held its own copy and the primary CTA read from it.
+
+     They are now aliases. gc-tokens.css is the single source. */
+  --gc-ink:var(--c-ink);
+  --gc-cream:var(--c-bg);      /* warm cream ground — Brand Book v2 */
+  --gc-white:var(--c-surface);
+  --gc-cherry:var(--c-cherry); /* PRIMARY — pink */
+  --gc-mango:var(--c-mango);
+  --gc-orange:var(--c-orange);
+  --gc-purple:var(--c-purple); /* NEW in v2 — structural, not decorative */
+
+  /* The two that are NOT aliases, deliberately. --c-cherry-soft is translucent
+     (rgba .12) and composites over whatever sits behind it; this one is the flat
+     opaque tint and aliasing it would change what renders. --gc-cherry-dk has no
+     primitive at all — it is the CTA's hover shade and wants one. */
   --gc-cherry-dk:#b4144d;
   --gc-cherry-soft:#FBE3EC;
-  --gc-mango:#8DAA3D;
-  --gc-orange:#F47421;
-  --gc-purple:#592354;         /* NEW in v2 — structural, not decorative */
   --gc-radius:26px;
   --gc-ease:cubic-bezier(.22,.8,.26,1);
   --gc-spring:cubic-bezier(.34,1.56,.64,1);
@@ -24,7 +38,7 @@ html{background:#F8EBDF}
     radial-gradient(48vw 48vw at 100% 6%, rgba(141,170,61,.22), transparent 60%),
     radial-gradient(54vw 54vw at 96% 100%,rgba(244,116,33,.26), transparent 60%),
     radial-gradient(46vw 46vw at 2% 100%, rgba(89,35,84,.20),   transparent 60%),
-    linear-gradient(180deg,#FBF0E6 0%,#F8EBDF 50%,#FAEEE6 100%)}
+    linear-gradient(180deg,#FBF0E6 0%,var(--role-page-bg) 50%,#FAEEE6 100%)}
 /* Phones repeat the washes above measured against the LONG side, and the desktop
    values are left exactly as they are. In vw these were tuned for a wide screen:
    58vw is 835px on a laptop but 228px on a 393px phone, so four small stains sat
@@ -103,12 +117,19 @@ p,li,a,span,div,button,input,label{font-family:'Manrope',system-ui,sans-serif}
 .page-width{max-width:1180px}
 
 /* ---- buttons: pink, springy ---- */
+/* The primary CTA — the button that takes the money. It read --gc-cherry, a
+   literal #fff and a hard-coded rgba pink shadow, so it bypassed the role tier
+   entirely: a re-skin that repainted every role would have left this button the
+   old colour. It goes through the roles now, and its shadow is derived from the
+   CTA colour rather than typed out beside it. */
 .gc-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
-  background:var(--gc-cherry);color:#fff;font-weight:800;font-size:1rem;text-decoration:none;
+  background:var(--role-cta-bg);color:var(--role-cta-ink);font-weight:800;font-size:1rem;text-decoration:none;
   border:0;cursor:pointer;padding:15px 30px;border-radius:999px;font-family:inherit;
-  box-shadow:0 14px 30px -14px rgba(222,29,97,.7);
+  box-shadow:0 14px 30px -14px color-mix(in srgb, var(--role-cta-bg) 70%, transparent);
   transition:transform .16s var(--gc-spring),background .25s,box-shadow .25s}
-.gc-btn:hover{background:var(--gc-cherry-dk);transform:translateY(-2px);box-shadow:0 18px 36px -14px rgba(222,29,97,.8)}
+.gc-btn:hover{background:var(--gc-cherry-dk);transform:translateY(-2px);
+  box-shadow:0 18px 36px -14px color-mix(in srgb, var(--role-cta-bg) 80%, transparent)}
+.gc-btn:focus-visible{outline:3px solid var(--role-focus);outline-offset:3px}
 .gc-btn:active{transform:scale(.95)}
 .gc-btn--ghost{background:transparent;color:var(--gc-ink);box-shadow:inset 0 0 0 2.5px var(--gc-ink)}
 .gc-btn--ghost:hover{background:var(--gc-ink);color:#fff;box-shadow:inset 0 0 0 2.5px var(--gc-ink)}
