@@ -34,6 +34,15 @@
     {%- assign actives = 'Bilberry Fruit Extract — 100 mg|Vitamin C — 35 mg|Grape Seed Extract — 25 mg|Lutein — 5 mg|Lycopene — 2 mg|Zeaxanthin — 1 mg|Vitamin B6 — 0.9 mg|Vitamin B2 — 0.6 mg|Vitamin B1 — 0.5 mg|Vitamin A — 250 IU|Vitamin E — 5 IU' -%}
 {%- endcase -%}
 
+{%- case h -%}
+  {%- when 'brain-booster-gummies' -%}
+    {%- assign goodtoknow = 'Bacopa Monnieri Leaf Extract|A botanical traditionally used in Ayurveda and studied for its potential role in memory and cognitive function. Evidence varies by extract, dose and duration.|FOS (Fructooligosaccharides)|A type of prebiotic fibre.|Pectin|A plant-derived gelling agent that gives gummies their texture.|Citric Acid &amp; Trisodium Citrate|Help regulate acidity and flavour.|Mango flavour|Adds a fruity, tropical taste.' -%}
+  {%- when 'melatonin-gummies' -%}
+    {%- assign goodtoknow = 'Melatonin|A hormone naturally produced by the body that helps regulate the sleep–wake cycle.|Ashwagandha Extract|Studied for possible effects on stress and sleep; evidence varies.|Chamomile|Traditionally used in calming preparations.|Valerian Root &amp; Passion Flower|Traditionally used in relaxation and sleep-related preparations; evidence is mixed or limited.|Magnesium|An essential mineral involved in normal muscle and nerve function.|Cherry flavour|Adds a sweet, rounded taste.' -%}
+  {%- when 'eye-care-gummies' -%}
+    {%- assign goodtoknow = 'Vitamin A|Contributes to the maintenance of normal vision.|Vitamins C &amp; E|Help protect cells from oxidative stress.|Vitamin B2 (Riboflavin)|Contributes to normal vision and helps protect cells from oxidative stress.|Vitamins B1 &amp; B6|Support normal energy-yielding metabolism and nervous system function.|Lutein &amp; Zeaxanthin|Carotenoids found in the retina, particularly the macula.|Bilberry Fruit Extract|Contains anthocyanins and has been studied for eye-related effects, though evidence for specific benefits is limited.|Grape Seed Extract|Contains polyphenols with antioxidant activity.|Lycopene|A carotenoid with antioxidant activity.|Orange flavour|Adds a bright, citrusy taste.' -%}
+{%- endcase -%}
+
 {%- if actives != blank -%}
 <div class="gpf">
 
@@ -68,6 +77,25 @@
     </table>
     <p class="gpf-sub">Net quantity 105 g. %RDA values per ICMR Guidelines 2020 for a moderately active adult.</p>
   </div>
+
+  {%- if goodtoknow != blank -%}
+  <div class="gpf-block">
+    <h3 class="gpf-h">Good to know</h3>
+    <p class="gpf-note">What each ingredient is</p>
+    <dl class="gpf-dl">
+      {%- assign pairs = goodtoknow | split: '|' -%}
+      {%- for i in (0..19) -%}
+        {%- assign ni = i | times: 2 -%}
+        {%- assign vi = ni | plus: 1 -%}
+        {%- if pairs[ni] != blank -%}
+          <dt>{{ pairs[ni] }}</dt><dd>{{ pairs[vi] }}</dd>
+        {%- endif -%}
+      {%- endfor -%}
+    </dl>
+    <p class="gpf-fine">These are educational notes about the ingredients, not
+      health claims about the product, and not a substitute for medical advice.</p>
+  </div>
+  {%- endif -%}
 
   <div class="gpf-block">
     <h3 class="gpf-h">Before you take it</h3>

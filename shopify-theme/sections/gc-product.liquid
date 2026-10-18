@@ -4,17 +4,26 @@
 {%- if t contains 'melatonin' or t contains 'sleep' -%}
   {%- assign pc_var = '--c-cherry' -%}{%- assign pc_soft_var = '--c-cherry-soft' -%}
   {%- assign pc_deep_var = '--c-cherry' -%}
-  {%- assign chum_img = 'gc2-chum-sleep.svg' -%}{%- assign chum_alt = 'A Chum winding down with an iced coffee' -%}
+  {%- assign chum_img = 'gc3-tara-stand.webp' -%}{%- assign chum_alt = 'Tara, the Sleep Chum, with an iced coffee' -%}
+  {%- assign chum_sit = 'gc3-tara-sit.webp' -%}
+  {%- assign chum_name = 'Tara' -%}{%- assign chum_title = 'Sleep Chum' -%}
+  {%- assign chum_story = 'Inspired by the stars, Tara is your bedtime Chum, here to bring a little calm to your wind-down routine.' -%}
   {%- assign role = 'Sleep' -%}{%- assign flavour = 'Cherry' -%}{%- assign line = 'Sleep tight, Chum.' -%}
 {%- elsif t contains 'eye' -%}
   {%- assign pc_var = '--c-orange' -%}{%- assign pc_soft_var = '--c-orange-soft' -%}
   {%- assign pc_deep_var = '--c-orange-deep' -%}
-  {%- assign chum_img = 'gc2-chum-eye.svg' -%}{%- assign chum_alt = 'A Chum scrolling on their phone' -%}
+  {%- assign chum_img = 'gc3-nain-stand.webp' -%}{%- assign chum_alt = 'Nain, the Eye Care Chum, with his backpack' -%}
+  {%- assign chum_sit = 'gc3-nain-sit.webp' -%}
+  {%- assign chum_name = 'Nain' -%}{%- assign chum_title = 'Eye Care Chum' -%}
+  {%- assign chum_story = 'Nain means ‘eyes’. Nain represents the way we see and experience the world, with a focus on everyday eye health.' -%}
   {%- assign role = 'Eye care' -%}{%- assign flavour = 'Orange' -%}{%- assign line = 'Screen-tired eyes? New bestie.' -%}
 {%- else -%}
   {%- assign pc_var = '--c-mango' -%}{%- assign pc_soft_var = '--c-mango-soft' -%}
   {%- assign pc_deep_var = '--c-mango-deep' -%}
-  {%- assign chum_img = 'gc2-chum-brain.svg' -%}{%- assign chum_alt = 'A Chum reading a Brain Boosting book' -%}
+  {%- assign chum_img = 'gc3-dhi-peace.webp' -%}{%- assign chum_alt = 'Dhi, the Focus Chum, throwing a peace sign' -%}
+  {%- assign chum_sit = 'gc3-dhi-sit.webp' -%}
+  {%- assign chum_name = 'Dhi' -%}{%- assign chum_title = 'Focus Chum' -%}
+  {%- assign chum_story = 'Dhi is associated with intellect and wisdom. Dhi represents curiosity, clear thinking and a love for learning.' -%}
   {%- assign role = 'Focus' -%}{%- assign flavour = 'Mango' -%}{%- assign line = 'Big brain energy, tiny gummy.' -%}
 {%- endif -%}
 
@@ -44,7 +53,7 @@
           <span class="gp-g gp-g3">{% render 'gc-gummy', tone: pc_var, id: gc %}</span>
         </span>
         <img class="gp-fig" src="{{ chum_img | asset_url }}" alt="{{ chum_alt }}"
-             width="371" height="984" decoding="async" draggable="false">
+             width="406" height="760" decoding="async" draggable="false">
       {%- endif -%}
     </div>
 
@@ -140,6 +149,23 @@
         <span class="gp-share-t">Send to a chum</span>
         <a class="gp-share-b" id="gp-wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
         <button type="button" class="gp-share-b" id="gp-copy">Copy link</button>
+      </div>
+
+      {%- comment -%}
+        The characters finally get names and stories on the page that sells them.
+        Each Chum's name carries the product's meaning — Dhi is intellect, Tara is
+        the stars, Nain is eyes — and until now the site showed the drawings and
+        said none of it.
+      {%- endcomment -%}
+      <div class="gp-chum">
+        <img class="gp-chum__fig" src="{{ chum_sit | asset_url }}" alt="{{ chum_name }}, the {{ chum_title }}"
+             width="554" height="760" loading="lazy" decoding="async" draggable="false">
+        <div class="gp-chum__copy">
+          <p class="gp-chum__kick">Meet your Chum</p>
+          <h2 class="gp-chum__name">{{ chum_name }}</h2>
+          <p class="gp-chum__role">{{ chum_title }}</p>
+          <p class="gp-chum__story">{{ chum_story }}</p>
+        </div>
       </div>
 
       <div class="gp-acc">
