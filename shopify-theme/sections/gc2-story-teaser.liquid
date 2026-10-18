@@ -14,7 +14,14 @@
     padding:clamp(var(--sp-7),5vw,var(--sp-8)) var(--gutter)}
   .gcts::before{content:"";position:absolute;inset:0;pointer-events:none;
     background:radial-gradient(46vw 46vw at 12% 0%, var(--c-accent-soft), transparent 62%)}
-  .gcts-in{position:relative;z-index:1;max-width:var(--container);margin-inline:auto;text-align:center}
+  /* EDITORIAL, NOT CENTRED.
+     This was text-align:center at every width below 900px, which is the shape
+     every other section on the site already had. The line it carries —
+     "Wellness became a checklist. We made it a treat." — is the best sentence on
+     the site and it was being set like a caption. It is left-aligned and large
+     now, with the kolam as a small mark beside the kicker rather than a centred
+     ornament floating above it. */
+  .gcts-in{position:relative;z-index:1;max-width:var(--container);margin-inline:auto}
 
   /* One of the Chums stands on the panel's bottom edge, so the stepped border
      below reads as ground rather than as a stray graphic. Desktop only: the
@@ -23,8 +30,8 @@
   .gcts-chum{display:none}
   @media(min-width:900px){
     .gcts{min-height:380px;display:grid;align-items:center}
-    .gcts-in{text-align:left;padding-right:290px}
-    .gcts h2,.gcts-body{margin-inline:0}
+    .gcts-in{padding-right:300px}
+
     .gcts-chum{display:block;position:absolute;right:4%;bottom:0;z-index:1;line-height:0;
       height:330px;pointer-events:none;transform-origin:50% 100%;
       animation:gctsSway 7.5s ease-in-out infinite alternate}
@@ -34,16 +41,17 @@
   @keyframes gctsSway{from{transform:rotate(-1.2deg)}to{transform:translateY(-7px) rotate(1.2deg)}}
 
   /* the kolam sits above the kicker — a threshold mark at the way in */
-  .gcts-kolam{display:flex;justify-content:center;margin:0 0 var(--sp-5)}
-  @media(min-width:900px){.gcts-kolam{justify-content:flex-start}}
+  .gcts-kolam{display:block;margin:0 0 var(--sp-4)}
+  .gcts-kolam .gc2-kolam{width:clamp(44px,7vw,64px);height:auto}
 
   .gcts-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
     font-size:var(--fs-xs);color:var(--c-accent);margin:0}
-  .gcts h2{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
-    line-height:var(--lh-snug);color:var(--role-quiet-ink);margin:var(--sp-4) auto 0;max-width:22ch}
+  .gcts h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-tight);line-height:.98;margin:var(--sp-3) 0 0;max-width:19ch;
+    color:var(--role-quiet-ink);text-wrap:balance}
   .gcts h2 em{font-style:normal;color:var(--c-accent)}
-  .gcts-body{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--role-quiet-ink);
-    opacity:.82;margin:var(--sp-4) auto 0;max-width:48ch;line-height:var(--lh-body)}
+  .gcts-body{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--role-ink-muted);
+    line-height:var(--lh-body);margin:var(--sp-5) 0 0;max-width:46ch}
 
   .gcts-cta{display:inline-flex;align-items:center;gap:var(--sp-2);margin-top:var(--sp-6);
     font-family:inherit;font-weight:var(--fw-black);font-size:var(--fs-base);text-decoration:none;
@@ -68,7 +76,7 @@
     <a class="gcts-cta" href="{{ s.link }}">{{ s.cta }} <span>→</span></a>
   </div>
   <div class="gcts-chum" aria-hidden="true">
-    <img src="{{ 'gc2-chum-sleep.svg' | asset_url }}" alt="" width="407" height="1031" loading="lazy" decoding="async" draggable="false">
+    <img src="{{ 'gc3-tara-sit.webp' | asset_url }}" alt="" width="554" height="760" loading="lazy" decoding="async" draggable="false">
   </div>
 </section>
 

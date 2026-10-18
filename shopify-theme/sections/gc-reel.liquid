@@ -13,10 +13,14 @@
     padding:clamp(var(--sp-8),7vw,var(--sp-9)) var(--gutter)}
   .gcr::before{content:"";position:absolute;inset:0;pointer-events:none;
     background:radial-gradient(46vw 46vw at 88% 8%, var(--c-accent-soft), transparent 62%)}
+/* The video is the thing. It was the NARROW column — 340px against a 1fr of
+     copy — so the only real footage on the site was the smallest element in its
+     own section. The proportions are swapped, and the copy stays left-aligned on
+     a phone instead of centring, which is the shape every other section had. */
   .gcr-in{position:relative;z-index:1;max-width:var(--container);margin-inline:auto;
-    display:grid;grid-template-columns:1fr minmax(0,340px);gap:clamp(var(--sp-6),5vw,var(--sp-8));
+    display:grid;grid-template-columns:minmax(0,0.78fr) minmax(0,1fr);gap:clamp(var(--sp-6),5vw,var(--sp-8));
     align-items:center}
-  @media(max-width:899px){.gcr-in{grid-template-columns:1fr;justify-items:center;text-align:center}}
+  @media(max-width:899px){.gcr-in{grid-template-columns:1fr}}
 
   .gcr-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
     font-size:var(--fs-xs);color:var(--c-accent);margin:0}
@@ -25,8 +29,8 @@
   .gcr-copy h2 em{font-style:normal;color:var(--c-accent)}
   .gcr-copy p{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--role-ink-muted);
     margin:var(--sp-4) 0 0;max-width:38ch;line-height:var(--lh-body)}
-  @media(max-width:899px){.gcr-copy p{margin-inline:auto}}
-  @media(max-width:899px){.gcr-copy h2{margin-inline:auto}}
+
+
   .gcr-cta{margin-top:var(--sp-6);display:flex;gap:var(--sp-3);flex-wrap:wrap}
   @media(max-width:899px){.gcr-cta{justify-content:center}}
 
