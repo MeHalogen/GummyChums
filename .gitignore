@@ -21,3 +21,6 @@ shopify-theme/.shopify/
 /test-results/
 /.playwright/
 /playwright-report/
+
+# Shopify price snapshot (contains no secrets, but is a point-in-time dump)
+/.price-backup.json
