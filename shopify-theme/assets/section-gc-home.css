@@ -185,6 +185,11 @@
   /* Dawn's base.css sets an explicit colour on h1-h6, and a direct rule beats
      the colour inherited from .gh-reveal — so headings on dark/coloured
      backgrounds must restate it or they render near-black. */
+  /* With the greeting off, the dome stays — the Chums are standing on it — but
+     it stops being a full screen of pink and becomes what it structurally is: a
+     colour step between the hero and the products. */
+  .gh-reveal--slim{padding-top:calc(var(--sp-5) + 1.5vw);padding-bottom:128px;min-height:0}
+
   .gh-reveal h2{font-size:var(--fs-4xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0;color:var(--c-surface)}
 
   .gh-reveal p{font-size:var(--fs-xl);font-weight:var(--fw-bold);margin:var(--sp-4) auto 0;max-width:46ch;opacity:.92;text-wrap:balance}

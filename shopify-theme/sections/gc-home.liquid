@@ -71,7 +71,8 @@
         square cells like the stepped teeth just below it, and there is one of
         it instead of three.
       {%- endcomment -%}
-      <div class="gh-reveal gc-halftone">
+      <div class="gh-reveal gc-halftone{% unless s.show_greeting %} gh-reveal--slim{% endunless %}">
+        {%- if s.show_greeting -%}
         <div class="gh-thresh">
           <div class="gh-thresh__mark gc-rise" aria-hidden="true">
             {% render 'gc-pixel-heart', tone: '--c-surface', size: 72 %}
@@ -83,6 +84,7 @@
             <p class="gh-thresh__sub">{{ s.reveal_sub }}</p>
           {%- endif -%}
         </div>
+        {%- endif -%}
       </div>
     </div>
   </header>
@@ -200,6 +202,7 @@
   </section>
 
   <!-- ACT 4 — FAQ -->
+  {%- if s.show_faq -%}
   <section class="gh-sec" id="gc-faq" style="padding-top:0">
     <div class="gc-wrap">
       <div class="gh-head gc-rise">
@@ -215,7 +218,9 @@
       </div>
     </div>
   </section>
+  {%- endif -%}
 
+  {%- if s.show_end -%}
   {%- comment -%}
     ACT 5 — the closing ask.
 
@@ -236,6 +241,7 @@
     </div>
     <div class="gh-end__out" aria-hidden="true">{% render 'gc2-dissolve', id: end_out, tone: '--c-bg' %}</div>
   </section>
+  {%- endif -%}
 </div>
 
 
@@ -254,6 +260,10 @@
     { "type": "text", "id": "shop_kicker", "label": "Kicker", "default": "Three flavours ✦ one happy habit" },
     { "type": "text", "id": "shop_title", "label": "Title", "default": "Meet the three." },
     { "type": "text", "id": "shop_sub", "label": "Sub", "default": "Supplements you’ll actually look forward to." },
+    { "type": "header", "content": "Blocks" },
+    { "type": "checkbox", "id": "show_greeting", "label": "Show the greeting on the pink band", "default": true, "info": "Off keeps the band \u2014 the Chums stand on it \u2014 but makes it a slim colour step instead of a full screen." },
+    { "type": "checkbox", "id": "show_faq", "label": "Show the FAQ here", "default": true, "info": "Off if you place the standalone FAQ section further down." },
+    { "type": "checkbox", "id": "show_end", "label": "Show the closing CTA here", "default": true, "info": "Off if you place the standalone Closing CTA section last." },
     { "type": "header", "content": "Closing" },
     { "type": "text", "id": "end_title", "label": "Title (use [ ] for pink)", "default": "Your daily chums are [waiting]." },
     { "type": "text", "id": "end_sub", "label": "Sub", "default": "Three flavours. One happy habit. Start today." },
