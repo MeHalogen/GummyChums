@@ -361,14 +361,19 @@
   .gh-row--flip .gh-row__stage{order:2}
 
   /* the stage: numeral behind, gummies mid, Chum in front */
+  /* The stages were a 42% whisper over white, which on a cream page read as
+     more cream. They are the three biggest shapes in the section and they are
+     where the product's own colour belongs, so they carry it properly. Full
+     saturation at the top corner falling to the tone's soft tint — colour as a
+     SHAPE inside the layout, not a band stretched behind it. */
   .gh-row__stage{position:relative;aspect-ratio:1/1;border-radius:var(--r-lg);overflow:hidden;
     background:
-      radial-gradient(72% 62% at 20% 16%, color-mix(in srgb, var(--tone) 42%, transparent), transparent 72%),
-      radial-gradient(74% 64% at 84% 86%, color-mix(in srgb, var(--tone) 28%, transparent), transparent 72%),
-      var(--c-surface)}
+      radial-gradient(78% 68% at 18% 14%, var(--tone), transparent 68%),
+      radial-gradient(80% 70% at 86% 88%, color-mix(in srgb, var(--tone) 72%, transparent), transparent 70%),
+      color-mix(in srgb, var(--tone) 22%, var(--c-surface))}
   .gh-row__num{position:absolute;left:4%;top:0;z-index:1;
     font-size:clamp(90px,17vw,210px);font-weight:var(--fw-black);line-height:.86;
-    letter-spacing:-.05em;color:var(--role-page-ink);opacity:.09;user-select:none}
+    letter-spacing:-.05em;color:var(--c-surface);opacity:.34;user-select:none;mix-blend-mode:soft-light}
   .gh-row__gummies{position:absolute;inset:0;z-index:2}
   .gh-row__g{position:absolute;line-height:0}
   .gh-row__g svg{width:100%;height:auto;display:block}

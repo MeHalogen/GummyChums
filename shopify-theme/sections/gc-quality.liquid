@@ -28,11 +28,19 @@
   .gcq-badges{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:var(--sp-3);
     margin:var(--sp-6) 0 0;max-width:840px}
   .gcq-actives{margin:var(--sp-4) 0 0;font-size:var(--fs-sm);color:var(--role-ink-muted)}
+  /* These were white pills on a cream ground — a trust row that read as more
+     cream. They cycle the three product tones so the section carries the brand's
+     colour without a band behind it. The ink stays dark on every one of them:
+     cream on mango is 2.6:1 and fails, which is why the tint is light and the
+     text is not. */
   .gcq-badge{display:inline-flex;align-items:center;gap:var(--sp-2);
     background:var(--c-surface);border:2px solid var(--role-page-ink);
     border-radius:var(--r-full);padding:var(--sp-2) var(--sp-5);
     font-size:var(--fs-sm);font-weight:var(--fw-black);color:var(--role-page-ink);
-    box-shadow:2px 2px 0 var(--role-page-ink)}
+    box-shadow:3px 3px 0 var(--role-page-ink)}
+  .gcq-badge:nth-child(3n+1){background:color-mix(in srgb, var(--c-mango) 34%, var(--c-surface))}
+  .gcq-badge:nth-child(3n+2){background:color-mix(in srgb, var(--c-orange) 30%, var(--c-surface))}
+  .gcq-badge:nth-child(3n+3){background:color-mix(in srgb, var(--c-cherry) 26%, var(--c-surface))}
   .gcq-more{display:inline-flex;align-items:center;gap:var(--sp-2);margin-top:var(--sp-7);
     font-weight:var(--fw-black);font-size:var(--fs-base);color:var(--c-ink);text-decoration:none;
     padding:var(--sp-1) 0;border-bottom:2.5px solid var(--c-ink)}

@@ -23,6 +23,23 @@
      ornament floating above it. */
   .gcts-in{position:relative;z-index:1;max-width:var(--container);margin-inline:auto}
 
+  /* COLOUR AS A SHAPE.
+     The section was cream edge to edge, and so were the three after it — the
+     page had gone from too loud to beige. This is the brand purple as a large
+     rounded panel holding the copy, with Tara standing outside it on the cream.
+     A band stretched across the viewport is what made the page feel like a
+     slideshow of slabs; a panel that starts and stops inside the layout does
+     not. It stops short of the right edge on purpose, so the cream reads as
+     deliberate space rather than as the absence of a decision. */
+  .gcts-in::before{content:'';position:absolute;z-index:-1;
+    inset:calc(var(--sp-6) * -1) 38% calc(var(--sp-6) * -1) calc(var(--gutter) * -1);
+    background:var(--c-purple);border-radius:0 var(--r-lg) var(--r-lg) 0}
+  .gcts-in,.gcts h2,.gcts-body,.gcts-kick{position:relative}
+  .gcts-cta:hover{background:var(--c-purple-ink);color:var(--c-purple)}
+  @media(max-width:899px){
+    .gcts-in::before{inset:calc(var(--sp-5) * -1) calc(var(--gutter) * -1)}
+  }
+
   /* One of the Chums stands on the panel's bottom edge, so the stepped border
      below reads as ground rather than as a stray graphic. Desktop only: the
      homepage is already too tall on a phone, and this is the block that was
@@ -45,17 +62,17 @@
   .gcts-kolam .gc2-kolam{width:clamp(44px,7vw,64px);height:auto}
 
   .gcts-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
-    font-size:var(--fs-xs);color:var(--c-accent);margin:0}
+    font-size:var(--fs-xs);color:var(--gc-cherry-soft);margin:0}
   .gcts h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);
     letter-spacing:var(--ls-tight);line-height:.98;margin:var(--sp-3) 0 0;max-width:19ch;
-    color:var(--role-quiet-ink);text-wrap:balance}
+    color:var(--c-purple-ink);text-wrap:balance}
   .gcts h2 em{font-style:normal;color:var(--c-accent)}
-  .gcts-body{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--role-ink-muted);
+  .gcts-body{font-size:var(--fs-base);font-weight:var(--fw-body);color:color-mix(in srgb, var(--c-purple-ink) 84%, transparent);
     line-height:var(--lh-body);margin:var(--sp-5) 0 0;max-width:46ch}
 
   .gcts-cta{display:inline-flex;align-items:center;gap:var(--sp-2);margin-top:var(--sp-6);
     font-family:inherit;font-weight:var(--fw-black);font-size:var(--fs-base);text-decoration:none;
-    color:var(--role-quiet-ink);padding:var(--sp-3) var(--sp-6);border-radius:var(--r-full);
+    color:var(--c-purple-ink);padding:var(--sp-3) var(--sp-6);border-radius:2px solid var(--c-purple-ink);
     box-shadow:inset 0 0 0 2px var(--role-quiet-ink);
     transition:background var(--dur-2) var(--ease),color var(--dur-2) var(--ease)}
   .gcts-cta:hover{background:var(--role-quiet-ink);color:var(--role-quiet-bg)}
@@ -69,7 +86,7 @@
 <section class="gcts" id="gc-story">
   <div class="gcts-in gc-rise">
     {%- assign kolam_id = 'story' -%}
-    <div class="gcts-kolam">{% render 'gc2-kolam', id: kolam_id, tone: '--c-purple', size: 108 %}</div>
+    <div class="gcts-kolam">{% render 'gc2-kolam', id: kolam_id, tone: '--c-purple-ink', size: 108 %}</div>
     <p class="gcts-kick">{{ s.kicker }}</p>
     <h2>{{ s.headline | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
     <p class="gcts-body">{{ s.body }}</p>
