@@ -8,14 +8,9 @@
   Keeps id="gc-story" so any older anchor links still land somewhere sensible.
 {%- endcomment -%}
 {%- assign s = section.settings -%}
-{%- assign edge_in = 'teaser-in' -%}
-{%- assign edge_out = 'teaser-out' -%}
 <style>
-  .gcts-edge{line-height:0;background:transparent}
-  .gcts-edge--in{margin-bottom:-1px}
-  .gcts-edge--out{margin-top:-1px}
 
-  .gcts{position:relative;overflow:hidden;background:var(--c-purple);color:var(--c-purple-ink);
+  .gcts{position:relative;overflow:hidden;background:var(--role-quiet-bg);color:var(--role-quiet-ink);
     padding:clamp(var(--sp-7),5vw,var(--sp-8)) var(--gutter)}
   .gcts::before{content:"";position:absolute;inset:0;pointer-events:none;
     background:radial-gradient(46vw 46vw at 12% 0%, var(--c-accent-soft), transparent 62%)}
@@ -45,17 +40,17 @@
   .gcts-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
     font-size:var(--fs-xs);color:var(--c-accent);margin:0}
   .gcts h2{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
-    line-height:var(--lh-snug);color:var(--c-purple-ink);margin:var(--sp-4) auto 0;max-width:22ch}
+    line-height:var(--lh-snug);color:var(--role-quiet-ink);margin:var(--sp-4) auto 0;max-width:22ch}
   .gcts h2 em{font-style:normal;color:var(--c-accent)}
-  .gcts-body{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-purple-ink);
+  .gcts-body{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--role-quiet-ink);
     opacity:.82;margin:var(--sp-4) auto 0;max-width:48ch;line-height:var(--lh-body)}
 
   .gcts-cta{display:inline-flex;align-items:center;gap:var(--sp-2);margin-top:var(--sp-6);
     font-family:inherit;font-weight:var(--fw-black);font-size:var(--fs-base);text-decoration:none;
-    color:var(--c-purple-ink);padding:var(--sp-3) var(--sp-6);border-radius:var(--r-full);
-    box-shadow:inset 0 0 0 2px var(--c-purple-ink);
+    color:var(--role-quiet-ink);padding:var(--sp-3) var(--sp-6);border-radius:var(--r-full);
+    box-shadow:inset 0 0 0 2px var(--role-quiet-ink);
     transition:background var(--dur-2) var(--ease),color var(--dur-2) var(--ease)}
-  .gcts-cta:hover{background:var(--c-purple-ink);color:var(--c-purple)}
+  .gcts-cta:hover{background:var(--role-quiet-ink);color:var(--role-quiet-bg)}
   .gcts-cta span{transition:transform var(--dur-2) var(--ease);display:inline-block}
   .gcts-cta:hover span{transform:translateX(4px)}
 
@@ -63,11 +58,10 @@
   @media (prefers-reduced-motion:reduce){.gcts-chum{animation:none}}
 </style>
 
-<div class="gcts-edge gcts-edge--in">{% render 'gc2-edge', id: edge_in, tone: '--c-purple', side: 'bottom' %}</div>
 <section class="gcts" id="gc-story">
   <div class="gcts-in gc-rise">
     {%- assign kolam_id = 'story' -%}
-    <div class="gcts-kolam">{% render 'gc2-kolam', id: kolam_id, tone: '--c-purple-ink', size: 108 %}</div>
+    <div class="gcts-kolam">{% render 'gc2-kolam', id: kolam_id, tone: '--c-purple', size: 108 %}</div>
     <p class="gcts-kick">{{ s.kicker }}</p>
     <h2>{{ s.headline | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
     <p class="gcts-body">{{ s.body }}</p>
@@ -77,7 +71,6 @@
     <img src="{{ 'gc2-chum-sleep.svg' | asset_url }}" alt="" width="407" height="1031" loading="lazy" decoding="async" draggable="false">
   </div>
 </section>
-<div class="gcts-edge gcts-edge--out">{% render 'gc2-edge', id: edge_out, tone: '--c-purple', side: 'top' %}</div>
 
 {% schema %}
 {

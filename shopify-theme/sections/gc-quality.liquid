@@ -12,7 +12,7 @@
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 <style>
-  .gcq{background:var(--c-surface);padding:clamp(var(--sp-8),7vw,var(--sp-9)) var(--gutter)}
+  .gcq{background:var(--role-quiet-bg);padding:clamp(var(--sp-8),7vw,var(--sp-9)) var(--gutter)}
   .gcq-in{max-width:var(--container);margin-inline:auto;text-align:center}
   .gcq-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;font-size:var(--fs-xs);color:var(--c-accent);margin:0}
   .gcq-title{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);color:var(--c-ink);margin:var(--sp-4) auto 0;max-width:26ch}
@@ -35,7 +35,6 @@
   .gcq-card{background:var(--c-bg);border-radius:var(--r-md);padding:var(--sp-6);box-shadow:var(--sh-1);
     transition:transform var(--dur-2) var(--spring),box-shadow var(--dur-2) var(--ease)}
   .gcq-card:hover{transform:translateY(-5px);box-shadow:var(--sh-2)}
-  .gcq-icon{font-size:var(--fs-2xl);line-height:1;display:block;margin-bottom:var(--sp-4)}
   .gcq-card b{display:block;font-size:var(--fs-base);font-weight:var(--fw-black);color:var(--c-ink);margin-bottom:var(--sp-3)}
   .gcq-card p{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-2);line-height:var(--lh-body);margin:0}
   .gcq-card span.gcq-ref{display:block;font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3);margin-top:var(--sp-3)}
@@ -54,11 +53,11 @@
 
     {%- if s.layout == 'badges' -%}
       <div class="gcq-badges gc-rise">
-        <span class="gcq-badge">🛡️ FSSAI licensed</span>
-        <span class="gcq-badge">🧪 Every batch lab-tested</span>
-        <span class="gcq-badge">🌱 100% vegetarian</span>
-        <span class="gcq-badge">🇮🇳 Made in India</span>
-        <span class="gcq-badge">🍬 No added sugar</span>
+        <span class="gcq-badge gc-mark">FSSAI licensed</span>
+        <span class="gcq-badge gc-mark">Every batch lab-tested</span>
+        <span class="gcq-badge gc-mark">100% vegetarian</span>
+        <span class="gcq-badge gc-mark">Made in India</span>
+        <span class="gcq-badge gc-mark">No added sugar</span>
       </div>
       {%- comment -%}
         The actives, displaced from the hero when the dome became the threshold.
@@ -70,42 +69,35 @@
     {%- else -%}
       <p class="gcq-sub">{{ s.sub }}</p>
       <div class="gcq-grid">
-        <div class="gcq-card">
-          <span class="gcq-icon" aria-hidden="true">🛡️</span>
-          <b>FSSAI licensed manufacturing</b>
+        <div class="gcq-card gc-mark">
+                    <b>FSSAI licensed manufacturing</b>
           <p>Made in a facility holding a Central FSSAI license under the Food Safety &amp; Standards Act, 2006.</p>
           <span class="gcq-ref">Mfg. Lic. No. 10017051002083</span>
         </div>
-        <div class="gcq-card">
-          <span class="gcq-icon" aria-hidden="true">✅</span>
-          <b>GMP certified</b>
+        <div class="gcq-card gc-mark">
+                    <b>GMP certified</b>
           <p>Independently audited and certified to Good Manufacturing Practice by Eurofins Assurance India.</p>
           <span class="gcq-ref">Certificate EI_FA_UC_056 · valid to Nov 2028</span>
         </div>
-        <div class="gcq-card">
-          <span class="gcq-icon" aria-hidden="true">📄</span>
-          <b>FSSC 22000 certified</b>
+        <div class="gcq-card gc-mark">
+                    <b>FSSC 22000 certified</b>
           <p>Our manufacturer's food safety management system is certified to FSSC 22000 (ISO 22000:2018 based).</p>
           <span class="gcq-ref">Certificate EI_FA_SC_408 · valid to Nov 2028</span>
         </div>
-        <div class="gcq-card">
-          <span class="gcq-icon" aria-hidden="true">🧪</span>
-          <b>Every batch, lab-tested</b>
+        <div class="gcq-card gc-mark">
+                    <b>Every batch, lab-tested</b>
           <p>Each batch is checked for microbial load, yeast &amp; mould and heavy metals before it ships — every result on file.</p>
         </div>
-        <div class="gcq-card">
-          <span class="gcq-icon" aria-hidden="true">🌱</span>
-          <b>100% vegetarian</b>
+        <div class="gcq-card gc-mark">
+                    <b>100% vegetarian</b>
           <p>Pectin-based gummies — no gelatin, no animal-derived ingredients, ever.</p>
         </div>
-        <div class="gcq-card">
-          <span class="gcq-icon" aria-hidden="true">🇮🇳</span>
-          <b>Proudly made in India</b>
+        <div class="gcq-card gc-mark">
+                    <b>Proudly made in India</b>
           <p>Formulated and manufactured in Greater Noida, Uttar Pradesh — no importing, no middlemen.</p>
         </div>
-        <div class="gcq-card">
-          <span class="gcq-icon" aria-hidden="true">🍬</span>
-          <b>No added sugar</b>
+        <div class="gcq-card gc-mark">
+                    <b>No added sugar</b>
           <p>Sweetened without added sugar — the actives are Bacopa, Melatonin and Lutein, one to a gummy.</p>
         </div>
       </div>

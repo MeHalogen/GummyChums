@@ -242,3 +242,15 @@ a.gc-sticker:focus-visible,
   .gc-card:hover, .gc-sticker:hover,
   .gc-card:active, .gc-sticker:active{ transform: none; rotate: var(--gc-sticker-tilt, -2deg); translate: none; }
 }
+
+
+/* ---------- the pixel mark ----------
+   Replaces ~20 decorative emoji across the theme. Emoji-as-icons is the single
+   clearest tell of generated content, and they were sitting on the trust block,
+   which is where it costs most. Three stepped cells, the same vocabulary as the
+   dissolve teeth and the pixel heart, inheriting currentColor so it works on any
+   ground without a variant. */
+.gc-mark{position:relative;padding-left:20px}
+.gc-mark::before{content:'';position:absolute;left:0;top:50%;
+  width:5px;height:5px;background:currentColor;margin-top:-7px;
+  box-shadow:0 7px 0 0 currentColor, 7px 7px 0 0 currentColor}

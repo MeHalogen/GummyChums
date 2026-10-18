@@ -25,7 +25,7 @@ const ROLES = [
   'page-bg', 'page-ink', 'ink-muted', 'ink-faint', 'line',
   'surface', 'surface-ink', 'cta-bg', 'cta-ink',
   'accent', 'band-tone', 'band-ink', 'eyebrow-ink', 'focus',
-  'panel-tone', 'panel-ink', 'panel-accent',
+  'quiet-bg', 'quiet-ink',
 ];
 
 test('every semantic role is defined', () => {
@@ -182,11 +182,18 @@ test('migrated sections keep their CSS in a stylesheet, not in Liquid', () => {
    no GummyChums component had a focus ring and no keyboard user could see where
    they were. The general form of that bug is worth catching. */
 test('every declared role is actually consumed by something', () => {
-  const dir = join(THEME, 'assets');
-  const consumers = readdirSync(dir)
-    .filter((f) => f.endsWith('.css') && f !== 'gc-tokens.css')
-    .map((f) => read(join(dir, f)))
-    .join('\n');
+  /* Sections that are not yet migrated keep their CSS in an inline <style>
+     block, so scanning assets/ alone made this guard blind to them: a role used
+     only by a section read as dead. Scan both. */
+  const assets = join(THEME, 'assets');
+  const sections = join(THEME, 'sections');
+  const snippets = join(THEME, 'snippets');
+  const consumers = [
+    ...readdirSync(assets).filter((f) => f.endsWith('.css') && f !== 'gc-tokens.css')
+      .map((f) => read(join(assets, f))),
+    ...readdirSync(sections).filter((f) => f.endsWith('.liquid')).map((f) => read(join(sections, f))),
+    ...readdirSync(snippets).filter((f) => f.endsWith('.liquid')).map((f) => read(join(snippets, f))),
+  ].join('\n');
   const unused = ROLES.filter((r) => !consumers.includes(`var(--role-${r})`));
   assert.deepEqual(
     unused, [],

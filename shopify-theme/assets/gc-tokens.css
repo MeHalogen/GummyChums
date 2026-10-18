@@ -129,13 +129,18 @@
   --role-accent:       var(--c-accent);
 
   --role-band-tone:    var(--c-cherry);
-  /* The carton's back panel — a full surface, not an accent. Its accent ink is
-     PURPLE because the house pink measures 2.24:1 on this lime against the 4.5
-     body text needs; purple is 5.57:1, and purple-on-green is what the pack
-     itself does. */
-  --role-panel-tone:   var(--c-lime);
-  --role-panel-ink:    var(--c-ink);
-  --role-panel-accent: var(--c-purple);
+  /* THE CALM GROUND.
+     The page used to cross seven full-bleed colour changes on the way down —
+     pink, lime, cream, purple, black, white, purple — and every band competed
+     with the next, so none of them meant anything. The shape is now two peaks
+     (the hero's arrival, the closing ask) over one long quiet middle, and the
+     colour in that middle comes from the product cards and the characters
+     rather than from the bands behind them.
+
+     Sections that used to paint themselves take this pair, so a panel's ground
+     and its ink can never drift apart. */
+  --role-quiet-bg:     var(--c-bg);
+  --role-quiet-ink:    var(--c-ink);
   --role-band-ink:     var(--c-surface);
 
   --role-eyebrow-ink:  var(--c-ink-3);
