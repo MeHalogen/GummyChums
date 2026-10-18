@@ -5,7 +5,9 @@
       "settings": {
         "eyebrow": "✦ Wellness, but make it fun",
         "headline": "Not another [supplement] brand.",
-        "sub": "We’re making healthy habits feel good."
+        "sub": "We’re making healthy habits feel good.",
+        "show_faq": false,
+        "show_end": false
       }
     },
     "gc_story": {
@@ -103,14 +105,24 @@
     "gc_box": {
       "type": "gc-box",
       "settings": {}
+    },
+    "gc_faq": {
+      "type": "gc-faq",
+      "settings": {}
+    },
+    "gc_cta": {
+      "type": "gc-cta",
+      "settings": {}
     }
   },
   "order": [
     "gc_home",
     "gc_box",
     "gc_story",
+    "gc_quality",
     "gc_reel",
     "gc_reviews",
-    "gc_quality"
+    "gc_faq",
+    "gc_cta"
   ]
 }

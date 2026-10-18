@@ -1,0 +1,49 @@
+{%- comment -%}
+  Lifted out of gc-home so the page ORDER can be set from the template rather
+  than from the markup.
+
+  gc-home held hero, shop, FAQ and the closing ask as one block, so the ask
+  rendered wherever gc-home did — at y=4793 with four sections still below it,
+  including the bundle builder it should lead into. A page that asks for the
+  sale and then keeps talking is why nothing anticipated what came next.
+
+  Shares section-gc-home.css: same bands, different order.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+{{ 'section-gc-home.css' | asset_url | stylesheet_tag }}
+
+<div class="gc-home">
+  {%- comment -%}
+    ACT 5 — the closing ask.
+
+    Every other colour change on this page steps in and out through the pixel
+    teeth. This band had neither, so a vivid rectangle was cut into the cream
+    with two hard horizontal lines and read as a banner pasted on top of the
+    page rather than as part of it. It gets the same treatment as everything
+    else: teeth entering at the top, teeth leaving at the bottom.
+  {%- endcomment -%}
+  {%- assign end_in = 'end-in' -%}
+  {%- assign end_out = 'end-out' -%}
+  <section class="gh-end gc-rise gc-halftone">
+    <div class="gh-end__in" aria-hidden="true">{% render 'gc2-dissolve', id: end_in, tone: '--c-bg' %}</div>
+    <div class="gc-wrap">
+      <p class="gc-kick">✦ One a day, every day</p>
+      <h2>{{ s.end_title | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
+      <p>{{ s.end_sub }}</p>
+      <a class="gc-btn" href="{{ routes.all_products_collection_url }}">{{ s.end_cta }}</a>
+    </div>
+    <div class="gh-end__out" aria-hidden="true">{% render 'gc2-dissolve', id: end_out, tone: '--c-bg' %}</div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "GummyChums Closing CTA",
+  "settings": [
+    { "type": "text", "id": "end_title", "label": "Title (use [ ] for pink)", "default": "Your daily chums are [waiting]." },
+    { "type": "text", "id": "end_sub", "label": "Sub", "default": "Three flavours. One happy habit. Start today." },
+    { "type": "text", "id": "end_cta", "label": "CTA", "default": "Grab all three \u2192" }
+  ],
+  "presets": [{ "name": "GummyChums Closing CTA" }]
+}
+{% endschema %}

@@ -1,0 +1,36 @@
+{%- comment -%}
+  Lifted out of gc-home so the page ORDER can be set from the template instead
+  of from the markup.
+
+  gc-home held hero, shop, FAQ and the closing ask as one block, so the ask
+  rendered wherever gc-home did — which put it at y=4793 with four sections
+  still below it, including the bundle builder it should lead into. A page that
+  asks for the sale and then keeps talking is why nothing anticipated what came
+  next.
+
+  Shares section-gc-home.css: same bands, different order.
+{%- endcomment -%}
+{{ 'section-gc-home.css' | asset_url | stylesheet_tag }}
+
+<div class="gc-home">
+  
+  <section class="gh-sec" id="gc-faq" style="padding-top:0">
+    <div class="gc-wrap">
+      <div class="gh-head gc-rise">
+        <p class="gc-kick">✦ Good to know</p>
+        <h2>Questions, answered.</h2>
+      </div>
+      <div class="gh-faq gc-rise">
+        <details class="gh-q"><summary>How many do I take a day?</summary><p>One gummy a day, any time that suits you. Your daily chum is waiting — no water, no pills, no fuss.</p></details>
+        <details class="gh-q"><summary>Is there added sugar?</summary><p>No added sugar. Just the good stuff, in a gummy you’ll actually look forward to.</p></details>
+        <details class="gh-q"><summary>How long until I feel a difference?</summary><p>Wellness is a habit, not a switch. Most Chums take theirs daily for 4–6 weeks to feel the difference. Consistency is the whole point.</p></details>
+        <details class="gh-q"><summary>How fast is delivery?</summary><p>We ship pan-India via Shiprocket. Orders are usually delivered in 3–10 working days, and you’ll get tracking as soon as it leaves us.</p></details>
+        <details class="gh-q"><summary>What if I don’t like it?</summary><p>Tell us. Write to us within the return window on your order and we’ll sort it out — see our {% if shop.refund_policy != blank %}<a href="{{ shop.refund_policy.url }}">refund policy</a>{% else %}refund policy{% endif %} for the full details.</p></details>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{ "name": "GummyChums FAQ", "settings": [], "presets": [{ "name": "GummyChums FAQ" }] }
+{% endschema %}

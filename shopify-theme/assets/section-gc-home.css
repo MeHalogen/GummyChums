@@ -212,7 +212,7 @@
   /* ---------- ACT 2 — flavours ---------- */
   /* the dissolve already supplies the top separation */
   .gh-sec{padding:clamp(var(--sp-7),6vw,var(--sp-8)) 0}
-  .gh-head{text-align:center;margin-bottom:clamp(var(--sp-5),4vw,var(--sp-7))}
+  .gh-head{text-align:left;margin-bottom:clamp(var(--sp-5),4vw,var(--sp-7))}
   .gh-head h2{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:var(--sp-2) 0 0}
   .gh-head p{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-3) auto 0;max-width:40ch}
 
@@ -273,7 +273,7 @@
      through the same motif, and this one skipping it was what made it look
      stuck on. The entrance is the same tile flipped, so both edges are cut from
      one shape rather than two that nearly match. */
-  .gh-end{position:relative;text-align:center;
+  .gh-end{position:relative;text-align:left;
     padding:calc(clamp(var(--sp-8),8vw,var(--sp-10)) + 96px) var(--sp-5) calc(clamp(var(--sp-8),8vw,var(--sp-10)) + 96px);
     background:
       radial-gradient(70% 62% at 8% 8%,   #E8146A 0%, transparent 62%),
@@ -349,7 +349,10 @@
   .gh-shop__head{margin-bottom:var(--sp-8)}
   .gh-shop__kick{margin:0 0 var(--sp-2);font-size:var(--fs-xs);font-weight:var(--fw-black);
     letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--role-ink-faint)}
-  .gh-shop__title{margin:0;font-size:var(--fs-display);font-weight:var(--fw-black);
+  /* Was --fs-display (up to 184px) while every other section heading on the
+     page sat at --fs-3xl. One heading three times the size of its neighbours is
+     not emphasis, it is a different design system showing through. */
+  .gh-shop__title{margin:0;font-size:var(--fs-3xl);font-weight:var(--fw-black);
     letter-spacing:var(--ls-tight);line-height:var(--lh-tight);color:var(--role-page-ink)}
   .gh-shop__title em{font-style:normal;color:var(--c-accent)}
 
