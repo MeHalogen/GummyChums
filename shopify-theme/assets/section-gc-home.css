@@ -174,7 +174,11 @@
      itself up 128px, which the bottom padding here is sized to clear. */
   .gh-reveal{grid-column:1 / -1;grid-row:3;position:relative;z-index:3;
     margin:calc(var(--gh-chum-h) * -0.14) calc(var(--gutter) * -1) 0;
-    padding:calc(var(--sp-7) + 7vw) var(--gutter) calc(var(--sp-7) + 128px);
+    /* Was calc(--sp-7 + 7vw) over calc(--sp-7 + 128px): a 479px band holding
+       228px of content, so more than half of it was empty pink. The bottom still
+       clears the 128px that .gh-edge pulls itself up by — that part is
+       structural — but the slack either side of it is gone. */
+    padding:calc(var(--sp-6) + 3.5vw) var(--gutter) calc(var(--sp-4) + 128px);
     background:var(--c-cherry);border-radius:50% 50% 0 0 / 11vw 11vw 0 0;
     display:grid;place-items:center;text-align:center;
     color:var(--c-surface);pointer-events:none}
@@ -185,24 +189,10 @@
 
   .gh-reveal p{font-size:var(--fs-xl);font-weight:var(--fw-bold);margin:var(--sp-4) auto 0;max-width:46ch;opacity:.92;text-wrap:balance}
 
-  /* The threshold row. The kolams are sized here rather than by the snippet's
-     width/height attributes — the SVG carries a viewBox, so a CSS width wins and
-     lets them scale with the viewport instead of sitting at a fixed 96px. */
-  .gh-thresh__kolams{display:flex;justify-content:center;align-items:center;
-    gap:var(--sp-6);margin-top:var(--sp-7)}
-  .gh-thresh__kolams .gc2-kolam{width:clamp(56px,19vw,112px);height:auto}
+  /* The mark sits ABOVE the words, the way it does on the carton's flap. */
+  .gh-thresh__mark{display:flex;justify-content:center;margin:0 0 var(--sp-5)}
+  .gh-thresh__mark .gc-pixel-heart{width:clamp(44px,13vw,72px);height:auto;opacity:.92}
 
-  /* Measured, not guessed. At 20vw three kolams plus two 24px gaps came to
-     exactly the available width at 375px — fitting with zero slack, which is
-     not fitting. 19vw buys ~11px of room there and moves the point where three
-     stop fitting down to ~349px, below every common phone (360/375/390/414/430).
-
-     Under that, drop the third rather than tighten the gaps. Shrinking the
-     spacing to cram three in is the lever we do not use: two kolams still read
-     as a hand crossing the doorway, three squashed ones read as noise. */
-  @media (max-width:348px){
-    .gh-thresh__kolams span:nth-child(3){display:none}
-  }
 
   /* The dissolve sits ON the hero's last 128px rather than below it, which is
      the whole point: the teeth are page-colour and the gaps are the hero's own

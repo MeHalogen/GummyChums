@@ -1,0 +1,33 @@
+{%- comment -%}
+  The pixel heart from the carton's inside flap.
+
+  It replaced three kolams here. A kolam is ONE connected lattice — a grid of
+  dots with a single unbroken line looping through all of them — and three copies
+  of one four-petal motif in a row is not that; it read as clip art, and the pale
+  pulli at that size read as dirt on the pink.
+
+  The heart is the mark the pack actually uses above "Hey, chum!", and it is
+  built from square cells, so it shares a vocabulary with the pixel-stepped teeth
+  directly beneath it. The flowers never did.
+
+  Parameters
+    tone   fill colour token. Default '--c-surface'.
+    size   rendered width in px. Default 96.
+{%- endcomment -%}
+{%- assign tone = tone | default: '--c-surface' -%}
+{%- assign size = size | default: 96 -%}
+<svg class="gc-pixel-heart" width="{{ size }}" viewBox="0 0 11 10" fill="var({{ tone }})"
+     aria-hidden="true" focusable="false" role="presentation" shape-rendering="crispEdges">
+    <rect x="2" y="0" width="2" height="1"/>
+    <rect x="7" y="0" width="2" height="1"/>
+    <rect x="1" y="1" width="4" height="1"/>
+    <rect x="6" y="1" width="4" height="1"/>
+    <rect x="0" y="2" width="11" height="1"/>
+    <rect x="0" y="3" width="11" height="1"/>
+    <rect x="0" y="4" width="11" height="1"/>
+    <rect x="1" y="5" width="9" height="1"/>
+    <rect x="2" y="6" width="7" height="1"/>
+    <rect x="3" y="7" width="5" height="1"/>
+    <rect x="4" y="8" width="3" height="1"/>
+    <rect x="5" y="9" width="1" height="1"/>
+</svg>

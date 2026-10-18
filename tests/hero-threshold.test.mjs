@@ -128,22 +128,7 @@ test('the dome keeps the floor the Chums stand on', () => {
   );
 });
 
-test('the threshold renders exactly three kolams', () => {
-  const n = [...read(SECTION).matchAll(/render\s+'gc2-kolam'/g)].length;
-  assert.equal(n, 3, `expected 3 kolams in the hero, found ${n} — spec §6 caps it at three`);
-});
 
-test('each kolam carries its own stagger delays', () => {
-  const liquid = read(SECTION);
-  const line = [...liquid.matchAll(/--k-delay:\s*([0-9.]+s)/g)].map((m) => m[1]);
-  const dot = [...liquid.matchAll(/--k-dot-delay:\s*([0-9.]+s)/g)].map((m) => m[1]);
-  assert.deepEqual(line, ['.38s', '.92s', '1.46s'],
-    'the three line delays must stagger left to right so the row reads as one ' +
-    'hand drawing across the doorway');
-  assert.deepEqual(dot, ['0s', '.54s', '1.08s'],
-    'each kolam places its dots before its own line — the order a kolam is ' +
-    'actually made in');
-});
 
 test('threshold copy is omitted when blank, not rendered empty', () => {
   const liquid = read(SECTION);
@@ -156,14 +141,6 @@ test('threshold copy is omitted when blank, not rendered empty', () => {
   }
 });
 
-test('the kolam row narrows before it overflows', () => {
-  assert.match(
-    homeSrc, /@media\s*\(max-width:\s*348px\)\{[^}]*\.gh-thresh__kolams[^}]*\}/s,
-    'the row must drop its third kolam before it overflows the gutter. 348px is ' +
-    'measured: at 19vw three kolams plus their gaps stop fitting just below ' +
-    'that, which keeps all three on every common phone (360px and up).',
-  );
-});
 
 /* ---------- where the displaced copy went ---------- */
 
@@ -216,4 +193,15 @@ test('every Chum is sized at every breakpoint', () => {
         `.gh-chum${chum} has no height at ${tier} — it will fall back and stand out of scale`);
     }
   }
+});
+
+test('the threshold carries one mark, not a row of them', () => {
+  const liquid = read(SECTION);
+  assert.match(liquid, /render 'gc-pixel-heart'/,
+    "the threshold should use the carton's pixel heart");
+  assert.equal(
+    [...liquid.matchAll(/render 'gc2-kolam'/g)].length, 0,
+    'the hero should not repeat the kolam motif — three copies of one four-petal ' +
+    'shape read as clip art, and a kolam is a single connected lattice, not a row',
+  );
 });

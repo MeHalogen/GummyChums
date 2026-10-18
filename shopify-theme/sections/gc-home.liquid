@@ -60,33 +60,28 @@
       </div>
 
       {%- comment -%}
-        The threshold. A kolam is the drawing set out at the doorway each morning
-        on a grid of dots, looped in one unbroken line — a daily ritual of welcome,
-        which is the same thing "one a day, every day" is selling.
+        The carton's inside flap, on the page: a pixel heart over "Hey, chum!".
 
-        Three of them, drawn LEFT TO RIGHT rather than together: each starts about
-        half a second after the one beside it, so the row reads as one hand
-        crossing the doorway rather than three ornaments appearing. The delays are
-        the whole effect; tests/hero-threshold.test.mjs asserts them by value.
+        This was three kolams and it read as clip art. A kolam is ONE connected
+        lattice — a dot grid with a single unbroken line looping through all of
+        it — so three copies of one four-petal motif was never a kolam, it was
+        three flowers in a row, and the faint pulli looked like dirt on the pink.
 
-        Nothing here is tied to scroll position. .gc-rise fires once on entry.
+        The heart is the mark the pack actually uses here, it is built from
+        square cells like the stepped teeth just below it, and there is one of
+        it instead of three.
       {%- endcomment -%}
-      {%- assign k1 = 'th-1' -%}
-      {%- assign k2 = 'th-2' -%}
-      {%- assign k3 = 'th-3' -%}
       <div class="gh-reveal gc-halftone">
         <div class="gh-thresh">
+          <div class="gh-thresh__mark gc-rise" aria-hidden="true">
+            {% render 'gc-pixel-heart', tone: '--c-surface', size: 72 %}
+          </div>
           {%- if s.reveal_title != blank -%}
             <h2 class="gh-thresh__line">{{ s.reveal_title }}</h2>
           {%- endif -%}
           {%- if s.reveal_sub != blank -%}
             <p class="gh-thresh__sub">{{ s.reveal_sub }}</p>
           {%- endif -%}
-          <div class="gh-thresh__kolams gc-rise" aria-hidden="true">
-            <span style="--k-dot-delay:0s;--k-delay:.38s">{% render 'gc2-kolam', id: k1, tone: '--c-surface', size: 96 %}</span>
-            <span style="--k-dot-delay:.54s;--k-delay:.92s">{% render 'gc2-kolam', id: k2, tone: '--c-surface', size: 96 %}</span>
-            <span style="--k-dot-delay:1.08s;--k-delay:1.46s">{% render 'gc2-kolam', id: k3, tone: '--c-surface', size: 96 %}</span>
-          </div>
         </div>
       </div>
     </div>
