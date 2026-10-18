@@ -17,13 +17,38 @@
   .gp-top{display:grid;grid-template-columns:1.05fr 1fr;gap:var(--sp-7);align-items:start}
   @media(max-width:899px){.gp-top{grid-template-columns:1fr}}
 
-  .gp-media{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:1/1;display:grid;place-items:center;
-    background:var(--pc-soft);box-shadow:var(--sh-3)}
-  .gp-media img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1}
-  .gp-media svg{width:62%;height:auto;position:relative;z-index:1;animation:gpFloat 6s ease-in-out infinite;will-change:transform}
+  /* The card was var(--pc-soft) — a 12% tint, so pale it read as unfinished next
+     to a hero that now runs at the carton's saturation. Two stronger pools of the
+     product's own colour over cream give it the same confidence without taking
+     the type's background away from it. */
+  .gp-media{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:1/1;
+    background:
+      radial-gradient(72% 62% at 18% 14%, color-mix(in srgb, var(--pc) 46%, transparent), transparent 72%),
+      radial-gradient(76% 64% at 86% 88%, color-mix(in srgb, var(--pc) 34%, transparent), transparent 72%),
+      var(--c-surface);
+    box-shadow:var(--sh-3)}
+  .gp-media img.gp-photo{width:100%;height:100%;object-fit:cover;position:relative;z-index:1}
+
+  /* DIRECT CHILD only. This used to be `.gp-media svg`, which was fine when the
+     card held one hand-rolled blob — but the cluster renders three gc-gummy SVGs
+     inside spans, and the loose selector would have sized every one of them to
+     62% and floated them all on the same clock. */
+  .gp-media > svg{width:62%;height:auto;position:relative;z-index:1;animation:gpFloat 6s ease-in-out infinite;will-change:transform}
+
+  /* the gummies, scattered the way the homepage cards scatter them */
+  .gp-cluster{position:absolute;inset:0;z-index:1}
+  .gp-g{position:absolute;line-height:0}
+  .gp-g svg{width:100%;height:auto;display:block}
+  .gp-g1{width:34%;left:6%;top:30%}
+  .gp-g2{width:20%;left:40%;top:11%}
+  .gp-g3{width:15%;left:20%;bottom:13%}
+
+  /* the Chum, standing in her own product's card. She was missing entirely. */
+  .gp-fig{position:absolute;right:1%;bottom:0;height:86%;width:auto;z-index:2;
+    -webkit-user-drag:none;user-select:none;pointer-events:none}
   @keyframes gpFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(3deg)}}
   @media(prefers-reduced-motion:reduce){.gp-media svg{animation:none}}
-  .gp-badge{position:absolute;z-index:2;top:var(--sp-4);left:var(--sp-4);background:var(--c-surface);color:var(--pc);
+  .gp-badge{position:absolute;z-index:3;top:var(--sp-4);left:var(--sp-4);background:var(--c-surface);color:var(--pc-deep);
     font-size:var(--fs-xs);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
     padding:var(--sp-2) var(--sp-4);border-radius:var(--r-full);box-shadow:var(--sh-1)}
 
@@ -31,7 +56,10 @@
   .gp-title{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);color:var(--c-ink);margin:var(--sp-3) 0 0}
   .gp-line{font-size:var(--fs-lg);font-weight:var(--fw-bold);color:var(--c-ink-2);margin:var(--sp-3) 0 0}
   .gp-price{display:flex;align-items:baseline;gap:var(--sp-3);margin:var(--sp-5) 0 0}
-  .gp-price b{font-size:var(--fs-2xl);font-weight:var(--fw-black);color:var(--pc)}
+  /* --pc is the product's own tone and it fails AA on pale for two of the three:
+     mango 2.64:1 and orange 2.85:1 against the 4.5 this size needs. The -deep
+     variants exist for exactly this and clear it at 4.61 and 4.60. */
+  .gp-price b{font-size:var(--fs-2xl);font-weight:var(--fw-black);color:var(--pc-deep)}
   .gp-price s{font-size:var(--fs-base);font-weight:var(--fw-bold);color:var(--c-ink-3)}
   .gp-tax{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-3);margin:var(--sp-2) 0 0}
 

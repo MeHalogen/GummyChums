@@ -3,18 +3,24 @@
 {%- assign t = product.title | downcase -%}
 {%- if t contains 'melatonin' or t contains 'sleep' -%}
   {%- assign pc_var = '--c-cherry' -%}{%- assign pc_soft_var = '--c-cherry-soft' -%}
+  {%- assign pc_deep_var = '--c-cherry' -%}
+  {%- assign chum_img = 'gc2-chum-sleep.svg' -%}{%- assign chum_alt = 'A Chum winding down with an iced coffee' -%}
   {%- assign role = 'Sleep' -%}{%- assign flavour = 'Cherry' -%}{%- assign line = 'Sleep tight, Chum.' -%}
 {%- elsif t contains 'eye' -%}
   {%- assign pc_var = '--c-orange' -%}{%- assign pc_soft_var = '--c-orange-soft' -%}
+  {%- assign pc_deep_var = '--c-orange-deep' -%}
+  {%- assign chum_img = 'gc2-chum-eye.svg' -%}{%- assign chum_alt = 'A Chum scrolling on their phone' -%}
   {%- assign role = 'Eye care' -%}{%- assign flavour = 'Orange' -%}{%- assign line = 'Screen-tired eyes? New bestie.' -%}
 {%- else -%}
   {%- assign pc_var = '--c-mango' -%}{%- assign pc_soft_var = '--c-mango-soft' -%}
+  {%- assign pc_deep_var = '--c-mango-deep' -%}
+  {%- assign chum_img = 'gc2-chum-brain.svg' -%}{%- assign chum_alt = 'A Chum reading a Brain Boosting book' -%}
   {%- assign role = 'Focus' -%}{%- assign flavour = 'Mango' -%}{%- assign line = 'Big brain energy, tiny gummy.' -%}
 {%- endif -%}
 
 {{ 'section-gc-product.css' | asset_url | stylesheet_tag }}
 
-<div class="gp" style="--pc:var({{ pc_var }});--pc-soft:var({{ pc_soft_var }})">
+<div class="gp" style="--pc:var({{ pc_var }});--pc-soft:var({{ pc_soft_var }});--pc-deep:var({{ pc_deep_var }})">
   <p class="gp-crumb"><a href="{{ routes.root_url }}">Home</a> / <a href="{{ routes.all_products_collection_url }}">Shop</a> / {{ product.title }}</p>
 
   <div class="gp-top">
@@ -22,12 +28,23 @@
     <div class="gp-media gc-rise in">
       <span class="gp-badge">{{ role }} · {{ flavour }}</span>
       {%- if product.featured_image -%}
-        {{ product.featured_image | image_url: width: 1100 | image_tag: width: 1100, height: 1100, alt: product.title }}
+        {{ product.featured_image | image_url: width: 1100 | image_tag: width: 1100, height: 1100, alt: product.title, class: 'gp-photo' }}
       {%- else -%}
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{{ product.title }}">
-          <path d="{{ GPATH }}" style="fill:var({{ pc_var }})"/>
-          <ellipse cx="35" cy="27" rx="16" ry="10" style="fill:var(--c-surface)" opacity=".5" transform="rotate(-25 35 27)"/>
-        </svg>
+        {%- comment -%}
+          Until there are photographs, this is the brand's own composition — the
+          same gummy cluster and Chum the homepage cards use, at the size the
+          money page deserves. It replaced a single flat blob on a washed tint,
+          which read as a missing image rather than as a product, and which left
+          the characters — the whole identity — off the page that sells.
+        {%- endcomment -%}
+        {%- assign ga = 'pdp-a' -%}{%- assign gb = 'pdp-b' -%}{%- assign gc = 'pdp-c' -%}
+        <span class="gp-cluster" aria-hidden="true">
+          <span class="gp-g gp-g1">{% render 'gc-gummy', tone: pc_var, id: ga %}</span>
+          <span class="gp-g gp-g2">{% render 'gc-gummy', tone: pc_var, id: gb %}</span>
+          <span class="gp-g gp-g3">{% render 'gc-gummy', tone: pc_var, id: gc %}</span>
+        </span>
+        <img class="gp-fig" src="{{ chum_img | asset_url }}" alt="{{ chum_alt }}"
+             width="371" height="984" decoding="async" draggable="false">
       {%- endif -%}
     </div>
 
