@@ -24,7 +24,43 @@
      action, the two Chums standing under it, then the pink band that says what
      is actually in the thing. Laid out as grid rows so the markup did not have
      to move. */
-  .gh-stage{position:relative}
+  /* ---------- THE PACK'S FRONT FACE ----------
+     The carton is a saturated pink-to-orange-to-lime wash with the type in cream.
+     The site was the same palette at a fraction of the intensity — recognisably
+     related, noticeably less confident. This is the hero turned up to the box.
+
+     The type stays DARK, and that was measured rather than assumed. Inverting it
+     to cream looked like the obvious way to match the pack, but cream scores
+     1.94:1 against the lime stop and 2.85:1 against the orange — far under AA.
+     The carton gets away with white because its white type sits over the pink
+     region only; this headline spans the full width and crosses every stop.
+     Dark ink scores 4.46 to 10.84 across the same stops.
+
+     The light pool under .gh-mid lifts the one marginal case: ink on the cherry
+     stop is 4.46:1, a hair under the 4.5 that body-sized text needs, so the copy
+     column gets a soft cream wash beneath it. The pack does the same thing with
+     its cream and green blobs — vivid field, calm patch under the words. */
+  .gh-stage{position:relative;isolation:isolate;
+    --gh-ink:var(--c-ink);
+    --gh-ink-soft:var(--c-ink)}
+  .gh-mid{position:relative}
+  .gh-mid::before{content:'';position:absolute;z-index:-1;pointer-events:none;
+    inset:-6% -8%;
+    background:radial-gradient(60% 50% at 50% 42%, rgba(255,250,244,.80) 0%, rgba(255,250,244,.46) 52%, transparent 76%)}
+  .gh-stage::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(78% 62% at 6% 2%,   #E8146A 0%, transparent 60%),
+      radial-gradient(70% 58% at 97% 10%, #A9C63F 0%, transparent 58%),
+      radial-gradient(76% 64% at 80% 92%, #F4651B 0%, transparent 60%),
+      radial-gradient(64% 52% at 2% 97%,  #DE1D62 0%, transparent 56%),
+      linear-gradient(165deg, #F0486B 0%, #F47421 48%, #9FBF3C 100%);
+    background-image:
+      radial-gradient(78% 62% at 6% 2%,   #E8146A 0%, transparent 60%),
+      radial-gradient(70% 58% at 97% 10%, #A9C63F 0%, transparent 58%),
+      radial-gradient(76% 64% at 80% 92%, #F4651B 0%, transparent 60%),
+      radial-gradient(64% 52% at 2% 97%,  #DE1D62 0%, transparent 56%),
+      var(--gc-grain, none),
+      linear-gradient(165deg, #F0486B 0%, #F47421 48%, #9FBF3C 100%)}
   .gh-pin{position:relative;display:grid;grid-template-columns:1fr 1fr;
     align-items:end;background:transparent;
     padding:clamp(var(--sp-5),5vw,var(--sp-7)) 0 0;
@@ -113,21 +149,21 @@
   .gh-eyebrow{display:inline-flex;align-items:center;gap:var(--sp-2);background:var(--c-ink);color:var(--c-surface);
     font-weight:var(--fw-black);font-size:var(--fs-xs);letter-spacing:var(--ls-wide);text-transform:uppercase;
     padding:var(--sp-2) var(--sp-4);border-radius:var(--r-full);margin-bottom:var(--sp-4)}
-  .gh-tag mark{background:linear-gradient(180deg,transparent 58%,var(--c-accent-soft) 58%);
+  .gh-tag mark{background:linear-gradient(180deg,transparent 58%,rgba(255,255,255,.55) 58%);
     color:inherit;padding:0 .06em}
-  .gh-cta2{color:var(--c-ink);font-weight:var(--fw-black);font-size:var(--fs-base);text-decoration:none;
+  .gh-cta2{color:var(--gh-ink);font-weight:var(--fw-black);font-size:var(--fs-base);text-decoration:none;
     display:inline-flex;align-items:center;gap:var(--sp-2);padding:var(--sp-1) var(--sp-1);border-bottom:2.5px solid var(--c-ink)}
   .gh-cta2 span{transition:transform var(--dur-2) var(--ease);display:inline-block}
   .gh-cta2:hover span{transform:translateX(5px)}
   .gh-logo{display:block;width:min(470px,74vw);height:auto;margin:0 auto var(--sp-5);
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none;pointer-events:none}
-  .gh-tag{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0 auto;max-width:17ch}
-  .gh-sub{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-3) auto 0;max-width:34ch;line-height:var(--lh-body)}
+  .gh-tag{color:var(--gh-ink);font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0 auto;max-width:17ch}
+  .gh-sub{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--gh-ink-soft);margin:var(--sp-3) auto 0;max-width:34ch;line-height:var(--lh-body)}
   .gh-cta{margin-top:var(--sp-5);display:flex;align-items:center;justify-content:center;gap:var(--sp-4);flex-wrap:wrap}
   .gh-pills{display:flex;gap:var(--sp-2);justify-content:center;flex-wrap:wrap;margin-top:var(--sp-4)}
   .gh-pill{background:var(--c-surface);border-radius:var(--r-full);padding:var(--sp-2) var(--sp-4);font-size:var(--fs-sm);font-weight:var(--fw-black);
     letter-spacing:var(--ls-normal);box-shadow:var(--sh-2);outline:1px solid var(--c-line);outline-offset:-1px}
-  .gh-scroll{margin-top:var(--sp-4);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);font-size:var(--fs-xs);color:var(--c-ink-3);
+  .gh-scroll{margin-top:var(--sp-4);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);font-size:var(--fs-xs);color:var(--gh-ink-soft);
     animation:ghBounce 1.7s ease-in-out infinite}
   @keyframes ghBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
   /* The pink band. Three declarations here were leftovers from when this was a
