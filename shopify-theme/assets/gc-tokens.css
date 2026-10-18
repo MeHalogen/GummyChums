@@ -62,6 +62,11 @@
   /* FLAVOUR — product identity ONLY, never chrome */
   --c-cherry:#DE1D62; --c-cherry-soft:rgba(222,29,98,0.12);
   --c-mango:#8DAA3D;  --c-mango-soft:rgba(141,170,61,0.12);
+  /* The carton's back panel. Brighter than --c-mango, which is an olive meant
+     for small accents; this is a full surface and needs the pack's lime. Purple
+     clears AA on it at 5.57:1, which is why the pack puts its monogram in purple
+     and why this panel's accent ink is purple rather than the house pink. */
+  --c-lime:#9FBF3C;
   --c-orange:#F47421; --c-orange-soft:rgba(244,116,33,0.12);
   /* Text-bearing variants. The base tones are brand colours and stay exactly as
      they are for fills and decoration, but white on #F47421 is 2.85:1 and on
@@ -124,6 +129,13 @@
   --role-accent:       var(--c-accent);
 
   --role-band-tone:    var(--c-cherry);
+  /* The carton's back panel — a full surface, not an accent. Its accent ink is
+     PURPLE because the house pink measures 2.24:1 on this lime against the 4.5
+     body text needs; purple is 5.57:1, and purple-on-green is what the pack
+     itself does. */
+  --role-panel-tone:   var(--c-lime);
+  --role-panel-ink:    var(--c-ink);
+  --role-panel-accent: var(--c-purple);
   --role-band-ink:     var(--c-surface);
 
   --role-eyebrow-ink:  var(--c-ink-3);

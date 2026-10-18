@@ -25,6 +25,7 @@ const ROLES = [
   'page-bg', 'page-ink', 'ink-muted', 'ink-faint', 'line',
   'surface', 'surface-ink', 'cta-bg', 'cta-ink',
   'accent', 'band-tone', 'band-ink', 'eyebrow-ink', 'focus',
+  'panel-tone', 'panel-ink', 'panel-accent',
 ];
 
 test('every semantic role is defined', () => {

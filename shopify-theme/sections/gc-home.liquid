@@ -95,7 +95,7 @@
     the purple steps out of the story panel.
   {%- endcomment -%}
   {%- assign gh_edge = 'hero-out' -%}
-  <div class="gh-edge">{% render 'gc2-dissolve', id: gh_edge, tone: '--c-bg' %}</div>
+  <div class="gh-edge">{% render 'gc2-dissolve', id: gh_edge, tone: '--c-lime' %}</div>
 
   <!-- ACT 2 — meet the Chums: the homepage's shop. Scrolling down rides sideways
        through the three; each card is the Chum AND its product. Order runs
@@ -197,6 +197,15 @@
         </article>
       </div>
     </div>
+
+    {%- comment -%}
+      The panel's own closing edge. Without it the lime stopped at a ruler-straight
+      line into the FAQ's cream and the seam the hero no longer had simply moved
+      down one section. Same motif, same direction: page-coloured teeth biting up
+      into the block above them.
+    {%- endcomment -%}
+    {%- assign hs_edge = 'panel-out' -%}
+    <div class="gh-edge gh-edge--panel">{% render 'gc2-dissolve', id: hs_edge, tone: '--c-bg' %}</div>
   </section>
 
   <!-- ACT 4 — FAQ -->

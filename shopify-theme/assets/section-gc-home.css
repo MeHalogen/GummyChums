@@ -203,6 +203,19 @@
      painted over them. They only showed before because the band was too short to
      reach them, which was itself the padding bug. */
   .gh-edge{line-height:0;position:relative;z-index:4;margin-top:-128px;pointer-events:none}
+  /* The lime panel closes the way the hero does.
+
+     Pulling this up with a negative margin — which is how .gh-edge works at the
+     hero — was wrong here. The hero's edge is the last thing in its block, so a
+     negative pull lands it on the block's final stretch. Inside this panel the
+     same pull dragged the teeth up ACROSS the last product card while leaving a
+     slab of bare lime below them, so the seam it was meant to remove was still
+     there, just 128px lower.
+
+     Anchoring it to the panel's bottom edge instead puts it exactly where the
+     colour actually ends. The padding is what keeps the cards clear of it. */
+  .gh-hs{padding-bottom:128px}
+  .gh-edge--panel{position:absolute;left:0;right:0;bottom:0;margin-top:0}
 
   /* ---------- ACT 2 — flavours ---------- */
   /* the dissolve already supplies the top separation */
@@ -231,7 +244,17 @@
      Without JavaScript, or with reduced motion, there is no pin at all: the
      row is an ordinary swipeable strip with snap points. The pinned ride is
      layered on top of that, never required by it. */
-  .gh-hs{position:relative}
+  /* ---------- THE CARTON'S BACK PANEL ----------
+     Crossing the teeth used to go from the saturated hero straight into the old
+     pastel wash, which read as arriving at a different website. The pack does not
+     do that: its front is the vivid gradient and its back is a flat confident
+     lime. This panel is that back face, so the two surfaces belong to one object.
+
+     The accent ink here is PURPLE, not the house pink. Measured: pink on this
+     lime is 2.24:1 against the 4.5 body text needs — it fails at every green we
+     tried. Purple is 5.57:1, and purple-on-green is exactly what the carton does
+     with its monogram. */
+  .gh-hs{position:relative;background:var(--role-panel-tone);color:var(--role-panel-ink)}
   /* A grid, not a ride. Scrolling down no longer drags this sideways: that was
      a sideways transform driven from vertical scroll, which fights a phone's own
      scrolling and was the second place it juddered. Three cards, stacked on a
@@ -242,7 +265,7 @@
   .gh-hs-intro{grid-column:1 / -1;text-align:center;margin-bottom:var(--sp-3)}
   .gh-hs-title{font-size:var(--fs-display);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
     margin:0;color:var(--c-ink);text-wrap:balance}
-  .gh-hs-title em{font-style:normal;color:var(--c-accent)}
+  .gh-hs-title em{font-style:normal;color:var(--role-panel-accent)}
   .gh-hs-hint{margin:var(--sp-5) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-black);
     letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--c-ink-3)}
   /* One card is now the product card as well: the Chum stands beside the shot,
