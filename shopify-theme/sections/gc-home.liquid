@@ -216,13 +216,25 @@
     </div>
   </section>
 
-  <!-- ACT 5 — closing -->
+  {%- comment -%}
+    ACT 5 — the closing ask.
+
+    Every other colour change on this page steps in and out through the pixel
+    teeth. This band had neither, so a vivid rectangle was cut into the cream
+    with two hard horizontal lines and read as a banner pasted on top of the
+    page rather than as part of it. It gets the same treatment as everything
+    else: teeth entering at the top, teeth leaving at the bottom.
+  {%- endcomment -%}
+  {%- assign end_in = 'end-in' -%}
+  {%- assign end_out = 'end-out' -%}
   <section class="gh-end gc-rise gc-halftone">
+    <div class="gh-end__in" aria-hidden="true">{% render 'gc2-dissolve', id: end_in, tone: '--c-bg' %}</div>
     <div class="gc-wrap">
       <h2>{{ s.end_title | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
       <p>{{ s.end_sub }}</p>
       <a class="gc-btn" href="{{ routes.all_products_collection_url }}">{{ s.end_cta }}</a>
     </div>
+    <div class="gh-end__out" aria-hidden="true">{% render 'gc2-dissolve', id: end_out, tone: '--c-bg' %}</div>
   </section>
 </div>
 
