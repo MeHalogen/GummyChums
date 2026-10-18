@@ -99,105 +99,88 @@
   {%- assign gh_edge = 'hero-out' -%}
   <div class="gh-edge">{% render 'gc2-dissolve', id: gh_edge, tone: '--c-bg' %}</div>
 
-  <!-- ACT 2 — meet the Chums: the homepage's shop. Scrolling down rides sideways
-       through the three; each card is the Chum AND its product. Order runs
-       morning -> screen hours -> night. The Chum-to-product pairing is our read,
-       not yet Priyal's (NOTES R6.3) — swap the p1/p2/p3 lines if she says so. -->
-  {%- assign p1 = all_products['brain-booster-gummies'] -%}
-  {%- assign p2 = all_products['eye-care-gummies'] -%}
-  {%- assign p3 = all_products['melatonin-gummies'] -%}
+  <!-- ACT 2 — the shop. Order runs morning -> screen hours -> night. The
+       Chum-to-product pairing is our read, not yet Priyal's (NOTES R6.3) — the
+       `rows` list below is where to change it.
+       This comment used to describe a sideways scroll through three cards;
+       that was removed on 11 Oct and the cards themselves on 19 Oct. -->
   <section class="gh-hs" id="gh-hs">
-    <div class="gh-hs-pin" id="gh-hs-pin">
-      <div class="gh-hs-track" id="gh-hs-track">
-        <div class="gh-hs-intro" id="shop">
-          <h2 class="gh-hs-title">Meet our <em>Chums</em></h2>
-          <p class="gh-hs-hint">Three chums · one a day</p>
-        </div>
-        <article class="gh-hs-card" style="--hs-tone:var(--c-mango);--hs-ink:var(--c-mango-deep);--hs-soft:var(--c-mango-soft)">
-          <span class="gh-hs-badge gc-sticker">Focus</span>
-          <div class="gh-hs-media">
-            <span class="gh-hs-shot">
-              {%- if p1.featured_image -%}
-                {{ p1.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', width: 800, height: 800, alt: '', class: 'gh-hs-photo' }}
-              {%- else -%}
-                <span class="gh-cluster">
-                  <span class="gh-g gh-g1">{% render 'gc-gummy', tone: '--c-mango', id: 'hs1a' %}</span>
-                  <span class="gh-g gh-g2">{% render 'gc-gummy', tone: '--c-mango', id: 'hs1b' %}</span>
-                  <span class="gh-g gh-g3">{% render 'gc-gummy', tone: '--c-mango', id: 'hs1c' %}</span>
-                </span>
-              {%- endif -%}
+    <div class="gh-shop" id="shop">
+
+      <header class="gh-shop__head">
+        <p class="gh-shop__kick">Three chums · one a day</p>
+        <h2 class="gh-shop__title">Meet our <em>Chums</em></h2>
+      </header>
+
+      {%- comment -%}
+        THREE ROWS, NOT THREE CARDS.
+
+        This was repeat(3,1fr) — three equal cards in a row under a centred
+        heading, which is the default layout of every theme on the platform and
+        the reason the page read as a template whatever colour it was painted.
+        Every section on the site had the same shape: centred head, centred
+        body, full width, stacked. Nine times.
+
+        Each product now gets a full row of its own and they alternate sides, so
+        the eye moves left-right-left down the page instead of straight down a
+        column. The Chum is big enough to be a person rather than a thumbnail,
+        the index numeral gives the scale contrast the page had nowhere, and the
+        actives are on the card because "Bacopa 60mg" sells harder than "Focus".
+      {%- endcomment -%}
+      {%- assign rows = 'brain-booster-gummies,eye-care-gummies,melatonin-gummies' | split: ',' -%}
+      {%- for h in rows -%}
+        {%- assign prod = all_products[h] -%}
+        {%- case h -%}
+          {%- when 'brain-booster-gummies' -%}
+            {%- assign tone = '--c-mango' -%}{%- assign deep = '--c-mango-deep' -%}{%- assign soft = '--c-mango-soft' -%}
+            {%- assign role = 'Focus' -%}{%- assign who = 'Dhi' -%}{%- assign fig = 'gc3-dhi-peace.webp' -%}
+            {%- assign line = 'Big brain energy, tiny gummy.' -%}{%- assign active = 'Bacopa Monnieri 60mg · Mango' -%}
+          {%- when 'eye-care-gummies' -%}
+            {%- assign tone = '--c-orange' -%}{%- assign deep = '--c-orange-deep' -%}{%- assign soft = '--c-orange-soft' -%}
+            {%- assign role = 'Eye care' -%}{%- assign who = 'Nain' -%}{%- assign fig = 'gc3-nain-stand.webp' -%}
+            {%- assign line = 'For screen-tired eyes.' -%}{%- assign active = 'Lutein · Bilberry · Vitamin A · Orange' -%}
+          {%- when 'melatonin-gummies' -%}
+            {%- assign tone = '--c-cherry' -%}{%- assign deep = '--c-cherry' -%}{%- assign soft = '--c-cherry-soft' -%}
+            {%- assign role = 'Sleep' -%}{%- assign who = 'Tara' -%}{%- assign fig = 'gc3-tara-stand.webp' -%}
+            {%- assign line = 'Wind down. Sleep tight, Chum.' -%}{%- assign active = 'Melatonin 5mg · Chamomile · Cherry' -%}
+        {%- endcase -%}
+        {%- assign ga = 'r' | append: forloop.index | append: 'a' -%}
+        {%- assign gb = 'r' | append: forloop.index | append: 'b' -%}
+        {%- assign gc = 'r' | append: forloop.index | append: 'c' -%}
+
+        <article class="gh-row gc-rise{% cycle '', ' gh-row--flip', '' %}"
+                 style="--tone:var({{ tone }});--deep:var({{ deep }});--soft:var({{ soft }})">
+
+          <div class="gh-row__stage">
+            <span class="gh-row__num" aria-hidden="true">{{ forloop.index | prepend: '0' }}</span>
+            <span class="gh-row__gummies" aria-hidden="true">
+              <span class="gh-row__g gh-row__g1">{% render 'gc-gummy', tone: tone, id: ga %}</span>
+              <span class="gh-row__g gh-row__g2">{% render 'gc-gummy', tone: tone, id: gb %}</span>
+              <span class="gh-row__g gh-row__g3">{% render 'gc-gummy', tone: tone, id: gc %}</span>
             </span>
-            <img class="gh-hs-fig" src="{{ 'gc2-chum-brain.svg' | asset_url }}" alt="A Chum reading a Brain Boosting book" width="340" height="894" loading="lazy" decoding="async" draggable="false">
+            <img class="gh-row__fig" src="{{ fig | asset_url }}" alt="{{ who }}, the {{ role }} Chum"
+                 width="406" height="760" loading="lazy" decoding="async" draggable="false">
           </div>
-          <h3 class="gh-hs-name"><a href="{{ p1.url | default: routes.all_products_collection_url }}">{{ p1.title | default: 'Brain Booster Gummies' }}</a></h3>
-          <p class="gh-hs-line">Big brain energy, tiny gummy.</p>
-          <p class="gh-hs-meta">30 gummies · one a day</p>
-          <div class="gh-hs-buy">
-            {% render 'gc-price', price: p1.price %}
-            {%- if p1.available -%}
-              <span class="gh-hs-cta">View product <span aria-hidden="true">→</span></span>
-            {%- else -%}
-              <span class="gh-hs-cta gh-hs-cta--out">Sold out</span>
-            {%- endif -%}
-          </div>
-        </article>
-        <article class="gh-hs-card" style="--hs-tone:var(--c-orange);--hs-ink:var(--c-orange-deep);--hs-soft:var(--c-orange-soft)">
-          <span class="gh-hs-badge gc-sticker gc-sticker--right">Eye care</span>
-          <div class="gh-hs-media">
-            <span class="gh-hs-shot">
-              {%- if p2.featured_image -%}
-                {{ p2.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', width: 800, height: 800, alt: '', class: 'gh-hs-photo' }}
+
+          <div class="gh-row__copy">
+            <p class="gh-row__role gc-sticker">{{ role }}</p>
+            <h3 class="gh-row__name">
+              <a href="{{ prod.url | default: routes.all_products_collection_url }}">{{ prod.title | default: h }}</a>
+            </h3>
+            <p class="gh-row__line">{{ line }}</p>
+            <p class="gh-row__active">{{ active }}</p>
+            <div class="gh-row__buy">
+              {% render 'gc-price', price: prod.price %}
+              {%- if prod.available -%}
+                <a class="gh-row__cta" href="{{ prod.url }}">View product <span aria-hidden="true">→</span></a>
               {%- else -%}
-                <span class="gh-cluster">
-                  <span class="gh-g gh-g1">{% render 'gc-gummy', tone: '--c-orange', id: 'hs2a' %}</span>
-                  <span class="gh-g gh-g2">{% render 'gc-gummy', tone: '--c-orange', id: 'hs2b' %}</span>
-                  <span class="gh-g gh-g3">{% render 'gc-gummy', tone: '--c-orange', id: 'hs2c' %}</span>
-                </span>
+                <span class="gh-row__cta gh-row__cta--out">Sold out</span>
               {%- endif -%}
-            </span>
-            <img class="gh-hs-fig" src="{{ 'gc2-chum-eye.svg' | asset_url }}" alt="A Chum scrolling on their phone" width="371" height="984" loading="lazy" decoding="async" draggable="false">
+            </div>
           </div>
-          <h3 class="gh-hs-name"><a href="{{ p2.url | default: routes.all_products_collection_url }}">{{ p2.title | default: 'Eye Care Gummies' }}</a></h3>
-          <p class="gh-hs-line">For screen-tired eyes.</p>
-          <p class="gh-hs-meta">30 gummies · one a day</p>
-          <div class="gh-hs-buy">
-            {% render 'gc-price', price: p2.price %}
-            {%- if p2.available -%}
-              <span class="gh-hs-cta">View product <span aria-hidden="true">→</span></span>
-            {%- else -%}
-              <span class="gh-hs-cta gh-hs-cta--out">Sold out</span>
-            {%- endif -%}
-          </div>
+
         </article>
-        <article class="gh-hs-card" style="--hs-tone:var(--c-cherry);--hs-ink:var(--c-cherry);--hs-soft:var(--c-cherry-soft)">
-          <span class="gh-hs-badge gc-sticker">Sleep</span>
-          <div class="gh-hs-media">
-            <span class="gh-hs-shot">
-              {%- if p3.featured_image -%}
-                {{ p3.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', width: 800, height: 800, alt: '', class: 'gh-hs-photo' }}
-              {%- else -%}
-                <span class="gh-cluster">
-                  <span class="gh-g gh-g1">{% render 'gc-gummy', tone: '--c-cherry', id: 'hs3a' %}</span>
-                  <span class="gh-g gh-g2">{% render 'gc-gummy', tone: '--c-cherry', id: 'hs3b' %}</span>
-                  <span class="gh-g gh-g3">{% render 'gc-gummy', tone: '--c-cherry', id: 'hs3c' %}</span>
-                </span>
-              {%- endif -%}
-            </span>
-            <img class="gh-hs-fig" src="{{ 'gc2-chum-sleep.svg' | asset_url }}" alt="A Chum with an iced coffee, eyes closed" width="407" height="1031" loading="lazy" decoding="async" draggable="false">
-          </div>
-          <h3 class="gh-hs-name"><a href="{{ p3.url | default: routes.all_products_collection_url }}">{{ p3.title | default: 'Melatonin Gummies' }}</a></h3>
-          <p class="gh-hs-line">Wind down. Sleep tight, Chum.</p>
-          <p class="gh-hs-meta">30 gummies · one a day</p>
-          <div class="gh-hs-buy">
-            {% render 'gc-price', price: p3.price %}
-            {%- if p3.available -%}
-              <span class="gh-hs-cta">View product <span aria-hidden="true">→</span></span>
-            {%- else -%}
-              <span class="gh-hs-cta gh-hs-cta--out">Sold out</span>
-            {%- endif -%}
-          </div>
-        </article>
-      </div>
+      {%- endfor -%}
     </div>
   </section>
 

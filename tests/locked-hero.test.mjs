@@ -57,11 +57,34 @@ for (const [what, needle] of BANNED) {
 }
 
 test('the hero still has its content', () => {
-  for (const needed of ['gh-stage', 'gh-mid', 'gh-chum', 'gh-reveal', 'gh-hs-card']) {
+  /* gh-hs-card was the three-up card grid. It was replaced on 19 Oct by the
+     alternating editorial rows (gh-row) — deliberately, because repeat(3,1fr)
+     under a centred heading is the default layout of every theme on the
+     platform and was the reason the page read as one. The parts that must
+     survive are the hero's own furniture and the shop still existing. */
+  for (const needed of ['gh-stage', 'gh-mid', 'gh-chum', 'gh-reveal', 'gh-row']) {
     assert.ok(src.includes(needed), `hero lost ${needed}`);
   }
 });
 
-test('the Chums are a grid', () => {
-  assert.ok(src.includes('grid-template-columns:repeat(3,1fr)'), 'three-up grid missing');
+/* This was called "the Chums are a grid" and matched the bare string
+   `grid-template-columns:repeat(3,1fr)`. It was written for the three-up
+   PRODUCT CARD grid — and when that grid was replaced by the editorial rows it
+   kept passing, because .gh-feet (the three Chums standing in the hero) uses
+   the same declaration. Same string, different element, false pass. Both halves
+   are now asserted against the selector that owns them. */
+test('the three Chums stand in a row in the hero', () => {
+  assert.match(
+    src, /\.gh-feet\{[^}]*grid-template-columns:repeat\(3,1fr\)/,
+    '.gh-feet must lay the three hero Chums out in three columns',
+  );
+});
+
+test('the shop is rows, not a card grid', () => {
+  assert.ok(src.includes('gh-row'), 'the editorial product rows are gone');
+  assert.ok(
+    !/\.gh-hs-track\{[^}]*repeat\(3,1fr\)/.test(src),
+    'the three-up card grid is back — it was replaced on purpose on 19 Oct ' +
+    'because repeat(3,1fr) under a centred heading is every theme\'s default',
+  );
 });

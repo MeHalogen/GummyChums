@@ -219,11 +219,7 @@
   /* shorter, balanced media ratio — no more empty 1:1 void */
 
   /* cluster of 2-3 gummies at different sizes/rotations — reads as product, not an icon */
-  .gh-cluster{position:absolute;inset:0}
   .gh-g{position:absolute;display:block;animation:ghBob ease-in-out infinite alternate}
-  .gh-g1{width:44%;left:9%;top:19%;transform:rotate(-9deg);animation-duration:6.5s}
-  .gh-g2{width:29%;right:9%;top:9%;transform:rotate(13deg);animation-duration:7.8s;animation-delay:-2.4s}
-  .gh-g3{width:26%;left:36%;bottom:8%;transform:rotate(-15deg);animation-duration:7.1s;animation-delay:-4.2s}
   @keyframes ghBob{0%{translate:0 0}100%{translate:0 -9px}}
 
   /* ---------- meet the Chums: a vertical scroll that rides sideways ----------
@@ -236,20 +232,10 @@
      Without JavaScript, or with reduced motion, there is no pin at all: the
      row is an ordinary swipeable strip with snap points. The pinned ride is
      layered on top of that, never required by it. */
-  .gh-hs{position:relative}
   /* A grid, not a ride. Scrolling down no longer drags this sideways: that was
      a sideways transform driven from vertical scroll, which fights a phone's own
      scrolling and was the second place it juddered. Three cards, stacked on a
      phone and three-up from 750px, is the same content with nothing to fight. */
-  .gh-hs-pin{padding:var(--sp-6) 0}  .gh-hs-track{display:grid;gap:var(--sp-5);padding-inline:var(--gutter);
-    max-width:var(--container);margin-inline:auto}
-  @media(min-width:750px){.gh-hs-track{grid-template-columns:repeat(3,1fr);align-items:start}}
-  .gh-hs-intro{grid-column:1 / -1;text-align:center;margin-bottom:var(--sp-3)}
-  .gh-hs-title{font-size:var(--fs-display);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
-    margin:0;color:var(--c-ink);text-wrap:balance}
-  .gh-hs-title em{font-style:normal;color:var(--c-accent)}
-  .gh-hs-hint{margin:var(--sp-5) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-black);
-    letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--c-ink-3)}
   /* One card is now the product card as well: the Chum stands beside the shot,
      then name, price, per-day and Add to bag. "Meet the three" said the same
      thing a second time, so it is gone and this ride sits in its place.
@@ -259,35 +245,12 @@
      box has a fixed, clamped height so the Chum's height is definite and it can
      never be cropped — on an iPhone SE2 the whole card is ~470px of a 561px
      pinned area. */
-  .gh-hs-card{position:relative;box-sizing:border-box;background:var(--hs-soft);
-    border-radius:var(--r-lg);padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-3)}
   /* .gc-sticker owns the look. This keeps only what is specific to the card:
      where it sits, and the per-flavour ink the card passes down. */
-  .gh-hs-badge{align-self:flex-start;--gc-sticker-ink:var(--hs-ink,var(--hs-tone))}
-  .gh-hs-media{display:flex;align-items:flex-end;height:clamp(190px,34svh,340px);box-sizing:border-box;
-    background:var(--c-surface);border-radius:var(--r-md);padding:0 var(--sp-3)}
-  .gh-hs-shot{flex:1 1 auto;min-width:0;align-self:stretch;position:relative;display:flex;
-    align-items:center;justify-content:center}
-  .gh-hs-photo{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
-  .gh-hs-shot .gh-cluster{position:absolute;inset:0}
   /* overlaps the shot a little, as if presenting it; never leaves the card */
-  .gh-hs-fig{flex:0 0 auto;display:block;height:94%;width:auto;position:relative;z-index:0;
-    margin-left:calc(var(--sp-5) * -1);-webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
-  .gh-hs-name{font-size:var(--fs-xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
-    margin:var(--sp-1) 0 0;color:var(--c-ink);text-wrap:balance}
-  .gh-hs-name a{color:inherit;text-decoration:none}
   /* one stretched link per card: the whole card is clickable, but there is still
      exactly one focusable element and no nested anchors */
-  .gh-hs-name a::after{content:"";position:absolute;inset:0;z-index:2;border-radius:var(--r-lg)}
-  .gh-hs-meta{font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3);margin:0;letter-spacing:var(--ls-normal)}
-  .gh-hs-cta{flex:0 0 auto;background:var(--hs-ink,var(--hs-tone));color:var(--c-surface);font-size:var(--fs-sm);
-    font-weight:var(--fw-black);padding:var(--sp-3) var(--sp-5);border-radius:var(--r-full);
-    white-space:nowrap;transition:filter var(--dur-2) var(--ease)}
-  .gh-hs-card:hover .gh-hs-cta{filter:brightness(1.08)}
-  .gh-hs-cta--out{background:var(--c-ink-3)}
   @media (prefers-reduced-motion:reduce){.gh-hs-cta{transition:none}}
-  .gh-hs-line{font-size:var(--fs-sm);font-weight:var(--fw-body);color:var(--c-ink-2);margin:0;line-height:var(--lh-snug)}
-  .gh-hs-buy{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);margin-top:auto}
 
   /* ---------- ACT 4 — FAQ ---------- */
   .gh-faq{max-width:760px;margin:0 auto}
@@ -365,3 +328,81 @@
     .gh-chum{animation:none;opacity:1}
     .gh-g{animation:none}
   }
+
+
+/* ============================================================================
+   THE SHOP — three rows, not three cards
+
+   This section was repeat(3,1fr): three equal cards under a centred heading,
+   which is the default of every theme on the platform. Every other section had
+   the same shape too — centred head, centred body, full width, stacked, nine
+   times down the page. That sameness, not the palette, is what made the site
+   read as a template.
+
+   Each product now owns a row and the rows alternate, so the eye travels
+   left-right-left instead of straight down a column. The index numeral is the
+   scale contrast the page had nowhere: one enormous element per row against
+   small type, which is what makes an editorial layout feel designed rather
+   than arranged.
+   ============================================================================ */
+  .gh-shop{max-width:var(--container);margin-inline:auto;padding:var(--sp-8) var(--gutter) var(--sp-9)}
+  .gh-shop__head{margin-bottom:var(--sp-8)}
+  .gh-shop__kick{margin:0 0 var(--sp-2);font-size:var(--fs-xs);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--role-ink-faint)}
+  .gh-shop__title{margin:0;font-size:var(--fs-display);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-tight);line-height:var(--lh-tight);color:var(--role-page-ink)}
+  .gh-shop__title em{font-style:normal;color:var(--c-accent)}
+
+  .gh-row{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
+    gap:clamp(var(--sp-5),4vw,var(--sp-8));align-items:center;
+    padding:clamp(var(--sp-6),4vw,var(--sp-8)) 0;
+    border-top:2px solid var(--role-line)}
+  .gh-row:first-of-type{border-top:0}
+  .gh-row--flip .gh-row__stage{order:2}
+
+  /* the stage: numeral behind, gummies mid, Chum in front */
+  .gh-row__stage{position:relative;aspect-ratio:1/1;border-radius:var(--r-lg);overflow:hidden;
+    background:
+      radial-gradient(72% 62% at 20% 16%, color-mix(in srgb, var(--tone) 42%, transparent), transparent 72%),
+      radial-gradient(74% 64% at 84% 86%, color-mix(in srgb, var(--tone) 28%, transparent), transparent 72%),
+      var(--c-surface)}
+  .gh-row__num{position:absolute;left:4%;top:0;z-index:1;
+    font-size:clamp(90px,17vw,210px);font-weight:var(--fw-black);line-height:.86;
+    letter-spacing:-.05em;color:var(--role-page-ink);opacity:.09;user-select:none}
+  .gh-row__gummies{position:absolute;inset:0;z-index:2}
+  .gh-row__g{position:absolute;line-height:0}
+  .gh-row__g svg{width:100%;height:auto;display:block}
+  .gh-row__g1{width:33%;left:7%;top:33%}
+  .gh-row__g2{width:19%;left:38%;top:14%}
+  .gh-row__g3{width:14%;left:21%;bottom:12%}
+  .gh-row__stage .gh-row__fig{position:absolute;right:1%;bottom:0;height:90%;width:auto;
+    object-fit:contain;z-index:3;pointer-events:none;-webkit-user-drag:none;user-select:none}
+
+  .gh-row__role{margin:0 0 var(--sp-4)}
+  .gh-row__name{margin:0;font-size:var(--fs-3xl);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-tight);line-height:var(--lh-tight)}
+  .gh-row__name a{color:var(--role-page-ink);text-decoration:none}
+  .gh-row__name a:hover{color:var(--deep)}
+  .gh-row__line{margin:var(--sp-3) 0 0;font-size:var(--fs-lg);color:var(--role-ink-muted)}
+  .gh-row__active{margin:var(--sp-3) 0 0;font-size:var(--fs-sm);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--deep)}
+  .gh-row__buy{margin-top:var(--sp-6);display:flex;flex-wrap:wrap;align-items:center;
+    gap:var(--sp-5)}
+  .gh-row__cta{display:inline-flex;align-items:center;gap:var(--sp-2);
+    background:var(--role-cta-bg);color:var(--role-cta-ink);text-decoration:none;
+    font-weight:var(--fw-black);font-size:var(--fs-base);
+    padding:var(--sp-3) var(--sp-6);border-radius:var(--r-full);
+    transition:transform .16s var(--gc-ease),filter .2s}
+  .gh-row__cta:hover{transform:translateY(-2px);filter:brightness(1.07)}
+  .gh-row__cta:focus-visible{outline:3px solid var(--role-focus);outline-offset:3px}
+  .gh-row__cta--out{background:var(--role-line);color:var(--role-ink-faint);pointer-events:none}
+
+  /* On a phone the two columns become one and the flip is meaningless — the
+     figure always leads, because a person is a better reason to keep reading
+     than a product name. */
+  @media(max-width:749px){
+    .gh-row{grid-template-columns:1fr;gap:var(--sp-5)}
+    .gh-row--flip .gh-row__stage{order:0}
+    .gh-row__num{font-size:clamp(70px,22vw,130px)}
+  }
+  @media(prefers-reduced-motion:reduce){.gh-row__cta{transition:none}}
