@@ -193,3 +193,27 @@ test('every declared role is actually consumed by something', () => {
     'Either something should be using them, or they should not exist.',
   );
 });
+
+/* Dawn sets html{font-size:62.5%}, so 1rem is 10px in this theme, not 16px.
+   gc-brand.css was written against the usual 16px assumption and its .gc-btn
+   carried font-size:1rem — the primary CTA rendered at 10px, smaller than the
+   secondary link beside it, store-wide. The --fs- and --sp- tokens are px-based
+   and cannot drift this way, so the brand layer uses those instead. */
+test('the brand layer does not size anything in rem', () => {
+  const dir = join(THEME, 'assets');
+  const offenders = [];
+  for (const f of readdirSync(dir).filter((x) => /^(gc-|section-gc-).*\.css$/.test(x))) {
+    /* Strip comments first: the note in gc-brand.css explaining this very bug
+       quotes "font-size:1rem", and a linter that flags its own documentation is
+       a linter people switch off. */
+    const css = read(join(dir, f)).replace(/\/\*[\s\S]*?\*\//g, '');
+    for (const m of css.matchAll(/([\w-]+)\s*:\s*[^;{}]*?[\d.]+rem/g)) {
+      offenders.push(`${f}: ${m[0].trim()}`);
+    }
+  }
+  assert.deepEqual(
+    offenders, [],
+    'rem in the brand layer resolves against a 10px root in Dawn, so these are ' +
+    `37.5% smaller than they read as:\n  ${offenders.join('\n  ')}`,
+  );
+});

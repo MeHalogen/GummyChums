@@ -117,13 +117,19 @@ p,li,a,span,div,button,input,label{font-family:'Manrope',system-ui,sans-serif}
 .page-width{max-width:1180px}
 
 /* ---- buttons: pink, springy ---- */
-/* The primary CTA — the button that takes the money. It read --gc-cherry, a
+/* NOTE ON rem IN THIS FILE: Dawn sets html{font-size:62.5%}, so 1rem is 10px
+   here, NOT the 16px a stylesheet normally assumes. This button carried
+   font-size:1rem and rendered at 10px — smaller than the secondary link beside
+   it — for as long as it has existed. Use the --fs-* / --sp-* tokens, which are
+   px-based and immune to this.
+
+   The primary CTA — the button that takes the money. It read --gc-cherry, a
    literal #fff and a hard-coded rgba pink shadow, so it bypassed the role tier
    entirely: a re-skin that repainted every role would have left this button the
    old colour. It goes through the roles now, and its shadow is derived from the
    CTA colour rather than typed out beside it. */
-.gc-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
-  background:var(--role-cta-bg);color:var(--role-cta-ink);font-weight:800;font-size:1rem;text-decoration:none;
+.gc-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);
+  background:var(--role-cta-bg);color:var(--role-cta-ink);font-weight:800;font-size:var(--fs-base);text-decoration:none;
   border:0;cursor:pointer;padding:15px 30px;border-radius:999px;font-family:inherit;
   box-shadow:0 14px 30px -14px color-mix(in srgb, var(--role-cta-bg) 70%, transparent);
   transition:transform .16s var(--gc-spring),background .25s,box-shadow .25s}
