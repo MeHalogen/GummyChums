@@ -1,0 +1,21 @@
+import { chromium } from '@playwright/test';
+const br=await chromium.launch();
+const p=await br.newPage({viewport:{width:1280,height:900}});
+const errs=[], reqs=[];
+p.on('console', m=>{ if(m.type()==='error') errs.push(m.text()); });
+p.on('pageerror', e=>errs.push('pageerror: '+e));
+p.on('response', async r=>{ if(/cart\/add/.test(r.url())) reqs.push({status:r.status(), body:(await r.text().catch(()=>'')).slice(0,300)}); });
+await p.goto('http://127.0.0.1:9292/',{waitUntil:'load'});
+await p.waitForTimeout(1200);
+const picks=p.locator('.gcb-pick');
+await picks.nth(0).click();
+await p.waitForTimeout(200);
+console.log('  variant ids on the cards:', JSON.stringify(await p.evaluate(()=>
+  [...document.querySelectorAll('.gcb-pick')].map(e=>({v:e.dataset.variant, price:e.dataset.price})))));
+console.log('  summary after one click:', await p.locator('[data-summary]').innerText());
+await p.locator('[data-add]').click();
+await p.waitForTimeout(4000);
+console.log('  url now:', p.url());
+console.log('  add responses:', JSON.stringify(reqs));
+console.log('  console errors:', JSON.stringify(errs.slice(0,3)));
+await br.close();

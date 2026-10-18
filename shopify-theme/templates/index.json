@@ -99,10 +99,15 @@
         "layout": "badges",
         "title": "Certified, tested, and made in India."
       }
+    },
+    "gc_box": {
+      "type": "gc-box",
+      "settings": {}
     }
   },
   "order": [
     "gc_home",
+    "gc_box",
     "gc_story",
     "gc_reel",
     "gc_reviews",

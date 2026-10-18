@@ -1,0 +1,178 @@
+{%- comment -%}
+  PACK YOUR CHUM BOX.
+
+  "Pack your Chum Box" is the single most repeated idea across the 84 prototypes
+  in the repo root — it appears in thirty of them — and none of it ever reached
+  the theme. Meanwhile the homepage's closing button says "Grab all three →" and
+  links to the collection page, so the site promises a bundle and delivers a
+  list.
+
+  The prototype's numbers are not reusable: they are from the six-product era
+  with 15/30/45-tab jars at ₹349/549/749. There are three SKUs now, all 30
+  gummies, and the prices come from Shopify rather than from markup, so this can
+  never drift from the store the way hard-coded copy does.
+
+  No discount is applied. Whether all-three should carry one, and at what rate,
+  is Priyal's call and not something to invent in a theme file — the moment she
+  decides, it is a Shopify automatic discount and this section needs no change.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+{{ 'section-gc-box.css' | asset_url | stylesheet_tag }}
+
+{%- assign handles = 'brain-booster-gummies,eye-care-gummies,melatonin-gummies' | split: ',' -%}
+
+<section class="gcb" id="chum-box">
+  <div class="gcb-in">
+
+    <header class="gcb-head">
+      <p class="gcb-kick">{{ s.kicker }}</p>
+      <h2 class="gcb-title">{{ s.title }}</h2>
+      <p class="gcb-sub">{{ s.sub }}</p>
+    </header>
+
+    <div class="gcb-grid">
+      {%- for h in handles -%}
+        {%- assign prod = all_products[h] -%}
+        {%- if prod.id -%}
+          {%- case h -%}
+            {%- when 'brain-booster-gummies' -%}
+              {%- assign tone = '--c-mango' -%}{%- assign deep = '--c-mango-deep' -%}
+              {%- assign who = 'Dhi' -%}{%- assign role = 'Focus' -%}{%- assign fig = 'gc3-dhi-peace.webp' -%}
+            {%- when 'eye-care-gummies' -%}
+              {%- assign tone = '--c-orange' -%}{%- assign deep = '--c-orange-deep' -%}
+              {%- assign who = 'Nain' -%}{%- assign role = 'Eye care' -%}{%- assign fig = 'gc3-nain-stand.webp' -%}
+            {%- when 'melatonin-gummies' -%}
+              {%- assign tone = '--c-cherry' -%}{%- assign deep = '--c-cherry' -%}
+              {%- assign who = 'Tara' -%}{%- assign role = 'Sleep' -%}{%- assign fig = 'gc3-tara-stand.webp' -%}
+          {%- endcase -%}
+
+          <div class="gcb-pick" style="--tone:var({{ tone }});--deep:var({{ deep }})"
+               data-variant="{{ prod.selected_or_first_available_variant.id }}"
+               data-price="{{ prod.price }}"
+               data-title="{{ prod.title | escape }}">
+            <div class="gcb-pick__art">
+              <img src="{{ fig | asset_url }}" alt="{{ who }}, the {{ role }} Chum"
+                   width="406" height="760" loading="lazy" decoding="async" draggable="false">
+            </div>
+            <p class="gcb-pick__role">{{ role }}</p>
+            <h3 class="gcb-pick__name">{{ prod.title }}</h3>
+            <p class="gcb-pick__price">{% render 'gc-money', price: prod.price %}</p>
+
+            <div class="gcb-qty" role="group" aria-label="How many {{ prod.title | escape }}">
+              <button type="button" class="gcb-step" data-step="-1"
+                      aria-label="One fewer {{ prod.title | escape }}">−</button>
+              <output class="gcb-count" data-count>0</output>
+              <button type="button" class="gcb-step" data-step="1"
+                      aria-label="One more {{ prod.title | escape }}">+</button>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="gcb-bar" data-bar>
+      <p class="gcb-bar__sum" data-summary role="status" aria-live="polite">Your box is empty.</p>
+      <button type="button" class="gcb-bar__go" data-add disabled>{{ s.cta }}</button>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function () {
+  var root = document.getElementById('chum-box');
+  if (!root) return;
+  var picks = [].slice.call(root.querySelectorAll('.gcb-pick'));
+  var summary = root.querySelector('[data-summary]');
+  var go = root.querySelector('[data-add]');
+  var money = function (p) { return '₹' + (p / 100).toFixed(0); };
+
+  /* One source of truth: the DOM carries the counts, so a re-render cannot
+     disagree with what the buttons did. */
+  function state() {
+    return picks.map(function (el) {
+      return {
+        el: el,
+        id: el.dataset.variant,
+        price: parseInt(el.dataset.price, 10),
+        title: el.dataset.title,
+        n: parseInt(el.querySelector('[data-count]').textContent, 10) || 0
+      };
+    });
+  }
+
+  function paint() {
+    var st = state();
+    var jars = st.reduce(function (a, p) { return a + p.n; }, 0);
+    var total = st.reduce(function (a, p) { return a + p.n * p.price; }, 0);
+    var kinds = st.filter(function (p) { return p.n > 0; }).length;
+
+    st.forEach(function (p) { p.el.classList.toggle('is-picked', p.n > 0); });
+
+    if (!jars) {
+      summary.textContent = 'Your box is empty.';
+    } else {
+      var all = kinds === picks.length ? ' · all three' : '';
+      summary.textContent = jars + (jars === 1 ? ' jar' : ' jars') + all + ' · ' + money(total);
+    }
+    go.disabled = !jars;
+  }
+
+  root.addEventListener('click', function (e) {
+    var step = e.target.closest('.gcb-step');
+    if (step) {
+      var out = step.parentNode.querySelector('[data-count]');
+      var next = (parseInt(out.textContent, 10) || 0) + parseInt(step.dataset.step, 10);
+      out.textContent = Math.max(0, Math.min(12, next));
+      paint();
+      return;
+    }
+    /* Tapping the card itself is the fast path: nothing in it to one, something
+       in it back to nothing. The steppers are for anyone who wants two. */
+    var card = e.target.closest('.gcb-pick');
+    if (card && !e.target.closest('.gcb-qty')) {
+      var o = card.querySelector('[data-count]');
+      o.textContent = (parseInt(o.textContent, 10) || 0) > 0 ? 0 : 1;
+      paint();
+    }
+  });
+
+  go.addEventListener('click', function () {
+    var items = state().filter(function (p) { return p.n > 0; })
+      .map(function (p) { return { id: Number(p.id), quantity: p.n }; });
+    if (!items.length) return;
+    var label = go.textContent;
+    go.disabled = true; go.textContent = 'Adding…';
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ items: items })
+    }).then(function (r) {
+      if (!r.ok) throw new Error('add failed');
+      return r.json();
+    }).then(function () {
+      window.location.href = '/cart';
+    }).catch(function () {
+      /* Never strand someone holding a full box: the cart page can still take
+         them, and the counts are preserved if they come back. */
+      go.disabled = false; go.textContent = label;
+      summary.textContent = 'Could not add that — try again, or open your bag.';
+    });
+  });
+
+  paint();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Pack your Chum Box",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Build your own ✦ mix any of the three" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Pack your Chum Box." },
+    { "type": "text", "id": "sub", "label": "Sub", "default": "Tap a Chum to add them. One box, your rules — take one of each, or three of the one you need." },
+    { "type": "text", "id": "cta", "label": "Button", "default": "Add my box to bag" }
+  ],
+  "presets": [{ "name": "Pack your Chum Box" }]
+}
+{% endschema %}
