@@ -248,3 +248,47 @@ test('every @font-face file referenced by the CSS exists in assets', () => {
   }
   assert.deepEqual(missing, [], `@font-face points at files that are not there: ${missing.join(', ')}`);
 });
+
+/* Declared width/height must match the FILE, not just exist. All three shop
+   rows carried width="406" (Dhi's width) while Nain is 316 and Tara 330, so
+   two of three reserved a box a quarter wider than the image that arrived and
+   shifted on load. The existing guard only checked the attributes were
+   present, which they were — wrongly. This reads the real pixels out of the
+   WebP header, with no dependency and no shelling out. */
+function webpSize(buf) {
+  if (buf.length < 30) return null;
+  if (buf.toString('ascii', 0, 4) !== 'RIFF' || buf.toString('ascii', 8, 12) !== 'WEBP') return null;
+  const tag = buf.toString('ascii', 12, 16);
+  if (tag === 'VP8X') return { w: buf.readUIntLE(24, 3) + 1, h: buf.readUIntLE(27, 3) + 1 };
+  if (tag === 'VP8 ') return { w: buf.readUInt16LE(26) & 0x3fff, h: buf.readUInt16LE(28) & 0x3fff };
+  if (tag === 'VP8L') {
+    const b = buf.readUInt32LE(21);
+    return { w: (b & 0x3fff) + 1, h: ((b >> 14) & 0x3fff) + 1 };
+  }
+  return null;
+}
+
+test('declared image dimensions match the actual asset files', () => {
+  const problems = [];
+  const files = [...gcSections().map((f) => [f, join(SECTIONS, f)]),
+                 ...readdirSync(join(THEME, 'snippets')).filter((f) => /^gc/.test(f))
+                   .map((f) => [f, join(THEME, 'snippets', f)])];
+  for (const [label, path] of files) {
+    const src = read(path);
+    for (const m of src.matchAll(/<img\b[^>]*?>/gs)) {
+      const tag = m[0];
+      const file = (tag.match(/'([\w.-]+\.webp)'/) || [])[1];
+      const w = (tag.match(/width="(\d+)"/) || [])[1];
+      const h = (tag.match(/height="(\d+)"/) || [])[1];
+      if (!file || !w || !h) continue;
+      const asset = join(ASSETS, file);
+      if (!existsSync(asset)) continue;
+      const real = webpSize(readFileSync(asset));
+      if (!real) continue;
+      if (Number(w) !== real.w || Number(h) !== real.h) {
+        problems.push(`${label}: ${file} declared ${w}x${h}, file is ${real.w}x${real.h}`);
+      }
+    }
+  }
+  assert.deepEqual(problems, [], `wrong intrinsic size (causes layout shift):\n${problems.join('\n')}`);
+});

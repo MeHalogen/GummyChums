@@ -1,0 +1,98 @@
+{%- comment -%}
+  The Chum who is always there.
+
+  A small Chum strolls along the bottom of the viewport on every page, turns
+  around at each end, and bobs as she goes.
+
+  Built to cost nothing, because it is on screen permanently and the scroll was
+  only just made smooth:
+    - CSS animation only. No rAF loop, no scroll listener, no JS at all.
+    - transform only — translateX for the walk, translateY/rotate for the bob.
+      Both are compositor properties, so this never triggers layout or paint.
+    - No filter, no blend mode. Those are the two things that forced per-frame
+      re-rasterising elsewhere in this theme.
+    - Two nested elements so the walk and the bob own separate transforms
+      instead of fighting over one.
+    - pointer-events:none, so it can never swallow a tap meant for the page.
+
+  It walks the LEFT side only: the WhatsApp button lives bottom-right and the
+  two must not meet.
+
+  Params:
+    chum  asset filename. Default gc3-nain-back.webp.
+
+  Why the BACK view: the hero already stands dhi-peace, tara-stand and
+  nain-stand across the bottom of the homepage, all facing front. A fourth
+  front-facing Chum walking past them read as the same character duplicated.
+  Seen from behind he is plainly a different element — someone strolling
+  through — and the pose is the only one of the eight that suits walking.
+{%- endcomment -%}
+{%- assign chum = chum | default: 'gc3-nain-back.webp' -%}
+{%- comment -%} must match the file: gc3-nain-back.webp is 330x760, not the 554 Tara is {%- endcomment -%}
+{%- assign chum_w = chum_w | default: 330 -%}
+<style>
+  /* Hidden and PAUSED until he is let in. The homepage hero already stands
+     three Chums across the bottom of the viewport, and a fourth walking
+     through them read as a collision rather than as company. Paused, not just
+     transparent, so an off-screen animation is not being ticked for nothing. */
+  .gc-buddy{position:fixed;left:0;bottom:calc(var(--buddy-w) * -0.10);z-index:40;pointer-events:none;
+    width:var(--buddy-w);height:auto;line-height:0;
+    will-change:transform;opacity:0;transition:opacity .45s ease;
+    animation:gcBuddyWalk 34s linear infinite;animation-play-state:paused}
+  .gc-buddy.is-on{opacity:1;animation-play-state:running}
+  .gc-buddy__in{display:block;line-height:0;
+    animation:gcBuddyBob 1.7s ease-in-out infinite alternate}
+  .gc-buddy img{display:block;width:100%;height:auto;
+    -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+
+  /* Smaller on a phone, where the bottom-left corner is where prices and
+     meta lines sit. He also sinks slightly past the edge so he reads as
+     walking ALONG the bottom rather than standing on top of the content. */
+  :root{--buddy-w:clamp(56px,7vw,104px)}
+
+  /* The walk: out to the far end, turn, back, turn. scaleX flips her at the
+     exact frame she stops, so she always faces the way she is going. The
+     distance is the viewport minus her own width and the gutter, so she never
+     clips off the edge and never reaches the WhatsApp button. */
+  @keyframes gcBuddyWalk{
+    0%   {transform:translateX(var(--gutter)) scaleX(1)}
+    46%  {transform:translateX(calc(52vw - var(--buddy-w))) scaleX(1)}
+    50%  {transform:translateX(calc(52vw - var(--buddy-w))) scaleX(-1)}
+    96%  {transform:translateX(var(--gutter)) scaleX(-1)}
+    100% {transform:translateX(var(--gutter)) scaleX(1)}
+  }
+  @keyframes gcBuddyBob{
+    from{transform:translateY(0) rotate(-2.2deg)}
+    to  {transform:translateY(-7px) rotate(2.2deg)}
+  }
+
+  /* Short screens have no room for a walking figure over the content. */
+  @media (max-height:560px){.gc-buddy{display:none}}
+  @media (prefers-reduced-motion:reduce){
+    .gc-buddy{animation:none;transform:translateX(var(--gutter))}
+    .gc-buddy__in{animation:none}
+  }
+</style>
+
+<div class="gc-buddy" aria-hidden="true">
+  <span class="gc-buddy__in">
+    <img src="{{ chum | asset_url }}" alt="" width="{{ chum_w }}" height="760" loading="lazy" decoding="async" draggable="false">
+  </span>
+</div>
+
+<script>
+(function(){
+  var b = document.querySelector('.gc-buddy');
+  if (!b) return;
+  /* Only the homepage has the standing Chums. Everywhere else he walks on
+     straight away. */
+  var hero = document.querySelector('.gh-stage') || document.querySelector('.gh-pin');
+  if (!hero || !('IntersectionObserver' in window)) { b.classList.add('is-on'); return; }
+  /* One observer, no scroll listener: this fires twice on the whole page —
+     once when the hero leaves, once if it comes back — and costs nothing in
+     between. */
+  new IntersectionObserver(function (entries) {
+    b.classList.toggle('is-on', !entries[0].isIntersecting);
+  }, { threshold: 0 }).observe(hero);
+})();
+</script>

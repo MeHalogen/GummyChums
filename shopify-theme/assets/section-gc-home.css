@@ -89,8 +89,14 @@
      in normal flow there is nothing to correct. */
   /* Three columns, one per Chum. This was two for a long time and the third
      SKU's character simply did not appear on the homepage. */
+  /* ABOVE THE DOME, which is what "stand ON the pink" requires.
+     .gh-reveal tucks itself up under the feet with a -0.14 * chum-height margin
+     and carries z-index:3. The feet were at 2 (centre Chum 3), so the dome
+     painted OVER them and sliced every figure through the shoe — the taller the
+     Chum, the deeper the cut, which is why it showed up on a phone first.
+     The negative margin is the intent and stays; the stacking now matches it. */
   .gh-feet{grid-column:1 / -1;grid-row:2;display:grid;grid-template-columns:repeat(3,1fr);
-    align-items:end;z-index:2;pointer-events:none}
+    align-items:end;z-index:4;pointer-events:none}
   .gh-chum{position:relative;z-index:2;pointer-events:none;line-height:0;
     opacity:1;transform-origin:50% 100%;height:var(--gh-chum-h);
     animation:ghSway ease-in-out infinite alternate}

@@ -20,7 +20,15 @@
    nothing. */
 @font-face{font-family:'NaN Jaune Maxi';src:url('NaNJaune-MaxiMedium.woff2') format('woff2');
   font-weight:400 800;font-style:normal;font-display:swap}
-html{background:#F8EBDF}
+/* The CANVAS colour, which is what iOS shows in the rubber-band overscroll
+   past the end of the page. It was cream, so bouncing at the bottom of a phone
+   flashed cream underneath the purple footer. The footer is the last thing on
+   every page, so the canvas matches it. The top overscroll sits behind the
+   black announcement bar, where purple reads as brand rather than as a seam. */
+html{background:var(--c-purple)}
+/* body keeps the page colour; a background on body does not propagate to the
+   canvas once html has one of its own, which is exactly what we want here. */
+body{background:#F8EBDF}
 
 :root{
   /* These were a SECOND copy of the palette, written as hexes alongside the

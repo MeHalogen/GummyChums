@@ -133,15 +133,15 @@
         {%- case h -%}
           {%- when 'brain-booster-gummies' -%}
             {%- assign tone = '--c-mango' -%}{%- assign deep = '--c-mango-deep' -%}{%- assign soft = '--c-mango-soft' -%}
-            {%- assign role = 'Focus' -%}{%- assign who = 'Dhi' -%}{%- assign fig = 'gc3-dhi-peace.webp' -%}
+            {%- assign role = 'Focus' -%}{%- assign who = 'Dhi' -%}{%- assign fig = 'gc3-dhi-peace.webp' -%}{%- assign figw = 406 -%}
             {%- assign line = 'Big brain energy, tiny gummy.' -%}{%- assign active = 'Bacopa Monnieri 60mg · Mango' -%}
           {%- when 'eye-care-gummies' -%}
             {%- assign tone = '--c-orange' -%}{%- assign deep = '--c-orange-deep' -%}{%- assign soft = '--c-orange-soft' -%}
-            {%- assign role = 'Eye care' -%}{%- assign who = 'Nain' -%}{%- assign fig = 'gc3-nain-stand.webp' -%}
+            {%- assign role = 'Eye care' -%}{%- assign who = 'Nain' -%}{%- assign fig = 'gc3-nain-stand.webp' -%}{%- assign figw = 316 -%}
             {%- assign line = 'For screen-tired eyes.' -%}{%- assign active = 'Lutein · Bilberry · Vitamin A · Orange' -%}
           {%- when 'melatonin-gummies' -%}
             {%- assign tone = '--c-cherry' -%}{%- assign deep = '--c-cherry' -%}{%- assign soft = '--c-cherry-soft' -%}
-            {%- assign role = 'Sleep' -%}{%- assign who = 'Tara' -%}{%- assign fig = 'gc3-tara-stand.webp' -%}
+            {%- assign role = 'Sleep' -%}{%- assign who = 'Tara' -%}{%- assign fig = 'gc3-tara-stand.webp' -%}{%- assign figw = 330 -%}
             {%- assign line = 'Wind down. Sleep tight, Chum.' -%}{%- assign active = 'Melatonin 5mg · Chamomile · Cherry' -%}
         {%- endcase -%}
         {%- assign ga = 'r' | append: forloop.index | append: 'a' -%}
@@ -158,8 +158,14 @@
               <span class="gh-row__g gh-row__g2">{% render 'gc-gummy', tone: tone, id: gb %}</span>
               <span class="gh-row__g gh-row__g3">{% render 'gc-gummy', tone: tone, id: gc %}</span>
             </span>
+            {%- comment -%}
+              The width is per-Chum. All three rows declared 406x760, which is
+              Dhi's size — Nain is 316 wide and Tara 330, so two of the three
+              reserved a box 25% wider than the image that arrived and shifted
+              when it loaded.
+            {%- endcomment -%}
             <img class="gh-row__fig" src="{{ fig | asset_url }}" alt="{{ who }}, the {{ role }} Chum"
-                 width="406" height="760" loading="lazy" decoding="async" draggable="false">
+                 width="{{ figw }}" height="760" loading="lazy" decoding="async" draggable="false">
           </div>
 
           <div class="gh-row__copy">
