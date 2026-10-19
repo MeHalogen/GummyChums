@@ -25,8 +25,11 @@
   .gcq-sub{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-ink-2);margin:var(--sp-4) auto var(--sp-7);max-width:44ch;line-height:var(--lh-body)}
 
   /* ---- badges ---- */
+  /* max-width:840px forced a wrap after four, leaving "No added sugar" alone on
+     a second row — an orphan that read as an afterthought. The five fit on one
+     line inside the container. */
   .gcq-badges{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:var(--sp-3);
-    margin:var(--sp-6) 0 0;max-width:840px}
+    margin:var(--sp-6) 0 0}
   .gcq-actives{margin:var(--sp-4) 0 0;font-size:var(--fs-sm);color:var(--role-ink-muted)}
   /* These were white pills on a cream ground — a trust row that read as more
      cream. They cycle the three product tones so the section carries the brand's

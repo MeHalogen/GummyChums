@@ -8,8 +8,12 @@ const TOKENS = join(THEME, 'assets', 'gc-tokens.css');
 const SECTIONS = join(THEME, 'sections');
 
 const read = (p) => readFileSync(p, 'utf8');
+const ASSETS = join(THEME, 'assets');
+/* Was `startsWith('gc-')`, which quietly excluded gc2-story-teaser.liquid — the
+   one section carrying a dead `border-radius:2px solid …` declaration. Every
+   first-party section is linted now, whatever the generation prefix. */
 const gcSections = () =>
-  readdirSync(SECTIONS).filter((f) => f.startsWith('gc-') && f.endsWith('.liquid'));
+  readdirSync(SECTIONS).filter((f) => /^gc\d*-/.test(f) && f.endsWith('.liquid'));
 
 /** Strip liquid tags + comments so we only lint real CSS. */
 function styleCss(file) {
@@ -167,4 +171,42 @@ test('raw <img> tags declare both width and height', () => {
     }
   }
   assert.deepEqual(problems, [], `<img> missing width/height:\n${problems.join('\n')}`);
+});
+
+/* A malformed CSS declaration is dropped silently by the browser — nothing
+   logs, nothing fails, the rule just does not apply. `border-radius:2px solid
+   <colour>` shipped in the story teaser for exactly that reason: the author
+   meant `border`, the declaration was void, and the CTA rendered as a hard
+   rectangle on a site where every other control is a pill. */
+
+const allCss = () => {
+  const out = gcSections().map((f) => [f, styleCss(f)]);
+  for (const f of readdirSync(ASSETS).filter((n) => n.endsWith('.css'))) {
+    out.push([f, read(join(ASSETS, f)).replace(/\/\*[\s\S]*?\*\//g, '')]);
+  }
+  return out;
+};
+
+test('length-only properties never carry a border shorthand', () => {
+  // these take lengths only; a `solid`/`dashed`/`dotted` in the value means the
+  // author typed the wrong property name and the whole declaration is dead
+  const lengthOnly =
+    /(?<![-\w])(border-radius|margin|padding|gap|inset|top|right|bottom|left)\s*:\s*([^;{}]*)/g;
+  const problems = [];
+  for (const [file, css] of allCss()) {
+    for (const m of css.matchAll(lengthOnly)) {
+      if (/\b(solid|dashed|dotted|double|groove|ridge)\b/.test(m[2])) {
+        problems.push(`${file}: ${m[0].trim().slice(0, 70)}`);
+      }
+    }
+  }
+  assert.deepEqual(problems, [], `border shorthand on a length-only property:\n${problems.join('\n')}`);
+});
+
+test('no declaration is left with an empty value', () => {
+  const problems = [];
+  for (const [file, css] of allCss()) {
+    for (const m of css.matchAll(/(?<![-\w])([a-z][a-z-]+)\s*:\s*(?=[;}])/g)) problems.push(`${file}: ${m[1]}`);
+  }
+  assert.deepEqual(problems, [], `empty CSS values:\n${problems.join('\n')}`);
 });

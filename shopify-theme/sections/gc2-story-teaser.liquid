@@ -34,8 +34,10 @@
   .gcts-in::before{content:'';position:absolute;z-index:-1;
     inset:calc(var(--sp-6) * -1) 38% calc(var(--sp-6) * -1) calc(var(--gutter) * -1);
     background:var(--c-purple);border-radius:0 var(--r-lg) var(--r-lg) 0}
+  /* The panel used to stop at 38% — 300px of bare cream between its edge and the
+     Chum, with nothing in it. It now runs on until it is just behind her, so the
+     two read as one block instead of a slab and an unrelated sticker. */
   .gcts-in,.gcts h2,.gcts-body,.gcts-kick{position:relative}
-  .gcts-cta:hover{background:var(--c-purple-ink);color:var(--c-purple)}
   @media(max-width:899px){
     .gcts-in::before{inset:calc(var(--sp-5) * -1) calc(var(--gutter) * -1)}
   }
@@ -48,8 +50,13 @@
   @media(min-width:900px){
     .gcts{min-height:380px;display:grid;align-items:center}
     .gcts-in{padding-right:300px}
+    .gcts-in::before{right:200px}
 
-    .gcts-chum{display:block;position:absolute;right:4%;bottom:0;z-index:1;line-height:0;
+    /* bottom is measured against .gcts-in, the same box the panel is inset from,
+       so -sp-6 puts her feet exactly on the panel's bottom edge. Against .gcts
+       she was 27px below it and floating. */
+    .gcts-chum{display:block;position:absolute;right:0;bottom:calc(var(--sp-6) * -1);
+      z-index:1;line-height:0;
       height:330px;pointer-events:none;transform-origin:50% 100%;
       animation:gctsSway 7.5s ease-in-out infinite alternate}
     .gcts-chum img{display:block;height:100%;width:auto;
@@ -72,10 +79,13 @@
 
   .gcts-cta{display:inline-flex;align-items:center;gap:var(--sp-2);margin-top:var(--sp-6);
     font-family:inherit;font-weight:var(--fw-black);font-size:var(--fs-base);text-decoration:none;
-    color:var(--c-purple-ink);padding:var(--sp-3) var(--sp-6);border-radius:2px solid var(--c-purple-ink);
-    box-shadow:inset 0 0 0 2px var(--role-quiet-ink);
+    color:var(--c-purple-ink);padding:var(--sp-3) var(--sp-6);border-radius:var(--r-full);
+    box-shadow:inset 0 0 0 2px var(--c-purple-ink);
     transition:background var(--dur-2) var(--ease),color var(--dur-2) var(--ease)}
-  .gcts-cta:hover{background:var(--role-quiet-ink);color:var(--role-quiet-bg)}
+  /* cream ring and cream fill: this button sits on the purple panel, and the
+     --role-quiet-* pair it used to carry is the palette for the cream sections. */
+  .gcts-cta:hover{background:var(--c-purple-ink);color:var(--c-purple)}
+  .gcts-cta:focus-visible{outline:3px solid var(--role-focus);outline-offset:3px}
   .gcts-cta span{transition:transform var(--dur-2) var(--ease);display:inline-block}
   .gcts-cta:hover span{transform:translateX(4px)}
 
@@ -91,9 +101,9 @@
     <h2>{{ s.headline | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
     <p class="gcts-body">{{ s.body }}</p>
     <a class="gcts-cta" href="{{ s.link }}">{{ s.cta }} <span>→</span></a>
-  </div>
-  <div class="gcts-chum" aria-hidden="true">
-    <img src="{{ 'gc3-tara-sit.webp' | asset_url }}" alt="" width="554" height="760" loading="lazy" decoding="async" draggable="false">
+    <div class="gcts-chum" aria-hidden="true">
+      <img src="{{ 'gc3-tara-sit.webp' | asset_url }}" alt="" width="554" height="760" loading="lazy" decoding="async" draggable="false">
+    </div>
   </div>
 </section>
 
