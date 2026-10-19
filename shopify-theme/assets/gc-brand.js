@@ -55,6 +55,59 @@
     c.innerHTML = '<div class="gc-cursor__in"></div>';
     document.body.appendChild(c);
 
+    /* ---- the three gummies trailing behind ---- */
+    /* Chained lerp, straight out of index31: dot 1 chases the pointer, dot 2
+       chases dot 1, dot 3 chases dot 2, each with a smaller step, so they
+       string out behind and swing wide on a fast flick.
+
+       Two departures from the original, both deliberate.
+
+       It wrote style.left/top every frame, which is layout on every frame.
+       These are transform:translate3d, which the compositor handles.
+
+       And it ran its rAF loop forever. This one STOPS: when every dot has
+       caught up to within half a pixel and the pointer is not moving, there is
+       nothing left to animate, so the loop ends and the next pointermove
+       restarts it. A still mouse costs nothing.
+
+       Decorative motion, so reduced motion skips it entirely — the cursor
+       itself stays. */
+    var trail = [];
+    if (!reduce) {
+      [0.30, 0.23, 0.16].forEach(function (k, i) {
+        // A SPAN, not a div, on purpose. base.css carries
+        // `div:empty{display:none}` and these dots are empty by design — pure
+        // colour, no content. As divs all three were hidden while their width,
+        // colour and transforms applied perfectly, so they were being
+        // positioned every frame and never painted. `div:empty` is (0,1,1) and
+        // beats a plain class, so .gc-trail{display:block} does not win it;
+        // span is simply not in Dawn's list.
+        var el = document.createElement('span');
+        el.className = 'gc-trail gc-trail--' + (i + 1);
+        el.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(el);
+        trail.push({ el: el, x: innerWidth / 2, y: innerHeight / 2, k: k });
+      });
+    }
+    var tx = innerWidth / 2, ty = innerHeight / 2, raf = null;
+
+    function step() {
+      var px = tx, py = ty, moving = false;
+      for (var i = 0; i < trail.length; i++) {
+        var t = trail[i];
+        t.x += (px - t.x) * t.k;
+        t.y += (py - t.y) * t.k;
+        if (Math.abs(px - t.x) > 0.5 || Math.abs(py - t.y) > 0.5) moving = true;
+        t.el.style.transform = 'translate3d(' + t.x + 'px,' + t.y + 'px,0) translate(-50%,-50%)';
+        px = t.x; py = t.y;
+      }
+      raf = moving ? requestAnimationFrame(step) : null;
+    }
+    function wake() { if (raf == null && trail.length) raf = requestAnimationFrame(step); }
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden && raf != null) { cancelAnimationFrame(raf); raf = null; }
+    });
+
     // Set the transform directly in the handler. Browsers already coalesce
     // pointermove to one event per frame, so a rAF loop only adds latency and
     // burns the main thread while idle.
@@ -67,13 +120,21 @@
     addEventListener('pointermove', function (e) {
       c.style.transform = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0) translate(-50%,-50%)';
       if (!c.classList.contains('on')) c.classList.add('on');
+      tx = e.clientX; ty = e.clientY;
+      for (var n = 0; n < trail.length; n++) {
+        if (!trail[n].el.classList.contains('on')) trail[n].el.classList.add('on');
+      }
+      wake();
       var now = e.timeStamp || performance.now();
       if (now - lastHotCheck < HOT_MS) return;
       lastHotCheck = now;
       var hot = e.target.closest && e.target.closest('a,button,input,summary,[role="button"],.gc-card');
       c.classList.toggle('big', !!hot);
     }, { passive: true });
-    document.addEventListener('mouseleave', function () { c.classList.remove('on'); });
+    document.addEventListener('mouseleave', function () {
+      c.classList.remove('on');
+      for (var n = 0; n < trail.length; n++) trail[n].el.classList.remove('on');
+    });
   }
 
   /* ---------- click ripple + gummy splash + colour flash ---------- */

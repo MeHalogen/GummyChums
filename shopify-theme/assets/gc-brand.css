@@ -220,6 +220,32 @@ p,li,a,span,div,button,input,label{font-family:'Manrope',system-ui,sans-serif}
   transform:scale(1);transition:transform .18s var(--gc-spring)}
 #gc-cursor.big .gc-cursor__in{transform:scale(1.5)}
 @media (prefers-reduced-motion:reduce){#gc-cursor .gc-cursor__in{transition:none}}
+/* THE THREE GUMMIES TRAILING BEHIND, from index31's cursor.
+   Chained lerp: the first chases the pointer, each next chases the one ahead,
+   with a smaller step each time, so they string out and swing wide on a fast
+   flick. Same organic blob and inset highlight as the cursor itself, in the
+   three flavour colours, stepping down in size.
+
+   index31 moved these with left/top every frame, which is layout on every
+   frame. These are transform-only. They are also PURELY decorative motion, so
+   they stay off under prefers-reduced-motion while the cursor itself remains. */
+/* display:block is NOT redundant. base.css carries `div:empty{display:none}`,
+   and these dots are empty divs by design — they are pure colour, no content.
+   That rule hid all three while width, colour and the transforms all applied
+   perfectly, so they were being positioned every frame and never painted. The
+   cursor escapes it only because it has a child element inside. */
+.gc-trail{position:fixed;left:0;top:0;z-index:9998;pointer-events:none;display:block;
+  border-radius:46% 54% 52% 48%/48% 46% 54% 52%;
+  opacity:0;transition:opacity .3s;will-change:transform}
+.gc-trail.on{opacity:.55}
+.gc-trail--1{width:14px;height:14px;background:var(--c-cherry);
+  box-shadow:inset -2px -2px 4px rgba(0,0,0,.2),inset 2px 2px 4px rgba(255,255,255,.55)}
+.gc-trail--2{width:11px;height:11px;background:var(--c-orange);
+  box-shadow:inset -2px -2px 3px rgba(0,0,0,.2),inset 2px 2px 3px rgba(255,255,255,.55)}
+.gc-trail--3{width:8px;height:8px;background:var(--c-lime);
+  box-shadow:inset -1px -1px 3px rgba(0,0,0,.2),inset 1px 1px 3px rgba(255,255,255,.55)}
+@media (hover:none){.gc-trail{display:none}}
+@media (prefers-reduced-motion:reduce){.gc-trail{display:none}}
 @media (hover:none){#gc-cursor{display:none}}
 
 /* ---- click ripple + splash (back from the coming-soon page) ---- */
