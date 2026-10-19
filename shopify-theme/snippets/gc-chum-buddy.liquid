@@ -84,15 +84,29 @@
 (function(){
   var b = document.querySelector('.gc-buddy');
   if (!b) return;
-  /* Only the homepage has the standing Chums. Everywhere else he walks on
-     straight away. */
-  var hero = document.querySelector('.gh-stage') || document.querySelector('.gh-pin');
-  if (!hero || !('IntersectionObserver' in window)) { b.classList.add('is-on'); return; }
-  /* One observer, no scroll listener: this fires twice on the whole page —
-     once when the hero leaves, once if it comes back — and costs nothing in
-     between. */
-  new IntersectionObserver(function (entries) {
-    b.classList.toggle('is-on', !entries[0].isIntersecting);
-  }, { threshold: 0 }).observe(hero);
+
+  /* He stays out of two places.
+
+     The hero, because it already stands three Chums across the bottom of the
+     viewport and a fourth walking through them read as a collision.
+
+     The footer, because the bottom-left of it carries the manufacturer and
+     FSSAI licence line. He was walking straight over it. Legal text that a
+     customer or a regulator may need to read does not get a mascot on top
+     of it. */
+  var zones = [document.querySelector('.gh-stage') || document.querySelector('.gh-pin'),
+               document.querySelector('.gcf')].filter(Boolean);
+
+  if (!zones.length || !('IntersectionObserver' in window)) { b.classList.add('is-on'); return; }
+
+  /* One observer over both zones, no scroll listener. Each entry keeps its own
+     state so leaving the hero does not un-hide him over the footer. */
+  var hidden = Object.create(null);
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { hidden[zones.indexOf(e.target)] = e.isIntersecting; });
+    var blocked = zones.some(function (_, i) { return hidden[i]; });
+    b.classList.toggle('is-on', !blocked);
+  }, { threshold: 0 });
+  zones.forEach(function (z) { io.observe(z); });
 })();
 </script>

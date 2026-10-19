@@ -338,6 +338,12 @@
   @media (prefers-reduced-motion:reduce){
     .gh-stage{height:auto}.gh-pin{position:relative;height:auto;padding:70px 0}
     .gh-pin .gh-gummy{display:none}.gh-mid{opacity:1!important}.gh-reveal{display:none}
+    /* .gh-edge pulls itself up 128px to sit on the dome's reserved bottom
+       padding. This block deletes the dome — so that -128px had nothing left
+       to overlap and climbed into the Chums instead, cutting the feet off by
+       58px on a phone. Anyone browsing with Reduce Motion on saw a broken
+       hero, which is why it never showed up in ordinary testing. */
+    .gh-edge{margin-top:0}
     .gh-chum{animation:none;opacity:1}
     .gh-g{animation:none}
   }
