@@ -12,22 +12,25 @@
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 {%- comment -%}
-  The certificate data lived twice: once in the full-layout cards and once
-  nowhere, because the homepage hid all of it behind a link. It is defined once
-  here so the two layouts cannot drift apart.
+  The certificate numbers appear only in the full layout (/pages/story) and in
+  the footer's manufacturer line. They are assigned once here so the references
+  cannot drift apart.
 
   These certificates are issued to the MANUFACTURER, not to GummyChums. That
-  attribution is carried in the docket footer and in the full-layout disclaimer
-  and must not be dropped.
+  attribution is carried in the full-layout disclaimer and in the footer's
+  manufacturer line, and must not be dropped.
 {%- endcomment -%}
 {%- assign fssai_no   = '10017051002083' -%}
 {%- assign gmp_no     = 'EI_FA_UC_056' -%}
 {%- assign fssc_no    = 'EI_FA_SC_408' -%}
 {%- assign cert_valid = 'Valid to Nov 2028' -%}
-{%- assign maker      = 'Biovencer Healthcare Private Limited' -%}
-{%- assign maker_city = 'Greater Noida, Uttar Pradesh' -%}
 <style>
   .gcq{background:var(--role-quiet-bg);padding:clamp(var(--sp-8),7vw,var(--sp-9)) var(--gutter)}
+  /* the rail is a thin ruled band, not a section with a headline */
+  .gcq--strip{padding-block:clamp(var(--sp-6),4vw,var(--sp-7))}
+  .gcq--strip .gcq-in{border-top:1px solid var(--role-line);border-bottom:1px solid var(--role-line);
+    padding-block:clamp(var(--sp-5),3vw,var(--sp-6))}
+  .gcq--strip .gcq-badges{margin-top:0}
   .gcq-in{max-width:var(--container);margin-inline:auto}
   .gcq-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;font-size:var(--fs-xs);color:var(--c-accent);margin:0}
   /* `margin: … auto …` was still centring this after the section went
@@ -44,50 +47,10 @@
      a second row — an orphan that read as an afterthought. The five fit on one
      line inside the container. */
   .gcq-badges{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:var(--sp-3);
-    margin:var(--sp-6) 0 0;max-width:600px}
-
-  /* TWO COLUMNS, BECAUSE THE RIGHT HALF WAS EMPTY.
-     The heading capped at 20ch and the badges capped at 600px both sit in the
-     left column; the right half of this section was bare cream for its full
-     height. The section's own promise is "backed by paperwork, not vibes" and
-     the paperwork — real licence numbers, real certificate references — was
-     hidden behind a link. It is on the page now, in the space that was empty. */
-  .gcq-split{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(var(--sp-7),5vw,var(--sp-8))}
-  @media(min-width:900px){
-    .gcq-split{grid-template-columns:minmax(0,1fr) clamp(300px,30vw,392px)}
-    /* The docket is the taller column, so the left one stretches to match and
-       drops its closing link to the baseline — otherwise the text stopped
-       halfway up and left its own hole beside the card. */
-    .gcq-split > :first-child{display:flex;flex-direction:column}
-    .gcq-split .gcq-more{margin-top:auto;align-self:flex-start}
-    .gcq-docket{align-self:start}
-  }
-
-  .gcq-docket{position:relative;background:var(--c-surface);
-    border:2px solid var(--role-page-ink);border-radius:var(--r-md);
-    box-shadow:7px 7px 0 var(--role-page-ink);
-    padding:var(--sp-5) var(--sp-5) var(--sp-4)}
-  .gcq-docket__top{display:flex;align-items:flex-start;justify-content:space-between;
-    gap:var(--sp-4);padding-bottom:var(--sp-4);border-bottom:2px solid var(--role-page-ink)}
-  .gcq-docket__tag{margin:0;font-size:var(--fs-xs);font-weight:var(--fw-black);
-    letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--c-ink-2)}
-  .gcq-docket__seal{flex:none;line-height:0}
-  .gcq-docket__seal .gc2-kolam{display:block}
-  .gcq-docket dl{margin:0}
-  .gcq-doc{padding:var(--sp-3) 0;border-bottom:1px solid var(--role-line)}
-  .gcq-doc:last-of-type{border-bottom:0;padding-bottom:var(--sp-3)}
-  .gcq-doc dt{margin:0 0 var(--sp-1);font-size:var(--fs-xs);font-weight:var(--fw-bold);
-    letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--role-ink-muted)}
-  .gcq-doc dd{margin:0;font-size:var(--fs-base);font-weight:var(--fw-black);color:var(--c-ink);
-    font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-  .gcq-doc dd small{display:block;margin-top:var(--sp-1);font-size:var(--fs-xs);
-    font-weight:var(--fw-body);color:var(--c-ink-3);font-variant-numeric:normal}
-  .gcq-docket__foot{margin:var(--sp-4) 0 0;padding-top:var(--sp-4);
-    border-top:1px solid var(--role-line);
-    font-size:var(--fs-xs);font-weight:var(--fw-body);line-height:var(--lh-body);color:var(--c-ink-3)}
+    margin:var(--sp-6) 0 0}
   .gcq-actives{margin:var(--sp-4) 0 0;font-size:var(--fs-sm);color:var(--role-ink-muted)}
   /* These were white pills on a cream ground — a trust row that read as more
-     cream. They cycle the three product tones so the section carries the brand's
+     cream. They cycle the three product tones so the rail carries the brand's
      colour without a band behind it. The ink stays dark on every one of them:
      cream on mango is 2.6:1 and fails, which is why the tint is light and the
      text is not. */
@@ -99,11 +62,6 @@
   .gcq-badge:nth-child(3n+1){background:color-mix(in srgb, var(--c-mango) 34%, var(--c-surface))}
   .gcq-badge:nth-child(3n+2){background:color-mix(in srgb, var(--c-orange) 30%, var(--c-surface))}
   .gcq-badge:nth-child(3n+3){background:color-mix(in srgb, var(--c-cherry) 26%, var(--c-surface))}
-  .gcq-more{display:inline-flex;align-items:center;gap:var(--sp-2);margin-top:var(--sp-7);
-    font-weight:var(--fw-black);font-size:var(--fs-base);color:var(--c-ink);text-decoration:none;
-    padding:var(--sp-1) 0;border-bottom:2.5px solid var(--c-ink)}
-  .gcq-more span{display:inline-block;transition:transform var(--dur-2) var(--ease)}
-  .gcq-more:hover span{transform:translateX(5px)}
 
   /* ---- full cards ---- */
   /* A LEDGER, NOT A CARD GRID.
@@ -132,19 +90,20 @@
 
 
   @media (prefers-reduced-motion:reduce){.gcq-card{transition:none}}
-  @media (prefers-reduced-motion:reduce){.gcq-more span{transition:none}}
 </style>
 
-<section class="gcq">
+<section class="gcq{% if s.layout == 'badges' %} gcq--strip{% endif %}">
   <div class="gcq-in">
-    <p class="gcq-kick">{{ s.kicker }}</p>
-    <h2 class="gcq-title">{{ s.title }}</h2>
-
     {%- if s.layout == 'badges' -%}
-    {%- assign seal_id = 'quality-seal' -%}
-    <div class="gcq-split">
-      <div>
-      <p class="gcq-sub">{{ s.sub }}</p>
+      {%- comment -%}
+        A RAIL, NOT A SECTION.
+        This carried a kicker, a 56px heading, a lede, a certificate card and a
+        "See the certificates" button — a full content section for something
+        nobody scrolls a homepage to read. Three of its five badges already
+        scroll past in the announcement marquee at the top of the same page.
+        The licence number lives in the footer, where it is legally required
+        and where people actually look for it. What is left is the rail.
+      {%- endcomment -%}
       <div class="gcq-badges gc-rise">
         <span class="gcq-badge gc-mark">FSSAI licensed</span>
         <span class="gcq-badge gc-mark">Every batch lab-tested</span>
@@ -152,43 +111,11 @@
         <span class="gcq-badge gc-mark">Made in India</span>
         <span class="gcq-badge gc-mark">No added sugar</span>
       </div>
-      {%- comment -%}
-        The actives, displaced from the hero when the dome became the threshold.
-        A list rather than a claim, so it reads as a line and not as a badge.
-      {%- endcomment -%}
       <p class="gcq-actives">Bacopa · Melatonin · Lutein</p>
-      <a class="gcq-more" href="{{ s.more_link }}">{{ s.more_label }} <span>→</span></a>
-      </div>
-
-      {%- comment -%}
-        The docket. Every number here is real and already vetted — the same
-        values the full layout prints — and they belong to our manufacturer,
-        which the footer says plainly.
-      {%- endcomment -%}
-      <aside class="gcq-docket gc-rise">
-        <div class="gcq-docket__top">
-          <p class="gcq-docket__tag">On file</p>
-          <span class="gcq-docket__seal">{% render 'gc2-kolam', id: seal_id, tone: '--c-cherry', size: 56 %}</span>
-        </div>
-        <dl>
-          <div class="gcq-doc">
-            <dt>FSSAI manufacturing licence</dt>
-            <dd>{{ fssai_no }}</dd>
-          </div>
-          <div class="gcq-doc">
-            <dt>GMP · Eurofins Assurance India</dt>
-            <dd>{{ gmp_no }}<small>{{ cert_valid }}</small></dd>
-          </div>
-          <div class="gcq-doc">
-            <dt>FSSC 22000 · ISO 22000:2018</dt>
-            <dd>{{ fssc_no }}<small>{{ cert_valid }}</small></dd>
-          </div>
-        </dl>
-        <p class="gcq-docket__foot">Certificates issued to our manufacturer, {{ maker }}, {{ maker_city }}.</p>
-      </aside>
-    </div>
 
     {%- else -%}
+      <p class="gcq-kick">{{ s.kicker }}</p>
+      <h2 class="gcq-title">{{ s.title }}</h2>
       <p class="gcq-sub">{{ s.sub }}</p>
       <div class="gcq-grid">
         <div class="gcq-card">
@@ -240,8 +167,6 @@
       ], "default": "full" },
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "✦ The boring but important bit" },
     { "type": "text", "id": "title", "label": "Title", "default": "Real labs. Real certificates. Real gummies." },
-    { "type": "text", "id": "more_label", "label": "Badge layout — link label", "default": "See the certificates" },
-    { "type": "text", "id": "more_link", "label": "Badge layout — link URL", "info": "Type \"url\" is not used here because Shopify rejects a default on url settings.", "default": "/pages/story" },
     { "type": "textarea", "id": "sub", "label": "Full layout — subtitle",
       "default": "We're not just cute — every claim on this page is backed by paperwork, not vibes." },
     { "type": "textarea", "id": "disclaimer", "label": "Full layout — disclaimer",

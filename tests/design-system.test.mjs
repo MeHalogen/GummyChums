@@ -210,3 +210,14 @@ test('no declaration is left with an empty value', () => {
   }
   assert.deepEqual(problems, [], `empty CSS values:\n${problems.join('\n')}`);
 });
+
+/* The trust badges lost their pill styling once — a block deletion that was
+   meant to remove a card took .gcq-badge and .gcq-actives out with it, and the
+   checks in flight only counted badges rather than looking at them, so plain
+   text passed. Cheap assertion that the rules still exist. */
+test('the trust badges are still styled as pills', () => {
+  const css = styleCss('gc-quality.liquid');
+  for (const need of ['.gcq-badge{', 'border-radius:var(--r-full)', '.gcq-actives{']) {
+    assert.ok(css.includes(need), `gc-quality.liquid lost "${need}"`);
+  }
+});
