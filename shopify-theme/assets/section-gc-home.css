@@ -157,7 +157,14 @@
   .gh-cta2:hover span{transform:translateX(5px)}
   .gh-logo{display:block;width:min(470px,74vw);height:auto;margin:0 auto var(--sp-5);
     -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none;pointer-events:none}
-  .gh-tag{color:var(--gh-ink);font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);line-height:var(--lh-tight);margin:0 auto;max-width:17ch}
+  /* The hero headline stays in MANROPE, not the display face. Mehal: "the
+     supplement brand thing, I think Manrope was better there." NaN Jaune is the
+     header/subheader face; this line sits directly under the wordmark and the
+     two display faces competed. !important because the global h1-h4 rule sets
+     the display family with !important. */
+  .gh-tag{color:var(--gh-ink);font-family:'Manrope',system-ui,sans-serif !important;
+    font-size:var(--fs-3xl);font-weight:var(--fw-black) !important;letter-spacing:var(--ls-tight);
+    line-height:var(--lh-tight);margin:0 auto;max-width:17ch}
   .gh-sub{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--gh-ink-soft);margin:var(--sp-3) auto 0;max-width:34ch;line-height:var(--lh-body)}
   .gh-cta{margin-top:var(--sp-5);display:flex;align-items:center;justify-content:center;gap:var(--sp-4);flex-wrap:wrap}
   .gh-pills{display:flex;gap:var(--sp-2);justify-content:center;flex-wrap:wrap;margin-top:var(--sp-4)}

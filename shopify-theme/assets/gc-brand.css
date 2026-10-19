@@ -6,10 +6,20 @@
 /* NaN Jaune Maxi — the brand's display face (NaN / Studio Triple), the licensed
    build and NOT the TRIAL file, which is not permitted on the web. Headings
    only; Manrope stays the body face, which is the pairing the brand book sets.
-   One weight, because headings are forced to 800 and nothing asks for another.
-   The full subfamily is sixteen files and ~1.4MB. */
-@font-face{font-family:'NaN Jaune Maxi';src:url('NaNJaune-MaxiBlack.woff2') format('woff2');
-  font-weight:800;font-style:normal;font-display:swap}
+
+   MEDIUM, NOT BLACK. This first shipped as Black because the headings were
+   already forced to 800 from their Manrope days, and the result read as bold
+   everywhere — the brand book specifies Maxi Medium as the display face, and
+   it was right.
+
+   The weight range matters: seventeen rules across the theme still ask for
+   --fw-black (800). A static face declared at a single weight would make the
+   browser SYNTHESISE bold for every one of them, which is a smeared fake and
+   looks worse than real Black. Declaring the range tells the browser this file
+   serves 400–800, so it draws the real Medium outlines and synthesises
+   nothing. */
+@font-face{font-family:'NaN Jaune Maxi';src:url('NaNJaune-MaxiMedium.woff2') format('woff2');
+  font-weight:400 800;font-style:normal;font-display:swap}
 html{background:#F8EBDF}
 
 :root{

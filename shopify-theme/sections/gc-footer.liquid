@@ -16,7 +16,13 @@
   .gcf-cols{display:flex;flex-wrap:wrap;gap:var(--sp-8)}
   /* single accent element for the whole footer: the column headings. everything
      else stays on neutral --c-purple-ink/opacity steps — no cherry/mango/orange chrome */
-  .gcf-col h4{margin:0 0 var(--sp-4);font-size:var(--fs-xs);font-weight:var(--fw-black);
+  /* MANROPE, not the display face. These are h4, so the global heading rule
+     put them in NaN Jaune — and at 12px uppercase with wide tracking its
+     geometric letterforms stop resolving: "COMPANY" read as "OOMPANV", the C
+     closing into an O and the Y flattening to a V. A display face earns its
+     keep at display size; these are navigation labels. */
+  .gcf-col h4{margin:0 0 var(--sp-4);font-family:'Manrope',system-ui,sans-serif !important;
+    font-size:var(--fs-xs);font-weight:var(--fw-black);
     letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--c-accent)}
   .gcf-col a,.gcf-col span{display:block;margin-bottom:var(--sp-3);color:var(--c-purple-ink);opacity:.78;
     font-size:var(--fs-base);font-weight:var(--fw-body);text-decoration:none;
