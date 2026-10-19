@@ -17,9 +17,13 @@
      copy — so the only real footage on the site was the smallest element in its
      own section. The proportions are swapped, and the copy stays left-aligned on
      a phone instead of centring, which is the shape every other section had. */
+  /* The swap above was never real. The video column won the ratio, but the stage
+     inside it was still capped at max-width:340px, so 298px of that column was
+     empty — the section's whole right-hand edge. The column is sized to the
+     video now instead of the video being capped inside an oversized column. */
   .gcr-in{position:relative;z-index:1;max-width:var(--container);margin-inline:auto;
-    display:grid;grid-template-columns:minmax(0,0.78fr) minmax(0,1fr);gap:clamp(var(--sp-6),5vw,var(--sp-8));
-    align-items:center}
+    display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,26vw,380px);
+    gap:clamp(var(--sp-6),5vw,var(--sp-8));align-items:center}
   @media(max-width:899px){.gcr-in{grid-template-columns:1fr}}
 
   .gcr-kick{font-weight:var(--fw-black);letter-spacing:var(--ls-wide);text-transform:uppercase;
@@ -35,8 +39,9 @@
   @media(max-width:899px){.gcr-cta{justify-content:center}}
 
   /* 9:16 stage — aspect-ratio keeps it from jumping while the video loads */
-  .gcr-stage{position:relative;width:100%;max-width:340px;aspect-ratio:9/16;
+  .gcr-stage{position:relative;width:100%;aspect-ratio:9/16;
     border-radius:var(--r-lg);overflow:hidden;background:var(--c-ink);box-shadow:var(--sh-3)}
+  @media(max-width:899px){.gcr-stage{max-width:360px;margin-inline:auto}}
   .gcr-stage video{width:100%;height:100%;object-fit:cover;display:block}
   .gcr-stage img{width:100%;height:100%;object-fit:cover;display:block}
 

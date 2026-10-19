@@ -11,7 +11,10 @@
 <style>
 
   .gcts{position:relative;overflow:hidden;background:var(--role-quiet-bg);color:var(--role-quiet-ink);
-    padding:clamp(var(--sp-7),5vw,var(--sp-8)) var(--gutter)}
+    padding:clamp(var(--sp-7),5vw,var(--sp-8)) var(--gutter);
+    /* room for the stepped edge below the panel — .gcts clips, and without this
+       the peaks were sheared off halfway down. */
+    padding-bottom:calc(clamp(var(--sp-7),5vw,var(--sp-8)) + var(--sp-6))}
   .gcts::before{content:"";position:absolute;inset:0;pointer-events:none;
     background:radial-gradient(46vw 46vw at 12% 0%, var(--c-accent-soft), transparent 62%)}
   /* EDITORIAL, NOT CENTRED.
@@ -33,10 +36,20 @@
      deliberate space rather than as the absence of a decision. */
   .gcts-in::before{content:'';position:absolute;z-index:-1;
     inset:calc(var(--sp-6) * -1) 38% calc(var(--sp-6) * -1) calc(var(--gutter) * -1);
-    background:var(--c-purple);border-radius:0 var(--r-lg) var(--r-lg) 0}
+    background:var(--c-purple);border-radius:0 var(--r-lg) 0 0}
   /* The panel used to stop at 38% — 300px of bare cream between its edge and the
      Chum, with nothing in it. It now runs on until it is just behind her, so the
      two read as one block instead of a slab and an unrelated sticker. */
+  /* THE HANDOFF.
+     The panel used to stop dead and hand the page 116px of blank cream before
+     the next heading. The site already owns a device for a purple block meeting
+     cream — the stepped edge from the brand book, which gc-story.liquid puts
+     above and below its panel. The teaser was the only purple block without it.
+     Peaks point down, so the purple walks into the section underneath instead
+     of being guillotined. */
+  .gcts-teeth{position:absolute;line-height:0;pointer-events:none;
+    left:calc(var(--gutter) * -1);right:calc(var(--gutter) * -1);
+    top:calc(100% + var(--sp-5))}
   .gcts-in,.gcts h2,.gcts-body,.gcts-kick{position:relative}
   @media(max-width:899px){
     .gcts-in::before{inset:calc(var(--sp-5) * -1) calc(var(--gutter) * -1)}
@@ -51,6 +64,7 @@
     .gcts{min-height:380px;display:grid;align-items:center}
     .gcts-in{padding-right:300px}
     .gcts-in::before{right:200px}
+    .gcts-teeth{right:200px;top:calc(100% + var(--sp-6))}
 
     /* bottom is measured against .gcts-in, the same box the panel is inset from,
        so -sp-6 puts her feet exactly on the panel's bottom edge. Against .gcts
@@ -101,6 +115,8 @@
     <h2>{{ s.headline | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
     <p class="gcts-body">{{ s.body }}</p>
     <a class="gcts-cta" href="{{ s.link }}">{{ s.cta }} <span>→</span></a>
+    {%- assign teeth_id = 'story-teaser-bot' -%}
+    <div class="gcts-teeth">{% render 'gc2-edge', id: teeth_id, tone: '--c-purple', side: 'top', scale: 2 %}</div>
     <div class="gcts-chum" aria-hidden="true">
       <img src="{{ 'gc3-tara-sit.webp' | asset_url }}" alt="" width="554" height="760" loading="lazy" decoding="async" draggable="false">
     </div>
