@@ -50,10 +50,14 @@
     var c = document.createElement('div');
     c.id = 'gc-cursor';
     c.setAttribute('aria-hidden', 'true');
+    // wrapper carries the hover scale; see gc-brand.css — the outer element's
+    // transform belongs to position and the svg's to the wobble.
     c.innerHTML =
+      '<div class="gc-cursor__in">' +
       '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
       '<path d="' + GPATH + '" fill="#DE1D61"/>' +
-      '<ellipse cx="35" cy="28" rx="15" ry="9" fill="#fff" opacity=".75" transform="rotate(-25 35 28)"/></svg>';
+      '<ellipse cx="35" cy="28" rx="15" ry="9" fill="#fff" opacity=".75" transform="rotate(-25 35 28)"/></svg>' +
+      '</div>';
     document.body.appendChild(c);
 
     // Set the transform directly in the handler. Browsers already coalesce

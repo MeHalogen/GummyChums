@@ -86,9 +86,17 @@ html{background:#F8EBDF}
    tactile textures", and the smooth washes we had read as polished rather
    than expressive. Tiled from a pre-rasterised asset; multiply keeps it
    sitting in the colour rather than fogging it. */
+/* The blend mode is gone at every width, not just on phones.
+   mix-blend-mode has to read what is behind it, so a layer carrying one cannot
+   be composited on its own — and .gc-bg is position:fixed, inset:0. The browser
+   therefore re-blends a full-screen layer against the page on every scrolled
+   frame, for the whole length of the page. That was already understood here:
+   phones dropped it for this exact reason. On a 2x desktop display it is ~5M
+   pixels of per-frame work, which is a scroll cost, not a paint-once cost.
+   Plain opacity composites once and then simply moves. */
 .gc-bg::before{content:"";position:absolute;inset:0;pointer-events:none;
   background-image:var(--gc-grain);background-repeat:repeat;background-size:180px 180px;
-  opacity:.42;mix-blend-mode:multiply}
+  opacity:.30}
 /* Phones drop the blend and soften the blurs. .gc-bg is a full-screen FIXED
    layer; a blend mode on one of those cannot be composited on its own, so the
    browser re-blends it against the page beneath on every scrolled frame, and
@@ -99,7 +107,6 @@ html{background:#F8EBDF}
    reads as a soft wash at phone size. Desktop keeps both exactly as they were. */
 @media(max-width:749px){
   .gc-bg{transform:translateZ(0)}
-  .gc-bg::before{mix-blend-mode:normal;opacity:.30}
   .gc-bg i{filter:blur(34px);opacity:.5}
 }
 
@@ -110,10 +117,18 @@ html{background:#F8EBDF}
 .gc-bg::after{content:"";position:absolute;inset:0;
   background:radial-gradient(40vw 30vw at 50% 46%, rgba(255,248,251,.42), transparent 72%)}
 
-/* smooth anchor scrolling + stop scroll-anchoring jumps */
-/* Belt and braces: nothing should ever scroll the page sideways. iOS is more
-   willing than desktop to expose a few px of overflow as a real scroll. */
-html{scroll-behavior:smooth;overflow-anchor:none;overflow-x:clip}
+/* The comment that used to sit here said overflow-anchor:none was there to
+   "stop scroll-anchoring jumps". It does the opposite: scroll anchoring IS the
+   browser feature that holds your position when something above the viewport
+   changes size, and `none` switches it off. On a page this long, full of lazy
+   images and reveal animations, that means content settling above you can drag
+   the viewport with it — which reads as the scroll not being smooth. Removed,
+   so the default (auto) applies and the browser stabilises the position.
+
+   Belt and braces on the sideways axis is kept: nothing should ever scroll the
+   page horizontally, and iOS is more willing than desktop to expose a few px of
+   overflow as a real scroll. */
+html{scroll-behavior:smooth;overflow-x:clip}
 body{overflow-x:clip;max-width:100%}
 
 /* ---- typography: bigger, tighter ---- */
@@ -165,12 +180,28 @@ p,li,a,span,div,button,input,label{font-family:'Manrope',system-ui,sans-serif}
   html.gc-cursor, html.gc-cursor body, html.gc-cursor a, html.gc-cursor button,
   html.gc-cursor input, html.gc-cursor summary, html.gc-cursor label{cursor:none !important}
 }
+/* THE GROW-ON-HOVER WAS A LAYOUT ANIMATION.
+   This transitioned width and height — 30px to 46px — which makes the browser
+   run layout and repaint on every frame of every hover, on an element that is
+   also carrying a drop-shadow filter. The coming-soon page's blob feels
+   smoother for exactly one reason: it transitions opacity and nothing else.
+
+   Size is now a transform:scale on an inner wrapper, which the compositor can
+   do without touching layout. The wrapper exists so the scale and the wobble
+   do not fight over the same transform, and so the outer element's transform
+   stays reserved for position, where JS writes it every pointermove. */
 #gc-cursor{position:fixed;left:0;top:0;width:30px;height:30px;z-index:9999;pointer-events:none;
-  will-change:transform;opacity:0;transition:opacity .25s,width .18s var(--gc-spring),height .18s var(--gc-spring);
+  will-change:transform;opacity:0;transition:opacity .25s;
   filter:drop-shadow(0 4px 7px rgba(25,19,22,.3))}
 #gc-cursor.on{opacity:1}
-#gc-cursor.big{width:46px;height:46px}
+#gc-cursor .gc-cursor__in{width:100%;height:100%;display:block;
+  transform:scale(1);transition:transform .18s var(--gc-spring)}
+#gc-cursor.big .gc-cursor__in{transform:scale(1.53)}
 #gc-cursor svg{width:100%;height:100%;display:block;animation:gcWobble 4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){
+  #gc-cursor .gc-cursor__in{transition:none}
+  #gc-cursor svg{animation:none}
+}
 @keyframes gcWobble{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
 @media (hover:none){#gc-cursor{display:none}}
 
