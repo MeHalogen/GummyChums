@@ -3,6 +3,13 @@
    page of every visit. The TTF stays as a fallback for anything that cannot
    take WOFF2, which in practice is nothing still shipping. */
 @font-face{font-family:'Manrope';src:url('Manrope-Variable.woff2') format('woff2'),url('Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
+/* NaN Jaune Maxi — the brand's display face (NaN / Studio Triple), the licensed
+   build and NOT the TRIAL file, which is not permitted on the web. Headings
+   only; Manrope stays the body face, which is the pairing the brand book sets.
+   One weight, because headings are forced to 800 and nothing asks for another.
+   The full subfamily is sixteen files and ~1.4MB. */
+@font-face{font-family:'NaN Jaune Maxi';src:url('NaNJaune-MaxiBlack.woff2') format('woff2');
+  font-weight:800;font-style:normal;font-display:swap}
 html{background:#F8EBDF}
 
 :root{
@@ -107,7 +114,7 @@ body{
   font-size:17px;
   -webkit-font-smoothing:antialiased;
 }
-h1,h2,h3,h4,.h0,.h1,.h2,.h3{font-family:'Manrope',system-ui,sans-serif !important;font-weight:800 !important;letter-spacing:-.02em !important;line-height:1.05 !important}
+h1,h2,h3,h4,.h0,.h1,.h2,.h3{font-family:'NaN Jaune Maxi','Manrope',system-ui,sans-serif !important;font-weight:800 !important;letter-spacing:-.02em !important;line-height:1.05 !important}
 p,li,a,span,div,button,input,label{font-family:'Manrope',system-ui,sans-serif}
 .gc-kick{font-weight:800;letter-spacing:.26em;text-transform:uppercase;font-size:12px;color:var(--gc-cherry)}
 

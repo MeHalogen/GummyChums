@@ -221,3 +221,30 @@ test('the trust badges are still styled as pills', () => {
     assert.ok(css.includes(need), `gc-quality.liquid lost "${need}"`);
   }
 });
+
+/* NaN Jaune ships as a TRIAL build and a licensed build with near-identical
+   filenames, and a trial file sitting next to the licensed one in Downloads is
+   exactly how the wrong one gets copied. The trial licence forbids web
+   embedding, so shipping it is a licensing problem, not a visual one. */
+test('no TRIAL font build is in the theme', () => {
+  const offenders = readdirSync(ASSETS).filter((f) => /trial/i.test(f));
+  assert.deepEqual(offenders, [], `TRIAL font in assets: ${offenders.join(', ')}`);
+});
+
+test('the display font is declared and actually used by headings', () => {
+  const css = read(join(ASSETS, 'gc-brand.css'));
+  assert.ok(/@font-face\{font-family:'NaN Jaune Maxi'/.test(css.replace(/\s+/g, '')) ||
+            css.includes("font-family:'NaN Jaune Maxi'"), 'NaN Jaune @font-face missing');
+  const heading = css.split('\n').find((l) => l.startsWith('h1,h2,h3,h4'));
+  assert.ok(heading && heading.includes("'NaN Jaune Maxi'"),
+    'headings are not set in the brand display face');
+});
+
+test('every @font-face file referenced by the CSS exists in assets', () => {
+  const css = read(join(ASSETS, 'gc-brand.css'));
+  const missing = [];
+  for (const m of css.matchAll(/url\('([^']+\.(?:woff2|ttf))'\)/g)) {
+    if (!existsSync(join(ASSETS, m[1]))) missing.push(m[1]);
+  }
+  assert.deepEqual(missing, [], `@font-face points at files that are not there: ${missing.join(', ')}`);
+});
