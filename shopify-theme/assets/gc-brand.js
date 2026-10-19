@@ -2,7 +2,6 @@
 (function () {
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var FLAV = ['#DE1D61', '#8DAA31', '#F9740D'];
-  var GPATH = 'M50 3C72 1 95 18 97 42C99 68 82 95 55 97C30 99 5 82 3 55C1 30 26 5 50 3Z';
 
   /* ---------- fixed flavour background (coming-soon look, zero scroll cost) ---------- */
   function initBackground() {
@@ -50,14 +49,10 @@
     var c = document.createElement('div');
     c.id = 'gc-cursor';
     c.setAttribute('aria-hidden', 'true');
-    // wrapper carries the hover scale; see gc-brand.css — the outer element's
-    // transform belongs to position and the svg's to the wobble.
-    c.innerHTML =
-      '<div class="gc-cursor__in">' +
-      '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
-      '<path d="' + GPATH + '" fill="#DE1D61"/>' +
-      '<ellipse cx="35" cy="28" rx="15" ry="9" fill="#fff" opacity=".75" transform="rotate(-25 35 28)"/></svg>' +
-      '</div>';
+    // The blob is drawn entirely in CSS now (see gc-brand.css) — no SVG, no
+    // filter. The wrapper carries the hover scale so the outer element's
+    // transform stays reserved for position.
+    c.innerHTML = '<div class="gc-cursor__in"></div>';
     document.body.appendChild(c);
 
     // Set the transform directly in the handler. Browsers already coalesce
