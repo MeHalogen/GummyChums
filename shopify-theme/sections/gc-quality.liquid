@@ -54,11 +54,17 @@
      colour without a band behind it. The ink stays dark on every one of them:
      cream on mango is 2.6:1 and fails, which is why the tint is light and the
      text is not. */
+  /* .gc-mark reserves its own 20px via padding-left and draws the pixel at
+     left:0. This rule's `padding` shorthand overwrote that reservation, so the
+     pixel rendered hard against the pill's border. The space is reserved here
+     instead, and the mark is pushed in to sit level with the text. */
   .gcq-badge{display:inline-flex;align-items:center;gap:var(--sp-2);
     background:var(--c-surface);border:2px solid var(--role-page-ink);
     border-radius:var(--r-full);padding:var(--sp-2) var(--sp-5);
     font-size:var(--fs-sm);font-weight:var(--fw-black);color:var(--role-page-ink);
     box-shadow:3px 3px 0 var(--role-page-ink)}
+  .gcq-badge.gc-mark{padding-left:calc(var(--sp-5) + 20px)}
+  .gcq-badge.gc-mark::before{left:var(--sp-5)}
   .gcq-badge:nth-child(3n+1){background:color-mix(in srgb, var(--c-mango) 34%, var(--c-surface))}
   .gcq-badge:nth-child(3n+2){background:color-mix(in srgb, var(--c-orange) 30%, var(--c-surface))}
   .gcq-badge:nth-child(3n+3){background:color-mix(in srgb, var(--c-cherry) 26%, var(--c-surface))}

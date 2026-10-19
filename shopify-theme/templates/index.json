@@ -100,7 +100,8 @@
       "settings": {
         "layout": "badges",
         "title": "Certified, tested, and made in India."
-      }
+      },
+      "disabled": true
     },
     "gc_box": {
       "type": "gc-box",
@@ -108,19 +109,21 @@
     },
     "gc_faq": {
       "type": "gc-faq",
-      "settings": {}
+      "settings": {},
+      "disabled": true
     },
     "gc_cta": {
       "type": "gc-cta",
-      "settings": {}
+      "settings": {},
+      "disabled": true
     }
   },
   "order": [
     "gc_home",
     "gc_box",
     "gc_story",
-    "gc_quality",
     "gc_reel",
+    "gc_quality",
     "gc_reviews",
     "gc_faq",
     "gc_cta"
