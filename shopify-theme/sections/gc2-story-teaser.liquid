@@ -6,77 +6,34 @@
   and why the name) and sends people to /pages/story for the rest.
 
   Keeps id="gc-story" so any older anchor links still land somewhere sensible.
+
+  A BAND, NOT A PANEL ON CREAM.
+  This spent several rounds as a rounded purple rectangle floating on the cream
+  with a Chum pasted beside it. Mehal, twice: the purple on cream does not look
+  good and the girl sitting against it looks worse. He was right — a saturated
+  block with hard edges sitting on a pale ground reads as a sticker, and
+  anything placed next to it reads as a second sticker. It runs edge to edge
+  now and carries the brand book's stepped border top and bottom, which is the
+  treatment gc-story.liquid already uses for the same colour on the same cream.
+  The Chum sits inside the colour instead of against it.
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 <style>
-
-  .gcts{position:relative;overflow:hidden;background:var(--role-quiet-bg);color:var(--role-quiet-ink);
-    padding:clamp(var(--sp-7),5vw,var(--sp-8)) var(--gutter);
-    /* room for the stepped edge below the panel — .gcts clips, and without this
-       the peaks were sheared off halfway down. */
-    padding-bottom:calc(clamp(var(--sp-7),5vw,var(--sp-8)) + var(--sp-6))}
+  .gcts{position:relative;overflow:hidden;background:var(--c-purple);color:var(--c-purple-ink);
+    padding:clamp(var(--sp-8),6vw,var(--sp-9)) var(--gutter)}
   .gcts::before{content:"";position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(46vw 46vw at 12% 0%, var(--c-accent-soft), transparent 62%)}
-  /* EDITORIAL, NOT CENTRED.
-     This was text-align:center at every width below 900px, which is the shape
-     every other section on the site already had. The line it carries —
-     "Wellness became a checklist. We made it a treat." — is the best sentence on
-     the site and it was being set like a caption. It is left-aligned and large
-     now, with the kolam as a small mark beside the kicker rather than a centred
-     ornament floating above it. */
+    background:radial-gradient(54vw 54vw at 88% 110%, var(--c-accent-soft), transparent 64%)}
+
+  /* the stepped border sits flush against the band, peaks biting into the cream */
+  .gcts-edge{line-height:0;background:transparent}
+  .gcts-edge--in{margin-bottom:-1px}
+  .gcts-edge--out{margin-top:-1px}
+
   .gcts-in{position:relative;z-index:1;max-width:var(--container);margin-inline:auto}
-
-  /* COLOUR AS A SHAPE.
-     The section was cream edge to edge, and so were the three after it — the
-     page had gone from too loud to beige. This is the brand purple as a large
-     rounded panel holding the copy, with Tara standing outside it on the cream.
-     A band stretched across the viewport is what made the page feel like a
-     slideshow of slabs; a panel that starts and stops inside the layout does
-     not. It stops short of the right edge on purpose, so the cream reads as
-     deliberate space rather than as the absence of a decision. */
-  .gcts-in::before{content:'';position:absolute;z-index:-1;
-    inset:calc(var(--sp-6) * -1) 38% calc(var(--sp-6) * -1) calc(var(--gutter) * -1);
-    background:var(--c-purple);border-radius:0 var(--r-lg) 0 0}
-  /* The panel used to stop at 38% — 300px of bare cream between its edge and the
-     Chum, with nothing in it. It now runs on until it is just behind her, so the
-     two read as one block instead of a slab and an unrelated sticker. */
-  /* THE HANDOFF.
-     The panel used to stop dead and hand the page 116px of blank cream before
-     the next heading. The site already owns a device for a purple block meeting
-     cream — the stepped edge from the brand book, which gc-story.liquid puts
-     above and below its panel. The teaser was the only purple block without it.
-     Peaks point down, so the purple walks into the section underneath instead
-     of being guillotined. */
-  .gcts-teeth{position:absolute;line-height:0;pointer-events:none;
-    left:calc(var(--gutter) * -1);right:calc(var(--gutter) * -1);
-    top:calc(100% + var(--sp-5))}
-  .gcts-in,.gcts h2,.gcts-body,.gcts-kick{position:relative}
-  @media(max-width:899px){
-    .gcts-in::before{inset:calc(var(--sp-5) * -1) calc(var(--gutter) * -1)}
-  }
-
-  /* One of the Chums stands on the panel's bottom edge, so the stepped border
-     below reads as ground rather than as a stray graphic. Desktop only: the
-     homepage is already too tall on a phone, and this is the block that was
-     just cut from four screens to half of one — it doesn't get to grow back. */
-  .gcts-chum{display:none}
   @media(min-width:900px){
-    .gcts{min-height:380px;display:grid;align-items:center}
-    .gcts-in{padding-right:300px}
-    .gcts-in::before{right:200px}
-    .gcts-teeth{right:200px;top:calc(100% + var(--sp-6))}
-
-    /* bottom is measured against .gcts-in, the same box the panel is inset from,
-       so -sp-6 puts her feet exactly on the panel's bottom edge. Against .gcts
-       she was 27px below it and floating. */
-    .gcts-chum{display:block;position:absolute;right:0;bottom:calc(var(--sp-6) * -1);
-      z-index:1;line-height:0;
-      height:330px;pointer-events:none;transform-origin:50% 100%;
-      animation:gctsSway 7.5s ease-in-out infinite alternate}
-    .gcts-chum img{display:block;height:100%;width:auto;
-      -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+    .gcts-in{display:grid;grid-template-columns:minmax(0,1fr) clamp(230px,23vw,300px);
+      gap:clamp(var(--sp-6),5vw,var(--sp-8));align-items:end}
   }
-  @keyframes gctsSway{from{transform:rotate(-1.2deg)}to{transform:translateY(-7px) rotate(1.2deg)}}
 
   /* the kolam sits above the kicker — a threshold mark at the way in */
   .gcts-kolam{display:block;margin:0 0 var(--sp-4)}
@@ -88,7 +45,8 @@
     letter-spacing:var(--ls-tight);line-height:.98;margin:var(--sp-3) 0 0;max-width:19ch;
     color:var(--c-purple-ink);text-wrap:balance}
   .gcts h2 em{font-style:normal;color:var(--c-accent)}
-  .gcts-body{font-size:var(--fs-base);font-weight:var(--fw-body);color:color-mix(in srgb, var(--c-purple-ink) 84%, transparent);
+  .gcts-body{font-size:var(--fs-base);font-weight:var(--fw-body);
+    color:color-mix(in srgb, var(--c-purple-ink) 84%, transparent);
     line-height:var(--lh-body);margin:var(--sp-5) 0 0;max-width:46ch}
 
   .gcts-cta{display:inline-flex;align-items:center;gap:var(--sp-2);margin-top:var(--sp-6);
@@ -96,32 +54,49 @@
     color:var(--c-purple-ink);padding:var(--sp-3) var(--sp-6);border-radius:var(--r-full);
     box-shadow:inset 0 0 0 2px var(--c-purple-ink);
     transition:background var(--dur-2) var(--ease),color var(--dur-2) var(--ease)}
-  /* cream ring and cream fill: this button sits on the purple panel, and the
-     --role-quiet-* pair it used to carry is the palette for the cream sections. */
   .gcts-cta:hover{background:var(--c-purple-ink);color:var(--c-purple)}
   .gcts-cta:focus-visible{outline:3px solid var(--role-focus);outline-offset:3px}
   .gcts-cta span{transition:transform var(--dur-2) var(--ease);display:inline-block}
   .gcts-cta:hover span{transform:translateX(4px)}
 
-  @media (prefers-reduced-motion:reduce){.gcts-cta,.gcts-cta span{transition:none}}
-  @media (prefers-reduced-motion:reduce){.gcts-chum{animation:none}}
+  /* Desktop only: the homepage is already tall on a phone, and this is the
+     block that was cut from four screens to half of one. It does not grow back. */
+  .gcts-chum{display:none}
+  @media(min-width:900px){
+    .gcts-chum{display:block;justify-self:end;line-height:0;pointer-events:none;
+      /* -padding so she sits on the band's floor rather than above it */
+      margin-bottom:calc(clamp(var(--sp-8),6vw,var(--sp-9)) * -1);
+      transform-origin:50% 100%;
+      animation:gctsSway 7.5s ease-in-out infinite alternate}
+    .gcts-chum img{display:block;width:100%;height:auto;
+      -webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
+  }
+  @keyframes gctsSway{from{transform:rotate(-1.2deg)}to{transform:translateY(-7px) rotate(1.2deg)}}
+
+  @media (prefers-reduced-motion:reduce){.gcts-cta,.gcts-cta span,.gcts-chum{transition:none;animation:none}}
 </style>
 
+{%- comment -%} pre-assigned ids: {% render %} does not evaluate filters {%- endcomment -%}
+{%- assign edge_top = 'teaser-top' -%}
+{%- assign edge_bot = 'teaser-bot' -%}
+{%- assign kolam_id = 'story' -%}
+
+<div class="gcts-edge gcts-edge--in">{% render 'gc2-edge', id: edge_top, tone: '--c-purple', side: 'bottom' %}</div>
 <section class="gcts" id="gc-story">
   <div class="gcts-in gc-rise">
-    {%- assign kolam_id = 'story' -%}
-    <div class="gcts-kolam">{% render 'gc2-kolam', id: kolam_id, tone: '--c-purple-ink', size: 108 %}</div>
-    <p class="gcts-kick">{{ s.kicker }}</p>
-    <h2>{{ s.headline | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
-    <p class="gcts-body">{{ s.body }}</p>
-    <a class="gcts-cta" href="{{ s.link }}">{{ s.cta }} <span>→</span></a>
-    {%- assign teeth_id = 'story-teaser-bot' -%}
-    <div class="gcts-teeth">{% render 'gc2-edge', id: teeth_id, tone: '--c-purple', side: 'top', scale: 2 %}</div>
+    <div>
+      <div class="gcts-kolam">{% render 'gc2-kolam', id: kolam_id, tone: '--c-purple-ink', size: 108 %}</div>
+      <p class="gcts-kick">{{ s.kicker }}</p>
+      <h2>{{ s.headline | replace: '[', '<em>' | replace: ']', '</em>' }}</h2>
+      <p class="gcts-body">{{ s.body }}</p>
+      <a class="gcts-cta" href="{{ s.link }}">{{ s.cta }} <span>&rarr;</span></a>
+    </div>
     <div class="gcts-chum" aria-hidden="true">
       <img src="{{ 'gc3-tara-sit.webp' | asset_url }}" alt="" width="554" height="760" loading="lazy" decoding="async" draggable="false">
     </div>
   </div>
 </section>
+<div class="gcts-edge gcts-edge--out">{% render 'gc2-edge', id: edge_bot, tone: '--c-purple', side: 'top' %}</div>
 
 {% schema %}
 {
