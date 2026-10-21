@@ -85,7 +85,14 @@
   var picks = [].slice.call(root.querySelectorAll('.gcb-pick'));
   var summary = root.querySelector('[data-summary]');
   var go = root.querySelector('[data-add]');
-  var money = function (p) { return '₹' + (p / 100).toFixed(0); };
+  /* en-IN grouping, so a two-box total reads ₹1,438 rather than ₹1438.
+     India groups the last three digits then in pairs — 1,00,000 not 100,000 —
+     which toLocaleString('en-IN') gets right and a manual regex does not. */
+  var money = function (p) {
+    var n = Math.round(p / 100);
+    try { return '₹' + n.toLocaleString('en-IN'); }
+    catch (e) { return '₹' + n; }
+  };
 
   /* One source of truth: the DOM carries the counts, so a re-render cannot
      disagree with what the buttons did. */

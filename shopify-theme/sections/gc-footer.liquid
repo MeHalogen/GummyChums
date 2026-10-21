@@ -116,6 +116,16 @@
           {%- if section.settings.email != blank -%}
             <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
           {%- endif -%}
+          {%- comment -%}
+            Consumer care PHONE. Legal Metrology (Packaged Commodities) Rules
+            require consumer care details — name, address, phone and email — to
+            be displayed for a packaged commodity sold online, and the site had
+            the email but no number. This is the one declaration that was
+            actually missing; it is not decoration.
+          {%- endcomment -%}
+          {%- if section.settings.phone != blank -%}
+            <a href="tel:{{ section.settings.phone | remove: ' ' }}">{{ section.settings.phone }}</a>
+          {%- endif -%}
         </div>
       </div>
     </div>
@@ -158,12 +168,15 @@
     { "type": "text", "id": "whatsapp", "label": "WhatsApp number (with country code, digits only)",
       "default": "917300039307" },
     { "type": "text", "id": "email", "label": "Support email", "default": "support@gummychums.com" },
+    { "type": "text", "id": "phone", "label": "Consumer care phone",
+      "info": "Required alongside the email for packaged goods sold online.",
+      "default": "+91 73000 39307" },
     { "type": "text", "id": "news_sub", "label": "Newsletter subline",
       "default": "New flavours, restocks and the occasional discount. No spam, promise." },
     { "type": "text", "id": "legal", "label": "Legal line",
       "default": "These statements have not been evaluated by the FSSAI. Not intended to diagnose or treat." },
     { "type": "text", "id": "manufacturer_line", "label": "Manufacturer / FSSAI line",
-      "default": "Manufactured by Biovencer Healthcare Private Limited, K-230, Site-V, UPSIDC, Kasna, Greater Noida, Gautam Buddha Nagar, Uttar Pradesh 201306. FSSAI Lic. No. 10017051002083." }
+      "default": "Manufactured by Biovencer Healthcare Private Limited, K-230, Site-V, UPSIDC, Kasna, Greater Noida, Gautam Buddha Nagar, Uttar Pradesh 201306." }
   ]
 }
 {% endschema %}

@@ -12,18 +12,15 @@
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 {%- comment -%}
-  The certificate numbers appear only in the full layout (/pages/story) and in
-  the footer's manufacturer line. They are assigned once here so the references
-  cannot drift apart.
+  No licence or certificate NUMBERS on the site. Mehal: "remove certificates
+  and fssai, no one puts it on website" — and he is right about the convention;
+  Indian D2C brands show the badge, not the paperwork.
 
-  These certificates are issued to the MANUFACTURER, not to GummyChums. That
-  attribution is carried in the full-layout disclaimer and in the footer's
-  manufacturer line, and must not be dropped.
+  What stays, deliberately: the "FSSAI licensed" badge (a claim, not an
+  identifier), the manufacturer's name and address in the footer, and the
+  not-evaluated-by-FSSAI disclaimer. Those are different things from a licence
+  number and should not be swept out with it.
 {%- endcomment -%}
-{%- assign fssai_no   = '10017051002083' -%}
-{%- assign gmp_no     = 'EI_FA_UC_056' -%}
-{%- assign fssc_no    = 'EI_FA_SC_408' -%}
-{%- assign cert_valid = 'Valid to Nov 2028' -%}
 <style>
   .gcq{background:var(--role-quiet-bg);padding:clamp(var(--sp-8),7vw,var(--sp-9)) var(--gutter)}
   /* the rail is a thin ruled band, not a section with a headline */
@@ -127,17 +124,14 @@
         <div class="gcq-card">
                     <b class="gc-mark">FSSAI licensed manufacturing</b>
           <p>Made in a facility holding a Central FSSAI license under the Food Safety &amp; Standards Act, 2006.</p>
-          <span class="gcq-ref">Mfg. Lic. No. {{ fssai_no }}</span>
         </div>
         <div class="gcq-card">
                     <b class="gc-mark">GMP certified</b>
           <p>Independently audited and certified to Good Manufacturing Practice by Eurofins Assurance India.</p>
-          <span class="gcq-ref">Certificate {{ gmp_no }} · {{ cert_valid | downcase }}</span>
         </div>
         <div class="gcq-card">
                     <b class="gc-mark">FSSC 22000 certified</b>
           <p>Our manufacturer's food safety management system is certified to FSSC 22000 (ISO 22000:2018 based).</p>
-          <span class="gcq-ref">Certificate {{ fssc_no }} · {{ cert_valid | downcase }}</span>
         </div>
         <div class="gcq-card">
                     <b class="gc-mark">Every batch, lab-tested</b>
