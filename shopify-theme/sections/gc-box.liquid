@@ -103,19 +103,22 @@
 
   function paint() {
     var st = state();
-    var jars = st.reduce(function (a, p) { return a + p.n; }, 0);
+    var boxes = st.reduce(function (a, p) { return a + p.n; }, 0);
     var total = st.reduce(function (a, p) { return a + p.n * p.price; }, 0);
     var kinds = st.filter(function (p) { return p.n > 0; }).length;
 
     st.forEach(function (p) { p.el.classList.toggle('is-picked', p.n > 0); });
 
-    if (!jars) {
-      summary.textContent = 'Your box is empty.';
+    if (!boxes) {
+      /* "Chum Box" rather than "box" because the unit is a box too, and
+         "Your box is empty / 2 boxes" in the same bar reads as two meanings of
+         one word. The bundle keeps the full name; the unit is the plain one. */
+      summary.textContent = 'Your Chum Box is empty.';
     } else {
       var all = kinds === picks.length ? ' · all three' : '';
-      summary.textContent = jars + (jars === 1 ? ' jar' : ' jars') + all + ' · ' + money(total);
+      summary.textContent = boxes + (boxes === 1 ? ' box' : ' boxes') + all + ' · ' + money(total);
     }
-    go.disabled = !jars;
+    go.disabled = !boxes;
   }
 
   root.addEventListener('click', function (e) {
