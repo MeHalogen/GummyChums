@@ -38,7 +38,12 @@ test('the total is the sum of what is in the box, not a guess', async ({ page })
   }
   const text = await page.locator('[data-summary]').innerText();
   expect(text, 'all three picked should say so').toMatch(/all three/i);
-  expect(text).toContain(`₹${Math.round(expected / 100)}`);
+  /* Grouped the way the page groups it. The summary uses
+     toLocaleString('en-IN'), so a three-box total renders ₹2,247 — this
+     asserted ₹2247 and went red the moment the comma landed. Formatting the
+     expectation the same way keeps the real check intact: the total still has
+     to equal the sum of what was picked, and a wrong total still fails. */
+  expect(text).toContain(`₹${Math.round(expected / 100).toLocaleString('en-IN')}`);
 });
 
 test('the quantity stepper does not go below zero', async ({ page }) => {
