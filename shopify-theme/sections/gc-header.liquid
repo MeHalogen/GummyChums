@@ -89,9 +89,6 @@
       <nav class="gch-m-panel">
         <a href="{{ routes.all_products_collection_url }}">Shop</a>
         <a href="/pages/story">Our story</a>
-        {%- if section.settings.whatsapp != blank -%}
-          <a href="https://wa.me/{{ section.settings.whatsapp }}" target="_blank" rel="noopener">WhatsApp us</a>
-        {%- endif -%}
       </nav>
     </details>
 
@@ -115,9 +112,7 @@
   "settings": [
     { "type": "checkbox", "id": "show_bar", "label": "Show top marquee bar", "default": true },
     { "type": "text", "id": "bar_text", "label": "Marquee text",
-      "default": "PAN-INDIA SHIPPING ✦ NO ADDED SUGAR ✦ 100% VEG ✦ MADE IN INDIA ✦" },
-    { "type": "text", "id": "whatsapp", "label": "WhatsApp number (with country code, digits only)",
-      "default": "917300039307" }
+      "default": "PAN-INDIA SHIPPING ✦ NO ADDED SUGAR ✦ 100% VEG ✦ MADE IN INDIA ✦" }
   ]
 }
 {% endschema %}

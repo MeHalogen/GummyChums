@@ -39,9 +39,6 @@
     </div>
     <div class="gcn-links">
       <a href="/pages/story">Our story</a>
-      {%- if section.settings.whatsapp != blank -%}
-        <a href="https://wa.me/{{ section.settings.whatsapp }}" target="_blank" rel="noopener">WhatsApp us</a>
-      {%- endif -%}
     </div>
   </div>
 </section>
@@ -53,9 +50,7 @@
     { "type": "text", "id": "title", "label": "Title (use [ ] for pink)", "default": "This chum [wandered off]." },
     { "type": "textarea", "id": "sub", "label": "Subtitle",
       "default": "The page you’re after doesn’t exist — or it moved. The gummies, happily, are exactly where you left them." },
-    { "type": "text", "id": "cta", "label": "CTA", "default": "Shop the flavours →" },
-    { "type": "text", "id": "whatsapp", "label": "WhatsApp number (with country code, digits only)",
-      "default": "917300039307" }
+    { "type": "text", "id": "cta", "label": "CTA", "default": "Shop the flavours →" }
   ]
 }
 {% endschema %}

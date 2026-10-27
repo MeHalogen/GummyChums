@@ -109,9 +109,6 @@
           {%- if section.settings.instagram != blank -%}
             <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener">Instagram</a>
           {%- endif -%}
-          {%- if section.settings.whatsapp != blank -%}
-            <a href="https://wa.me/{{ section.settings.whatsapp }}" target="_blank" rel="noopener">WhatsApp us</a>
-          {%- endif -%}
         </div>
         <div class="gcf-col">
           <h4>Help</h4>
@@ -146,15 +143,14 @@
             <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
           {%- endif -%}
           {%- comment -%}
-            Consumer care PHONE. Legal Metrology (Packaged Commodities) Rules
-            require consumer care details — name, address, phone and email — to
-            be displayed for a packaged commodity sold online, and the site had
-            the email but no number. This is the one declaration that was
-            actually missing; it is not decoration.
+            NO PHONE, ANYWHERE. The email above is the single contact of
+            record, so every query arrives in one inbox with a written
+            trail. Legal Metrology asks for consumer care details on a
+            packaged commodity sold online; the declaration that carries
+            the manufacturer's name and address lives on the product
+            listing, in gc-product-facts. Do not reintroduce a number
+            here without adding it there too.
           {%- endcomment -%}
-          {%- if section.settings.phone != blank -%}
-            <a href="tel:{{ section.settings.phone | remove: ' ' }}">{{ section.settings.phone }}</a>
-          {%- endif -%}
         </div>
       </div>
     </div>
@@ -217,12 +213,7 @@
       "default": "Not another supplement brand. We’re making healthy habits feel good." },
     { "type": "text", "id": "instagram", "label": "Instagram URL",
       "default": "https://www.instagram.com/gummy.chums/" },
-    { "type": "text", "id": "whatsapp", "label": "WhatsApp number (with country code, digits only)",
-      "default": "917300039307" },
     { "type": "text", "id": "email", "label": "Support email", "default": "support@gummychums.com" },
-    { "type": "text", "id": "phone", "label": "Consumer care phone",
-      "info": "Required alongside the email for packaged goods sold online.",
-      "default": "+91 73000 39307" },
     { "type": "text", "id": "news_sub", "label": "Newsletter subline",
       "default": "New flavours, restocks and the occasional discount. No spam, promise." },
     { "type": "header", "content": "Affiliated certificates" },
