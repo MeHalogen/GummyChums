@@ -292,3 +292,20 @@ test('declared image dimensions match the actual asset files', () => {
   }
   assert.deepEqual(problems, [], `wrong intrinsic size (causes layout shift):\n${problems.join('\n')}`);
 });
+
+/* A section's {% schema %} must be valid JSON. Shopify silently falls back —
+   settings stop resolving and every `default` in the file stops applying — and
+   `theme check` did not flag it. This was found the hard way: deleting one
+   setting with a regex left a trailing comma before the closing bracket, which
+   would have taken out every footer setting at once. */
+test('every section schema is valid JSON', () => {
+  const problems = [];
+  for (const f of gcSections()) {
+    const src = read(join(SECTIONS, f));
+    const m = src.match(/\{%-?\s*schema\s*-?%\}([\s\S]*?)\{%-?\s*endschema\s*-?%\}/);
+    if (!m) continue;
+    try { JSON.parse(m[1]); }
+    catch (e) { problems.push(`${f}: ${e.message}`); }
+  }
+  assert.deepEqual(problems, [], `invalid section schema:\n${problems.join('\n')}`);
+});

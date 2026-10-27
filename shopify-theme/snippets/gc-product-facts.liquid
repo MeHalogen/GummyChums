@@ -76,6 +76,16 @@
       </tbody>
     </table>
     <p class="gpf-sub">Net quantity 105 g. %RDA values per ICMR Guidelines 2020 for a moderately active adult.</p>
+    {%- comment -%}
+      MANUFACTURER, ON THE LISTING.
+      Rule 6(10) of the Legal Metrology (Packaged Commodities) Rules wants the
+      label declarations on the product listing, and name AND address is one
+      declaration, not two. This only ever appeared in the footer, so clearing
+      the footer would have removed it from the site entirely. It belongs here
+      anyway — it is back-of-pack information, next to the net quantity and the
+      nutrition table, which is where a customer looks for it.
+    {%- endcomment -%}
+    <p class="gpf-sub">Manufactured by Biovencer Healthcare Private Limited, K-230, Site-V, UPSIDC, Kasna, Greater Noida, Gautam Buddha Nagar, Uttar Pradesh 201306. Country of origin: India.</p>
   </div>
 
   {%- if goodtoknow != blank -%}

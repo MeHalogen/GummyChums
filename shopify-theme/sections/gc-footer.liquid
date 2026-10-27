@@ -54,6 +54,25 @@
   .gcf-bot span{font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-purple-ink);opacity:.6}
   .gcf-dot{display:inline-block;width:var(--sp-3);height:var(--sp-3);margin:0 var(--sp-2);
     vertical-align:-1px;border-radius:var(--r-full);background:var(--c-purple-ink);opacity:.4}
+  /* AFFILIATED CERTIFICATES.
+     Logos only — no numbers. The wording is "Affiliated", not "our", because
+     these certifications are held by our MANUFACTURER, not by GummyChums, and
+     a logo in a brand's footer implies otherwise more strongly than a number
+     ever did.
+
+     Driven by image settings rather than committed files on purpose: the FSSC
+     22000 and GMP marks have to be supplied by the certification body, and
+     recreating or scraping them is not ours to do. The strip renders only when
+     an image is actually set, so it is invisible until Priyal has the real
+     files. */
+  .gcf-certs{margin:var(--sp-6) 0 0}
+  .gcf-certs h4{margin:0 0 var(--sp-4);font-size:var(--fs-xs);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--c-accent)}
+  .gcf-certs ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;
+    align-items:center;gap:var(--sp-5)}
+  .gcf-certs img{display:block;height:44px;width:auto;
+    /* the marks are dark-on-light; the footer is purple */
+    background:var(--c-surface);border-radius:var(--r-sm);padding:var(--sp-2) var(--sp-3)}
   .gcf-mfg{margin:var(--sp-4) 0 0;font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-purple-ink);opacity:.5;line-height:var(--lh-body)}
   @media(max-width:749px){
     .gcf-top{flex-direction:column;gap:var(--sp-6)}
@@ -147,13 +166,36 @@
       {%- endform -%}
     </div>
 
+    {%- assign c1 = section.settings.cert_1 -%}
+    {%- assign c2 = section.settings.cert_2 -%}
+    {%- assign c3 = section.settings.cert_3 -%}
+    {%- if c1 != blank or c2 != blank or c3 != blank -%}
+      <div class="gcf-certs">
+        <h4>{{ section.settings.certs_title }}</h4>
+        <ul>
+          {%- assign certs = '1,2,3' | split: ',' -%}
+          {%- for i in certs -%}
+            {%- case i -%}
+              {%- when '1' -%}{%- assign img = c1 -%}{%- assign lbl = section.settings.cert_1_alt -%}
+              {%- when '2' -%}{%- assign img = c2 -%}{%- assign lbl = section.settings.cert_2_alt -%}
+              {%- when '3' -%}{%- assign img = c3 -%}{%- assign lbl = section.settings.cert_3_alt -%}
+            {%- endcase -%}
+            {%- if img != blank -%}
+              {%- assign h = 88 -%}
+              {%- assign w = img.width | times: h | divided_by: img.height -%}
+              <li>{{ img | image_url: width: 400 | image_tag: width: w, height: h, alt: lbl, loading: 'lazy', decoding: 'async' }}</li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
     <div class="gcf-hr" aria-hidden="true"></div>
 
     <div class="gcf-bot">
       <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}<span class="gcf-dot" aria-hidden="true"></span>Made in India </span>
       <span>{{ section.settings.legal }}</span>
     </div>
-    <p class="gcf-mfg">{{ section.settings.manufacturer_line }}</p>
   </div>
 </footer>
 
@@ -173,10 +215,17 @@
       "default": "+91 73000 39307" },
     { "type": "text", "id": "news_sub", "label": "Newsletter subline",
       "default": "New flavours, restocks and the occasional discount. No spam, promise." },
+    { "type": "header", "content": "Affiliated certificates" },
+    { "type": "paragraph", "content": "Logos only — no licence or certificate numbers. These certifications belong to our manufacturer, which is why the heading says Affiliated. Ask the certification body for the official files; do not screenshot them." },
+    { "type": "text", "id": "certs_title", "label": "Heading", "default": "Affiliated certificates" },
+    { "type": "image_picker", "id": "cert_1", "label": "Certificate logo 1" },
+    { "type": "text", "id": "cert_1_alt", "label": "Logo 1 description", "default": "FSSAI" },
+    { "type": "image_picker", "id": "cert_2", "label": "Certificate logo 2" },
+    { "type": "text", "id": "cert_2_alt", "label": "Logo 2 description", "default": "GMP certified facility" },
+    { "type": "image_picker", "id": "cert_3", "label": "Certificate logo 3" },
+    { "type": "text", "id": "cert_3_alt", "label": "Logo 3 description", "default": "FSSC 22000 food safety certification" },
     { "type": "text", "id": "legal", "label": "Legal line",
-      "default": "These statements have not been evaluated by the FSSAI. Not intended to diagnose or treat." },
-    { "type": "text", "id": "manufacturer_line", "label": "Manufacturer / FSSAI line",
-      "default": "Manufactured by Biovencer Healthcare Private Limited, K-230, Site-V, UPSIDC, Kasna, Greater Noida, Gautam Buddha Nagar, Uttar Pradesh 201306." }
+      "default": "These statements have not been evaluated by the FSSAI. Not intended to diagnose or treat." }
   ]
 }
 {% endschema %}
