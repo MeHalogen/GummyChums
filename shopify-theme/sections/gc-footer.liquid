@@ -129,6 +129,16 @@
           {%- if shop.privacy_policy != blank -%}
             <a href="{{ shop.privacy_policy.url }}">Privacy</a>
           {%- endif -%}
+          {%- comment -%}
+            Your Privacy Choices — the data-sale opt-out. Shopify only injects
+            this link when its cookie banner is switched on; the page existed
+            and nothing on the site reached it. Rendered only if the page is
+            actually present, so it cannot 404.
+          {%- endcomment -%}
+          {%- assign optout = pages['data-sharing-opt-out'] -%}
+          {%- if optout != blank and optout.handle != blank -%}
+            <a href="{{ optout.url }}">{{ optout.title | default: 'Your Privacy Choices' }}</a>
+          {%- endif -%}
           {%- if shop.terms_of_service != blank -%}
             <a href="{{ shop.terms_of_service.url }}">Terms</a>
           {%- endif -%}
