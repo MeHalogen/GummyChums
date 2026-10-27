@@ -65,22 +65,11 @@
   .gck-tax{font-size:var(--fs-xs);font-weight:var(--fw-body);color:var(--c-ink-3);
     margin:var(--sp-3) 0 0;line-height:var(--lh-body)}
 
-  /* THE SECOND BUTTON, ON PURPOSE.
-     The prepaid button sits above this one and is the solid accent one; this
-     is the outline. That is not a demotion for its own sake — with the app's
-     method-hiding on, this button leads to a checkout that offers cash on
-     delivery and nothing else, so it carries the payment method you would
-     rather people did not pick. It says so in its label.
-     If the Scala app is ever removed, this becomes the only way out of the
-     cart: put the solid style back and restore the label to "Checkout →",
-     or the cart's only call to action is a quiet outline button offering a
-     payment method that no longer has a counterpart. */
-  .gck-go{width:100%;margin-top:var(--sp-5);background:transparent;color:var(--c-accent);
-    border:2px solid var(--c-accent);cursor:pointer;font-family:inherit;font-weight:var(--fw-black);
-    font-size:var(--fs-base);border-radius:var(--r-full);box-shadow:none;
-    padding:calc(var(--sp-4) - 2px) calc(var(--sp-6) - 2px);
+  .gck-go{width:100%;margin-top:var(--sp-5);background:var(--c-accent);color:var(--c-accent-ink);
+    border:0;cursor:pointer;font-family:inherit;font-weight:var(--fw-black);font-size:var(--fs-base);
+    padding:var(--sp-4) var(--sp-6);border-radius:var(--r-full);box-shadow:var(--sh-2);
     transition:background var(--dur-2) var(--ease),transform var(--dur-1) var(--spring)}
-  .gck-go:hover{background:var(--c-accent-soft);transform:translateY(-2px)}
+  .gck-go:hover{background:var(--c-accent-hover);transform:translateY(-2px)}
   .gck-go:active{transform:scale(.97)}
   .gck-keep{display:block;text-align:center;margin-top:var(--sp-4);font-size:var(--fs-sm);
     font-weight:var(--fw-black);color:var(--c-ink-2);text-decoration:none}
@@ -325,9 +314,7 @@
   "name": "GummyChums Cart",
   "settings": [
     { "type": "text", "id": "title", "label": "Title", "default": "Your bag" },
-    { "type": "text", "id": "checkout_label", "label": "Checkout button",
-      "info": "This path offers cash on delivery only while the prepaid discount app is active.",
-      "default": "Cash on Delivery →" },
+    { "type": "text", "id": "checkout_label", "label": "Checkout button", "default": "Checkout →" },
     { "type": "textarea", "id": "tax_note", "label": "Tax note",
       "default": "Inclusive of all taxes. Shipping is calculated at checkout based on your PIN code." },
     { "type": "text", "id": "empty_title", "label": "Empty title", "default": "Your bag’s feeling light." },
