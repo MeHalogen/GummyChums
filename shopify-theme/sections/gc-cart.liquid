@@ -54,6 +54,8 @@
   .gck-line{display:flex;justify-content:space-between;align-items:baseline;gap:var(--sp-4);
     font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-ink-2);margin-bottom:var(--sp-3)}
   .gck-line b{font-weight:var(--fw-black);color:var(--c-ink)}
+  .gck-line--save{color:var(--c-accent)}
+  .gck-line--save b{color:var(--c-accent)}
   /* qualified past Dawn's `div:empty{display:none}` — this divider is a
      deliberately empty div, and a bare class loses the specificity contest */
   .gck-sum .gck-rule{display:block;height:1px;background:var(--c-line);margin:var(--sp-5) 0}
@@ -163,7 +165,25 @@
             <h2>Order summary</h2>
             <div class="gck-line">
               <span>Subtotal</span>
-              <b id="gck-subtotal">{% render 'gc-money', price: cart.total_price %}</b>
+              <b id="gck-subtotal">{% render 'gc-money', price: cart.original_total_price %}</b>
+            </div>
+            {%- comment -%}
+              A discount can arrive on this cart without the customer doing
+              anything here: the prepaid button sends them out through a
+              /discount/ link, and Shopify keeps that code on the session. It
+              folds straight into cart.total_price, so before this block the
+              cart simply came back a different number with nothing to explain
+              it — which reads as a bug, or as a trick. Subtotal is now the
+              undiscounted figure for the same reason: a saving you cannot see
+              subtracted from a number you never saw is not a saving.
+            {%- endcomment -%}
+            <div id="gck-discounts">
+              {%- for d in cart.cart_level_discount_applications -%}
+                <div class="gck-line gck-line--save">
+                  <span>{{ d.title }}</span>
+                  <b>&minus;{% render 'gc-money', price: d.total_allocated_amount %}</b>
+                </div>
+              {%- endfor -%}
             </div>
             <div class="gck-line">
               <span>Shipping</span>
@@ -211,8 +231,25 @@
     var cnt=document.getElementById('gck-count');
     if(cnt)cnt.textContent=cart.item_count+' '+(cart.item_count===1?'item':'items');
     var sub=document.getElementById('gck-subtotal'), tot=document.getElementById('gck-total');
-    if(sub)sub.textContent=money(cart.total_price);
+    if(sub)sub.textContent=money(cart.original_total_price!=null?cart.original_total_price:cart.total_price);
     if(tot)tot.textContent=money(cart.total_price);
+
+    /* Changing quantity re-prices the discount too, so the saving line is
+       rebuilt from the reply rather than left showing the old amount. Titles
+       come from the merchant's own discounts, but they go in as text, never
+       as markup. */
+    var dz=document.getElementById('gck-discounts');
+    if(dz){
+      var ds=cart.cart_level_discount_applications||[];
+      dz.innerHTML='';
+      ds.forEach(function(d){
+        var row=document.createElement('div');
+        row.className='gck-line gck-line--save';
+        var t=document.createElement('span'); t.textContent=d.title;
+        var v=document.createElement('b');    v.textContent='\u2212'+money(d.total_allocated_amount);
+        row.appendChild(t); row.appendChild(v); dz.appendChild(row);
+      });
+    }
 
     var rs=rows();
     /* a removed line shifts every line number after it, so drop the row that
