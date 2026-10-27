@@ -10,7 +10,6 @@
   "full"    the six cards with licence numbers and certificate references, for
             /pages/story where somebody has chosen to go deeper.
 {%- endcomment -%}
-{%- assign s = section.settings -%}
 {%- comment -%}
   No licence or certificate NUMBERS on the site. Mehal: "remove certificates
   and fssai, no one puts it on website" — and he is right about the convention;
@@ -95,17 +94,20 @@
   @media (prefers-reduced-motion:reduce){.gcq-card{transition:none}}
 </style>
 
-<section class="gcq{% if s.layout == 'badges' %} gcq--strip{% endif %}">
+<section class="gcq gcq--strip">
   <div class="gcq-in">
-    {%- if s.layout == 'badges' -%}
-      {%- comment -%}
+    {%- comment -%}
         A RAIL, NOT A SECTION.
         This carried a kicker, a 56px heading, a lede, a certificate card and a
         "See the certificates" button — a full content section for something
         nobody scrolls a homepage to read. Three of its five badges already
         scroll past in the announcement marquee at the top of the same page.
-        The licence number lives in the footer, where it is legally required
-        and where people actually look for it. What is left is the rail.
+        The full ledger that used to live here is gone too. Mehal: "a lot of
+        informative data is here, I just want people to take my word for it —
+        certificate specifics should not be there at all. If needed, they can
+        be asked of us." It was rendering on the story page, the collection
+        page AND every product page, because only the homepage ever set the
+        layout and the schema default was the detailed one.
       {%- endcomment -%}
       <div class="gcq-badges gc-rise">
         <span class="gcq-badge gc-mark">FSSAI licensed</span>
@@ -116,62 +118,13 @@
       </div>
       <p class="gcq-actives">Bacopa · Melatonin · Lutein</p>
 
-    {%- else -%}
-      <p class="gcq-kick">{{ s.kicker }}</p>
-      <h2 class="gcq-title">{{ s.title }}</h2>
-      <p class="gcq-sub">{{ s.sub }}</p>
-      <div class="gcq-grid">
-        <div class="gcq-card">
-                    <b class="gc-mark">FSSAI licensed manufacturing</b>
-          <p>Made in a facility holding a Central FSSAI license under the Food Safety &amp; Standards Act, 2006.</p>
-        </div>
-        <div class="gcq-card">
-                    <b class="gc-mark">GMP certified</b>
-          <p>Independently audited and certified to Good Manufacturing Practice by Eurofins Assurance India.</p>
-        </div>
-        <div class="gcq-card">
-                    <b class="gc-mark">FSSC 22000 certified</b>
-          <p>Our manufacturer's food safety management system is certified to FSSC 22000 (ISO 22000:2018 based).</p>
-        </div>
-        <div class="gcq-card">
-                    <b class="gc-mark">Every batch, lab-tested</b>
-          <p>Each batch is checked for microbial load, yeast &amp; mould and heavy metals before it ships — every result on file.</p>
-        </div>
-        <div class="gcq-card">
-                    <b class="gc-mark">100% vegetarian</b>
-          <p>Pectin-based gummies — no gelatin, no animal-derived ingredients, ever.</p>
-        </div>
-        <div class="gcq-card">
-                    <b class="gc-mark">Proudly made in India</b>
-          <p>Formulated and manufactured in Greater Noida, Uttar Pradesh — no importing, no middlemen.</p>
-        </div>
-        <div class="gcq-card">
-                    <b class="gc-mark">No added sugar</b>
-          <p>Sweetened without added sugar — the actives are Bacopa, Melatonin and Lutein, one to a gummy.</p>
-        </div>
-      </div>
-      <p class="gcq-note">{{ s.disclaimer }}</p>
-    {%- endif -%}
   </div>
 </section>
 
 {% schema %}
 {
   "name": "GummyChums Quality",
-  "settings": [
-    { "type": "select", "id": "layout", "label": "Layout",
-      "info": "Badges for the homepage — a scannable row plus a link. Full cards for the story page, where people have chosen to read.",
-      "options": [
-        { "value": "badges", "label": "Badge row (short)" },
-        { "value": "full", "label": "Full cards (detailed)" }
-      ], "default": "full" },
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "✦ The boring but important bit" },
-    { "type": "text", "id": "title", "label": "Title", "default": "Real labs. Real certificates. Real gummies." },
-    { "type": "textarea", "id": "sub", "label": "Full layout — subtitle",
-      "default": "We're not just cute — every claim on this page is backed by paperwork, not vibes." },
-    { "type": "textarea", "id": "disclaimer", "label": "Full layout — disclaimer",
-      "default": "Nutraceutical products. These statements have not been evaluated by the FSSAI. Not intended to diagnose, treat, cure, or prevent any disease. Certificates issued to our manufacturer, Biovencer Healthcare Private Limited." }
-  ],
+  "settings": [],
   "presets": [{ "name": "GummyChums Quality" }]
 }
 {% endschema %}

@@ -146,18 +146,21 @@ test('threshold copy is omitted when blank, not rendered empty', () => {
 
 const QUALITY = join(THEME, 'sections', 'gc-quality.liquid');
 
-test('the no-sugar claim survives either quality layout', () => {
+test('the no-sugar claim survives in the quality rail', () => {
   const liquid = read(QUALITY);
-  const [badges, full] = liquid.split(/\{%-?\s*else\s*-?%\}/s);
-  assert.ok(full, 'gc-quality no longer has two layout branches');
-  for (const [name, branch] of [['badges', badges], ['full', full]]) {
-    assert.match(
-      branch, /No added sugar/i,
-      `the no-sugar claim is missing from the ${name} branch. The homepage ` +
-      'saves layout:"badges" while the schema default is "full", so a claim ' +
-      'living in only one branch disappears the moment that setting changes.',
-    );
-  }
+  /* This used to check both layout branches, because a claim living in only
+     one of them vanished the moment the setting changed. There is one layout
+     now — the detailed ledger is gone — so the check is simply that the claim
+     is still on the rail. Same thing it was always protecting. */
+  assert.doesNotMatch(
+    liquid, /\{%-?\s*else\s*-?%\}/,
+    'gc-quality has grown a second layout branch again; this test should go ' +
+    'back to checking both of them if so',
+  );
+  assert.match(
+    liquid, /No added sugar/i,
+    'the no-sugar claim has been dropped from the certifications rail',
+  );
 });
 
 test('the actives are listed on the certifications strip', () => {
