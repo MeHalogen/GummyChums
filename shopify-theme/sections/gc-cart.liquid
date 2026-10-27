@@ -246,18 +246,29 @@
     if(tot)tot.textContent=money(cart.total_price);
 
     /* Changing quantity re-prices the discount too, so the saving line is
-       rebuilt from the reply rather than left showing the old amount. Titles
-       come from the merchant's own discounts, but they go in as text, never
-       as markup. */
+       rebuilt from the reply rather than left showing the old amount.
+
+       The two cart endpoints disagree about the shape of the same data:
+         GET  /cart.js        -> { title, total_allocated_amount }
+         POST /cart/change.js -> { amount, discount_application: { title } }
+       Reading only the first shape printed an empty label and -INR NaN on
+       every quantity change. Both are read here; anything that still fails
+       to produce a number is dropped rather than rendered, because a blank
+       saving line is survivable and a NaN is not. Titles are the merchant's
+       own, but they go in as text, never as markup. */
     var dz=document.getElementById('gck-discounts');
     if(dz){
       var ds=cart.cart_level_discount_applications||[];
       dz.innerHTML='';
       ds.forEach(function(d){
+        var app=d.discount_application||d;
+        var amt=(d.amount!=null)?d.amount:d.total_allocated_amount;
+        var title=app.title||app.code||'';
+        if(amt==null||isNaN(amt)) return;
         var row=document.createElement('div');
         row.className='gck-line gck-line--save';
-        var t=document.createElement('span'); t.textContent=d.title;
-        var v=document.createElement('b');    v.textContent='\u2212'+money(d.total_allocated_amount);
+        var t=document.createElement('span'); t.textContent=title;
+        var v=document.createElement('b');    v.textContent='\u2212'+money(amt);
         row.appendChild(t); row.appendChild(v); dz.appendChild(row);
       });
     }
