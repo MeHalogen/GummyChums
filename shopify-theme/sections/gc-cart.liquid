@@ -55,9 +55,16 @@
     font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-ink-2);margin-bottom:var(--sp-3)}
   .gck-line b{font-weight:var(--fw-black);color:var(--c-ink)}
   .gck-line--save{color:var(--c-accent)}
-  .gck-nudge{display:block;font-size:var(--fs-sm);font-weight:var(--fw-black);
-    color:var(--c-ink-2);margin:calc(var(--sp-3) * -1) 0 var(--sp-3);line-height:var(--lh-body)}
+  /* Sits directly above the checkout button, not under the Shipping row.
+     Under Shipping it read as a footnote about a number the customer had
+     already accepted; here it is the last thing they see before deciding,
+     which is the only moment it can still change what they do. */
+  .gck-nudge{display:block;text-align:center;font-size:var(--fs-sm);
+    font-weight:var(--fw-black);color:var(--c-ink-2);background:var(--c-accent-soft);
+    border-radius:var(--r-full);padding:var(--sp-3) var(--sp-4);
+    margin-top:var(--sp-5);line-height:var(--lh-body)}
   .gck-nudge--free{color:var(--c-accent)}
+  .gck-nudge + .gck-go{margin-top:var(--sp-3)}
   .gck-line--save b{color:var(--c-accent)}
   /* qualified past Dawn's `div:empty{display:none}` — this divider is a
      deliberately empty div, and a bare class loses the specificity contest */
@@ -192,6 +199,13 @@
               <span>Shipping</span>
               <b>Calculated at checkout</b>
             </div>
+            <div class="gck-rule" aria-hidden="true"></div>
+            <div class="gck-total">
+              <span>Total</span>
+              <b id="gck-total">{% render 'gc-money', price: cart.total_price %}</b>
+            </div>
+            <p class="gck-tax">{{ s.tax_note }}</p>
+
             {%- comment -%}
               Free delivery over the threshold was configured in Admin and then
               never said out loud, so a cart at 719 showed 49 shipping with no
@@ -218,13 +232,6 @@
                 <span class="gck-nudge" id="gck-nudge">{{ s.free_ship_near | replace: '[amount]', gap_money }}</span>
               {%- endif -%}
             {%- endif -%}
-            <div class="gck-rule" aria-hidden="true"></div>
-            <div class="gck-total">
-              <span>Total</span>
-              <b id="gck-total">{% render 'gc-money', price: cart.total_price %}</b>
-            </div>
-            <p class="gck-tax">{{ s.tax_note }}</p>
-
             <button type="submit" name="checkout" class="gck-go">{{ s.checkout_label }}</button>
             <a class="gck-keep" href="{{ routes.all_products_collection_url }}">← Keep shopping</a>
 
