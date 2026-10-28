@@ -10,7 +10,7 @@ __pycache__/
 gummychums-coming-soon.zip
 
 # trial-licensed font — keep local only, never distribute
-fonts/NaNJaune-MaxiMedium-TRIAL.ttf
+prototypes/fonts/NaNJaune-MaxiMedium-TRIAL.ttf
 
 # Shopify CLI local config/auth
 shopify-theme/.shopify/

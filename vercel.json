@@ -3,6 +3,6 @@
   "cleanUrls": false,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/", "destination": "/coming-soon-b.html" }
+    { "source": "/", "destination": "/prototypes/coming-soon-b.html" }
   ]
 }

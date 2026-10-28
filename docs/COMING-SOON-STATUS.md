@@ -1,5 +1,9 @@
 # GummyChums — Coming Soon Page · STATUS & HANDOFF
 
+> **Paths moved.** Everything this document calls `coming-soon-b.html`, `logo/`,
+> `fonts/` or `deploy/` now lives under `prototypes/`. The commands below need
+> that prefix, or run them from inside `prototypes/`.
+
 _Living doc. If the chat/context resets, read this first to continue exactly where we left off._
 _Last updated: 2026-08-16._
 
@@ -13,7 +17,7 @@ DNS = A-record method at Hostinger (records editable in hPanel; nameservers left
 - **Chosen design:** `coming-soon-b.html` (bold six-colour panels + marquees, real logo, gummy cursor).
 - **Email capture:** wired to **Klaviyo**, tested live (HTTP `202`). Real emails flow into the "Coming Soon Waitlist".
 - **HOSTING = Vercel (free).** NOT Hostinger hosting (that was never bought — Hostinger only holds the domain, parked). Project = **gummy-chums** (`mehalogens-projects`), CLI user `mehalogen`. Deployed the clean `deploy/` bundle as production → **LIVE at https://gummy-chums.vercel.app** (clean `/`, no experiments exposed).
-  - How it was deployed: `cp -r .vercel deploy/.vercel && cd deploy && vercel --prod --yes` (then removed the nested copy). Re-deploy the same way after edits. (Repo-root `vercel --prod` would serve the OLD `index.html` at `/` because Vercel won't let a rewrite override an existing file — that's why we deploy the `deploy/` subfolder.)
+  - How it was deployed: `cp -r .vercel prototypes/deploy/.vercel && cd deploy && vercel --prod --yes` (then removed the nested copy). Re-deploy the same way after edits. (Repo-root `vercel --prod` would serve the OLD `index.html` at `/` because Vercel won't let a rewrite override an existing file — that's why we deploy the `deploy/` subfolder.)
 - **NEXT ACTION:** connect **gummychums.com** (registered at Hostinger, nameservers currently `*.dns-parking.com`) → point it at Vercel (see Deploy section). Then SSL auto-issues and https://gummychums.com goes live.
 
 ## The brand (source of truth)
@@ -47,7 +51,7 @@ Self-contained single HTML file, vanilla JS, Shopify/Hostinger-portable. Feature
 4. Wait (mins–hours). Vercel auto-verifies + issues SSL. Then **https://gummychums.com** is live.
 5. Test: submit an email on the live site → confirm it lands in Klaviyo.
 
-_Re-deploy after edits:_ `cp coming-soon-b.html deploy/index.html && cp -r .vercel deploy/.vercel && (cd deploy && vercel --prod --yes) && rm -rf deploy/.vercel`
+_Re-deploy after edits:_ `cp prototypes/coming-soon-b.html prototypes/deploy/index.html && cp -r .vercel prototypes/deploy/.vercel && (cd prototypes/deploy && vercel --prod --yes) && rm -rf prototypes/deploy/.vercel`
 _(Also keep the zip fresh for reference:_ `cd deploy && zip -r -X ../gummychums-coming-soon.zip index.html fonts logo)`
 
 ## 2026-08 round 2 — founder feedback + 3-flavor mockups
