@@ -87,6 +87,11 @@
   .gck-code-msg{display:block;margin-top:var(--sp-2);font-size:var(--fs-xs);
     font-weight:var(--fw-black);color:var(--c-accent)}
   .gck-line--save b{color:var(--c-accent)}
+  .gck-code-clear{display:block;margin:calc(var(--sp-2) * -1) 0 var(--sp-3) auto;
+    font-family:inherit;font-size:var(--fs-xs);font-weight:var(--fw-bold);
+    color:var(--c-ink-3);background:none;border:0;padding:0;cursor:pointer;
+    text-decoration:underline;text-underline-offset:2px}
+  .gck-code-clear:hover{color:var(--c-accent)}
   /* qualified past Dawn's `div:empty{display:none}` — this divider is a
      deliberately empty div, and a bare class loses the specificity contest */
   .gck-sum .gck-rule{display:block;height:1px;background:var(--c-line);margin:var(--sp-5) 0}
@@ -258,6 +263,32 @@
                   <b>&minus;{% render 'gc-money', price: rest %}</b>
                 </div>
               {%- endif -%}
+              {%- comment -%}
+                Only for codes the customer typed. An automatic discount cannot
+                be taken off by the shopper, so a Remove beside one would be a
+                button that does nothing.
+
+                Detected by discount_application.type, not cart.discount_codes:
+                that property exists in the AJAX cart but NOT in Liquid, so the
+                first version of this check was always false and the button
+                never rendered. The type is 'discount_code' for a typed code,
+                'automatic' otherwise, on both the cart-level list and the
+                line-level allocations.
+              {%- endcomment -%}
+              {%- assign has_code = false -%}
+              {%- for d in cart.cart_level_discount_applications -%}
+                {%- if d.type == 'discount_code' -%}{%- assign has_code = true -%}{%- endif -%}
+              {%- endfor -%}
+              {%- for item in cart.items -%}
+                {%- for a in item.line_level_discount_allocations -%}
+                  {%- if a.discount_application.type == 'discount_code' -%}
+                    {%- assign has_code = true -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endfor -%}
+              {%- if has_code -%}
+                <button type="button" class="gck-code-clear" id="gck-code-clear">{{ s.code_clear }}</button>
+              {%- endif -%}
             </div>
             <div class="gck-line">
               <span>Shipping</span>
@@ -342,6 +373,7 @@
   var FREE_DONE={{ s.free_ship_done | json }};
   var FREE_NEAR={{ s.free_ship_near | json }};
   var CODE_BAD={{ s.code_bad | json }};
+  var CODE_CLEAR={{ s.code_clear | json }};
 
   function money(cents){
     var v=cents/100;
@@ -400,6 +432,11 @@
         });
         addRow(name,rest);
       }
+      if((cart.discount_codes||[]).length){
+        var clr=document.createElement('button');
+        clr.type='button'; clr.className='gck-code-clear'; clr.id='gck-code-clear';
+        clr.textContent=CODE_CLEAR; dz.appendChild(clr);
+      }
     }
 
     /* the nudge is the reason someone adds a second box, so it has to move
@@ -439,6 +476,7 @@
   }
 
   /* ---- discount code ---- */
+  var busy=false;
   var codeIn=document.getElementById('gck-code-in'),
       codeGo=document.getElementById('gck-code-go'),
       codeMsg=document.getElementById('gck-code-msg'),
@@ -468,7 +506,22 @@
     }
   }
 
-  var busy=false;
+  /* Removing a code is all-or-nothing: {discount:''} clears every code on the
+     cart, and Shopify offers no way to drop one of several. With a single code
+     — which is the normal case, since a second one rarely applies anyway —
+     that is exactly what the shopper means by Remove. */
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('#gck-code-clear');
+    if(!b||busy) return;
+    busy=true; b.disabled=true;
+    fetch('/cart/update.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({discount:''})})
+      .then(function(){ return fetch('/cart.js',{headers:{'Accept':'application/json'}}); })
+      .then(function(r){if(!r.ok)throw new Error('read failed');return r.json();})
+      .then(function(cart){ busy=false; paint(cart); })
+      .catch(function(){ busy=false; location.href='/cart'; });
+  });
+
   form.addEventListener('click',function(e){
     var a=e.target.closest('a'); if(!a)return;
     if(!a.closest('.gck-qty')&&!a.classList.contains('gck-remove'))return;
@@ -517,6 +570,7 @@
     { "type": "text", "id": "code_label", "label": "Discount code toggle",
       "default": "Have a discount code?" },
     { "type": "text", "id": "code_hint", "label": "Code placeholder", "default": "Enter code" },
+    { "type": "text", "id": "code_clear", "label": "Remove code link", "default": "Remove" },
     { "type": "text", "id": "code_bad", "label": "Code not accepted",
       "info": "[code] is replaced with what they typed.",
       "default": "[code] didn’t apply — it may have expired, or another code is already on this order." },
