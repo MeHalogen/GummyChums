@@ -142,20 +142,6 @@
       }
     },
     "content_for_index": [],
-    "blocks": {
-      "15188581332139481108": {
-        "type": "shopify://apps/scala-discounts/blocks/cartButton/24748891-1ee0-454d-bfde-d80e65983c18",
-        "disabled": false,
-        "settings": {
-          "textSelector": "Proceed to checkout",
-          "textSelector2": "Check out, checkout, check-out",
-          "selector": ":is(button,input)[name=\"checkout\"]",
-          "message": "Pay online — Save 5%",
-          "position": "after",
-          "customliquid": "<style>\nbutton {\n  background: #FFFFFF;\n  color: #DE1D62;\n  border: 2px solid #DE1D62;\n  border-radius: 999px;\n  font-weight: 800;\n  font-size: 17px;\n  padding: 14px 30px;\n  box-shadow: none;\n}\n</style>"
-        }
-      }
-    },
     "color_schemes": {
       "scheme-1": {
         "settings": {
