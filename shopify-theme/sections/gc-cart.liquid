@@ -367,6 +367,34 @@
      then the row, the totals and the header count are updated from the reply.
      No fetch support, or any failure, and the original link still works. */
   var form=document.getElementById('gck-form');
+
+  /* BACK BUTTON. A browser restores this page from the back/forward cache
+     without re-running anything, so someone who removes a code in Shopify's
+     checkout and presses Back is shown the HTML from before they removed it —
+     still naming a discount the order no longer has. The cart is the one page
+     where a stale render is a lie about money, so on a restore the figures are
+     re-read from the server. A reload only when the rows themselves changed,
+     since paint() can update a row but cannot add one. */
+  if(window.fetch){
+    window.addEventListener('pageshow', function (e) {
+      var nav = (window.performance && performance.getEntriesByType)
+        ? performance.getEntriesByType('navigation')[0] : null;
+      var restored = e.persisted || (nav && nav.type === 'back_forward');
+      if (!restored) return;
+      if (!form) { location.reload(); return; }
+      fetch('/cart.js', { headers: { 'Accept': 'application/json' } })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (cart) {
+          if (!cart) return;
+          if (cart.item_count === 0 || cart.items.length !== rows().length) {
+            location.reload(); return;
+          }
+          paint(cart);
+        })
+        .catch(function () {});
+    });
+  }
+
   if(!form||!window.fetch) return;
 
   var FREE_MIN={{ s.free_ship_min | times: 100 | default: 0 }};
