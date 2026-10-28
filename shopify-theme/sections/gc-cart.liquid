@@ -65,6 +65,27 @@
     margin-top:var(--sp-5);line-height:var(--lh-body)}
   .gck-nudge--free{color:var(--c-accent)}
   .gck-nudge + .gck-go{margin-top:var(--sp-3)}
+
+  /* Collapsed on purpose. An open coupon field tells every shopper that codes
+     exist and sends some of them away to look for one; collapsed, it is there
+     for the people who already hold a code and invisible to everyone else. */
+  .gck-code{margin-top:var(--sp-4);border-top:1px solid var(--c-line);padding-top:var(--sp-4)}
+  .gck-code>summary{list-style:none;cursor:pointer;font-size:var(--fs-sm);
+    font-weight:var(--fw-black);color:var(--c-ink-2)}
+  .gck-code>summary::-webkit-details-marker{display:none}
+  .gck-code>summary:hover{color:var(--c-accent)}
+  .gck-code-row{display:flex;gap:var(--sp-2);margin-top:var(--sp-3)}
+  .gck-code-in{flex:1;min-width:0;font-family:inherit;font-size:var(--fs-sm);
+    font-weight:var(--fw-body);color:var(--c-ink);background:var(--c-surface);
+    border:1px solid var(--c-line);border-radius:var(--r-full);
+    padding:var(--sp-3) var(--sp-4);text-transform:uppercase}
+  .gck-code-in:focus{outline:2px solid var(--c-accent);outline-offset:1px}
+  .gck-code-go{font-family:inherit;font-size:var(--fs-sm);font-weight:var(--fw-black);
+    color:var(--c-accent);background:transparent;border:2px solid var(--c-accent);
+    border-radius:var(--r-full);padding:var(--sp-3) var(--sp-5);cursor:pointer}
+  .gck-code-go:hover{background:var(--c-accent-soft)}
+  .gck-code-msg{display:block;margin-top:var(--sp-2);font-size:var(--fs-xs);
+    font-weight:var(--fw-black);color:var(--c-accent)}
   .gck-line--save b{color:var(--c-accent)}
   /* qualified past Dawn's `div:empty{display:none}` — this divider is a
      deliberately empty div, and a bare class loses the specificity contest */
@@ -278,6 +299,24 @@
             <button type="submit" name="checkout" class="gck-go">{{ s.checkout_label }}</button>
             <a class="gck-keep" href="{{ routes.all_products_collection_url }}">← Keep shopping</a>
 
+            {%- comment -%}
+              Applied through Shopify's own /discount/<code> route, which puts
+              the code on the cart and returns here — the same mechanism as a
+              discount link in an email. No app, no API, works on every plan.
+              Not a <form>: this block sits inside the cart's own form and
+              nesting one form in another is invalid, so Enter and the button
+              are wired up in script instead.
+            {%- endcomment -%}
+            <details class="gck-code" id="gck-code">
+              <summary>{{ s.code_label }}</summary>
+              <div class="gck-code-row">
+                <input class="gck-code-in" id="gck-code-in" type="text" autocomplete="off"
+                  spellcheck="false" aria-label="Discount code" placeholder="{{ s.code_hint }}">
+                <button class="gck-code-go" type="button" id="gck-code-go">Apply</button>
+              </div>
+              <span class="gck-code-msg" id="gck-code-msg" hidden></span>
+            </details>
+
             <div class="gck-pay">
               <p>Secure checkout</p>
             </div>
@@ -302,6 +341,7 @@
   var FREE_MIN={{ s.free_ship_min | times: 100 | default: 0 }};
   var FREE_DONE={{ s.free_ship_done | json }};
   var FREE_NEAR={{ s.free_ship_near | json }};
+  var CODE_BAD={{ s.code_bad | json }};
 
   function money(cents){
     var v=cents/100;
@@ -398,6 +438,36 @@
     });
   }
 
+  /* ---- discount code ---- */
+  var codeIn=document.getElementById('gck-code-in'),
+      codeGo=document.getElementById('gck-code-go'),
+      codeMsg=document.getElementById('gck-code-msg'),
+      codeBox=document.getElementById('gck-code');
+  function applyCode(){
+    var v=(codeIn.value||'').trim();
+    if(!v) return;
+    /* round-trip the attempt so the page that comes back can tell whether it
+       took — Shopify applies a bad code silently and redirects either way */
+    var back='/cart?tried='+encodeURIComponent(v);
+    location.href='/discount/'+encodeURIComponent(v)+'?redirect='+encodeURIComponent(back);
+  }
+  if(codeIn&&codeGo){
+    codeGo.addEventListener('click',applyCode);
+    codeIn.addEventListener('keydown',function(e){ if(e.key==='Enter'){e.preventDefault();applyCode();} });
+    var tried=new URLSearchParams(location.search).get('tried');
+    if(tried){
+      var names=[].slice.call(document.querySelectorAll('#gck-discounts .gck-line--save span'))
+                  .map(function(n){return (n.textContent||'').trim().toUpperCase();});
+      if(names.indexOf(tried.trim().toUpperCase())===-1){
+        codeBox.open=true;
+        codeMsg.hidden=false;
+        codeMsg.textContent=CODE_BAD.replace('[code]',tried.toUpperCase());
+        codeIn.value=tried.toUpperCase();
+      }
+      history.replaceState({},'','/cart');
+    }
+  }
+
   var busy=false;
   form.addEventListener('click',function(e){
     var a=e.target.closest('a'); if(!a)return;
@@ -444,6 +514,12 @@
       "default": "You’re [amount] away from free delivery." },
     { "type": "text", "id": "free_ship_done", "label": "At the threshold",
       "default": "Free delivery unlocked ✦" },
+    { "type": "text", "id": "code_label", "label": "Discount code toggle",
+      "default": "Have a discount code?" },
+    { "type": "text", "id": "code_hint", "label": "Code placeholder", "default": "Enter code" },
+    { "type": "text", "id": "code_bad", "label": "Code not accepted",
+      "info": "[code] is replaced with what they typed.",
+      "default": "[code] didn’t apply — it may have expired, or another code is already on this order." },
     { "type": "textarea", "id": "tax_note", "label": "Tax note",
       "default": "Inclusive of all taxes. Shipping is calculated at checkout based on your PIN code." },
     { "type": "text", "id": "empty_title", "label": "Empty title", "default": "Your bag’s feeling light." },
