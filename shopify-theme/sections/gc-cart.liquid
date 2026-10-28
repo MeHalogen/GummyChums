@@ -55,6 +55,9 @@
     font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-ink-2);margin-bottom:var(--sp-3)}
   .gck-line b{font-weight:var(--fw-black);color:var(--c-ink)}
   .gck-line--save{color:var(--c-accent)}
+  .gck-nudge{display:block;font-size:var(--fs-sm);font-weight:var(--fw-black);
+    color:var(--c-ink-2);margin:calc(var(--sp-3) * -1) 0 var(--sp-3);line-height:var(--lh-body)}
+  .gck-nudge--free{color:var(--c-accent)}
   .gck-line--save b{color:var(--c-accent)}
   /* qualified past Dawn's `div:empty{display:none}` — this divider is a
      deliberately empty div, and a bare class loses the specificity contest */
@@ -189,6 +192,32 @@
               <span>Shipping</span>
               <b>Calculated at checkout</b>
             </div>
+            {%- comment -%}
+              Free delivery over the threshold was configured in Admin and then
+              never said out loud, so a cart at 719 showed 49 shipping with no
+              hint that one more box removes it. The threshold lives in Shopify's
+              shipping rates, which the theme cannot read, so it is a setting
+              here: change the rate in Admin and this number must change too.
+              Compared against cart.total_price — the figure the customer is
+              actually looking at — not the pre-discount subtotal.
+            {%- endcomment -%}
+            {%- assign free_min = s.free_ship_min | times: 100 -%}
+            {%- if free_min > 0 -%}
+              {%- if cart.total_price >= free_min -%}
+                <span class="gck-nudge gck-nudge--free" id="gck-nudge">{{ s.free_ship_done }}</span>
+              {%- else -%}
+                {%- comment -%}
+                  The amount is formatted FIRST and then substituted. Chaining
+                  the money filter onto the replace runs it against the whole
+                  sentence, which formats the string as a price and renders
+                  "Rs. 0". Captured through gc-money so it reads ₹352, matching
+                  every other price on the page.
+                {%- endcomment -%}
+                {%- assign gap = free_min | minus: cart.total_price -%}
+                {%- capture gap_money -%}{% render 'gc-money', price: gap %}{%- endcapture -%}
+                <span class="gck-nudge" id="gck-nudge">{{ s.free_ship_near | replace: '[amount]', gap_money }}</span>
+              {%- endif -%}
+            {%- endif -%}
             <div class="gck-rule" aria-hidden="true"></div>
             <div class="gck-total">
               <span>Total</span>
@@ -219,6 +248,10 @@
      No fetch support, or any failure, and the original link still works. */
   var form=document.getElementById('gck-form');
   if(!form||!window.fetch) return;
+
+  var FREE_MIN={{ s.free_ship_min | times: 100 | default: 0 }};
+  var FREE_DONE={{ s.free_ship_done | json }};
+  var FREE_NEAR={{ s.free_ship_near | json }};
 
   function money(cents){
     var v=cents/100;
@@ -260,6 +293,18 @@
         var v=document.createElement('b');    v.textContent='\u2212'+money(amt);
         row.appendChild(t); row.appendChild(v); dz.appendChild(row);
       });
+    }
+
+    /* the nudge is the reason someone adds a second box, so it has to move
+       the moment the quantity does */
+    var nz=document.getElementById('gck-nudge');
+    if(nz&&FREE_MIN>0){
+      if(cart.total_price>=FREE_MIN){
+        nz.className='gck-nudge gck-nudge--free'; nz.textContent=FREE_DONE;
+      }else{
+        nz.className='gck-nudge';
+        nz.textContent=FREE_NEAR.replace('[amount]',money(FREE_MIN-cart.total_price));
+      }
     }
 
     var rs=rows();
@@ -315,6 +360,14 @@
   "settings": [
     { "type": "text", "id": "title", "label": "Title", "default": "Your bag" },
     { "type": "text", "id": "checkout_label", "label": "Checkout button", "default": "Checkout →" },
+    { "type": "number", "id": "free_ship_min", "label": "Free delivery over (₹)",
+      "info": "Must match the free-shipping rate in Settings → Shipping. 0 hides the message.",
+      "default": 999 },
+    { "type": "text", "id": "free_ship_near", "label": "Below the threshold",
+      "info": "[amount] is replaced with how much more they need.",
+      "default": "You’re [amount] away from free delivery." },
+    { "type": "text", "id": "free_ship_done", "label": "At the threshold",
+      "default": "Free delivery unlocked ✦" },
     { "type": "textarea", "id": "tax_note", "label": "Tax note",
       "default": "Inclusive of all taxes. Shipping is calculated at checkout based on your PIN code." },
     { "type": "text", "id": "empty_title", "label": "Empty title", "default": "Your bag’s feeling light." },
