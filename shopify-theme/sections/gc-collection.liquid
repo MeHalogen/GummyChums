@@ -58,7 +58,6 @@
     margin-top:auto;padding-top:var(--sp-2)}
   .gcc-priced{display:flex;flex-direction:column;gap:var(--sp-1)}
   .gcc-price{font-size:var(--fs-xl);font-weight:var(--fw-black);line-height:1}
-  .gcc-perday{font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--c-ink-3)}
   .gcc-add{border:0;cursor:pointer;font-family:inherit;font-weight:var(--fw-black);
     font-size:var(--fs-sm);color:var(--c-surface);padding:var(--sp-3) var(--sp-5);
     border-radius:var(--r-full);transition:transform var(--dur-1) var(--spring),filter var(--dur-2) var(--ease)}
@@ -158,8 +157,6 @@
           <div class="gcc-foot">
             <span class="gcc-priced">
               <span class="gcc-price" style="color:var({{ tone }})">{% render 'gc-money', price: product.price %}</span>
-              {%- assign pd = product.price | divided_by: 3000 | round -%}
-              <span class="gcc-perday">≈ ₹{{ pd }}/day</span>
             </span>
             {%- if product.available -%}
               <form method="post" action="{{ routes.cart_add_url }}">

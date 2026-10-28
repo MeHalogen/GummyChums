@@ -1,20 +1,18 @@
 {%- comment -%}
-  Price cluster — the amount, and what it works out to per dose.
+  Price cluster — the amount, and nothing else.
+
+  It used to print a per-dose figure beneath the price ("≈ ₹24/day"). That was
+  removed on request: the arithmetic invites a comparison with the cheapest
+  tablet on the shelf, which is the ground this brand does not want to fight on.
+  The unit parameters are gone with it; do not reintroduce them here without
+  deciding that argument first.
 
   Parameters
-    price         required  Shopify price in the shop's minor unit (paise).
-    unit_divisor  optional  Divide by this for the unit figure. Default 3000.0,
-                            which is 30 doses expressed in paise.
-    unit_label    optional  Text after the unit figure. Default "/day".
+    price  required  Shopify price in the shop's minor unit (paise).
 
   Usage
     {% render 'gc-price', price: product.price %}
-    {% render 'gc-price', price: product.price, unit_label: '/dose' %}
 {%- endcomment -%}
-{%- assign divisor = unit_divisor | default: 3000.0 -%}
-{%- assign label = unit_label | default: '/day' -%}
-{%- assign per_unit = price | divided_by: divisor | round -%}
 <span class="gc-price">
   <span class="gc-price__now">{% render 'gc-money', price: price %}</span>
-  <span class="gc-price__unit">≈ ₹{{ per_unit }}{{ label }}</span>
 </span>

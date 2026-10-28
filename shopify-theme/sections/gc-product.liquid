@@ -66,9 +66,6 @@
       <div class="gp-price">
         <b>{% render 'gc-money', price: product.selected_or_first_available_variant.price %}</b>
         {%- if product.compare_at_price > product.price -%}<s>{% render 'gc-money', price: product.compare_at_price %}</s>{%- endif -%}
-        {%- comment -%} round to whole rupees — "₹13/day" reads better than "₹13.30/day" {%- endcomment -%}
-        {%- assign per_day = product.selected_or_first_available_variant.price | divided_by: 3000 | round -%}
-        <span class="gp-perday">≈ ₹{{ per_day }}/day</span>
       </div>
       <p class="gp-tax">Inclusive of all taxes · 30 gummies · Net 105 g</p>
       <p class="gp-age">For adults 18+ · Not for medicinal use</p>

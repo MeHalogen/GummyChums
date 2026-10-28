@@ -200,7 +200,13 @@
 
     <div class="gcf-bot">
       <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}<span class="gcf-dot" aria-hidden="true"></span>Made in India </span>
-      <span>{{ section.settings.legal }}</span>
+      {%- comment -%}
+        Rendered only when it has something to say. An empty span still takes
+        part in the flex row and shunts the copyright off centre.
+      {%- endcomment -%}
+      {%- if section.settings.legal != blank -%}
+        <span>{{ section.settings.legal }}</span>
+      {%- endif -%}
     </div>
   </div>
 </footer>
@@ -226,7 +232,7 @@
     { "type": "image_picker", "id": "cert_3", "label": "Certificate logo 3" },
     { "type": "text", "id": "cert_3_alt", "label": "Logo 3 description", "default": "FSSC 22000 food safety certification" },
     { "type": "text", "id": "legal", "label": "Legal line",
-      "default": "These statements have not been evaluated by the FSSAI. Not intended to diagnose or treat." }
+      "info": "Blank renders nothing. The declaration that matters — For adults 18+ · Not for medicinal use — lives on the product page, not here." }
   ]
 }
 {% endschema %}

@@ -114,7 +114,6 @@
   .gp-acc .body{padding:0 var(--sp-5) var(--sp-4);font-weight:var(--fw-body);font-size:var(--fs-sm);color:var(--c-ink-2);line-height:var(--lh-body)}
 
   /* per-day value anchor — ₹399/30 reframes the price as a daily habit cost */
-  .gp-perday{font-size:var(--fs-sm);font-weight:var(--fw-bold);color:var(--c-ink-3);white-space:nowrap}
 
   /* rich text from the Shopify description — real paragraphs, not a stripped blob */
   .gp-rte p{margin:0 0 var(--sp-3)}
