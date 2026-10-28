@@ -97,11 +97,17 @@
         {%- if product.available -%}
           <button type="submit" class="gp-buy" id="gp-buy">Add to bag · {% render 'gc-money', price: product.selected_or_first_available_variant.price %}</button>
           <button type="button" class="gp-now" id="gp-now">Buy it now</button>
+          {%- comment -%}
+            Not "Easy returns" any more. Returns are 48 hours, sealed pack
+            only, and require an uncut unboxing video — calling that easy sets
+            up a customer to discover the real terms at the worst moment. The
+            link goes to the policy so the terms are one tap away.
+          {%- endcomment -%}
           <p class="gp-note">Ships in 3–10 days ·
             {%- if shop.refund_policy != blank -%}
-              <a href="{{ shop.refund_policy.url }}">Easy returns</a>
+              <a href="{{ shop.refund_policy.url }}">48-hour returns</a>
             {%- else -%}
-              Easy returns
+              48-hour returns
             {%- endif -%}
           </p>
         {%- else -%}
@@ -176,7 +182,7 @@
           <div class="body">One gummy a day, whenever suits you. No water, no pills, no fuss — your daily chum is waiting.</div>
         </details>
         <details><summary>Shipping &amp; returns</summary>
-          <div class="body">We ship pan-India via Shiprocket, usually delivered in 3–10 working days with tracking. See our Returns policy for details.</div>
+          <div class="body">We ship pan-India via Shiprocket, usually delivered in 3–10 working days with tracking. Returns are accepted within 48 hours of delivery, on an unopened pack, and we need an uncut unboxing video — the full rules are in our Returns policy.</div>
         </details>
       </div>
     </div>
