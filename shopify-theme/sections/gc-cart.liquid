@@ -151,7 +151,14 @@
                   {%- unless item.variant.title contains 'Default' -%}
                     <p class="gck-variant">{{ item.variant.title }}</p>
                   {%- endunless -%}
-                  <p class="gck-each">{% render 'gc-money', price: item.final_price %} each · 30 gummies</p>
+                  {%- comment -%}
+                    Pre-discount on purpose. Subtotal is the undiscounted
+                    figure and the savings are listed beneath it, so a line
+                    showing its discounted price would not add up to the
+                    Subtotal above it. The discount is stated once, in words,
+                    rather than silently baked into three different numbers.
+                  {%- endcomment -%}
+                  <p class="gck-each">{% render 'gc-money', price: item.original_price %} each · 30 gummies</p>
                 </div>
 
                 <div class="gck-side">
@@ -164,7 +171,7 @@
                     <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ more }}"
                        aria-label="Increase quantity of {{ item.product.title }}">+</a>
                   </span>
-                  <span class="gck-line-total">{% render 'gc-money', price: item.final_line_price %}</span>
+                  <span class="gck-line-total">{% render 'gc-money', price: item.original_line_price %}</span>
                   <a class="gck-remove" href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0">Remove</a>
                 </div>
               </div>
@@ -187,6 +194,36 @@
               undiscounted figure for the same reason: a saving you cannot see
               subtracted from a number you never saw is not a saving.
             {%- endcomment -%}
+            {%- comment -%}
+              Two kinds of discount reach a cart and they live in different
+              places. An ORDER discount (FRESHDROP) is in
+              cart.cart_level_discount_applications. A PRODUCT discount is not
+              — it is allocated to each line, in
+              item.line_level_discount_allocations. Reading only the first list
+              meant a 90%-off product code took ₹728 off the total and printed
+              nothing, which is the exact fault this block exists to prevent.
+
+              Rather than itemise the line-level ones per line and repeat the
+              same name three times, they are summed into one row. The gap is
+              computed from the cart's own totals, so anything that discounts
+              this cart by any mechanism is accounted for — including one we
+              have not met yet.
+            {%- endcomment -%}
+            {%- assign cart_level_total = 0 -%}
+            {%- for d in cart.cart_level_discount_applications -%}
+              {%- assign cart_level_total = cart_level_total | plus: d.total_allocated_amount -%}
+            {%- endfor -%}
+            {%- assign all_off = cart.original_total_price | minus: cart.total_price -%}
+            {%- assign rest = all_off | minus: cart_level_total -%}
+            {%- assign rest_title = '' -%}
+            {%- for item in cart.items -%}
+              {%- for a in item.line_level_discount_allocations -%}
+                {%- if rest_title == '' -%}
+                  {%- assign rest_title = a.discount_application.title -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+            {%- if rest_title == '' -%}{%- assign rest_title = 'Discount' -%}{%- endif -%}
             <div id="gck-discounts">
               {%- for d in cart.cart_level_discount_applications -%}
                 <div class="gck-line gck-line--save">
@@ -194,6 +231,12 @@
                   <b>&minus;{% render 'gc-money', price: d.total_allocated_amount %}</b>
                 </div>
               {%- endfor -%}
+              {%- if rest > 0 -%}
+                <div class="gck-line gck-line--save">
+                  <span>{{ rest_title }}</span>
+                  <b>&minus;{% render 'gc-money', price: rest %}</b>
+                </div>
+              {%- endif -%}
             </div>
             <div class="gck-line">
               <span>Shipping</span>
@@ -287,19 +330,36 @@
        own, but they go in as text, never as markup. */
     var dz=document.getElementById('gck-discounts');
     if(dz){
-      var ds=cart.cart_level_discount_applications||[];
       dz.innerHTML='';
+      var addRow=function(title,amt){
+        if(amt==null||isNaN(amt)||amt<=0) return;
+        var row=document.createElement('div');
+        row.className='gck-line gck-line--save';
+        var t=document.createElement('span'); t.textContent=title||'Discount';
+        var v=document.createElement('b');    v.textContent='\u2212'+money(amt);
+        row.appendChild(t); row.appendChild(v); dz.appendChild(row);
+      };
+      var ds=cart.cart_level_discount_applications||[], cartLevel=0;
       ds.forEach(function(d){
         var app=d.discount_application||d;
         var amt=(d.amount!=null)?d.amount:d.total_allocated_amount;
-        var title=app.title||app.code||'';
         if(amt==null||isNaN(amt)) return;
-        var row=document.createElement('div');
-        row.className='gck-line gck-line--save';
-        var t=document.createElement('span'); t.textContent=title;
-        var v=document.createElement('b');    v.textContent='\u2212'+money(amt);
-        row.appendChild(t); row.appendChild(v); dz.appendChild(row);
+        cartLevel+=amt;
+        addRow(app.title||app.code,amt);
       });
+      /* whatever the cart totals say is missing but the order-level list did
+         not explain — a product discount, allocated line by line */
+      var orig=(cart.original_total_price!=null)?cart.original_total_price:cart.total_price;
+      var rest=orig-cart.total_price-cartLevel;
+      if(rest>0){
+        var name='';
+        (cart.items||[]).forEach(function(it){
+          ((it.line_level_discount_allocations||it.discounts||[])).forEach(function(a){
+            if(!name) name=(a.discount_application&&a.discount_application.title)||a.title||'';
+          });
+        });
+        addRow(name,rest);
+      }
     }
 
     /* the nudge is the reason someone adds a second box, so it has to move
@@ -328,7 +388,8 @@
       var it=cart.items[i]; if(!it)return;
       r.setAttribute('data-line',i+1);
       var qv=r.querySelector('.gck-qtyv'); if(qv)qv.textContent=it.quantity;
-      var lt=r.querySelector('.gck-line-total'); if(lt)lt.textContent=money(it.final_line_price!=null?it.final_line_price:it.line_price);
+      var lt=r.querySelector('.gck-line-total');
+      if(lt)lt.textContent=money(it.original_line_price!=null?it.original_line_price:it.line_price);
       var links=r.querySelectorAll('.gck-qty a');
       if(links[0])links[0].setAttribute('href','/cart/change?line='+(i+1)+'&quantity='+(it.quantity-1));
       if(links[1])links[1].setAttribute('href','/cart/change?line='+(i+1)+'&quantity='+(it.quantity+1));
@@ -351,6 +412,14 @@
     fetch('/cart/change.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
       body:JSON.stringify({line:parseInt(line,10),quantity:parseInt(qty,10)})})
       .then(function(r){if(!r.ok)throw new Error('change failed');return r.json();})
+      /* change.js answers with a cart whose discount allocation can still be
+         the pre-change one: a 90%-off code on two boxes came back as a total
+         of 210.80 where the cart really held 161.80. cart.js agrees with the
+         server-rendered page, so the change is made there and the figures are
+         read back from the endpoint that is right. One extra GET per tap is
+         worth more than a total that disagrees with checkout. */
+      .then(function(){ return fetch('/cart.js',{headers:{'Accept':'application/json'}}); })
+      .then(function(r){if(!r.ok)throw new Error('read failed');return r.json();})
       .then(function(cart){
         busy=false; if(row)row.removeAttribute('aria-busy');
         if(cart.item_count===0){location.href='/cart';return;}  /* show the empty state */
