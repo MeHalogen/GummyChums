@@ -150,10 +150,18 @@ body{background:#F8EBDF}
    across a 390px phone. Three is not a border. Phones get the book's base
    40x20 unit instead, about ten peaks across, steps still on whole pixels. */
 .gc2-edge__fine{display:none}
+/* Same story for the dissolve, which is what closes the hero. Its tile is 96px
+   at the desktop scale: eleven across a laptop, four across a phone. Four is
+   not a dissolve. Phones get 48px tiles and a 64px band. */
+.gc2-dissolve{display:block;width:100%;height:var(--dh)}
+.gc2-dissolve__fine{display:none}
 @media(max-width:749px){
   .gc2-edge{height:var(--ehm)}
   .gc2-edge__wide{display:none}
   .gc2-edge__fine{display:block}
+  .gc2-dissolve{height:var(--dhm)}
+  .gc2-dissolve__wide{display:none}
+  .gc2-dissolve__fine{display:block}
 }
 /* light pool behind the type — subtle, keeps colour visible */
 .gc-bg::after{content:"";position:absolute;inset:0;

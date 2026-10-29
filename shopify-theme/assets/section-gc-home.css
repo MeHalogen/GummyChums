@@ -191,7 +191,7 @@
        228px of content, so more than half of it was empty pink. The bottom still
        clears the 128px that .gh-edge pulls itself up by — that part is
        structural — but the slack either side of it is gone. */
-    padding:calc(var(--sp-6) + 3.5vw) var(--gutter) calc(var(--sp-4) + 128px);
+    padding:calc(var(--sp-6) + 3.5vw) var(--gutter) calc(var(--sp-4) + var(--gh-dis-h, 128px));
     background:var(--c-cherry);border-radius:50% 50% 0 0 / 11vw 11vw 0 0;
     display:grid;place-items:center;text-align:center;
     color:var(--c-surface);pointer-events:none}
@@ -220,7 +220,13 @@
      to bite UP into the pink — at z-index 2 against the band's 3 the band simply
      painted over them. They only showed before because the band was too short to
      reach them, which was itself the padding bug. */
-  .gh-edge{line-height:0;position:relative;z-index:4;margin-top:-128px;pointer-events:none}
+  /* The pull and the dome's reserve are the same number as the dissolve band,
+     so all three move together. On a phone the band is 64px, not 128 — pulling
+     up by 128 against a 64px band would drag the teeth into the Chums' feet,
+     which is the bug Reduce Motion already caused once. */
+  .gh-edge{line-height:0;position:relative;z-index:4;
+    margin-top:calc(var(--gh-dis-h, 128px) * -1);pointer-events:none}
+  @media(max-width:749px){ .gh-reveal, .gh-edge{--gh-dis-h:64px} }
 
   /* ---------- ACT 2 — flavours ---------- */
   /* the dissolve already supplies the top separation */
