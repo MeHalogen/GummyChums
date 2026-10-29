@@ -14,8 +14,16 @@
 {%- endcomment -%}
 {%- assign s = section.settings -%}
 <style>
-  .gcch{background:var(--c-bg);padding:clamp(var(--sp-8),6vw,var(--sp-10)) var(--gutter)}
+  .gcch{background:var(--c-bg)}
   .gcch-in{max-width:var(--container);margin-inline:auto}
+  .gcch-head{padding:clamp(var(--sp-8),6vw,var(--sp-10)) var(--gutter) clamp(var(--sp-7),5vw,var(--sp-9))}
+
+  /* Each Chum gets a full-bleed band in their own colour, with the stepped
+     edge biting down into the one above. Flat cream for all three made them
+     read as rows in a table; the band is what makes each one a person. The
+     edge is the book's strongest device and was the obvious thing missing. */
+  .gcch-band{background:var(--chum-soft);padding:0 var(--gutter) clamp(var(--sp-7),5vw,var(--sp-9))}
+  .gcch-edge{line-height:0;background:transparent;margin-bottom:-1px}
 
   .gcch-kick{font-size:var(--fs-xs);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);
     text-transform:uppercase;color:var(--c-accent);margin:0;text-align:center}
@@ -26,19 +34,27 @@
     margin:var(--sp-5) auto 0;max-width:50ch;text-align:center;line-height:var(--lh-body)}
 
   /* one Chum */
-  .gcch-one{display:grid;gap:clamp(var(--sp-5),4vw,var(--sp-8));align-items:center;
-    margin-top:clamp(var(--sp-8),7vw,var(--sp-10))}
+  .gcch-one{display:grid;gap:clamp(var(--sp-5),4vw,var(--sp-8));align-items:end}
   @media(min-width:900px){
     .gcch-one{grid-template-columns:1fr 1fr}
-    .gcch-one:nth-child(even) .gcch-art{order:2}
+    .gcch-band--flip .gcch-art{order:2}
   }
 
-  .gcch-art{position:relative;border-radius:var(--r-lg);overflow:hidden;
-    background:var(--chum-soft);display:grid;place-items:end center;min-height:320px}
-  .gcch-art img{display:block;width:100%;height:auto;max-width:420px}
+  /* no box: the band is the colour now, so the Chum stands on it directly */
+  .gcch-art{position:relative;display:grid;place-items:end center;align-self:end}
+  /* Matched on HEIGHT, not width. All three canvases are 760 tall but 501,
+     544 and 554 wide, so capping the width renders each character at a
+     different scale — Dhi came out 637 tall against Tara's 576, and they are
+     meant to be the same people seen side by side. */
+  .gcch-art img{display:block;width:auto;height:auto;max-width:100%;max-height:520px}
+  /* On a phone the art stacks above the name, so a 520px figure filled the
+     screen with a face before the reader got to who it was. */
+  @media(max-width:899px){.gcch-art img{max-height:300px}}
 
-  .gcch-name{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
-    color:var(--chum);margin:0}
+  .gcch-idx{font-size:var(--fs-xs);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);
+    color:var(--chum);margin:0 0 var(--sp-2);opacity:.75}
+  .gcch-name{font-size:var(--fs-4xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    line-height:var(--lh-snug);color:var(--chum);margin:0}
   .gcch-means{font-size:var(--fs-sm);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);
     text-transform:uppercase;color:var(--c-ink-3);margin:var(--sp-2) 0 0}
   .gcch-body{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-ink-2);
@@ -71,12 +87,15 @@
 </style>
 
 <section class="gcch">
-  <div class="gcch-in">
-    {%- if s.kicker != blank -%}<p class="gcch-kick">{{ s.kicker }}</p>{%- endif -%}
-    {%- if s.title != blank -%}<h1 class="gcch-title">{{ s.title }}</h1>{%- endif -%}
-    {%- if s.lede != blank -%}<p class="gcch-lede">{{ s.lede }}</p>{%- endif -%}
+  <div class="gcch-head">
+    <div class="gcch-in">
+      {%- if s.kicker != blank -%}<p class="gcch-kick">{{ s.kicker }}</p>{%- endif -%}
+      {%- if s.title != blank -%}<h1 class="gcch-title">{{ s.title }}</h1>{%- endif -%}
+      {%- if s.lede != blank -%}<p class="gcch-lede">{{ s.lede }}</p>{%- endif -%}
+    </div>
+  </div>
 
-    {%- for block in section.blocks -%}
+  {%- for block in section.blocks -%}
       {%- assign b = block.settings -%}
       {%- comment -%}
         The share link carries ?si= — a token tied to the account that copied
@@ -84,8 +103,13 @@
         published and the embed is built from the id alone.
       {%- endcomment -%}
       {%- assign pid = b.playlist_url | split: 'playlist/' | last | split: '?' | first -%}
-      <article class="gcch-one" style="--chum:var({{ b.tone }});--chum-soft:var({{ b.tone_soft }})"
-        {{ block.shopify_attributes }}>
+      {%- comment -%} pre-assigned: {% render %} does not evaluate filters in params {%- endcomment -%}
+      {%- assign eid = 'chum-' | append: forloop.index -%}
+      {%- assign flip = '' -%}
+      {%- if forloop.index == 2 -%}{%- assign flip = ' gcch-band--flip' -%}{%- endif -%}
+      <div class="gcch-edge">{% render 'gc2-edge', id: eid, tone: b.tone_soft, side: 'bottom' %}</div>
+      <div class="gcch-band{{ flip }}" style="--chum:var({{ b.tone }});--chum-soft:var({{ b.tone_soft }})">
+      <article class="gcch-one gcch-in" {{ block.shopify_attributes }}>
         <div class="gcch-art">
           {%- if b.art_w > 0 and b.art_h > 0 -%}
             <img src="{{ b.art | asset_url }}" alt="{{ b.name }}, the {{ b.role }} Chum"
@@ -93,6 +117,7 @@
           {%- endif -%}
         </div>
         <div class="gcch-say">
+          <p class="gcch-idx">0{{ forloop.index }} ✦ {{ b.role }}</p>
           <h2 class="gcch-name">{{ b.name }}</h2>
           {%- if b.means != blank -%}<p class="gcch-means">{{ b.means }}</p>{%- endif -%}
           {%- if b.body != blank -%}<p class="gcch-body">{{ b.body }}</p>{%- endif -%}
@@ -110,8 +135,8 @@
           {%- endif -%}
         </div>
       </article>
-    {%- endfor -%}
-  </div>
+      </div>
+  {%- endfor -%}
 </section>
 
 <script>
