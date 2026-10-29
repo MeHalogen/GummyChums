@@ -72,6 +72,15 @@ body{background:#F8EBDF}
    canvas above is the safety net. */
 .gc-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
   transform:translateZ(0);
+  /* HEIGHT, not just inset:0. On iOS, inset:0 on a fixed element resolves
+     against the SMALL viewport — the one with Safari's toolbar showing — so
+     when the toolbar retracts there is a band at the bottom this layer never
+     covers, and the html background shows through it while content scrolls
+     over the top. That band was purple, then cream after I changed the canvas;
+     changing the canvas changed its colour, not its cause.
+     lvh is the large viewport, toolbar retracted. The 100vh line is the
+     fallback for browsers without lvh, where it means the same thing. */
+  height:100vh;height:100lvh;
   background:
     radial-gradient(58vw 58vw at 0% 0%,   rgba(222,29,98,.26), transparent 60%),
     radial-gradient(48vw 48vw at 100% 6%, rgba(141,170,61,.22), transparent 60%),
