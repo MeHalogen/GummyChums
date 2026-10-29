@@ -150,7 +150,12 @@ body{background:#F8EBDF}
    Belt and braces on the sideways axis is kept: nothing should ever scroll the
    page horizontally, and iOS is more willing than desktop to expose a few px of
    overflow as a real scroll. */
-html{scroll-behavior:smooth;overflow-x:clip}
+/* overflow-x is on body only now. On the ROOT element, a non-visible overflow
+   changes how Safari treats position:fixed descendants and their repaint during
+   momentum scroll — and .gc-bg, the layer painting this entire page, is fixed.
+   Horizontal overflow is still clipped by the body rule below, which is what
+   the belt-and-braces above was actually for. */
+html{scroll-behavior:smooth}
 body{overflow-x:clip;max-width:100%}
 
 /* ---- typography: bigger, tighter ---- */
