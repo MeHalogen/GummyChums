@@ -32,10 +32,12 @@
    section appeared to climb out of it. Mehal saw it on a phone; it is
    invisible on desktop because the layer repaints fine there.
 
-   Cream means a repaint gap shows the page colour instead of a seam. The cost
-   is a cream overscroll under the purple footer, which is a far smaller sin
-   than a page that looks broken while you scroll it. */
-html{background:var(--c-bg)}
+   Purple again, on request — it is the nicer overscroll under the purple
+   footer and Mehal preferred it. Safe now for a different reason than before:
+   .gc-bg carries an explicit height:100lvh, so it covers the viewport in both
+   of Safari's toolbar states and the canvas is only ever seen in the
+   rubber-band overscroll, which is what it was chosen for. */
+html{background:var(--c-purple)}
 /* body keeps the page colour; a background on body does not propagate to the
    canvas once html has one of its own, which is exactly what we want here. */
 body{background:#F8EBDF}

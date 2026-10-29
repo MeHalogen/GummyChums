@@ -197,7 +197,16 @@
   function initReveal() {
     var els = document.querySelectorAll('.gc-rise,.gc-pop');
     if (!els.length) return;
-    if (!('IntersectionObserver' in window) || reduce) {
+    /* NOT ON A PHONE. A .gh-row is 753px tall on an 844px screen, so the
+       reveal fades and slides a nearly full-screen block in at the bottom
+       edge — it reads as content climbing in from the end of the phone rather
+       than as polish. Safari makes it worse: its IntersectionObserver fires
+       late during momentum scroll, so the fade starts after the block is
+       already partly visible. The cursor and the trail are already switched
+       off on touch for the same reason — these effects are built for a mouse
+       and a wide viewport. */
+    var small = window.matchMedia('(max-width: 899px)').matches;
+    if (!('IntersectionObserver' in window) || reduce || small) {
       els.forEach(function (el) { el.classList.add('in'); });
       return;
     }
