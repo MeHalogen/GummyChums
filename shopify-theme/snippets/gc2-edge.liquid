@@ -29,9 +29,22 @@
 {%- assign tone  = tone  | default: '--c-purple' -%}
 {%- assign side  = side  | default: 'bottom' -%}
 {%- assign scale = scale | default: 3 -%}
+{%- comment -%}
+  A SECOND scale, for phones. The pattern tiles at a fixed pixel size, so it
+  never scales down: at 3 the peak is 120px wide, which is twelve of them
+  across a desktop and barely three across a 390px phone. Three enormous
+  blocks is not a textile border, it is a broken-looking bar — which is
+  exactly how it read on Mehal's phone.
+
+  1 is the book's base unit, 40x20, so the steps stay on whole 4px and crisp.
+  It gives about ten peaks across a phone, close to the density desktop has.
+{%- endcomment -%}
+{%- assign scale_m = scale_mobile | default: 1 -%}
 
 {%- assign unit_w = 40 | times: scale -%}
 {%- assign unit_h = 20 | times: scale -%}
+{%- assign unit_wm = 40 | times: scale_m -%}
+{%- assign unit_hm = 20 | times: scale_m -%}
 
 {%- comment -%}
   One peak: rises in five 4-unit steps to a point, falls in five. Kept on a
@@ -39,7 +52,12 @@
 {%- endcomment -%}
 {%- assign step_path = 'M0 20 L0 16 L4 16 L4 12 L8 12 L8 8 L12 8 L12 4 L16 4 L16 0 L20 0 L20 4 L24 4 L24 8 L28 8 L28 12 L32 12 L32 16 L36 16 L36 20 Z' -%}
 
-<svg class="gc2-edge gc2-edge--{{ side }}" width="100%" height="{{ unit_h }}"
+{%- comment -%}
+  Height comes from CSS now, not the attribute, so the media query can swap
+  band height and pattern together. Both patterns ship; CSS shows one.
+{%- endcomment -%}
+<svg class="gc2-edge gc2-edge--{{ side }}" width="100%"
+     style="--eh:{{ unit_h }}px;--ehm:{{ unit_hm }}px"
      aria-hidden="true" focusable="false" role="presentation">
   <defs>
     <pattern id="gc2step-{{ id }}" width="{{ unit_w }}" height="{{ unit_h }}" patternUnits="userSpaceOnUse">
@@ -47,6 +65,12 @@
         <path d="{{ step_path }}" fill="var({{ tone }})"></path>
       </g>
     </pattern>
+    <pattern id="gc2stepm-{{ id }}" width="{{ unit_wm }}" height="{{ unit_hm }}" patternUnits="userSpaceOnUse">
+      <g transform="scale({{ scale_m }})">
+        <path d="{{ step_path }}" fill="var({{ tone }})"></path>
+      </g>
+    </pattern>
   </defs>
-  <rect width="100%" height="100%" fill="url(#gc2step-{{ id }})"></rect>
+  <rect class="gc2-edge__wide" width="100%" height="100%" fill="url(#gc2step-{{ id }})"></rect>
+  <rect class="gc2-edge__fine" width="100%" height="100%" fill="url(#gc2stepm-{{ id }})"></rect>
 </svg>

@@ -144,8 +144,17 @@ body{background:#F8EBDF}
 }
 
 /* The stepped edge motif — see snippets/gc2-edge.liquid */
-.gc2-edge{display:block;width:100%}
+.gc2-edge{display:block;width:100%;height:var(--eh)}
 .gc2-edge--top{transform:scaleY(-1)}
+/* One peak is 120px wide at the desktop scale — twelve across a laptop, three
+   across a 390px phone. Three is not a border. Phones get the book's base
+   40x20 unit instead, about ten peaks across, steps still on whole pixels. */
+.gc2-edge__fine{display:none}
+@media(max-width:749px){
+  .gc2-edge{height:var(--ehm)}
+  .gc2-edge__wide{display:none}
+  .gc2-edge__fine{display:block}
+}
 /* light pool behind the type — subtle, keeps colour visible */
 .gc-bg::after{content:"";position:absolute;inset:0;
   background:radial-gradient(40vw 30vw at 50% 46%, rgba(255,248,251,.42), transparent 72%)}
