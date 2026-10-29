@@ -1,0 +1,72 @@
+{
+  "sections": {
+    "gc_chums": {
+      "type": "gc-chums",
+      "blocks": {
+        "dhi": {
+          "type": "chum",
+          "settings": {
+            "name": "Dhi",
+            "role": "Focus",
+            "means": "Dhi means intellect",
+            "body": "Dhi is the one who reads the back of the packet. Who asks the extra question, loses an afternoon to something interesting, and genuinely enjoys it. She studies with you, not at you. Her playlist is for the hours when the work is actually going somewhere.",
+            "art": "gc3-dhi-sit.webp",
+            "art_w": 501,
+            "art_h": 760,
+            "tone": "--c-mango",
+            "tone_soft": "--c-mango-soft",
+            "playlist_kicker": "Playlist",
+            "playlist_name": "Dhi’s playlist",
+            "playlist_url": "https://open.spotify.com/playlist/6NKZ3rOSwcwsxdvS4R7TbF",
+            "product": "brain-booster-gummies"
+          }
+        },
+        "nain": {
+          "type": "chum",
+          "settings": {
+            "name": "Nain",
+            "role": "Eye care",
+            "means": "Nain means eyes",
+            "body": "Nain notices things. The paper boat, the shop sign, the way the light goes at five o’clock. Mostly, though, he is on a screen like the rest of us. His playlist is what plays while the tabs pile up.",
+            "art": "gc3-nain-sit.webp",
+            "art_w": 544,
+            "art_h": 760,
+            "tone": "--c-orange",
+            "tone_soft": "--c-orange-soft",
+            "playlist_kicker": "Playlist",
+            "playlist_name": "Nain’s playlist",
+            "playlist_url": "https://open.spotify.com/playlist/7fbGaqyJeGZYTILJYu3WW5",
+            "product": "eye-care-gummies"
+          }
+        },
+        "tara": {
+          "type": "chum",
+          "settings": {
+            "name": "Tara",
+            "role": "Sleep",
+            "means": "Tara means star",
+            "body": "Tara is the last Chum awake. Iced coffee gone warm, phone face down, the day finally running out of things to ask of her. Her playlist is for the part of the evening where you stop doing things and just stop.",
+            "art": "gc3-tara-sit.webp",
+            "art_w": 554,
+            "art_h": 760,
+            "tone": "--c-cherry",
+            "tone_soft": "--c-cherry-soft",
+            "playlist_kicker": "Playlist",
+            "playlist_name": "Tara’s playlist",
+            "playlist_url": "https://open.spotify.com/playlist/11DhJgWllAS441hzmDhQCh",
+            "product": "melatonin-gummies"
+          }
+        }
+      },
+      "block_order": [
+        "dhi",
+        "nain",
+        "tara"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "gc_chums"
+  ]
+}

@@ -1,0 +1,180 @@
+{%- comment -%}
+  Meet the Chums — the characters get their own page instead of being met
+  three times on three product pages.
+
+  Each block is one Chum: their art, what their name means, who they are, the
+  gummy they belong to, and the playlist marketing built for them.
+
+  THE PLAYLIST IS A FACADE. Nothing from Spotify loads until someone taps the
+  card. A Spotify iframe fetches scripts and sets cookies the moment it renders,
+  which would mean a third party receiving data from every visitor who merely
+  scrolled past — on a store whose privacy policy we wrote carefully. The card
+  is ours, in the Chum's own colour; the iframe arrives on the tap that asks
+  for it.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<style>
+  .gcch{background:var(--c-bg);padding:clamp(var(--sp-8),6vw,var(--sp-10)) var(--gutter)}
+  .gcch-in{max-width:var(--container);margin-inline:auto}
+
+  .gcch-kick{font-size:var(--fs-xs);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);
+    text-transform:uppercase;color:var(--c-accent);margin:0;text-align:center}
+  .gcch-title{font-size:var(--fs-3xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    line-height:var(--lh-snug);color:var(--c-ink);margin:var(--sp-4) auto 0;
+    max-width:18ch;text-align:center}
+  .gcch-lede{font-size:var(--fs-lg);font-weight:var(--fw-body);color:var(--c-ink-2);
+    margin:var(--sp-5) auto 0;max-width:50ch;text-align:center;line-height:var(--lh-body)}
+
+  /* one Chum */
+  .gcch-one{display:grid;gap:clamp(var(--sp-5),4vw,var(--sp-8));align-items:center;
+    margin-top:clamp(var(--sp-8),7vw,var(--sp-10))}
+  @media(min-width:900px){
+    .gcch-one{grid-template-columns:1fr 1fr}
+    .gcch-one:nth-child(even) .gcch-art{order:2}
+  }
+
+  .gcch-art{position:relative;border-radius:var(--r-lg);overflow:hidden;
+    background:var(--chum-soft);display:grid;place-items:end center;min-height:320px}
+  .gcch-art img{display:block;width:100%;height:auto;max-width:420px}
+
+  .gcch-name{font-size:var(--fs-2xl);font-weight:var(--fw-black);letter-spacing:var(--ls-tight);
+    color:var(--chum);margin:0}
+  .gcch-means{font-size:var(--fs-sm);font-weight:var(--fw-black);letter-spacing:var(--ls-wide);
+    text-transform:uppercase;color:var(--c-ink-3);margin:var(--sp-2) 0 0}
+  .gcch-body{font-size:var(--fs-base);font-weight:var(--fw-body);color:var(--c-ink-2);
+    line-height:var(--lh-body);margin:var(--sp-4) 0 0;max-width:46ch}
+  .gcch-shop{display:inline-block;margin-top:var(--sp-5);font-size:var(--fs-sm);
+    font-weight:var(--fw-black);color:var(--c-accent);text-decoration:underline;
+    text-underline-offset:3px}
+  .gcch-shop:hover{color:var(--c-accent-hover)}
+
+  /* the playlist card — ours until it is tapped */
+  .gcch-play{margin-top:var(--sp-5);border-radius:var(--r-md);background:var(--chum-soft);
+    border:2px solid var(--chum);padding:var(--sp-4);display:block;width:100%;
+    text-align:left;font-family:inherit;cursor:pointer;
+    transition:transform var(--dur-1) var(--spring)}
+  .gcch-play:hover{transform:translateY(-2px)}
+  .gcch-play:active{transform:scale(.99)}
+  .gcch-play-k{display:block;font-size:var(--fs-xs);font-weight:var(--fw-black);
+    letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--chum)}
+  .gcch-play-n{display:block;margin-top:var(--sp-2);font-size:var(--fs-base);
+    font-weight:var(--fw-black);color:var(--c-ink)}
+  .gcch-play-h{display:block;margin-top:var(--sp-2);font-size:var(--fs-xs);
+    font-weight:var(--fw-body);color:var(--c-ink-3)}
+  .gcch-frame{margin-top:var(--sp-5);border-radius:var(--r-md);overflow:hidden;min-height:352px}
+  .gcch-frame iframe{display:block;width:100%;height:352px;border:0}
+
+  @media (prefers-reduced-motion:reduce){
+    .gcch-play{transition:none}
+    .gcch-play:hover{transform:none}
+  }
+</style>
+
+<section class="gcch">
+  <div class="gcch-in">
+    {%- if s.kicker != blank -%}<p class="gcch-kick">{{ s.kicker }}</p>{%- endif -%}
+    {%- if s.title != blank -%}<h1 class="gcch-title">{{ s.title }}</h1>{%- endif -%}
+    {%- if s.lede != blank -%}<p class="gcch-lede">{{ s.lede }}</p>{%- endif -%}
+
+    {%- for block in section.blocks -%}
+      {%- assign b = block.settings -%}
+      {%- comment -%}
+        The share link carries ?si= — a token tied to the account that copied
+        it. Only the id before the query is used, so nothing personal is
+        published and the embed is built from the id alone.
+      {%- endcomment -%}
+      {%- assign pid = b.playlist_url | split: 'playlist/' | last | split: '?' | first -%}
+      <article class="gcch-one" style="--chum:var({{ b.tone }});--chum-soft:var({{ b.tone_soft }})"
+        {{ block.shopify_attributes }}>
+        <div class="gcch-art">
+          {%- if b.art_w > 0 and b.art_h > 0 -%}
+            <img src="{{ b.art | asset_url }}" alt="{{ b.name }}, the {{ b.role }} Chum"
+              width="{{ b.art_w }}" height="{{ b.art_h }}" loading="lazy" decoding="async" draggable="false">
+          {%- endif -%}
+        </div>
+        <div class="gcch-say">
+          <h2 class="gcch-name">{{ b.name }}</h2>
+          {%- if b.means != blank -%}<p class="gcch-means">{{ b.means }}</p>{%- endif -%}
+          {%- if b.body != blank -%}<p class="gcch-body">{{ b.body }}</p>{%- endif -%}
+          {%- if b.product != blank -%}
+            <a class="gcch-shop" href="{{ b.product.url }}">Meet {{ b.product.title }} →</a>
+          {%- endif -%}
+
+          {%- if pid != blank and b.playlist_url contains 'open.spotify.com' -%}
+            <button type="button" class="gcch-play" data-pid="{{ pid }}"
+              aria-label="Play {{ b.name }}’s playlist. Opens a Spotify player on this page.">
+              <span class="gcch-play-k">{{ b.playlist_kicker }}</span>
+              <span class="gcch-play-n">{{ b.playlist_name }}</span>
+              <span class="gcch-play-h">{{ s.play_hint }}</span>
+            </button>
+          {%- endif -%}
+        </div>
+      </article>
+    {%- endfor -%}
+  </div>
+</section>
+
+<script>
+(function(){
+  /* The card swaps itself for the player on tap. The id is re-checked here
+     against [A-Za-z0-9] before it is put in a URL — the setting is a merchant
+     field, but a value that reaches an src attribute gets validated anyway. */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('.gcch-play');
+    if (!btn) return;
+    var id = (btn.getAttribute('data-pid') || '').replace(/[^A-Za-z0-9]/g, '');
+    if (!id) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'gcch-frame';
+    var f = document.createElement('iframe');
+    f.src = 'https://open.spotify.com/embed/playlist/' + id + '?utm_source=generator';
+    f.title = btn.getAttribute('aria-label') || 'Spotify playlist';
+    f.allow = 'clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+    f.loading = 'lazy';
+    f.setAttribute('frameborder', '0');
+    wrap.appendChild(f);
+    btn.replaceWith(wrap);
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Meet the Chums",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "✦ The three of them" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Meet your Chums" },
+    { "type": "textarea", "id": "lede", "label": "Lede",
+      "default": "Three gummies, three Chums. Each one named for what it is there to do — and each one with a playlist, because wellness is better with a soundtrack." },
+    { "type": "text", "id": "play_hint", "label": "Playlist card hint",
+      "default": "Tap to play — nothing loads from Spotify until you do." }
+  ],
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "chum",
+      "name": "Chum",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "text", "id": "role", "label": "Role (used in the image description)" },
+        { "type": "text", "id": "means", "label": "What the name means" },
+        { "type": "textarea", "id": "body", "label": "Who they are" },
+        { "type": "product", "id": "product", "label": "Their gummy" },
+        { "type": "header", "content": "Art" },
+        { "type": "text", "id": "art", "label": "Asset filename" },
+        { "type": "number", "id": "art_w", "label": "Width (px)" },
+        { "type": "number", "id": "art_h", "label": "Height (px)" },
+        { "type": "header", "content": "Colour" },
+        { "type": "text", "id": "tone", "label": "Tone token", "default": "--c-cherry" },
+        { "type": "text", "id": "tone_soft", "label": "Tone soft token", "default": "--c-cherry-soft" },
+        { "type": "header", "content": "Playlist" },
+        { "type": "text", "id": "playlist_kicker", "label": "Card kicker", "default": "Playlist" },
+        { "type": "text", "id": "playlist_name", "label": "Playlist name" },
+        { "type": "text", "id": "playlist_url", "label": "Spotify playlist link",
+          "info": "Paste the share link. The ?si= tracking token is stripped automatically." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Meet the Chums" }]
+}
+{% endschema %}

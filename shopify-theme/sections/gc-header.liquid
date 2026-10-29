@@ -89,6 +89,14 @@
       <nav class="gch-m-panel">
         <a href="{{ routes.all_products_collection_url }}">Shop</a>
         <a href="/pages/story">Our story</a>
+        {%- comment -%}
+          Rendered only once the page exists in Admin. A hard-coded /pages/chums
+          would 404 for everyone between this deploy and the page being created.
+        {%- endcomment -%}
+        {%- assign chums = pages['chums'] -%}
+        {%- if chums != blank and chums.handle != blank -%}
+          <a href="{{ chums.url }}">Meet the Chums</a>
+        {%- endif -%}
       </nav>
     </details>
 
@@ -98,6 +106,10 @@
     <nav class="gch-nav">
       <a href="{{ routes.all_products_collection_url }}">Shop</a>
       <a href="/pages/story">Story</a>
+      {%- assign chums_d = pages['chums'] -%}
+      {%- if chums_d != blank and chums_d.handle != blank -%}
+        <a href="{{ chums_d.url }}">Chums</a>
+      {%- endif -%}
     </nav>
     <a href="{{ routes.cart_url }}" class="gch-cart">
       <span class="gch-cart-label">BAG</span>
