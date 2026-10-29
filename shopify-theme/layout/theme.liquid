@@ -26,7 +26,15 @@
       <link rel="icon" type="image/png" sizes="32x32" href="{{ 'gc-favicon-32.png' | asset_url }}">
       <link rel="apple-touch-icon" sizes="180x180" href="{{ 'gc-favicon-180.png' | asset_url }}">
     {%- endif -%}
-    <meta name="theme-color" content="#DE1D61">
+    {%- comment -%}
+      Safari tints its status bar and toolbar from the page. Left to guess, it
+      samples whatever is near the screen edge and re-samples as you scroll, so
+      the colour kept changing under the thumb and the stepped edge ended up
+      half inside it. theme-color fixes it to one value for the whole session.
+      Purple because that is the footer and the overscroll canvas — the browser
+      chrome now frames the page in the brand instead of flickering through it.
+    {%- endcomment -%}
+    <meta name="theme-color" content="#592354">
 
     {%- comment -%}
       Google Analytics, and ONLY if an ID has been entered in the theme editor.
