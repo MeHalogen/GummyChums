@@ -343,13 +343,22 @@
 
   @media (prefers-reduced-motion:reduce){
     .gh-stage{height:auto}.gh-pin{position:relative;height:auto;padding:70px 0}
-    .gh-pin .gh-gummy{display:none}.gh-mid{opacity:1!important}.gh-reveal{display:none}
-    /* .gh-edge pulls itself up 128px to sit on the dome's reserved bottom
-       padding. This block deletes the dome — so that -128px had nothing left
-       to overlap and climbed into the Chums instead, cutting the feet off by
-       58px on a phone. Anyone browsing with Reduce Motion on saw a broken
-       hero, which is why it never showed up in ordinary testing. */
-    .gh-edge{margin-top:0}
+    .gh-pin .gh-gummy{display:none}.gh-mid{opacity:1!important}
+    /* THE DOME STAYS. It used to be display:none here, which meant anyone
+       browsing with Reduce Motion on — Mehal, on his own phone, the whole
+       time — never saw the pink "Hey, chum!" block at all. The dissolve teeth
+       below it then sat on nothing, a band of pixels floating on the page
+       gradient with no block to break out of. That is what looked broken, and
+       it is why his phone and a laptop never showed the same hero.
+
+       The dome is not an animation. It is a pink shape with a greeting in it.
+       Reduce Motion asks for less movement, not less content, and deleting a
+       whole brand moment is not what the setting means.
+
+       With the dome back, .gh-edge keeps its normal pull so the teeth sit on
+       it, exactly as they do everywhere else. The old note here said zeroing
+       the pull stopped the teeth climbing into the Chums' feet — that was
+       only true because the dome had been removed from underneath them. */
     .gh-chum{animation:none;opacity:1}
     .gh-g{animation:none}
   }
