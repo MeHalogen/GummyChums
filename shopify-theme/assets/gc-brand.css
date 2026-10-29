@@ -20,12 +20,22 @@
    nothing. */
 @font-face{font-family:'NaN Jaune Maxi';src:url('NaNJaune-MaxiMedium.woff2') format('woff2');
   font-weight:400 800;font-style:normal;font-display:swap}
-/* The CANVAS colour, which is what iOS shows in the rubber-band overscroll
-   past the end of the page. It was cream, so bouncing at the bottom of a phone
-   flashed cream underneath the purple footer. The footer is the last thing on
-   every page, so the canvas matches it. The top overscroll sits behind the
-   black announcement bar, where purple reads as brand rather than as a seam. */
-html{background:var(--c-purple)}
+/* The CANVAS colour — what iOS shows in the rubber-band overscroll, and what
+   shows through ANY gap in the painting above it.
+
+   This was purple, to match the footer during an overscroll bounce. That was a
+   bad trade. Further down, `body{background:transparent !important}` removes
+   the body's own colour so the .gc-bg gradient can show through — which means
+   the only thing painting the page cream is a position:fixed, z-index:-1
+   layer. iOS Safari routinely fails to repaint exactly that kind of layer
+   during momentum scroll, and when it did, this purple came through and every
+   section appeared to climb out of it. Mehal saw it on a phone; it is
+   invisible on desktop because the layer repaints fine there.
+
+   Cream means a repaint gap shows the page colour instead of a seam. The cost
+   is a cream overscroll under the purple footer, which is a far smaller sin
+   than a page that looks broken while you scroll it. */
+html{background:var(--c-bg)}
 /* body keeps the page colour; a background on body does not propagate to the
    canvas once html has one of its own, which is exactly what we want here. */
 body{background:#F8EBDF}
@@ -57,7 +67,11 @@ body{background:#F8EBDF}
 }
 
 /* ---- coming-soon flavour background: colour wash + floating blurred gummies ---- */
+/* translateZ(0) promotes this to its own compositor layer, which is what stops
+   iOS dropping its repaint during momentum scroll — the cause, where the cream
+   canvas above is the safety net. */
 .gc-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
+  transform:translateZ(0);
   background:
     radial-gradient(58vw 58vw at 0% 0%,   rgba(222,29,98,.26), transparent 60%),
     radial-gradient(48vw 48vw at 100% 6%, rgba(141,170,61,.22), transparent 60%),
