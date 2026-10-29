@@ -71,9 +71,15 @@
       <p class="gp-age">For adults 18+ · Not for medicinal use</p>
 
       <div class="gp-facts">
-        <span class="gp-fact gc-mark">100% Veg</span>
-        <span class="gp-fact gc-mark">No Added Sugar</span>
-        <span class="gp-fact gc-mark">Made in India</span>
+        {%- comment -%}
+          No .gc-mark here. The pixel motif reads as a motif at the size the
+          quality rail uses it; at chip size on a white pill it is three 5px
+          squares in an L, which is indistinguishable from the tofu box a
+          browser draws for a missing glyph. It made the claims look broken.
+        {%- endcomment -%}
+        <span class="gp-fact">100% Veg</span>
+        <span class="gp-fact">No Added Sugar</span>
+        <span class="gp-fact">Made in India</span>
       </div>
 
       <form method="post" action="{{ routes.cart_add_url }}" class="gp-form" id="gp-form">

@@ -250,5 +250,3 @@
 .gpf-dl dd{margin:var(--sp-1) 0 0;font-size:var(--fs-sm);color:var(--role-ink-muted);line-height:var(--lh-body)}
 .gpf-fine{margin:var(--sp-4) 0 0;font-size:var(--fs-xs);color:var(--role-ink-faint);line-height:var(--lh-body)}
 
-/* the mark replaced an emoji that was doing the spacing; the chip needs it back */
-.gp-fact.gc-mark{padding-left:28px}
